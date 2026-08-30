@@ -1,0 +1,19 @@
+{
+  "name": "Nomi Cose Città — segnapunti",
+  "short_name": "Nomi Cose Città",
+  "description": "Segnapunti per giocare a Nomi Cose Città a voce, in auto o in viaggio. Ideato da Ulisse Mele.",
+  "lang": "it",
+  "dir": "ltr",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#191354",
+  "theme_color": "#191354",
+  "categories": ["games", "education", "kids"],
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
