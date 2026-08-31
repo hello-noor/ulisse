@@ -32,7 +32,7 @@
       linear-gradient(180deg,var(--night),var(--night2));
     background-attachment:fixed;
   }
-  .wrap{max-width:840px;margin:0 auto;padding:16px 16px 40px}
+  .wrap{max-width:840px;margin:0 auto;padding:calc(16px + env(safe-area-inset-top)) calc(16px + env(safe-area-inset-right)) calc(40px + env(safe-area-inset-bottom)) calc(16px + env(safe-area-inset-left))}
   .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 
   /* ---------- header ---------- */
