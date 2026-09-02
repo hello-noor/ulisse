@@ -435,6 +435,7 @@
     <div class="tbl" id="tbl"></div>
     <div class="row">
       <button class="btn" id="back-play">👈 Torna a giocare</button>
+      <button class="btn soft" id="share-board">📤 Condividi</button>
       <button class="btn soft" id="reset">🔄 Nuova partita</button>
     </div>
     <p class="hint">Ogni riga è un turno giocato, con la sua lettera.</p>
@@ -1015,9 +1016,38 @@
     modal({
       em:`<span class="trophy-pop">${winners.length>1?"🤝":"🏆"}</span>`,title:title,
       body:`<div class="rsum">${rows}</div>`,
-      btns:[{l:"Chiudi",c:"soft"},{l:"🎉 Nuova partita",c:"btn pink",fn:newGame}]
+      btns:[{l:"Chiudi",c:"soft"},{l:"📤 Condividi",c:"soft",fn:shareResults},{l:"🎉 Nuova partita",c:"btn pink",fn:newGame}]
     });
   }
+  function buildShareText(){
+    const t=st.players.map((p,i)=>total(i));
+    const max=Math.max.apply(null,t.concat([0]));
+    const ranked=st.players.map((p,i)=>({p,v:t[i]})).sort((a,b)=>b.v-a.v);
+    const medals=["🥇","🥈","🥉"];
+    const lines=ranked.map((o,idx)=>(idx<3?medals[idx]:(idx+1)+"°")+" "+o.p.name+" — "+fmtPts(o.v)+" pt");
+    const winners=ranked.filter(o=>o.v===max&&max>0).map(o=>o.p.name);
+    const headline=!winners.length?"Ancora nessun punto":
+      (winners.length>1?"Pari merito: "+winners.join(" e "):"In testa: "+winners[0]);
+    const turni=st.rounds.length;
+    return "🎯 Nomi Cose Città\n🏆 "+headline+"\n\n"+lines.join("\n")+
+      "\n\n"+turni+" "+(turni===1?"turno":"turni")+" giocat"+(turni===1?"o":"i")+".";
+  }
+  function shareResults(){
+    const text=buildShareText();
+    const showText=()=>modal({em:"📋",title:"Punteggi",
+      body:'<pre style="white-space:pre-wrap;text-align:left;font-family:inherit;font-size:14.5px;line-height:1.6;margin:6px 0 0">'+esc(text)+'</pre>',
+      btns:[{l:"Chiudi",c:"btn"}]});
+    if(navigator.share){
+      navigator.share({title:"Nomi Cose Città — punteggi",text:text}).catch(()=>{});
+    }else if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(()=>{
+        modal({em:"📋",title:"Copiato!",body:"I punteggi sono negli appunti: incollali dove vuoi.",btns:[{l:"Ok",c:"btn"}]});
+      }).catch(showText);
+    }else{
+      showText();
+    }
+  }
+  $("#share-board").onclick=shareResults;
   const askNew=()=>modal({em:"🏁",title:"Finire questa partita?",
     body:"Vedrai la classifica finale, poi potrai iniziarne una nuova.",
     btns:[{l:"Annulla",c:"soft"},{l:"Sì, concludi",c:"btn pink",fn:()=>{
