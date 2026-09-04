@@ -1339,6 +1339,7 @@
     saveState();
   };
   $("#theme-toggle").onclick=()=>{prefs.theme=prefs.theme==="dark"?"light":"dark";sfx.tap();applyTheme();};
+  $("#lang-toggle").onclick=()=>{prefs.lang=prefs.lang==="it"?"en":"it";sfx.tap();applyLang();};
   $("#help").onclick=()=>modal({
     em:"🎯",title:t("helpTitle"),
     body:t("helpBody"),
