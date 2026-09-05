@@ -871,15 +871,26 @@ function applyMode(m){
   S.mode=m;
   if(m!=="free") S.lastGameMode=m;
   $("qkPlay").setAttribute("aria-pressed",String(m!=="free"));
-  document.querySelectorAll("#segMode button").forEach(function(x){
+  document.querySelectorAll("#segMode button,#qtypes button").forEach(function(x){
     x.setAttribute("aria-pressed",x.dataset.mode===m?"true":"false");
   });
   $("grpOp").hidden=(m!=="calc");
   newTask(true);
 }
 segPick("#segMode",function(b){ applyMode(b.dataset.mode); });
+document.querySelectorAll("#qtypes button").forEach(function(b){
+  b.addEventListener("click",function(){ applyMode(b.dataset.mode); });
+});
 segPick("#segOp",function(b){ S.op=b.dataset.op; newTask(true); });
-segPick("#segLev",function(b){ S.lev=parseInt(b.dataset.lev,10); newTask(true); });
+function setLevel(lev){
+  S.lev=lev;
+  document.querySelectorAll("#segLev button").forEach(function(x){
+    x.setAttribute("aria-pressed",parseInt(x.dataset.lev,10)===lev?"true":"false");
+  });
+  newTask(true);
+}
+segPick("#segLev",function(b){ setLevel(parseInt(b.dataset.lev,10)); });
+$("lvl").addEventListener("click",function(){ setLevel(S.lev%3+1); });
 
 function toggle(id,fn){
   var el=$(id);
