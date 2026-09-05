@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#FAF7F0">
-<title>Linea del 20, del 100 e casa del 1000 — esercizi ispirati al metodo analogico</title>
+<title>Metodo analogico Bortolato — linea del 20, del 100 e casa del 1000</title>
 <style>
 :root{
   --paper:#FAF7F0; --paper-2:#F2EDE1;
@@ -16,6 +16,7 @@
   --accent:#FF4D4A; --accent-2:#D8302D;
   --board-1:#2A3E8C; --board-2:#101A44;
   --inkfix:#20233A;
+  --border-soft:rgba(32,35,58,.22);
   --r:20px; --r-l:28px;
   --sh:0 16px 34px -22px rgba(32,35,58,.4);
   --sh-soft:0 8px 18px -14px rgba(32,35,58,.35);
@@ -63,21 +64,19 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
 .prog{display:flex;gap:5px;flex:1;min-width:80px}
 .prog i{width:100%;max-width:34px;height:6px;border-radius:99px;background:var(--line);transition:background .3s,transform .3s}
 .prog i.done{background:var(--accent);transform:scaleY(1.3)}
-.qtypes{display:flex;gap:6px}
-.qtypes button{border:0;font-family:inherit;cursor:pointer;font-weight:800;font-size:12px;color:var(--soft);
-  background:var(--paper-2);padding:7px 11px;border-radius:99px;transition:background .2s,color .2s,transform .12s}
-.qtypes button:active{transform:scale(.94)}
-.qtypes button[aria-pressed="true"]{background:var(--accent);color:#fff}
-.lvl{display:flex;align-items:center;gap:6px;border:0;font-family:inherit;cursor:pointer;font-size:12px;font-weight:800;color:var(--soft);
-  white-space:nowrap;background:var(--paper-2);padding:7px 11px;border-radius:99px;transition:transform .12s,background .2s}
+.lvl{display:flex;align-items:center;gap:6px;border:1.5px solid var(--border-soft);font-family:inherit;cursor:pointer;font-size:12px;font-weight:800;color:var(--soft);
+  white-space:nowrap;background:var(--paper-2);padding:6.5px 11px;border-radius:99px;transition:transform .12s,background .2s}
 .lvl:active{transform:scale(.94)}
 .lvl svg{opacity:.5;flex:0 0 auto}
 .qmain{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
 .q{font-size:clamp(34px,9vw,54px);font-weight:800;letter-spacing:-.035em;margin:0;line-height:1;flex:1;min-width:160px;color:var(--accent)}
 .q.parola{text-transform:uppercase;font-size:clamp(24px,6.4vw,40px);letter-spacing:.005em}
 .qlab{font-size:13px;font-weight:800;color:var(--soft);margin:0 0 5px}
-.fb{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:800;color:var(--soft);margin:0}
-.fb i{width:11px;height:11px;border-radius:50%;background:var(--line);flex:0 0 auto}
+.fb{display:flex;align-items:center;gap:9px;font-size:16px;font-weight:800;color:var(--soft);margin:0}
+.fb i{width:12px;height:12px;border-radius:50%;background:var(--line);flex:0 0 auto}
+.fbicon{display:none;font-size:32px;line-height:1;flex:0 0 auto}
+.fb.has-icon i{display:none}
+.fb.has-icon .fbicon{display:block}
 .fb.ok{color:var(--green-2)} .fb.ok i{background:var(--green)}
 .fb.no{color:var(--amber-2)} .fb.no i{background:var(--amber)}
 .next{border:0;font-family:inherit;font-weight:800;font-size:17px;cursor:pointer;border-radius:16px;padding:16px 26px;
@@ -89,7 +88,7 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
 .next.countdown::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,.18);
   transform:scaleX(1);transform-origin:left;animation:countdown 3s linear forwards}
 @keyframes countdown{to{transform:scaleX(0)}}
-.ghost{border:0;font-family:inherit;font-weight:800;font-size:15px;cursor:pointer;border-radius:16px;padding:14px 20px;
+.ghost{border:1.5px solid var(--border-soft);font-family:inherit;font-weight:800;font-size:15px;cursor:pointer;border-radius:16px;padding:12.5px 20px;
   background:var(--paper-2);color:var(--ink);transition:transform .14s}
 .ghost:active{transform:scale(.96)}
 .qside{display:flex;flex-direction:column;gap:10px;align-items:flex-start}
@@ -191,13 +190,13 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
 .statusbar{background:var(--card);border-radius:var(--r-l);padding:12px 14px;margin-bottom:12px;
   box-shadow:var(--sh);border:1px solid rgba(32,35,58,.05);display:flex;flex-direction:column;gap:10px}
 .sb-toggles{display:flex;gap:8px}
-.qk{flex:1;display:flex;align-items:center;justify-content:center;gap:7px;border:0;cursor:pointer;
-  font-family:inherit;font-weight:800;font-size:14px;color:var(--soft);background:var(--paper-2);
-  border-radius:14px;padding:11px 10px;transition:transform .14s cubic-bezier(.3,1.5,.5,1),background .2s,color .2s}
+.qk{flex:1;display:flex;align-items:center;justify-content:center;gap:7px;border:1.5px solid var(--border-soft);cursor:pointer;
+  font-family:inherit;font-weight:800;font-size:14px;color:var(--ink);background:var(--paper-2);
+  border-radius:14px;padding:10.5px 10px;transition:transform .14s cubic-bezier(.3,1.5,.5,1),background .2s,color .2s,border-color .2s}
 .qk:active{transform:scale(.97)}
-.qk b{font-variant-numeric:tabular-nums;font-size:13px;opacity:.7}
+.qk b{font-variant-numeric:tabular-nums;font-size:13px;opacity:.75}
 .qk svg{flex:0 0 auto}
-.qk[aria-pressed="true"]{background:var(--accent);color:#fff}
+.qk[aria-pressed="true"]{background:var(--accent);color:#fff;border-color:var(--accent)}
 .qk[aria-pressed="true"] b{opacity:.9}
 .sb-result-slot:empty{display:none}
 .qresult-slot:empty{display:none}
@@ -220,14 +219,14 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
   border:1px solid rgba(32,35,58,.05)}
 .pads{display:grid;gap:8px}
 .pad{display:grid;gap:8px;grid-template-columns:repeat(var(--cols,4),minmax(0,1fr))}
-.pad button,.pads .wide{border:0;font-family:inherit;font-weight:800;font-size:clamp(15px,3.6vw,19px);cursor:pointer;
-  background:var(--paper-2);color:var(--ink);border-radius:15px;padding:15px 8px;min-width:54px;min-height:52px;
+.pad button,.pads .wide{border:1.5px solid var(--border-soft);font-family:inherit;font-weight:800;font-size:clamp(15px,3.6vw,19px);cursor:pointer;
+  background:var(--paper-2);color:var(--ink);border-radius:15px;padding:13.5px 8px;min-width:54px;min-height:52px;
   transition:transform .12s cubic-bezier(.3,1.5,.5,1);font-variant-numeric:tabular-nums}
 .pad button:active,.pads .wide:active{transform:translateY(3px) scale(.96)}
-.pad .plus{background:var(--accent);color:#fff;box-shadow:0 10px 18px -12px var(--accent-2)}
-.pads .wide{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--inkfix);color:#fff;font-size:15px}
+.pad .plus{background:var(--accent);color:#fff;border-color:var(--accent);box-shadow:0 10px 18px -12px var(--accent-2)}
+.pads .wide{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--inkfix);color:#fff;font-size:15px;border-color:var(--inkfix)}
 .wide2{display:grid;grid-template-columns:2fr 1fr;gap:8px}
-.pads .wide.alt{background:var(--paper-2);color:var(--soft)}
+.pads .wide.alt{background:var(--paper-2);color:var(--ink);border-color:var(--border-soft)}
 
 /* ---------- pannello impostazioni ---------- */
 .scrim{position:fixed;inset:0;background:rgba(20,22,36,.44);z-index:20;opacity:0;transition:opacity .25s}
@@ -284,6 +283,7 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
     --ink:#EDEBE3; --soft:#9096AC; --line:#31374A; --card:#20222F;
     --sh:0 16px 34px -22px rgba(0,0,0,.6);
     --sh-soft:0 8px 18px -14px rgba(0,0,0,.55);
+    --border-soft:rgba(255,255,255,.16);
   }
   body::before{background:linear-gradient(180deg,var(--paper-2) 0%,var(--paper) 380px)}
   .rail{background:linear-gradient(180deg,#3A3F52,#262A38)}
@@ -313,8 +313,8 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
 <div class="app">
 
   <div class="title">
-    <h1>Linea del 20, del 100 e casa del 1000</h1>
-    <p>Esercizi di matematica ispirati al metodo analogico.</p>
+    <h1>Metodo analogico Bortolato</h1>
+    <p>Linea del 20, del 100 e casa del 1000: esercizi ispirati ai suoi strumenti.</p>
   </div>
 
   <div class="head">
@@ -358,10 +358,6 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
   <section class="quest" id="quest" hidden>
     <div class="qtop">
       <div class="prog" id="prog"></div>
-      <div class="qtypes" id="qtypes">
-        <button type="button" data-mode="compose" aria-pressed="true">Componi</button>
-        <button type="button" data-mode="calc" aria-pressed="false">Calcola</button>
-      </div>
       <button type="button" class="lvl" id="lvl">
         <span id="lvlText">Facile</span>
         <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M17 2.1l4 4-4 4M3 12.9V11a4 4 0 0 1 4-4h14M7 21.9l-4-4 4-4M21 11.1V13a4 4 0 0 1-4 4H3"/></svg>
@@ -373,7 +369,7 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
         <p class="q" id="question">—</p>
         <div class="qresult-slot" id="qResultSlot"></div>
         <div class="qside">
-          <p class="fb" id="feedback"><i></i><span>Muovi lo strumento</span></p>
+          <p class="fb" id="feedback"><i></i><span class="fbicon" id="fbIcon"></span><span id="fbText">Muovi lo strumento</span></p>
           <button class="next" id="next" hidden>Avanti</button>
         </div>
       </div>
@@ -421,14 +417,6 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
 <div class="scrim" id="scrim" hidden></div>
 <aside class="sheet" id="sheet" role="dialog" aria-label="Impostazioni" aria-modal="true">
   <div class="handle"></div>
-
-  <div class="grp-set">
-    <h3>Tipo di esercizio</h3>
-    <div class="seg" id="segMode">
-      <button data-mode="compose" aria-pressed="true">Componi</button>
-      <button data-mode="calc" aria-pressed="false">Calcola</button>
-    </div>
-  </div>
 
   <div class="grp-set" id="grpOp" hidden>
     <h3>Operazione</h3>
@@ -866,9 +854,10 @@ function newTask(reset){
   updateHint();
   if(e.say) speak(e.say);
 }
-function setFb(cls,txt){
-  var f=$("feedback"); f.className="fb"+(cls?" "+cls:"");
-  f.querySelector("span").textContent=txt;
+function setFb(cls,txt,emoji){
+  var f=$("feedback"); f.className="fb"+(cls?" "+cls:"")+(emoji?" has-icon":"");
+  $("fbIcon").textContent=emoji||"";
+  $("fbText").textContent=txt;
 }
 function hint(){
   if(S.mode!=="free") return "Muovi lo strumento fino al numero: si controlla da solo.";
@@ -888,7 +877,7 @@ function check(){
   if(v===S.target){
     S.solved=true; S.done++;
     buildProg();
-    setFb("ok","Esatto: "+words(v));
+    setFb("ok","Esatto: "+words(v),"🎯");
     board.classList.add("ok"); setTimeout(function(){board.classList.remove("ok");},520);
     var bn=$("bigNum"); bn.classList.add("ok"); setTimeout(function(){bn.classList.remove("ok");},520);
     sparkle();
@@ -904,8 +893,9 @@ function check(){
     }
   }else if(v>0){
     var d=Math.abs(v-S.target),f=d/MAX[S.tool];
-    var txt=f>.5?"🌧️ Acquazzone":f>.25?"💧 Acqua":f>.08?"🔥 Fuochino":"🔥🔥 Fuoco";
-    setFb("no",txt);
+    var em=f>.5?"🌧️":f>.25?"💧":f>.08?"🔥":"🔥🔥";
+    var lab=f>.5?"Acquazzone":f>.25?"Acqua":f>.08?"Fuochino":"Fuoco";
+    setFb("no",lab,em);
     var rc=$("bigNum").parentElement;
     rc.classList.remove("wrong"); void rc.offsetWidth; rc.classList.add("wrong");
   }
@@ -983,17 +973,10 @@ function applyMode(m){
   S.mode=m;
   $("qkCompose").setAttribute("aria-pressed",String(m==="compose"));
   $("qkCalc").setAttribute("aria-pressed",String(m==="calc"));
-  document.querySelectorAll("#segMode button,#qtypes button").forEach(function(x){
-    x.setAttribute("aria-pressed",x.dataset.mode===m?"true":"false");
-  });
   $("grpOp").hidden=(m!=="calc");
   placeResult(m!=="free");
   newTask(true);
 }
-segPick("#segMode",function(b){ applyMode(b.dataset.mode); });
-document.querySelectorAll("#qtypes button").forEach(function(b){
-  b.addEventListener("click",function(){ applyMode(b.dataset.mode); });
-});
 segPick("#segOp",function(b){ S.op=b.dataset.op; newTask(true); });
 function setLevel(lev){
   S.lev=lev;
