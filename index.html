@@ -64,6 +64,8 @@
   body:not(.home) h1 .hl:last-of-type{transform:rotate(-2.6deg)}
   .tag{margin:9px 0 0;color:var(--dim);font-size:14px;display:none}
   body.home .tag{display:block}
+  .pwa-note{margin:7px 0 0;color:var(--dim);font-size:12.5px;font-weight:700;display:none}
+  body.home .pwa-note{display:block}
   .hbtns{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end;flex:none;max-width:170px}
   .icb{width:44px;height:44px;border-radius:50%;border:none;cursor:pointer;font-size:19px;
     background:rgba(var(--panel-tint),.14);color:var(--ink);display:grid;place-items:center;
@@ -381,6 +383,7 @@
     <div class="titles">
       <h1><span class="hl">Nomi</span><span class="w">Cose</span><span class="hl">Città</span></h1>
       <p class="tag" id="app-tag">Il classico gioco di carta e penna, ma a voce: niente fogli, ci pensa il telefono ai punti.</p>
+      <p class="pwa-note" id="pwa-note">📲 Si installa sul telefono: gioca anche senza connessione.</p>
     </div>
     <div class="hbtns">
       <button class="icb" id="install" aria-label="Installa l'app" title="Installa l'app" hidden><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v11"/><path d="M7.5 10.5 12 15l4.5-4.5"/><path d="M4.5 19.5h15"/></svg></button>
@@ -584,6 +587,7 @@
     $("#sound").setAttribute("aria-label",t("ariaSound"));$("#sound").title=t("ariaSound");
     $("#go-home").setAttribute("aria-label",t("ariaRestart"));$("#go-home").title=t("ariaRestart");
     $("#app-tag").textContent=t("tag");
+    $("#pwa-note").textContent=t("pwaNote");
     $("#q-players").textContent=t("qPlayers");
     $("#minus-p").setAttribute("aria-label",t("ariaMinusP"));
     $("#plus-p").setAttribute("aria-label",t("ariaPlusP"));
@@ -669,6 +673,7 @@
   const T={
     it:{
       tag:"Il classico gioco di carta e penna, ma a voce: niente fogli, ci pensa il telefono ai punti.",
+      pwaNote:"📲 Si installa sul telefono: gioca anche senza connessione.",
       ariaInstall:"Installa l'app",ariaHelp:"Come si gioca",ariaSound:"Attiva o disattiva i suoni",
       ariaRestart:"Nuova partita",
       qPlayers:"Quanti giocatori?",ariaMinusP:"Meno giocatori",ariaPlusP:"Più giocatori",
@@ -744,6 +749,7 @@
     },
     en:{
       tag:"The classic pen-and-paper game, but out loud: no sheets, your phone keeps score.",
+      pwaNote:"📲 Installs on your phone: play even without a connection.",
       ariaInstall:"Install the app",ariaHelp:"How to play",ariaSound:"Turn sound on or off",
       ariaRestart:"New game",
       qPlayers:"How many players?",ariaMinusP:"Fewer players",ariaPlusP:"More players",
