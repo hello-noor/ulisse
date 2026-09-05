@@ -20,12 +20,14 @@
   :root{
     --night:#0B2B39; --night2:#123A48; --ink:#FFFFFF; --dim:#8FCAD1; --gold:#FFC93C; --pink:#FF6B4A;
     --panel-tint:255,255,255; --surface:#FFFFFF; --surface-ink:#123A48; --modal-body-ink:#CFEFF0; --gold-ink:#FFC93C;
+    --blob1:rgba(255,201,60,.16); --blob2:rgba(255,107,74,.14);
     --display:'Baloo 2',ui-rounded,'Trebuchet MS',Avenir,sans-serif;
     --body:'Nunito',ui-rounded,'Trebuchet MS',Avenir,sans-serif;
   }
   :root[data-theme="light"]{
-    --night:#EAF3F7; --night2:#CFE3EA; --ink:#0F2530; --dim:#3E6E7C;
-    --panel-tint:14,45,58; --surface:#123A48; --surface-ink:#FFFFFF; --modal-body-ink:#1E4551; --gold-ink:#8A5A00;
+    --night:#FFF3D6; --night2:#FFDCA8; --ink:#1B2E38; --dim:#4A6670;
+    --panel-tint:15,42,54; --surface:#123A48; --surface-ink:#FFFFFF; --modal-body-ink:#1E3A44; --gold-ink:#8A4B00;
+    --blob1:rgba(255,107,74,.24); --blob2:rgba(45,150,163,.22);
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   html,body{margin:0;padding:0}
@@ -33,8 +35,8 @@
     min-height:100vh;color:var(--ink);font-family:var(--body);font-weight:600;
     background-image:
       radial-gradient(rgba(var(--panel-tint),.05) 1px, transparent 1.6px),
-      radial-gradient(1000px 600px at 8% -12%, rgba(255,201,60,.16) 0%, transparent 60%),
-      radial-gradient(900px 520px at 100% 8%, rgba(255,107,74,.14) 0%, transparent 55%),
+      radial-gradient(1000px 600px at 8% -12%, var(--blob1) 0%, transparent 60%),
+      radial-gradient(900px 520px at 100% 8%, var(--blob2) 0%, transparent 55%),
       linear-gradient(180deg,var(--night),var(--night2));
     background-size:26px 26px, auto, auto, auto;
     background-attachment:fixed;
@@ -734,7 +736,11 @@
       shareRoundsLine:n=>n+" "+(n===1?"turno":"turni")+" giocat"+(n===1?"o":"i")+".",
       shareApiTitle:"Nomi Cose Città — punteggi",
       themeToLight:"Passa al tema chiaro",themeToDark:"Passa al tema scuro",
-      langAria:"Passa all'inglese",langCode:"EN"
+      langAria:"Passa all'inglese",langCode:"EN",
+      installManualTitle:"Installa l'app",
+      installManualIOS:"Su iPhone/iPad: tocca l'icona <b>Condividi</b> (il riquadro con la freccia verso l'alto), poi <b>Aggiungi alla schermata Home</b>.",
+      installManualOther:"Cerca <b>Installa app</b> nel menu del browser: <b>⋮</b> su Android, oppure l'icona di installazione nella barra degli indirizzi su desktop.",
+      installGotIt:"Ho capito!"
     },
     en:{
       tag:"The classic pen-and-paper game, but out loud: no sheets, your phone keeps score.",
@@ -805,7 +811,11 @@
       shareRoundsLine:n=>n+" "+(n===1?"round":"rounds")+" played.",
       shareApiTitle:"Nomi Cose Città — scores",
       themeToLight:"Switch to light theme",themeToDark:"Switch to dark theme",
-      langAria:"Passa all'italiano",langCode:"IT"
+      langAria:"Passa all'italiano",langCode:"IT",
+      installManualTitle:"Install the app",
+      installManualIOS:"On iPhone/iPad: tap the <b>Share</b> icon (the square with an arrow), then <b>Add to Home Screen</b>.",
+      installManualOther:"Look for <b>Install app</b> in your browser's menu: <b>⋮</b> on Android, or the install icon in the address bar on desktop.",
+      installGotIt:"Got it!"
     }
   };
   const t=k=>T[prefs.lang][k];
@@ -1349,6 +1359,30 @@
   };
   $("#theme-toggle").onclick=()=>{prefs.theme=prefs.theme==="dark"?"light":"dark";sfx.tap();applyTheme();};
   $("#lang-toggle").onclick=()=>{prefs.lang=prefs.lang==="it"?"en":"it";sfx.tap();applyLang();};
+
+  let installPrompt=null;
+  const isStandaloneDisplay=()=>matchMedia("(display-mode: standalone)").matches||navigator.standalone===true;
+  window.addEventListener("beforeinstallprompt",e=>{
+    e.preventDefault();installPrompt=e;
+    $("#install").hidden=false;
+  });
+  window.addEventListener("appinstalled",()=>{$("#install").hidden=true;installPrompt=null;});
+  setTimeout(()=>{if(!installPrompt&&!isStandaloneDisplay())$("#install").hidden=false;},2000);
+  $("#install").onclick=async()=>{
+    sfx.tap();
+    if(installPrompt){
+      installPrompt.prompt();
+      await installPrompt.userChoice;
+      installPrompt=null;$("#install").hidden=true;
+      return;
+    }
+    const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent)&&!window.MSStream;
+    modal({
+      em:"⬇️",title:t("installManualTitle"),
+      body:isIOS?t("installManualIOS"):t("installManualOther"),
+      btns:[{l:t("installGotIt"),c:"btn"}]
+    });
+  };
   $("#help").onclick=()=>modal({
     em:"🎯",title:t("helpTitle"),
     body:t("helpBody"),
@@ -1470,7 +1504,7 @@
 </script>
 
 <script>
-/* ---- PWA: funziona offline e si installa sulla home ---- */
+/* ---- PWA: funziona offline ---- */
 (function(){
   "use strict";
   if("serviceWorker" in navigator){
@@ -1478,20 +1512,6 @@
       navigator.serviceWorker.register("sw.js").catch(()=>{});
     });
   }
-  // Android/Chrome: mostra il pulsante ⬇️ solo se l'app è davvero installabile
-  let deferred=null;
-  const btn=document.getElementById("install");
-  window.addEventListener("beforeinstallprompt",e=>{
-    e.preventDefault();deferred=e;
-    if(btn)btn.hidden=false;
-  });
-  if(btn)btn.onclick=async()=>{
-    if(!deferred)return;
-    deferred.prompt();
-    await deferred.userChoice;
-    deferred=null;btn.hidden=true;
-  };
-  window.addEventListener("appinstalled",()=>{if(btn)btn.hidden=true;});
 })();
 </script>
 </body>
