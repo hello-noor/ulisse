@@ -241,6 +241,7 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
 .grp-set{margin-bottom:16px}
 .grp-set h3{margin:0 0 8px;font-size:13px;font-weight:800;color:var(--soft)}
 .infotext{margin:0;font-size:14.5px;line-height:1.55;color:var(--ink)}
+.infolink{color:var(--accent);font-weight:800;text-decoration:underline}
 .seg{display:flex;background:var(--paper-2);border-radius:15px;padding:4px;gap:4px}
 .seg button{flex:1;border:0;background:transparent;font-family:inherit;font-weight:800;font-size:14.5px;color:var(--soft);
   padding:13px 8px;border-radius:12px;cursor:pointer;transition:background .2s,color .2s,transform .12s;min-height:48px}
@@ -471,6 +472,11 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
   <div class="grp-set">
     <h3>Una nota</h3>
     <p class="infotext">Questa app non è un prodotto ufficiale di Camillo Bortolato. È stata realizzata in autonomia, ispirandosi ai principi e agli strumenti descritti nei suoi libri, per uso didattico.</p>
+  </div>
+
+  <div class="grp-set">
+    <h3>I libri originali</h3>
+    <p class="infotext">I libri di Camillo Bortolato sono pubblicati da <a class="infolink" href="https://www.erickson.it" target="_blank" rel="noopener noreferrer">Edizioni Centro Studi Erickson</a>, oppure li trovi cercando "Camillo Bortolato" su <a class="infolink" href="https://www.amazon.it/s?k=Camillo+Bortolato" target="_blank" rel="noopener noreferrer">Amazon</a>.</p>
   </div>
 
   <button class="closebtn" id="closeInfo">Chiudi</button>
