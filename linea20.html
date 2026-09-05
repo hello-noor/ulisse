@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#FAF7F0">
-<title>Metodo analogico di Camillo Bortolato — linea del 20, del 100 e casa del 1000</title>
+<title>Linea del 20, del 100 e casa del 1000 — esercizi ispirati al metodo analogico</title>
 <style>
 :root{
   --paper:#FAF7F0; --paper-2:#F2EDE1;
@@ -68,9 +68,10 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
   background:var(--paper-2);padding:7px 11px;border-radius:99px;transition:background .2s,color .2s,transform .12s}
 .qtypes button:active{transform:scale(.94)}
 .qtypes button[aria-pressed="true"]{background:var(--accent);color:#fff}
-.lvl{border:0;font-family:inherit;cursor:pointer;font-size:12px;font-weight:800;color:var(--soft);
+.lvl{display:flex;align-items:center;gap:6px;border:0;font-family:inherit;cursor:pointer;font-size:12px;font-weight:800;color:var(--soft);
   white-space:nowrap;background:var(--paper-2);padding:7px 11px;border-radius:99px;transition:transform .12s,background .2s}
 .lvl:active{transform:scale(.94)}
+.lvl svg{opacity:.5;flex:0 0 auto}
 .qmain{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
 .q{font-size:clamp(34px,9vw,54px);font-weight:800;letter-spacing:-.035em;margin:0;line-height:1;flex:1;min-width:160px;color:var(--accent)}
 .q.parola{text-transform:uppercase;font-size:clamp(24px,6.4vw,40px);letter-spacing:.005em}
@@ -84,13 +85,21 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
   transition:transform .14s cubic-bezier(.3,1.6,.5,1)}
 .next:active{transform:translateY(2px) scale(.97)}
 .next[hidden]{display:none}
+.next{position:relative;overflow:hidden}
+.next.countdown::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,.18);
+  transform:scaleX(1);transform-origin:left;animation:countdown 3s linear forwards}
+@keyframes countdown{to{transform:scaleX(0)}}
 .ghost{border:0;font-family:inherit;font-weight:800;font-size:15px;cursor:pointer;border-radius:16px;padding:14px 20px;
   background:var(--paper-2);color:var(--ink);transition:transform .14s}
 .ghost:active{transform:scale(.96)}
 .qside{display:flex;flex-direction:column;gap:10px;align-items:flex-start}
-.done-view{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.done-view{display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;padding:6px 0 2px}
 .done-view[hidden]{display:none}
-.done-view h2{margin:0;font-size:clamp(24px,6vw,34px);letter-spacing:-.03em;flex:1;min-width:160px}
+.done-badge{width:58px;height:58px;border-radius:50%;display:grid;place-items:center;color:#fff;
+  background:linear-gradient(160deg,var(--accent),var(--accent-2));box-shadow:0 14px 24px -14px var(--accent-2)}
+.done-view h2{margin:0;font-size:clamp(22px,5.6vw,30px);letter-spacing:-.03em}
+.done-actions{display:flex;gap:10px;width:100%;max-width:360px}
+.done-actions .next,.done-actions .ghost{flex:1}
 
 /* ---------- piano di lavoro ---------- */
 .board{border-radius:var(--r-l);padding:24px 16px;box-shadow:var(--sh);overflow:hidden;position:relative;
@@ -100,8 +109,8 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
 .panel[hidden]{display:none}
 
 /* ===== LINEA DEL 20 ===== */
-.l20{display:flex;justify-content:center;gap:calc(var(--kw)*.7);
-  --kw:clamp(24px,calc((100vw - 96px)/25.9),52px);--kh:clamp(76px,13vw,124px)}
+.l20{display:flex;justify-content:center;flex-wrap:wrap;gap:calc(var(--kw)*.7);
+  --kw:clamp(24px,calc((100vw - 96px)/25.9),38px);--kh:clamp(76px,13vw,124px)}
 .deck{display:flex;flex-direction:column}
 .row{display:flex;justify-content:center;align-items:flex-end;gap:calc(var(--kw)*.55)}
 .grp{display:flex;gap:calc(var(--kw)*.2)}
@@ -148,6 +157,9 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
 .grip i{display:block;width:3px;height:calc(var(--cell)*.36);background:rgba(32,35,58,.2);border-radius:3px}
 .divider{position:absolute;top:0;bottom:0;left:calc(var(--cell)*5);width:2px;background:rgba(0,0,0,.22);z-index:1}
 .rw.locked{opacity:.32;pointer-events:none;transition:opacity .25s}
+.rw.locked.next-up{opacity:.6}
+.rw.next-up::after{content:"";position:absolute;inset:0;border-radius:inherit;
+  box-shadow:0 0 0 2px rgba(255,255,255,.4) inset;pointer-events:none}
 
 /* ===== CASA DEL 1000 ===== */
 .house{position:relative;max-width:920px;margin:0 auto}
@@ -161,17 +173,19 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
   grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:clamp(4px,.8vw,7px);
   box-shadow:inset 0 0 0 3px rgba(255,255,255,.88),0 4px 0 rgba(0,0,0,.18);touch-action:none}
 .blk{display:grid;grid-template-columns:repeat(5,1fr);gap:clamp(2px,.4vw,4px)}
-.dot{aspect-ratio:1;border-radius:50%;background:rgba(255,255,255,.13)}
+.dot{aspect-ratio:1;border-radius:50%;background:rgba(255,255,255,.13);display:grid;place-items:center}
 .dot.on{background:var(--d1);box-shadow:0 0 7px var(--d1)}
-.wnum{position:absolute;inset:0;display:none;place-items:center;font-weight:800;color:#fff;
-  font-size:clamp(22px,4.6vw,40px);letter-spacing:-.04em;font-variant-numeric:tabular-nums}
-.wnum.off{color:rgba(255,255,255,.26)}
-.house.nums .blk{visibility:hidden}
-.house.nums .wnum{display:grid}
-.cap{text-align:center;font-size:clamp(11px,1.6vw,14px);font-weight:800;color:#8C6A2E;font-variant-numeric:tabular-nums}
-.house.mute .cap{visibility:hidden}
+.dn{display:none;font-size:clamp(5px,1.3vw,8.5px);font-weight:800;color:rgba(255,255,255,.6);
+  line-height:1;font-variant-numeric:tabular-nums;pointer-events:none}
+.dot.on .dn{color:#fff}
+.house.nums .dn{display:block}
+.cap{text-align:center;font-size:clamp(11px,1.6vw,14px);font-weight:800;color:#8C6A2E;font-variant-numeric:tabular-nums;visibility:hidden}
+.house.nums .cap{visibility:visible}
 .sill{height:9px;background:rgba(0,0,0,.16);border-radius:0 0 18px 18px;margin:0 12px}
 .win.locked{opacity:.32;pointer-events:none;transition:opacity .25s}
+.win.locked.next-up{opacity:.6}
+.win.next-up::after{content:"";position:absolute;inset:0;border-radius:inherit;
+  box-shadow:0 0 0 2px rgba(255,255,255,.4) inset;pointer-events:none}
 
 /* ---------- barra di stato (switch + risultato uniti) ---------- */
 .statusbar{background:var(--card);border-radius:var(--r-l);padding:12px 14px;margin-bottom:12px;
@@ -185,6 +199,11 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
 .qk svg{flex:0 0 auto}
 .qk[aria-pressed="true"]{background:var(--accent);color:#fff}
 .qk[aria-pressed="true"] b{opacity:.9}
+.sb-result-slot:empty{display:none}
+.qresult-slot:empty{display:none}
+.qresult-slot .rescircle{width:clamp(70px,17vw,96px);height:clamp(70px,17vw,96px)}
+.qresult-slot .rescircle .num{font-size:clamp(30px,7.6vw,48px)}
+.qresult-slot .resinfo .word{font-size:clamp(16px,3.4vw,22px)}
 .sb-result{display:flex;align-items:center;gap:14px}
 .rescircle{flex:0 0 auto;width:clamp(56px,13vw,72px);height:clamp(56px,13vw,72px);border-radius:50%;
   display:grid;place-items:center;background:radial-gradient(circle at 32% 28%,var(--card),var(--paper-2));
@@ -222,6 +241,7 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
 .handle{width:44px;height:5px;border-radius:99px;background:var(--line);margin:0 auto 14px}
 .grp-set{margin-bottom:16px}
 .grp-set h3{margin:0 0 8px;font-size:13px;font-weight:800;color:var(--soft)}
+.infotext{margin:0;font-size:14.5px;line-height:1.55;color:var(--ink)}
 .seg{display:flex;background:var(--paper-2);border-radius:15px;padding:4px;gap:4px}
 .seg button{flex:1;border:0;background:transparent;font-family:inherit;font-weight:800;font-size:14.5px;color:var(--soft);
   padding:13px 8px;border-radius:12px;cursor:pointer;transition:background .2s,color .2s,transform .12s;min-height:48px}
@@ -247,8 +267,13 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
 .hint{text-align:center;color:var(--soft);font-size:13px;font-weight:700;margin:12px 6px 0}
 @keyframes pop{0%{transform:scale(1)}42%{transform:scale(1.025)}100%{transform:scale(1)}}
 @keyframes numpop{0%{transform:scale(1)}40%{transform:scale(1.18)}100%{transform:scale(1)}}
+@keyframes hintring{0%,100%{box-shadow:0 0 0 0 rgba(255,255,255,0)}50%{box-shadow:0 0 0 6px rgba(255,255,255,.4)}}
+@keyframes shake{10%,90%{transform:translateX(-1px)}20%,80%{transform:translateX(2px)}30%,50%,70%{transform:translateX(-4px)}40%,60%{transform:translateX(4px)}}
 .board.ok{animation:pop .5s ease-out}
 .rescircle .num.ok{animation:numpop .5s ease-out}
+.rescircle.wrong{animation:shake .4s ease-in-out}
+.col.hint-pulse .slot{animation:hintring 1.6s ease-in-out infinite}
+.rw.hint-pulse,.win.hint-pulse{animation:hintring 1.6s ease-in-out infinite}
 .spark{position:fixed;width:12px;height:12px;border-radius:3px;pointer-events:none;z-index:30}
 :focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:12px}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
@@ -280,7 +305,7 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
   .walls{grid-template-columns:1fr 1fr;gap:11px}
   .qside{width:100%}
   .qside .next{width:100%}
-  .done-view .next,.done-view .ghost{flex:1}
+  .done-actions{max-width:none}
 }
 </style>
 </head>
@@ -288,8 +313,8 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
 <div class="app">
 
   <div class="title">
-    <h1>Metodo analogico di Camillo Bortolato</h1>
-    <p>Conta con le mani, leggi con gli occhi.</p>
+    <h1>Linea del 20, del 100 e casa del 1000</h1>
+    <p>Esercizi di matematica ispirati al metodo analogico.</p>
   </div>
 
   <div class="head">
@@ -298,6 +323,11 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
       <button class="tab" role="tab" id="tab100" aria-selected="false" data-tool="100" aria-label="Linea del 100"><b>100</b></button>
       <button class="tab" role="tab" id="tab1000" aria-selected="false" data-tool="1000" aria-label="Casa del 1000"><b>1000</b></button>
     </div>
+    <button class="gear" id="infoBtn" aria-expanded="false" aria-label="Informazioni sul metodo" style="color:var(--ink)">
+      <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="9"/><path d="M12 16v-5M12 8h.01"/>
+      </svg>
+    </button>
     <button class="gear" id="gear" aria-expanded="false" aria-label="Impostazioni" style="color:var(--ink)">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
         <circle cx="12" cy="12" r="3.2"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M18.4 5.6L17 7M7 17l-1.4 1.4"/>
@@ -308,16 +338,19 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
   <div class="statusbar" id="console">
     <div class="sb-toggles">
       <button class="qk" id="qkNums" aria-pressed="false"><b>123</b> Numeri</button>
-      <button class="qk" id="qkPlay" aria-pressed="false">
+      <button class="qk" id="qkCompose" aria-pressed="false">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
         Gioca
       </button>
+      <button class="qk" id="qkCalc" aria-pressed="false">Calcola</button>
     </div>
-    <div class="sb-result">
-      <div class="rescircle"><span class="num" id="bigNum">0</span></div>
-      <div class="resinfo">
-        <div class="word" id="numWord">zero</div>
-        <div class="split" id="numSplit">tutto chiuso</div>
+    <div class="sb-result-slot" id="sbResultSlot">
+      <div class="sb-result">
+        <div class="rescircle"><span class="num" id="bigNum">0</span></div>
+        <div class="resinfo">
+          <div class="word" id="numWord">zero</div>
+          <div class="split" id="numSplit">tutto chiuso</div>
+        </div>
       </div>
     </div>
   </div>
@@ -329,12 +362,16 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
         <button type="button" data-mode="compose" aria-pressed="true">Componi</button>
         <button type="button" data-mode="calc" aria-pressed="false">Calcola</button>
       </div>
-      <button type="button" class="lvl" id="lvl">Facile</button>
+      <button type="button" class="lvl" id="lvl">
+        <span id="lvlText">Facile</span>
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M17 2.1l4 4-4 4M3 12.9V11a4 4 0 0 1 4-4h14M7 21.9l-4-4 4-4M21 11.1V13a4 4 0 0 1-4 4H3"/></svg>
+      </button>
     </div>
     <div id="qbody">
       <p class="qlab" id="qlab">Quanto fa?</p>
       <div class="qmain">
         <p class="q" id="question">—</p>
+        <div class="qresult-slot" id="qResultSlot"></div>
         <div class="qside">
           <p class="fb" id="feedback"><i></i><span>Muovi lo strumento</span></p>
           <button class="next" id="next" hidden>Avanti</button>
@@ -342,9 +379,16 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
       </div>
     </div>
     <div class="done-view" id="doneView" hidden>
+      <div class="done-badge" aria-hidden="true">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M8 21h8M12 17v4M7 4h10v4a5 5 0 0 1-10 0V4Z"/><path d="M7 5H4a2 2 0 0 0 0 4h1M17 5h3a2 2 0 0 1 0 4h-1"/>
+        </svg>
+      </div>
       <h2 id="doneTitle">Serie completata!</h2>
-      <button class="next" id="againBtn">Un'altra serie</button>
-      <button class="ghost" id="setupBtn">Cambia livello</button>
+      <div class="done-actions">
+        <button class="next" id="againBtn">Un'altra serie</button>
+        <button class="ghost" id="setupBtn">Cambia livello</button>
+      </div>
     </div>
   </section>
 
@@ -392,6 +436,7 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
       <button class="op" data-op="add" aria-pressed="true">+</button>
       <button class="op" data-op="sub" aria-pressed="false">−</button>
       <button class="op" data-op="mix" aria-pressed="false">+ −</button>
+      <button class="op" data-op="mul" aria-pressed="false">×</button>
     </div>
   </div>
 
@@ -401,6 +446,7 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
       <button data-lev="1" aria-pressed="true">Facile</button>
       <button data-lev="2" aria-pressed="false">Medio</button>
       <button data-lev="3" aria-pressed="false">Sfida</button>
+      <button data-lev="4" aria-pressed="false">Difficile</button>
     </div>
   </div>
 
@@ -419,6 +465,27 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
   </div>
 
   <button class="closebtn" id="closeSheet">Chiudi</button>
+</aside>
+
+<aside class="sheet" id="infoSheet" role="dialog" aria-label="Informazioni sul metodo" aria-modal="true">
+  <div class="handle"></div>
+
+  <div class="grp-set">
+    <h3>Il metodo analogico</h3>
+    <p class="infotext">Il metodo analogico è un approccio ideato dal maestro Camillo Bortolato per insegnare la matematica ai bambini della scuola primaria. Unisce vista, mano e voce: i numeri si toccano e si vedono prima di diventare calcolo astratto.</p>
+  </div>
+
+  <div class="grp-set">
+    <h3>Gli strumenti</h3>
+    <p class="infotext">La linea del 20 e la linea del 100 mostrano i numeri sempre nella stessa posizione, in gruppi di 5 e di 10, cosi diventano riconoscibili a colpo d'occhio. La casa del 1000 estende lo stesso principio alle centinaia.</p>
+  </div>
+
+  <div class="grp-set">
+    <h3>Una nota</h3>
+    <p class="infotext">Questa app non è un prodotto ufficiale di Camillo Bortolato. È stata realizzata in autonomia, ispirandosi ai principi e agli strumenti descritti nei suoi libri, per uso didattico.</p>
+  </div>
+
+  <button class="closebtn" id="closeInfo">Chiudi</button>
 </aside>
 
 <script>
@@ -447,10 +514,10 @@ function words(n){
 }
 
 /* ---------- stato ---------- */
-var S={tool:"20",mode:"free",op:"add",lev:1,showNum:true,pips:false,sound:true,lastGameMode:"compose",
-       v:{"20":0,"100":0,"1000":0},target:null,solved:false,done:0,serie:5};
+var S={tool:"20",mode:"free",op:"add",lev:1,showNum:true,pips:false,sound:true,
+       v:{"20":0,"100":0,"1000":0},target:null,solved:false,done:0,serie:10};
 var MAX={"20":20,"100":100,"1000":1000};
-var LEVNAME={1:"Facile",2:"Medio",3:"Sfida"};
+var LEVNAME={1:"Facile",2:"Medio",3:"Sfida",4:"Difficile"};
 var THEME={
   "20":{a:"#FF4D4A",a2:"#D8302D",b1:"#2A3E8C",b2:"#101A44"},
   "100":{a:"#DE8A0A",a2:"#B26A05",b1:"#1E3A5F",b2:"#0A1828"},
@@ -553,11 +620,12 @@ function paint100(v){
   for(var r=0;r<10;r++){
     rows100[r].style.setProperty("--n",Math.max(0,Math.min(10,v-r*10)));
     rowEls100[r].classList.toggle("locked",r>active);
+    rowEls100[r].classList.toggle("next-up",r===active+1);
   }
 }
 
 /* ---------- casa del 1000 ---------- */
-var dots1000=[],wins1000=[],winEls1000=[],prev1000=0;
+var dots1000=[],winEls1000=[];
 (function(){
   var W=$("walls");
   for(var w=0;w<10;w++){
@@ -567,27 +635,22 @@ var dots1000=[],wins1000=[],winEls1000=[],prev1000=0;
     for(var b=0;b<4;b++){
       var blk=document.createElement("div"); blk.className="blk";
       for(var i=0;i<25;i++){
-        var d=document.createElement("div"); d.className="dot"; d.dataset.n=w*100+b*25+i+1;
+        var sr=Math.floor(i/5),col=i%5;
+        var r=(b<2?sr:sr+5),c=(b%2===0?col:col+5);
+        var d=document.createElement("div"); d.className="dot"; d.dataset.n=w*100+r*10+c+1;
+        var dn=document.createElement("span"); dn.className="dn"; dn.textContent=r*10+c+1; d.appendChild(dn);
         blk.appendChild(d); dots1000.push(d);
       }
       win.appendChild(blk);
     }
-    var wn=document.createElement("div"); wn.className="wnum off"; wn.textContent="0";
-    win.appendChild(wn); wins1000.push(wn); winEls1000.push(win);
+    winEls1000.push(win);
     var cap=document.createElement("div"); cap.className="cap"; cap.textContent=(w+1)*100;
     cell.appendChild(win); cell.appendChild(cap); W.appendChild(cell);
   }
 })();
 function paint1000(v){
-  var from=Math.min(prev1000,v),to=Math.max(prev1000,v);
-  for(var i=from;i<to;i++) dots1000[i].classList.toggle("on",i<v);
-  prev1000=v;
-  var active=Math.min(9,Math.floor(v/100));
-  for(var w=0;w<10;w++){
-    var n=Math.max(0,Math.min(100,v-w*100));
-    wins1000[w].textContent=n;
-    wins1000[w].classList.toggle("off",n===0);
-    winEls1000[w].classList.toggle("locked",w>active);
+  for(var k=0;k<dots1000.length;k++){
+    dots1000[k].classList.toggle("on",parseInt(dots1000[k].dataset.n,10)<=v);
   }
 }
 
@@ -609,16 +672,28 @@ function splitText(v){
   if(v===0) return "casa spenta";
   return Math.floor(v/100)+" cento, "+Math.floor((v%100)/10)+" dieci, "+(v%10)+" uno";
 }
+var everTouched=false;
+function updateHint(){
+  cols20[0][1].classList.remove("hint-pulse");
+  rowEls100[0].classList.remove("hint-pulse");
+  winEls1000[0].classList.remove("hint-pulse");
+  if(everTouched||S.mode!=="free"||S.v[S.tool]!==0) return;
+  if(S.tool==="20") cols20[0][1].classList.add("hint-pulse");
+  else if(S.tool==="100") rowEls100[0].classList.add("hint-pulse");
+  else winEls1000[0].classList.add("hint-pulse");
+}
 function refresh(){
   var v=S.v[S.tool];
   if(S.tool==="20") paint20(v); else if(S.tool==="100") paint100(v); else paint1000(v);
   $("bigNum").textContent=v;
   $("numWord").textContent=words(v);
   $("numSplit").textContent=splitText(v);
+  updateHint();
 }
 function setValue(n,opts){
   opts=opts||{};
   n=Math.max(0,Math.min(MAX[S.tool],Math.round(n)));
+  if(opts.silent!==true&&!everTouched){ everTouched=true; updateHint(); }
   if(n===S.v[S.tool]) return;
   S.v[S.tool]=n; refresh();
   if(opts.silent!==true) clickTone(n);
@@ -694,46 +769,59 @@ function rnd(a,b){ return a+Math.floor(Math.random()*(b-a+1)); }
 function pick(){ return S.op==="mix"?(Math.random()<.5?"add":"sub"):S.op; }
 function ex20(op,lev){
   var a,b;
+  if(op==="mul"){
+    a=rnd(2,9); b=rnd(2,Math.max(2,Math.floor(20/a)));
+    return {q:a+" × "+b,t:a*b};
+  }
   if(op==="add"){
     if(lev===1){ a=rnd(1,5); b=rnd(1,10-a); }
     else if(lev===2){ a=rnd(4,9); b=rnd(2,Math.min(9,20-a)); }
-    else{
+    else if(lev===3){
       if(Math.random()<.45){ var t=rnd(11,20); a=rnd(2,9); return {q:a+" + ? = "+t,t:t-a,lab:"Quanto manca?"}; }
       a=rnd(6,14); b=rnd(4,20-a);
+    }else{
+      var t2=rnd(14,20); a=rnd(2,t2-2); return {q:a+" + ? = "+t2,t:t2-a,lab:"Quanto manca?"};
     }
     return {q:a+" + "+b,t:a+b};
   }
   if(lev===1){ a=rnd(3,10); b=rnd(1,a-1); }
   else if(lev===2){ a=rnd(11,20); b=rnd(2,9); }
-  else{ a=rnd(13,20); b=rnd(5,Math.min(a-1,14)); }
+  else if(lev===3){ a=rnd(13,20); b=rnd(5,Math.min(a-1,14)); }
+  else{ a=20; b=rnd(1,19); }
   return {q:a+" − "+b,t:a-b};
 }
 function ex100(op,lev){
   var a,b,u;
+  if(op==="mul"){ a=rnd(2,10); b=rnd(2,10); return {q:a+" × "+b,t:a*b}; }
   if(op==="add"){
     if(lev===1){ a=rnd(1,7)*10; b=rnd(1,10-a/10)*10; }
     else if(lev===2){ a=rnd(1,8)*10+rnd(1,8); u=a%10; b=Math.random()<.5?rnd(1,9-u):rnd(1,9-Math.floor(a/10))*10; }
-    else{ a=rnd(15,79); u=a%10; b=rnd(10-u,Math.min(29,100-a)); }
+    else if(lev===3){ a=rnd(15,79); u=a%10; b=rnd(10-u,Math.min(29,100-a)); }
+    else{ a=rnd(35,90); b=rnd(15,Math.min(60,100-a)); }
     if(a+b>100) b=100-a;
     return {q:a+" + "+b,t:a+b};
   }
   if(lev===1){ a=rnd(3,10)*10; b=rnd(1,a/10-1)*10; }
   else if(lev===2){ a=rnd(2,9)*10+rnd(2,9); b=Math.random()<.5?rnd(1,a%10):rnd(1,Math.floor(a/10)-1)*10; }
-  else{ a=rnd(21,99); u=a%10; b=rnd(u+1,Math.min(u+9,a-1)); }
+  else if(lev===3){ a=rnd(21,99); u=a%10; b=rnd(u+1,Math.min(u+9,a-1)); }
+  else{ a=rnd(55,99); b=rnd(20,a-5); }
   return {q:a+" − "+b,t:a-b};
 }
 function ex1000(op,lev){
   var a,b;
+  if(op==="mul"){ a=rnd(11,99); b=rnd(2,9); return {q:a+" × "+b,t:a*b}; }
   if(op==="add"){
     if(lev===1){ a=rnd(1,7)*100; b=rnd(1,10-a/100)*100; }
     else if(lev===2){ a=rnd(1,7)*100+rnd(1,8)*10; b=Math.random()<.5?rnd(1,9-Math.floor(a%100/10))*10:rnd(1,9-Math.floor(a/100))*100; }
-    else{ a=rnd(120,780); b=rnd(15,Math.min(180,1000-a)); }
+    else if(lev===3){ a=rnd(120,780); b=rnd(15,Math.min(180,1000-a)); }
+    else{ a=rnd(150,850); b=rnd(50,Math.min(300,1000-a)); }
     if(a+b>1000) b=1000-a;
     return {q:a+" + "+b,t:a+b};
   }
   if(lev===1){ a=rnd(3,10)*100; b=rnd(1,a/100-1)*100; }
   else if(lev===2){ a=rnd(2,9)*100+rnd(1,9)*10; b=Math.random()<.5?rnd(1,Math.floor(a%100/10))*10:rnd(1,Math.floor(a/100)-1)*100; }
-  else{ a=rnd(230,990); b=rnd(15,Math.min(190,a-20)); }
+  else if(lev===3){ a=rnd(230,990); b=rnd(15,Math.min(190,a-20)); }
+  else{ a=rnd(400,990); b=rnd(80,a-40); }
   return {q:a+" − "+b,t:a-b};
 }
 function compose(){
@@ -741,7 +829,7 @@ function compose(){
   if(S.tool==="20") t=S.lev===1?rnd(1,10):rnd(1,20);
   else if(S.tool==="100") t=S.lev===1?rnd(1,10)*10:rnd(1,100);
   else t=S.lev===1?rnd(1,10)*100:(S.lev===2?rnd(1,9)*100+rnd(1,9)*10:rnd(101,1000));
-  if(S.lev===3) return {q:words(t),t:t,word:true,lab:"Fai vedere questo numero",say:"Fai vedere "+words(t)};
+  if(S.lev>=3) return {q:words(t),t:t,word:true,lab:"Fai vedere questo numero",say:"Fai vedere "+words(t)};
   return {q:String(t),t:t,lab:"Fai vedere questo numero",say:"Fai vedere "+words(t)};
 }
 function buildProg(){
@@ -753,10 +841,11 @@ function buildProg(){
   }
 }
 function newTask(reset){
+  clearTimeout(autoNextTimer);
   if(reset) S.done=0;
   S.solved=false;
-  $("lvl").textContent=LEVNAME[S.lev];
-  if(S.mode==="free"){ $("quest").hidden=true; $("hint").textContent=hint(); return; }
+  $("lvlText").textContent=LEVNAME[S.lev];
+  if(S.mode==="free"){ $("quest").hidden=true; $("hint").textContent=hint(); updateHint(); return; }
   $("quest").hidden=false;
   $("doneView").hidden=true; $("qbody").hidden=false;
   buildProg();
@@ -774,6 +863,7 @@ function newTask(reset){
   $("next").hidden=true;
   $("hint").textContent=hint();
   setValue(0,{check:false,silent:true});
+  updateHint();
   if(e.say) speak(e.say);
 }
 function setFb(cls,txt){
@@ -791,6 +881,7 @@ function scheduleCheck(){
   if(S.mode==="free"||S.solved) return;
   clearTimeout(timer); timer=setTimeout(check,500);
 }
+var autoNextTimer=null;
 function check(){
   if(S.mode==="free"||S.solved) return;
   var v=S.v[S.tool];
@@ -806,19 +897,26 @@ function check(){
       setTimeout(showDone,900);
     }else{
       winTone(); speak("Bravo! "+words(v));
-      $("next").hidden=false;
+      var nb=$("next"); nb.hidden=false;
+      nb.classList.remove("countdown"); void nb.offsetWidth; nb.classList.add("countdown");
+      clearTimeout(autoNextTimer);
+      autoNextTimer=setTimeout(function(){ newTask(false); },3000);
     }
   }else if(v>0){
-    var d=Math.abs(v-S.target);
-    setFb("no", v>S.target?"Sei un po' oltre":(d<=3?"Ci sei quasi":"Ne mancano ancora"));
+    var d=Math.abs(v-S.target),f=d/MAX[S.tool];
+    var txt=f>.5?"🌧️ Acquazzone":f>.25?"💧 Acqua":f>.08?"🔥 Fuochino":"🔥🔥 Fuoco";
+    setFb("no",txt);
+    var rc=$("bigNum").parentElement;
+    rc.classList.remove("wrong"); void rc.offsetWidth; rc.classList.add("wrong");
   }
 }
 function showDone(){
   $("qbody").hidden=true; $("doneView").hidden=false;
-  $("doneTitle").textContent="Cinque su cinque!";
+  var w=words(S.serie); w=w.charAt(0).toUpperCase()+w.slice(1);
+  $("doneTitle").textContent=w+" su "+words(S.serie)+"!";
   sparkle(); sparkle();
 }
-$("next").addEventListener("click",function(){ newTask(false); });
+$("next").addEventListener("click",function(){ clearTimeout(autoNextTimer); newTask(false); });
 $("againBtn").addEventListener("click",function(){ newTask(true); });
 $("setupBtn").addEventListener("click",function(){ openSheet(true); });
 
@@ -838,22 +936,31 @@ function sparkle(){
   }
 }
 
-/* ---------- pannello impostazioni ---------- */
-function openSheet(){
+/* ---------- pannelli (impostazioni e info) ---------- */
+var openPanelEl=null,openTriggerEl=null;
+function openPanel(panelEl,triggerEl){
+  openPanelEl=panelEl; openTriggerEl=triggerEl;
   $("scrim").hidden=false;
-  requestAnimationFrame(function(){ $("scrim").classList.add("on"); $("sheet").classList.add("on"); });
-  $("gear").setAttribute("aria-expanded","true");
+  requestAnimationFrame(function(){ $("scrim").classList.add("on"); panelEl.classList.add("on"); });
+  if(triggerEl) triggerEl.setAttribute("aria-expanded","true");
 }
 function closeSheet(){
-  $("scrim").classList.remove("on"); $("sheet").classList.remove("on");
-  $("gear").setAttribute("aria-expanded","false");
+  if(!openPanelEl) return;
+  $("scrim").classList.remove("on"); openPanelEl.classList.remove("on");
+  if(openTriggerEl) openTriggerEl.setAttribute("aria-expanded","false");
   setTimeout(function(){ $("scrim").hidden=true; },250);
+  openPanelEl=null; openTriggerEl=null;
 }
+function openSheet(){ openPanel($("sheet"),$("gear")); }
 $("gear").addEventListener("click",function(){
-  if($("sheet").classList.contains("on")) closeSheet(); else openSheet();
+  if($("sheet").classList.contains("on")) closeSheet(); else openPanel($("sheet"),$("gear"));
+});
+$("infoBtn").addEventListener("click",function(){
+  if($("infoSheet").classList.contains("on")) closeSheet(); else openPanel($("infoSheet"),$("infoBtn"));
 });
 $("scrim").addEventListener("click",closeSheet);
 $("closeSheet").addEventListener("click",closeSheet);
+$("closeInfo").addEventListener("click",closeSheet);
 document.addEventListener("keydown",function(e){ if(e.key==="Escape") closeSheet(); });
 
 /* ---------- controlli ---------- */
@@ -867,14 +974,20 @@ function segPick(sel,fn){
     });
   });
 }
+function placeResult(inGame){
+  var node=document.querySelector(".sb-result");
+  var target=inGame?$("qResultSlot"):$("sbResultSlot");
+  if(node&&target&&node.parentElement!==target) target.appendChild(node);
+}
 function applyMode(m){
   S.mode=m;
-  if(m!=="free") S.lastGameMode=m;
-  $("qkPlay").setAttribute("aria-pressed",String(m!=="free"));
+  $("qkCompose").setAttribute("aria-pressed",String(m==="compose"));
+  $("qkCalc").setAttribute("aria-pressed",String(m==="calc"));
   document.querySelectorAll("#segMode button,#qtypes button").forEach(function(x){
     x.setAttribute("aria-pressed",x.dataset.mode===m?"true":"false");
   });
   $("grpOp").hidden=(m!=="calc");
+  placeResult(m!=="free");
   newTask(true);
 }
 segPick("#segMode",function(b){ applyMode(b.dataset.mode); });
@@ -890,7 +1003,7 @@ function setLevel(lev){
   newTask(true);
 }
 segPick("#segLev",function(b){ setLevel(parseInt(b.dataset.lev,10)); });
-$("lvl").addEventListener("click",function(){ setLevel(S.lev%3+1); });
+$("lvl").addEventListener("click",function(){ setLevel(S.lev%4+1); });
 
 function toggle(id,fn){
   var el=$(id);
@@ -906,11 +1019,11 @@ toggle("qkNums",function(on){
   $("l100").classList.toggle("nums",on);
   $("house").classList.toggle("nums",on);
 });
-toggle("qkPlay",function(on){ applyMode(on?S.lastGameMode:"free"); });
+$("qkCompose").addEventListener("click",function(){ applyMode(S.mode==="compose"?"free":"compose"); });
+$("qkCalc").addEventListener("click",function(){ applyMode(S.mode==="calc"?"free":"calc"); });
 toggle("tgNum",function(on){
   S.showNum=on;
   $("console").classList.toggle("mute",!on);
-  $("house").classList.toggle("mute",!on);
 });
 toggle("tgSound",function(on){ S.sound=on; if(on) sayNumber(); else if("speechSynthesis" in window) speechSynthesis.cancel(); });
 
