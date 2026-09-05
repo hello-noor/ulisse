@@ -68,7 +68,10 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
   white-space:nowrap;background:var(--paper-2);padding:13px 16px;min-height:44px;border-radius:99px;transition:transform .12s,background .2s}
 .lvl:active{transform:scale(.94)}
 .lvl svg{opacity:.5;flex:0 0 auto}
+.lvl[hidden]{display:none}
+#calcSwitch[aria-pressed="true"]{background:var(--accent);color:#fff;border-color:var(--accent)}
 #qbody{display:flex;align-items:stretch;gap:20px;flex-wrap:wrap}
+#qbody[hidden]{display:none}
 .qgoal{display:flex;flex-direction:column;justify-content:flex-start;gap:2px;flex:1;min-width:160px;
   border-right:1.5px dashed var(--border-soft);padding-right:18px}
 .qanswer{--fb-color:var(--accent);display:flex;flex-direction:column;justify-content:flex-start;gap:6px;align-items:center;text-align:center;
@@ -217,10 +220,8 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
   font-family:inherit;font-weight:800;font-size:14px;color:var(--ink);background:var(--paper-2);min-height:46px;
   border-radius:14px;padding:12px 10px;transition:transform .14s cubic-bezier(.3,1.5,.5,1),background .2s,color .2s,border-color .2s}
 .qk:active{transform:scale(.97)}
-.qk b{font-variant-numeric:tabular-nums;font-size:13px;opacity:.75}
 .qk svg{flex:0 0 auto}
 .qk[aria-pressed="true"]{background:var(--accent);color:#fff;border-color:var(--accent)}
-.qk[aria-pressed="true"] b{opacity:.9}
 .sb-result-slot:empty{display:none}
 .qresult-slot:empty{display:none}
 .qresult-slot .rescircle{width:clamp(70px,17vw,96px);height:clamp(70px,17vw,96px)}
@@ -381,12 +382,11 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
 
   <div class="statusbar" id="console">
     <div class="sb-toggles">
-      <button class="qk" id="qkNums" aria-pressed="false"><b>123</b> Numeri</button>
-      <button class="qk" id="qkCompose" aria-pressed="false">
+      <button class="qk" id="qkNums" aria-pressed="false">Mostra numeri</button>
+      <button class="qk" id="qkGame" aria-pressed="false">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
         Gioca
       </button>
-      <button class="qk" id="qkCalc" aria-pressed="false">Calcola</button>
     </div>
     <div class="sb-result-slot" id="sbResultSlot">
       <div class="sb-result">
@@ -402,6 +402,7 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
   <section class="quest" id="quest" hidden>
     <div class="qtop">
       <div class="prog" id="prog"></div>
+      <button type="button" class="lvl" id="calcSwitch" aria-pressed="false">Calcolo</button>
       <button type="button" class="lvl" id="opBtn" hidden aria-label="Cambia operazione">
         <span id="opText">+</span>
         <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M17 2.1l4 4-4 4M3 12.9V11a4 4 0 0 1 4-4h14M7 21.9l-4-4 4-4M21 11.1V13a4 4 0 0 1-4 4H3"/></svg>
@@ -479,7 +480,7 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
   <div class="grp-set" id="grpOp" hidden>
     <h3>Operazione</h3>
     <div class="seg">
-      <button class="op op-btn" data-op="add" aria-pressed="true">+</button>
+      <button class="op op-btn" data-op="add" aria-pressed="false">+</button>
       <button class="op op-btn" data-op="sub" aria-pressed="false">−</button>
       <button class="op op-btn" data-op="mul" aria-pressed="false">×</button>
       <button class="op op-btn" data-op="div" aria-pressed="false">÷</button>
@@ -567,12 +568,13 @@ function words(n){
 }
 
 /* ---------- stato ---------- */
-var S={tool:"20",mode:"free",op:"add",lev:1,pips:false,sound:true,
+var S={tool:"20",mode:"free",op:"compose",lev:1,pips:false,sound:true,
        v:{"20":0,"100":0,"1000":0},target:null,solved:false,done:0,serie:10};
 var MAX={"20":20,"100":100,"1000":1000};
 var LEVNAME={1:"Facile",2:"Medio",3:"Difficile",4:"Sfida"};
 var OPORDER=["add","sub","mul","div","mixas","mixmd","rand"];
 var OPLABEL={add:"+",sub:"−",mul:"×",div:"÷",mixas:"+ / −",mixmd:"× / ÷",rand:"🎲 A caso"};
+var lastConcreteOp="add";
 var LEVDESC={1:"Calcoli semplici, numeri piccoli.",2:"Numeri un po' più grandi.",
   3:"Numeri grandi e calcoli più complessi.",4:"Come Difficile, ma alcuni numeri sono scritti a parole."};
 function wordifyQ(q){
@@ -937,7 +939,7 @@ function newTask(reset){
   if(qa0) qa0.classList.remove("win-flash","fb-cold","fb-hot");
   buildProg();
   var e;
-  if(S.mode==="compose") e=compose();
+  if(S.op==="compose") e=compose();
   else{
     var op=pick();
     e=S.tool==="20"?ex20(op,S.lev):(S.tool==="100"?ex100(op,S.lev):ex1000(op,S.lev));
@@ -1015,11 +1017,16 @@ function showDone(){
   $("againBtn").textContent="Ripeti "+LEVNAME[S.lev];
   $("setupBtn").textContent="Vai a "+LEVNAME[nextLev];
   $("setupBtn").dataset.nextlev=nextLev;
+  var sb=$("setupBtn");
+  sb.classList.remove("countdown"); void sb.offsetWidth; sb.classList.add("countdown");
+  clearTimeout(autoLevelTimer);
+  autoLevelTimer=setTimeout(function(){ setLevel(nextLev); },3000);
   sparkle(); sparkle();
 }
+var autoLevelTimer=null;
 $("next").addEventListener("click",function(){ clearTimeout(autoNextTimer); newTask(false); });
-$("againBtn").addEventListener("click",function(){ newTask(true); });
-$("setupBtn").addEventListener("click",function(){ setLevel(parseInt(this.dataset.nextlev,10)); });
+$("againBtn").addEventListener("click",function(){ clearTimeout(autoLevelTimer); newTask(true); });
+$("setupBtn").addEventListener("click",function(){ clearTimeout(autoLevelTimer); setLevel(parseInt(this.dataset.nextlev,10)); });
 
 function sparkle(){
   if(window.matchMedia&&matchMedia("(prefers-reduced-motion:reduce)").matches) return;
@@ -1082,21 +1089,29 @@ function placeResult(inGame){
 }
 function applyMode(m){
   S.mode=m;
-  $("qkCompose").setAttribute("aria-pressed",String(m==="compose"));
-  $("qkCalc").setAttribute("aria-pressed",String(m==="calc"));
-  $("grpOp").hidden=(m!=="calc");
-  $("opBtn").hidden=(m!=="calc");
+  $("qkGame").setAttribute("aria-pressed",String(m==="game"));
   placeResult(m!=="free");
-  newTask(true);
+  if(m==="game") setOp("compose"); else newTask(true);
+}
+function syncOpVisibility(){
+  var calcOn=S.mode==="game"&&S.op!=="compose";
+  $("opBtn").hidden=!calcOn;
+  $("grpOp").hidden=!calcOn;
 }
 function setOp(op){
   S.op=op;
-  $("opText").textContent=OPLABEL[op];
+  if(op!=="compose") lastConcreteOp=op;
+  $("opText").textContent=OPLABEL[op]||"+";
+  $("calcSwitch").setAttribute("aria-pressed",String(op!=="compose"));
   document.querySelectorAll(".op-btn").forEach(function(x){
     x.setAttribute("aria-pressed",x.dataset.op===op?"true":"false");
   });
+  syncOpVisibility();
   newTask(true);
 }
+$("calcSwitch").addEventListener("click",function(){
+  setOp(S.op!=="compose"?"compose":lastConcreteOp);
+});
 document.querySelectorAll(".op-btn").forEach(function(b){
   b.addEventListener("click",function(){ setOp(b.dataset.op); });
 });
@@ -1129,8 +1144,7 @@ toggle("qkNums",function(on){
   $("l100").classList.toggle("nums",on);
   $("house").classList.toggle("nums",on);
 });
-$("qkCompose").addEventListener("click",function(){ applyMode(S.mode==="compose"?"free":"compose"); });
-$("qkCalc").addEventListener("click",function(){ applyMode(S.mode==="calc"?"free":"calc"); });
+$("qkGame").addEventListener("click",function(){ applyMode(S.mode==="game"?"free":"game"); });
 function setSound(on){
   S.sound=on;
   $("tgSound").setAttribute("aria-pressed",String(on));
