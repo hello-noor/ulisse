@@ -68,10 +68,14 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
   white-space:nowrap;background:var(--paper-2);padding:6.5px 11px;border-radius:99px;transition:transform .12s,background .2s}
 .lvl:active{transform:scale(.94)}
 .lvl svg{opacity:.5;flex:0 0 auto}
-.qmain{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
-.q{font-size:clamp(34px,9vw,54px);font-weight:800;letter-spacing:-.035em;margin:0;line-height:1;flex:1;min-width:160px;color:var(--accent)}
+#qbody{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.qgoal{display:flex;flex-direction:column;gap:2px;flex:1;min-width:160px}
+.qanswer{display:flex;flex-direction:column;gap:6px;align-items:center;text-align:center;
+  background:var(--paper-2);border-radius:16px;padding:10px 16px}
+.q{font-size:clamp(34px,9vw,54px);font-weight:800;letter-spacing:-.035em;margin:0;line-height:1;color:var(--accent)}
 .q.parola{text-transform:uppercase;font-size:clamp(24px,6.4vw,40px);letter-spacing:.005em}
 .qlab{font-size:13px;font-weight:800;color:var(--soft);margin:0 0 5px}
+.qlab-answer{margin:0}
 .fb{display:flex;align-items:center;gap:9px;font-size:16px;font-weight:800;color:var(--soft);margin:0}
 .fb i{width:12px;height:12px;border-radius:50%;background:var(--line);flex:0 0 auto}
 .fbicon{display:none;font-size:32px;line-height:1;flex:0 0 auto}
@@ -304,7 +308,11 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
   .l20{--kw:clamp(22px,calc((100vw - 62px)/12.9),52px);flex-direction:column;gap:14px}
   .l100{--span:11;--cell:clamp(24px,calc((100vw - 46px)/11),60px)}
   .walls{grid-template-columns:1fr 1fr;gap:11px}
-  .qside{width:100%}
+  #qbody{flex-direction:column;align-items:stretch;gap:14px}
+  .qgoal{text-align:center;align-items:center}
+  .qanswer{width:100%}
+  .qside{width:100%;align-items:center;text-align:center}
+  .qside .fb{justify-content:center}
   .qside .next{width:100%}
   .done-actions{max-width:none}
 }
@@ -365,14 +373,17 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
       </button>
     </div>
     <div id="qbody">
-      <p class="qlab" id="qlab">Quanto fa?</p>
-      <div class="qmain">
+      <div class="qgoal">
+        <p class="qlab" id="qlab">Quanto fa?</p>
         <p class="q" id="question">—</p>
+      </div>
+      <div class="qanswer">
+        <p class="qlab qlab-answer">Il tuo numero</p>
         <div class="qresult-slot" id="qResultSlot"></div>
-        <div class="qside">
-          <p class="fb" id="feedback"><i></i><span class="fbicon" id="fbIcon"></span><span id="fbText">Muovi lo strumento</span></p>
-          <button class="next" id="next" hidden>Avanti</button>
-        </div>
+      </div>
+      <div class="qside">
+        <p class="fb" id="feedback"><i></i><span class="fbicon" id="fbIcon"></span><span id="fbText">Muovi lo strumento</span></p>
+        <button class="next" id="next" hidden>Avanti</button>
       </div>
     </div>
     <div class="done-view" id="doneView" hidden>
