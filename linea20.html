@@ -68,9 +68,10 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
   white-space:nowrap;background:var(--paper-2);padding:6.5px 11px;border-radius:99px;transition:transform .12s,background .2s}
 .lvl:active{transform:scale(.94)}
 .lvl svg{opacity:.5;flex:0 0 auto}
-#qbody{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
-.qgoal{display:flex;flex-direction:column;gap:2px;flex:1;min-width:160px}
-.qanswer{display:flex;flex-direction:column;gap:6px;align-items:center;text-align:center;
+#qbody{display:flex;align-items:stretch;gap:20px;flex-wrap:wrap}
+.qgoal{display:flex;flex-direction:column;justify-content:center;gap:2px;flex:1;min-width:160px;
+  border-right:1.5px dashed var(--border-soft);padding-right:18px}
+.qanswer{display:flex;flex-direction:column;justify-content:center;gap:6px;align-items:center;text-align:center;
   background:var(--paper-2);border-radius:16px;padding:10px 16px}
 .q{font-size:clamp(34px,9vw,54px);font-weight:800;letter-spacing:-.035em;margin:0;line-height:1;color:var(--accent)}
 .q.parola{text-transform:uppercase;font-size:clamp(24px,6.4vw,40px);letter-spacing:.005em}
@@ -244,6 +245,7 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
 .handle{width:44px;height:5px;border-radius:99px;background:var(--line);margin:0 auto 14px}
 .grp-set{margin-bottom:16px}
 .grp-set h3{margin:0 0 8px;font-size:13px;font-weight:800;color:var(--soft)}
+.levhint{margin:9px 2px 0;font-size:12.5px;font-weight:700;color:var(--soft);line-height:1.4}
 .infotext{margin:0;font-size:14.5px;line-height:1.55;color:var(--ink)}
 .infolink{color:var(--accent);font-weight:800;text-decoration:underline}
 .seg{display:flex;background:var(--paper-2);border-radius:15px;padding:4px;gap:4px}
@@ -304,16 +306,22 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
   .board{padding:16px 10px;border-radius:26px}
   .statusbar{padding:10px 12px;border-radius:22px}
   .padbar{padding:12px;border-radius:26px}
-  .quest{padding:14px;border-radius:26px}
+  .quest{padding:12px;border-radius:22px;gap:8px}
   .l20{--kw:clamp(22px,calc((100vw - 62px)/12.9),52px);flex-direction:column;gap:14px}
   .l100{--span:11;--cell:clamp(24px,calc((100vw - 46px)/11),60px)}
   .walls{grid-template-columns:1fr 1fr;gap:11px}
-  #qbody{flex-direction:column;align-items:stretch;gap:14px}
-  .qgoal{text-align:center;align-items:center}
-  .qanswer{width:100%}
-  .qside{width:100%;align-items:center;text-align:center}
+  #qbody{flex-direction:row;flex-wrap:wrap;align-items:stretch;gap:10px}
+  .qgoal{flex:1 1 0;min-width:0;text-align:center;align-items:center;padding-right:10px}
+  .qgoal .q{font-size:clamp(24px,7vw,34px)}
+  .qanswer{flex:1 1 0;min-width:0;padding:8px 6px}
+  .qanswer .resinfo{display:none}
+  .qanswer .rescircle{width:clamp(56px,17vw,74px);height:clamp(56px,17vw,74px)}
+  .qanswer .rescircle .num{font-size:clamp(26px,7.5vw,36px)}
+  .qlab{font-size:11.5px;margin-bottom:2px}
+  .qside{width:100%;align-items:center;text-align:center;gap:8px}
   .qside .fb{justify-content:center}
-  .qside .next{width:100%}
+  .fbicon{font-size:26px}
+  .qside .next{width:100%;padding:13px 26px}
   .done-actions{max-width:none}
 }
 </style>
@@ -445,9 +453,10 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
     <div class="seg" id="segLev">
       <button data-lev="1" aria-pressed="true">Facile</button>
       <button data-lev="2" aria-pressed="false">Medio</button>
-      <button data-lev="3" aria-pressed="false">Sfida</button>
-      <button data-lev="4" aria-pressed="false">Difficile</button>
+      <button data-lev="3" aria-pressed="false">Difficile</button>
+      <button data-lev="4" aria-pressed="false">Sfida</button>
     </div>
+    <p class="levhint" id="levHint">Calcoli semplici, numeri piccoli.</p>
   </div>
 
   <div class="grp-set">
@@ -522,7 +531,18 @@ function words(n){
 var S={tool:"20",mode:"free",op:"add",lev:1,showNum:true,pips:false,sound:true,
        v:{"20":0,"100":0,"1000":0},target:null,solved:false,done:0,serie:10};
 var MAX={"20":20,"100":100,"1000":1000};
-var LEVNAME={1:"Facile",2:"Medio",3:"Sfida",4:"Difficile"};
+var LEVNAME={1:"Facile",2:"Medio",3:"Difficile",4:"Sfida"};
+var LEVDESC={1:"Calcoli semplici, numeri piccoli.",2:"Numeri un po' più grandi.",
+  3:"Numeri grandi e calcoli più complessi.",4:"Come Difficile, ma alcuni numeri sono scritti a parole."};
+function wordifyQ(q){
+  var nums=q.match(/\d+/g)||[];
+  if(!nums.length) return q;
+  var forceIdx=Math.floor(Math.random()*nums.length),i=-1;
+  return q.replace(/\d+/g,function(m){
+    i++;
+    return (i===forceIdx||Math.random()<.4)?words(parseInt(m,10)):m;
+  });
+}
 var THEME={
   "20":{a:"#FF4D4A",a2:"#D8302D",b1:"#2A3E8C",b2:"#101A44"},
   "100":{a:"#DE8A0A",a2:"#B26A05",b1:"#1E3A5F",b2:"#0A1828"},
@@ -772,69 +792,67 @@ $("btnZero").addEventListener("click",function(){ if(S.solved) return; setValue(
 /* ---------- esercizi ---------- */
 function rnd(a,b){ return a+Math.floor(Math.random()*(b-a+1)); }
 function pick(){ return S.op==="mix"?(Math.random()<.5?"add":"sub"):S.op; }
+function finishEx(q,t,lev,lab){
+  var out={q:lev===4?wordifyQ(q):q,t:t};
+  if(lab) out.lab=lab;
+  return out;
+}
 function ex20(op,lev){
   var a,b;
   if(op==="mul"){
     a=rnd(2,9); b=rnd(2,Math.max(2,Math.floor(20/a)));
-    return {q:a+" × "+b,t:a*b};
+    return finishEx(a+" × "+b,a*b,lev);
   }
   if(op==="add"){
     if(lev===1){ a=rnd(1,5); b=rnd(1,10-a); }
     else if(lev===2){ a=rnd(4,9); b=rnd(2,Math.min(9,20-a)); }
-    else if(lev===3){
-      if(Math.random()<.45){ var t=rnd(11,20); a=rnd(2,9); return {q:a+" + ? = "+t,t:t-a,lab:"Quanto manca?"}; }
+    else{
+      if(Math.random()<.45){ var t=rnd(11,20); a=rnd(2,9); return finishEx(a+" + ? = "+t,t-a,lev,"Quanto manca?"); }
       a=rnd(6,14); b=rnd(4,20-a);
-    }else{
-      var t2=rnd(14,20); a=rnd(2,t2-2); return {q:a+" + ? = "+t2,t:t2-a,lab:"Quanto manca?"};
     }
-    return {q:a+" + "+b,t:a+b};
+    return finishEx(a+" + "+b,a+b,lev);
   }
   if(lev===1){ a=rnd(3,10); b=rnd(1,a-1); }
   else if(lev===2){ a=rnd(11,20); b=rnd(2,9); }
-  else if(lev===3){ a=rnd(13,20); b=rnd(5,Math.min(a-1,14)); }
-  else{ a=20; b=rnd(1,19); }
-  return {q:a+" − "+b,t:a-b};
+  else{ a=rnd(13,20); b=rnd(5,Math.min(a-1,14)); }
+  return finishEx(a+" − "+b,a-b,lev);
 }
 function ex100(op,lev){
   var a,b,u;
-  if(op==="mul"){ a=rnd(2,10); b=rnd(2,10); return {q:a+" × "+b,t:a*b}; }
+  if(op==="mul"){ a=rnd(2,10); b=rnd(2,10); return finishEx(a+" × "+b,a*b,lev); }
   if(op==="add"){
     if(lev===1){ a=rnd(1,7)*10; b=rnd(1,10-a/10)*10; }
     else if(lev===2){ a=rnd(1,8)*10+rnd(1,8); u=a%10; b=Math.random()<.5?rnd(1,9-u):rnd(1,9-Math.floor(a/10))*10; }
-    else if(lev===3){ a=rnd(15,79); u=a%10; b=rnd(10-u,Math.min(29,100-a)); }
-    else{ a=rnd(35,90); b=rnd(15,Math.min(60,100-a)); }
+    else{ a=rnd(15,79); u=a%10; b=rnd(10-u,Math.min(29,100-a)); }
     if(a+b>100) b=100-a;
-    return {q:a+" + "+b,t:a+b};
+    return finishEx(a+" + "+b,a+b,lev);
   }
   if(lev===1){ a=rnd(3,10)*10; b=rnd(1,a/10-1)*10; }
   else if(lev===2){ a=rnd(2,9)*10+rnd(2,9); b=Math.random()<.5?rnd(1,a%10):rnd(1,Math.floor(a/10)-1)*10; }
-  else if(lev===3){ a=rnd(21,99); u=a%10; b=rnd(u+1,Math.min(u+9,a-1)); }
-  else{ a=rnd(55,99); b=rnd(20,a-5); }
-  return {q:a+" − "+b,t:a-b};
+  else{ a=rnd(21,99); u=a%10; b=rnd(u+1,Math.min(u+9,a-1)); }
+  return finishEx(a+" − "+b,a-b,lev);
 }
 function ex1000(op,lev){
   var a,b;
-  if(op==="mul"){ a=rnd(11,99); b=rnd(2,9); return {q:a+" × "+b,t:a*b}; }
+  if(op==="mul"){ a=rnd(11,99); b=rnd(2,9); return finishEx(a+" × "+b,a*b,lev); }
   if(op==="add"){
     if(lev===1){ a=rnd(1,7)*100; b=rnd(1,10-a/100)*100; }
     else if(lev===2){ a=rnd(1,7)*100+rnd(1,8)*10; b=Math.random()<.5?rnd(1,9-Math.floor(a%100/10))*10:rnd(1,9-Math.floor(a/100))*100; }
-    else if(lev===3){ a=rnd(120,780); b=rnd(15,Math.min(180,1000-a)); }
-    else{ a=rnd(150,850); b=rnd(50,Math.min(300,1000-a)); }
+    else{ a=rnd(120,780); b=rnd(15,Math.min(180,1000-a)); }
     if(a+b>1000) b=1000-a;
-    return {q:a+" + "+b,t:a+b};
+    return finishEx(a+" + "+b,a+b,lev);
   }
   if(lev===1){ a=rnd(3,10)*100; b=rnd(1,a/100-1)*100; }
   else if(lev===2){ a=rnd(2,9)*100+rnd(1,9)*10; b=Math.random()<.5?rnd(1,Math.floor(a%100/10))*10:rnd(1,Math.floor(a/100)-1)*100; }
-  else if(lev===3){ a=rnd(230,990); b=rnd(15,Math.min(190,a-20)); }
-  else{ a=rnd(400,990); b=rnd(80,a-40); }
-  return {q:a+" − "+b,t:a-b};
+  else{ a=rnd(230,990); b=rnd(15,Math.min(190,a-20)); }
+  return finishEx(a+" − "+b,a-b,lev);
 }
 function compose(){
   var t;
   if(S.tool==="20") t=S.lev===1?rnd(1,10):rnd(1,20);
   else if(S.tool==="100") t=S.lev===1?rnd(1,10)*10:rnd(1,100);
   else t=S.lev===1?rnd(1,10)*100:(S.lev===2?rnd(1,9)*100+rnd(1,9)*10:rnd(101,1000));
-  if(S.lev>=3) return {q:words(t),t:t,word:true,lab:"Fai vedere questo numero",say:"Fai vedere "+words(t)};
+  if(S.lev===4) return {q:words(t),t:t,word:true,lab:"Fai vedere questo numero",say:"Fai vedere "+words(t)};
   return {q:String(t),t:t,lab:"Fai vedere questo numero",say:"Fai vedere "+words(t)};
 }
 function buildProg(){
@@ -1000,6 +1018,7 @@ function setLevel(lev){
   document.querySelectorAll("#segLev button").forEach(function(x){
     x.setAttribute("aria-pressed",parseInt(x.dataset.lev,10)===lev?"true":"false");
   });
+  $("levHint").textContent=LEVDESC[lev];
   newTask(true);
 }
 segPick("#segLev",function(b){ setLevel(parseInt(b.dataset.lev,10)); });
