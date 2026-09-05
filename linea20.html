@@ -59,11 +59,18 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
 .quest{background:var(--card);border-radius:var(--r-l);padding:18px 20px;margin-bottom:12px;box-shadow:var(--sh);
   display:flex;flex-direction:column;gap:10px;border:1px solid rgba(32,35,58,.05)}
 .quest[hidden]{display:none}
-.qtop{display:flex;align-items:center;gap:10px}
-.prog{display:flex;gap:5px;flex:1}
+.qtop{display:flex;align-items:center;gap:8px;flex-wrap:wrap;row-gap:8px}
+.prog{display:flex;gap:5px;flex:1;min-width:80px}
 .prog i{width:100%;max-width:34px;height:6px;border-radius:99px;background:var(--line);transition:background .3s,transform .3s}
 .prog i.done{background:var(--accent);transform:scaleY(1.3)}
-.lvl{font-size:12px;font-weight:800;color:var(--soft);white-space:nowrap;background:var(--paper-2);padding:5px 10px;border-radius:99px}
+.qtypes{display:flex;gap:6px}
+.qtypes button{border:0;font-family:inherit;cursor:pointer;font-weight:800;font-size:12px;color:var(--soft);
+  background:var(--paper-2);padding:7px 11px;border-radius:99px;transition:background .2s,color .2s,transform .12s}
+.qtypes button:active{transform:scale(.94)}
+.qtypes button[aria-pressed="true"]{background:var(--accent);color:#fff}
+.lvl{border:0;font-family:inherit;cursor:pointer;font-size:12px;font-weight:800;color:var(--soft);
+  white-space:nowrap;background:var(--paper-2);padding:7px 11px;border-radius:99px;transition:transform .12s,background .2s}
+.lvl:active{transform:scale(.94)}
 .qmain{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
 .q{font-size:clamp(34px,9vw,54px);font-weight:800;letter-spacing:-.035em;margin:0;line-height:1;flex:1;min-width:160px;color:var(--accent)}
 .q.parola{text-transform:uppercase;font-size:clamp(24px,6.4vw,40px);letter-spacing:.005em}
@@ -166,30 +173,28 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
 .sill{height:9px;background:rgba(0,0,0,.16);border-radius:0 0 18px 18px;margin:0 12px}
 .win.locked{opacity:.32;pointer-events:none;transition:opacity .25s}
 
-/* ---------- switch rapidi ---------- */
-.quickbar{display:flex;gap:8px;margin-bottom:12px}
+/* ---------- barra di stato (switch + risultato uniti) ---------- */
+.statusbar{background:var(--card);border-radius:var(--r-l);padding:12px 14px;margin-bottom:12px;
+  box-shadow:var(--sh);border:1px solid rgba(32,35,58,.05);display:flex;flex-direction:column;gap:10px}
+.sb-toggles{display:flex;gap:8px}
 .qk{flex:1;display:flex;align-items:center;justify-content:center;gap:7px;border:0;cursor:pointer;
-  font-family:inherit;font-weight:800;font-size:14px;color:var(--soft);background:var(--card);
-  border-radius:16px;padding:12px 10px;box-shadow:var(--sh-soft);
-  transition:transform .14s cubic-bezier(.3,1.5,.5,1),background .2s,color .2s}
+  font-family:inherit;font-weight:800;font-size:14px;color:var(--soft);background:var(--paper-2);
+  border-radius:14px;padding:11px 10px;transition:transform .14s cubic-bezier(.3,1.5,.5,1),background .2s,color .2s}
 .qk:active{transform:scale(.97)}
 .qk b{font-variant-numeric:tabular-nums;font-size:13px;opacity:.7}
 .qk svg{flex:0 0 auto}
 .qk[aria-pressed="true"]{background:var(--accent);color:#fff}
 .qk[aria-pressed="true"] b{opacity:.9}
-
-/* ---------- risultato (in alto) ---------- */
-.result{display:flex;align-items:center;gap:14px;background:var(--card);border-radius:var(--r-l);
-  padding:12px 18px;margin-bottom:12px;box-shadow:var(--sh);border:1px solid rgba(32,35,58,.05)}
-.rescircle{flex:0 0 auto;width:clamp(62px,15vw,80px);height:clamp(62px,15vw,80px);border-radius:50%;
+.sb-result{display:flex;align-items:center;gap:14px}
+.rescircle{flex:0 0 auto;width:clamp(56px,13vw,72px);height:clamp(56px,13vw,72px);border-radius:50%;
   display:grid;place-items:center;background:radial-gradient(circle at 32% 28%,var(--card),var(--paper-2));
   box-shadow:inset 0 0 0 3px rgba(32,35,58,.07),var(--sh-soft)}
-.rescircle .num{font-size:clamp(24px,6.4vw,36px);font-weight:800;letter-spacing:-.04em;line-height:1;
+.rescircle .num{font-size:clamp(22px,5.6vw,32px);font-weight:800;letter-spacing:-.04em;line-height:1;
   font-variant-numeric:tabular-nums;color:var(--accent);transition:color .3s}
 .resinfo{display:flex;flex-direction:column;gap:2px;min-width:0}
 .resinfo .word{font-size:clamp(14px,3vw,19px);font-weight:800;line-height:1.15;text-transform:uppercase;letter-spacing:.01em}
 .resinfo .split{font-size:12.5px;font-weight:800;color:var(--soft)}
-.result.mute .num,.result.mute .word{visibility:hidden}
+.statusbar.mute .num,.statusbar.mute .word{visibility:hidden}
 
 /* ---------- tastiera numerica ---------- */
 .padbar{background:var(--card);border-radius:var(--r-l);padding:16px 18px;margin-top:12px;box-shadow:var(--sh);
@@ -267,7 +272,7 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
 @media (max-width:760px){
   .app{padding:10px 12px 26px}
   .board{padding:16px 10px;border-radius:26px}
-  .result{padding:10px 14px;border-radius:22px}
+  .statusbar{padding:10px 12px;border-radius:22px}
   .padbar{padding:12px;border-radius:26px}
   .quest{padding:14px;border-radius:26px}
   .l20{--kw:clamp(22px,calc((100vw - 62px)/12.9),52px);flex-direction:column;gap:14px}
@@ -300,26 +305,31 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
     </button>
   </div>
 
-  <div class="quickbar">
-    <button class="qk" id="qkNums" aria-pressed="false"><b>123</b> Numeri</button>
-    <button class="qk" id="qkPlay" aria-pressed="false">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-      Gioca
-    </button>
-  </div>
-
-  <div class="result" id="console">
-    <div class="rescircle"><span class="num" id="bigNum">0</span></div>
-    <div class="resinfo">
-      <div class="word" id="numWord">zero</div>
-      <div class="split" id="numSplit">tutto chiuso</div>
+  <div class="statusbar" id="console">
+    <div class="sb-toggles">
+      <button class="qk" id="qkNums" aria-pressed="false"><b>123</b> Numeri</button>
+      <button class="qk" id="qkPlay" aria-pressed="false">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+        Gioca
+      </button>
+    </div>
+    <div class="sb-result">
+      <div class="rescircle"><span class="num" id="bigNum">0</span></div>
+      <div class="resinfo">
+        <div class="word" id="numWord">zero</div>
+        <div class="split" id="numSplit">tutto chiuso</div>
+      </div>
     </div>
   </div>
 
   <section class="quest" id="quest" hidden>
     <div class="qtop">
       <div class="prog" id="prog"></div>
-      <div class="lvl" id="lvl">Facile</div>
+      <div class="qtypes" id="qtypes">
+        <button type="button" data-mode="compose" aria-pressed="true">Componi</button>
+        <button type="button" data-mode="calc" aria-pressed="false">Calcola</button>
+      </div>
+      <button type="button" class="lvl" id="lvl">Facile</button>
     </div>
     <div id="qbody">
       <p class="qlab" id="qlab">Quanto fa?</p>
@@ -547,7 +557,7 @@ function paint100(v){
 }
 
 /* ---------- casa del 1000 ---------- */
-var dots1000=[],wins1000=[],prev1000=0;
+var dots1000=[],wins1000=[],winEls1000=[],prev1000=0;
 (function(){
   var W=$("walls");
   for(var w=0;w<10;w++){
@@ -563,7 +573,7 @@ var dots1000=[],wins1000=[],prev1000=0;
       win.appendChild(blk);
     }
     var wn=document.createElement("div"); wn.className="wnum off"; wn.textContent="0";
-    win.appendChild(wn); wins1000.push(wn);
+    win.appendChild(wn); wins1000.push(wn); winEls1000.push(win);
     var cap=document.createElement("div"); cap.className="cap"; cap.textContent=(w+1)*100;
     cell.appendChild(win); cell.appendChild(cap); W.appendChild(cell);
   }
@@ -572,10 +582,12 @@ function paint1000(v){
   var from=Math.min(prev1000,v),to=Math.max(prev1000,v);
   for(var i=from;i<to;i++) dots1000[i].classList.toggle("on",i<v);
   prev1000=v;
+  var active=Math.min(9,Math.floor(v/100));
   for(var w=0;w<10;w++){
     var n=Math.max(0,Math.min(100,v-w*100));
     wins1000[w].textContent=n;
     wins1000[w].classList.toggle("off",n===0);
+    winEls1000[w].classList.toggle("locked",w>active);
   }
 }
 
