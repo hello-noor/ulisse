@@ -917,6 +917,7 @@
       inp.placeholder=t("namePlaceholder");
       inp.setAttribute("aria-label",t("nameAria")(i+1));
       inp.oninput=e=>{p.name=e.target.value;saveState();};
+      inp.onfocus=()=>inp.select();
       row.append(avaBtn,inp);box.appendChild(row);
     });
     syncBonusToggle();
