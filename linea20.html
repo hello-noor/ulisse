@@ -81,7 +81,7 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
 .qanswer.fb-hot{--fb-color:var(--amber)}
 .qanswer.win-flash{--fb-color:var(--green);background:color-mix(in srgb,var(--fb-color) 26%,var(--paper-2));border-color:color-mix(in srgb,var(--fb-color) 55%,transparent)}
 .q{font-size:clamp(28px,6.2vw,46px);font-weight:800;letter-spacing:-.035em;margin:0;line-height:1.1;color:var(--accent);
-  flex:1;display:flex;align-items:center;min-height:1px}
+  flex:1;display:flex;align-items:center;min-height:2.2em}
 .q.parola{text-transform:uppercase;font-size:clamp(24px,6.4vw,40px);letter-spacing:.005em}
 .qlab{font-size:13px;font-weight:800;color:var(--soft);margin:0 0 5px}
 .qlab-answer{margin:0}
@@ -319,7 +319,8 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
   .padbar{padding:12px;border-radius:26px}
   .quest{padding:12px;border-radius:22px;gap:8px}
   .l20{--kw:clamp(22px,calc((100vw - 62px)/12.9),52px);flex-direction:column;gap:14px}
-  .l100{--span:11;--cell:clamp(24px,calc((100vw - 46px)/11),60px)}
+  .l100{--span:11;--cell:clamp(24px,calc((100vw - 46px)/11),60px);gap:9px}
+  .rw{height:max(44px,calc(var(--cell)*.95))}
   .walls{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
   #qbody{flex-direction:row;flex-wrap:wrap;align-items:stretch;gap:10px}
   .qgoal{flex:1 1 0;min-width:0;text-align:center;align-items:center;padding-right:10px}
