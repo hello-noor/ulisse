@@ -204,8 +204,10 @@ body.scrolled .brandbar{
   background:var(--card);border:1px solid var(--hairline);border-radius:var(--r-surface);box-shadow:var(--sh)}
 .tools{flex:1 1 auto;min-width:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;
   background:var(--track);border-radius:20px;padding:4px;position:relative}
-.switches{flex:0 0 auto;display:grid;grid-template-columns:repeat(2,60px);gap:6px;
+.switches{flex:0 0 auto;display:grid;grid-auto-flow:column;grid-auto-columns:60px;gap:6px;
   padding-left:8px;border-left:1.5px solid var(--line)}
+.qkeur{font-family:var(--display);font-weight:600;font-size:17px;line-height:1;
+  display:block;height:16px}
 .tab{position:relative;overflow:hidden;border:0;cursor:pointer;font-family:inherit;
   color:var(--ink);background:transparent;border-radius:16px;padding:9px 6px 8px;
   display:grid;justify-items:center;gap:1px;
@@ -348,28 +350,33 @@ body.scrolled .brandbar{
 .readout{padding:12px 14px;margin-bottom:12px}
 .readout:not(:has(.sb-result)){display:none}
 .sb-result{display:flex;align-items:center;gap:14px;width:100%}
-.rescircle{flex:0 0 auto;width:clamp(58px,13vw,76px);height:clamp(58px,13vw,76px);border-radius:50%;
+/* Il simbolo sta fuori dal cerchio, accanto alla cifra: dentro ci va solo il numero,
+   che cosi' respira e resta grande anche quando sono quattro caratteri. */
+.resbox{display:inline-flex;align-items:center;gap:7px;flex:0 0 auto}
+.rescircle{flex:0 0 auto;width:clamp(64px,14vw,82px);height:clamp(64px,14vw,82px);border-radius:50%;
   display:grid;place-items:center;background:var(--card);border:0;padding:0;cursor:pointer;font-family:inherit;
   box-shadow:inset 0 0 0 3px color-mix(in srgb,var(--fb-ink,var(--accent-ink)) 36%,transparent),var(--sh-soft);
   transition:box-shadow .25s,transform .16s var(--spring)}
 .rescircle:active{transform:scale(.95)}
-.rescircle .num{font-family:var(--display);font-weight:600;font-size:clamp(24px,5.6vw,34px);letter-spacing:-.035em;
+.rescircle .num{font-family:var(--display);font-weight:600;font-size:clamp(26px,6vw,36px);letter-spacing:-.035em;
   line-height:1;color:var(--fb-ink,var(--accent-ink));transition:color .25s,font-size .15s;
   font-variant-numeric:tabular-nums}
-.rescircle .num.dig3{font-size:clamp(20px,4.6vw,27px)}
-.rescircle .num.dig4{font-size:clamp(15px,3.6vw,21px)}
-.cur{font-family:var(--display);font-weight:600;font-size:clamp(9px,1.9vw,12px);line-height:1;
-  color:var(--soft);margin-top:1px;letter-spacing:.02em}
-.qresult-slot .cur{font-size:clamp(10px,2.2vw,13px)}
+.rescircle .num.dig3{font-size:clamp(22px,5vw,29px)}
+.rescircle .num.dig4{font-size:clamp(17px,3.9vw,23px)}
+.cur{font-family:var(--display);font-weight:500;font-size:clamp(15px,3.2vw,21px);line-height:1;
+  color:var(--fb-ink,var(--accent-ink));opacity:.8;transition:color .25s}
 .resinfo{display:flex;flex-direction:column;gap:2px;min-width:0;text-align:left}
 .resinfo .word{font-family:var(--display);font-weight:500;font-size:clamp(14px,2.8vw,20px);line-height:1.15;
-  text-transform:uppercase;letter-spacing:.01em;overflow-wrap:break-word;word-break:break-word;hyphens:auto}
+  text-transform:uppercase;letter-spacing:.01em;overflow-wrap:break-word;word-break:break-word;
+  /* va a capo fra le parole: "quarantacin-que" spezzato non si legge */
+  hyphens:manual;-webkit-hyphens:manual}
 .resinfo .split{font-size:12.5px;font-weight:800;color:var(--soft)}
 .qresult-slot .sb-result{flex-direction:column;gap:6px;text-align:center}
-.qresult-slot .rescircle{width:clamp(66px,15vw,90px);height:clamp(66px,15vw,90px)}
-.qresult-slot .rescircle .num{font-size:clamp(28px,7vw,42px)}
-.qresult-slot .rescircle .num.dig3{font-size:clamp(23px,5.8vw,34px)}
-.qresult-slot .rescircle .num.dig4{font-size:clamp(18px,4.6vw,26px)}
+.qresult-slot .rescircle{width:clamp(72px,16vw,96px);height:clamp(72px,16vw,96px)}
+.qresult-slot .rescircle .num{font-size:clamp(30px,7.4vw,44px)}
+.qresult-slot .rescircle .num.dig3{font-size:clamp(25px,6.2vw,36px)}
+.qresult-slot .rescircle .num.dig4{font-size:clamp(19px,4.8vw,27px)}
+.qresult-slot .cur{font-size:clamp(17px,4vw,24px)}
 .qresult-slot .resinfo{text-align:center}
 .qresult-slot .resinfo .word{font-size:clamp(13px,2.6vw,16px)}
 .qresult-slot .resinfo .split{display:none}
@@ -619,7 +626,7 @@ body.scrolled .brandbar{
     box-shadow:0 -18px 40px -30px rgba(22,26,43,.55)}
   .controlbar::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
     box-shadow:inset 0 1px 0 var(--glass-edge)}
-  .switches{grid-template-columns:repeat(2,62px)}
+  .switches{grid-auto-columns:56px}
 }
 @media (max-width:1059px) and (prefers-reduced-transparency:reduce){
   .controlbar{background:var(--card);backdrop-filter:none;-webkit-backdrop-filter:none}
@@ -659,10 +666,12 @@ body.scrolled .brandbar{
   .q.eur.parola{font-size:clamp(14px,4.1vw,19px)}
   .q.long{font-size:clamp(15px,4vw,19px)}
   .q.long.parola{font-size:clamp(13px,3.5vw,17px)}
-  .qresult-slot .rescircle{width:clamp(52px,14vw,66px);height:clamp(52px,14vw,66px)}
-  .qresult-slot .rescircle .num{font-size:clamp(24px,6.4vw,32px)}
-  .qresult-slot .rescircle .num.dig3{font-size:clamp(19px,5.2vw,26px)}
-  .qresult-slot .rescircle .num.dig4{font-size:clamp(15px,4.2vw,21px)}
+  .qresult-slot .rescircle{width:clamp(62px,16vw,76px);height:clamp(62px,16vw,76px)}
+  .qresult-slot .rescircle .num{font-size:clamp(27px,7vw,35px)}
+  .qresult-slot .rescircle .num.dig3{font-size:clamp(22px,5.8vw,29px)}
+  .qresult-slot .rescircle .num.dig4{font-size:clamp(17px,4.6vw,23px)}
+  .qresult-slot .cur{font-size:clamp(15px,3.8vw,20px)}
+  .resbox{gap:5px}
   .qresult-slot .resinfo .word{font-size:11.5px}
   /* il riscontro diventa una riga sottile: l'emoji vive nel pop-up */
   .fb{font-size:13.5px;min-height:44px;padding:2px 12px;background:none;gap:8px}
@@ -670,7 +679,7 @@ body.scrolled .brandbar{
   #next{font-size:15px;padding:11px 16px;min-height:44px}
 
   .readout{padding:10px 12px;margin-bottom:10px}
-  .rescircle{width:clamp(54px,14vw,68px);height:clamp(54px,14vw,68px)}
+  .rescircle{width:clamp(60px,15vw,74px);height:clamp(60px,15vw,74px)}
 
   .pad button{min-height:50px;padding:11px 4px}
   .pad{gap:8px}
@@ -685,7 +694,9 @@ body.scrolled .brandbar{
 
 @media (max-width:420px){
   :root{--dockh:88px}
-  .switches{grid-template-columns:repeat(2,54px);gap:5px;padding-left:6px}
+  .switches{grid-auto-columns:52px;gap:5px;padding-left:6px}
+  .qk{font-size:10px;padding:7px 2px}
+  .qkeur{font-size:16px;height:15px}
   .tab{padding:7px 3px 6px}
   .tab b{font-size:19px}
   .brandtext h1{font-size:13.5px}
@@ -699,6 +710,13 @@ body.scrolled .brandbar{
   .brandtext{display:none}
   .mark{display:grid;width:34px;height:34px;border-radius:12px;padding:0 7px;gap:3px}
   .mark i{height:4px}
+  /* Tre strumenti e tre interruttori su 320px: cede qualche pixel ciascuno,
+     ma "1000" deve restare leggibile per intero. */
+  .switches{grid-auto-columns:42px;gap:4px;padding-left:5px}
+  .qk{font-size:9px;padding:7px 1px;gap:2px}
+  .qkeur{font-size:15px;height:14px}
+  .tab b{font-size:17px}
+  .tab span{font-size:8.5px}
 }
 
 /* ---------- schermi grandi: strumento a sinistra, comandi a destra ---------- */
@@ -712,9 +730,14 @@ body.scrolled .brandbar{
   .side{grid-area:side;min-width:0;position:sticky;top:calc(84px + env(safe-area-inset-top))}
   .board{--bp:22px;display:grid;align-content:center;min-height:clamp(240px,36vh,400px)}
   .hint{margin-top:16px;text-align:left;padding-left:4px}
-  .controlbar{margin-bottom:14px}
-  .switches{grid-template-columns:repeat(2,68px);gap:8px;padding-left:10px}
-  .qk{font-size:11px;padding:9px 4px;gap:4px}
+  /* Nella colonna laterale c'e' altezza ma non larghezza: strumenti sopra,
+     interruttori sotto. Tre e tre non stanno su una riga sola senza tagliare "1000". */
+  .controlbar{margin-bottom:14px;flex-direction:column;gap:8px;padding:8px}
+  .tools{width:100%}
+  .switches{width:100%;grid-auto-columns:minmax(0,1fr);gap:8px;
+    padding-left:0;padding-top:8px;border-left:0;border-top:1.5px solid var(--line)}
+  .qk{flex-direction:row;gap:7px;font-size:12px;padding:10px 6px;min-height:46px}
+  .qkeur{font-size:17px;height:auto}
   .tab{padding:10px 6px 9px}
 }
 
@@ -783,6 +806,10 @@ body.scrolled .brandbar{
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4v16M14 4v16M3 9h18M3 15h18"/></svg>
           Numeri
         </button>
+        <button class="qk" id="qkEuro" aria-pressed="false" hidden>
+          <b class="qkeur" aria-hidden="true">&#8364;</b>
+          Euro
+        </button>
         <button class="qk" id="qkGame" aria-pressed="false">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
           Gioca
@@ -837,10 +864,12 @@ body.scrolled .brandbar{
 
     <div class="readout card" id="sbResultSlot">
       <div class="sb-result">
-        <button type="button" class="rescircle" id="resBtn" aria-label="Rileggi il numero ad alta voce">
-          <span class="num" id="bigNum">0</span>
+        <div class="resbox">
+          <button type="button" class="rescircle" id="resBtn" aria-label="Rileggi il numero ad alta voce">
+            <span class="num" id="bigNum">0</span>
+          </button>
           <span class="cur" id="curTag" hidden aria-hidden="true">&#8364;</span>
-        </button>
+        </div>
         <div class="resinfo">
           <div class="word" id="numWord">zero</div>
           <div class="split" id="numSplit">tutto chiuso</div>
@@ -1276,6 +1305,7 @@ function refresh(){
   bn.classList.toggle("dig3",len===3);
   bn.classList.toggle("dig4",len>=4);
   $("curTag").hidden=!eur;
+  $("qkEuro").setAttribute("aria-pressed",String(eur));
   $("numWord").textContent=eur?eurWords(v):words(v);
   $("numSplit").textContent=eur?coinSplit(v):splitText(v);
   $("resBtn").setAttribute("aria-label",(eur?eurWords(v):words(v))+". Tocca per riascoltare.");
@@ -1790,8 +1820,12 @@ function unitHintText(){
     : "La linea arriva a cento: ogni barretta vale dieci.";
 }
 function syncUnit(){
-  /* Con venti centesimi non si arriva a un euro: sulla linea del 20 la scelta non compare. */
-  $("grpUnit").hidden=S.tool==="20";
+  /* Con venti centesimi non si arriva a un euro: sulla linea del 20
+     spariscono sia il tasto rapido sia la scelta nelle impostazioni. */
+  var on=S.tool!=="20";
+  $("grpUnit").hidden=!on;
+  $("qkEuro").hidden=!on;
+  $("qkEuro").setAttribute("aria-pressed",String(on&&S.unit==="eur"));
   $("unitHint").textContent=unitHintText();
   document.querySelectorAll("#segUnit button").forEach(function(x){
     x.setAttribute("aria-pressed",x.dataset.unit===S.unit?"true":"false");
@@ -1802,6 +1836,7 @@ function setUnit(u){
   syncUnit(); paintCaps(); buildPad(); refresh(); newTask(true);
 }
 segPick("#segUnit",function(b){ setUnit(b.dataset.unit); });
+$("qkEuro").addEventListener("click",function(){ setUnit(S.unit==="eur"?"num":"eur"); });
 $("lvl").addEventListener("click",function(){ setLevel(S.lev%4+1); });
 
 /* ---------- aspetto: automatico, chiaro, scuro ---------- */
