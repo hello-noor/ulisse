@@ -1,0 +1,20 @@
+{
+  "name": "Metodo analogico: linea del 20, del 100 e casa del 1000",
+  "short_name": "Linea del 20",
+  "description": "Strumenti interattivi ispirati al metodo analogico di Camillo Bortolato: linea del 20, linea del 100 e casa del 1000. Funziona anche senza rete.",
+  "lang": "it",
+  "dir": "ltr",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui", "browser"],
+  "orientation": "any",
+  "background_color": "#FAF7F0",
+  "theme_color": "#FAF7F0",
+  "categories": ["education", "kids"],
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

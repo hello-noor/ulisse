@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Le app di Ulisse</title>
+<meta name="description" content="Le app scritte da Ulisse, 6 anni, con l'aiuto di papà. Giochi e strumenti che funzionano anche senza rete.">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#141B4D">
+<meta name="color-scheme" content="dark">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="App di Ulisse">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" href="favicon-32.png" sizes="32x32">
+<link rel="icon" href="icon-192.png" sizes="192x192">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Le app di Ulisse">
+<meta property="og:description" content="Le app scritte da Ulisse, 6 anni, con l'aiuto di papà.">
+<meta property="og:image" content="icon-512.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --navy:#141B4D; --navy-2:#0B2B39; --ink:#FFFFFF; --dim:#A8C6D6;
+    --gold:#FFC93C; --gold-2:#FFAE1F; --coral:#FF6B4A; --teal:#2D96A3; --cream:#FFF6E0;
+    --card:rgba(255,255,255,.07); --card-line:rgba(255,255,255,.16);
+    --display:'Baloo 2',ui-rounded,'SF Pro Rounded','Trebuchet MS',Avenir,sans-serif;
+    --body:'Nunito',ui-rounded,'SF Pro Rounded','Trebuchet MS',Avenir,sans-serif;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0}
+  body{
+    min-height:100svh;color:var(--ink);font-family:var(--body);font-weight:600;
+    background-color:var(--navy);
+    background-image:
+      radial-gradient(rgba(255,255,255,.05) 1px, transparent 1.6px),
+      radial-gradient(1000px 620px at 6% -10%, rgba(255,201,60,.16) 0%, transparent 60%),
+      radial-gradient(900px 540px at 100% 6%, rgba(255,107,74,.14) 0%, transparent 55%),
+      linear-gradient(180deg,var(--navy),var(--navy-2));
+    background-size:26px 26px, auto, auto, auto;
+    background-attachment:fixed;
+  }
+  .wrap{
+    max-width:900px;margin:0 auto;
+    padding:calc(28px + env(safe-area-inset-top)) calc(20px + env(safe-area-inset-right))
+            calc(48px + env(safe-area-inset-bottom)) calc(20px + env(safe-area-inset-left));
+  }
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+  /* ---------- testata ---------- */
+  header{text-align:center;margin:8px 0 34px}
+  .boat{width:96px;height:96px;border-radius:24px;display:block;margin:0 auto 14px;
+    box-shadow:0 12px 30px rgba(0,0,0,.35);animation:bob 5s ease-in-out infinite}
+  @keyframes bob{0%,100%{transform:translateY(0) rotate(-1.5deg)}50%{transform:translateY(-8px) rotate(1.5deg)}}
+  h1{font-family:var(--display);font-weight:800;text-transform:uppercase;letter-spacing:-.02em;
+    line-height:.9;margin:0;font-size:clamp(34px,9vw,64px);text-shadow:0 4px 0 rgba(0,0,0,.25)}
+  h1 .hl{position:relative;isolation:isolate;color:#2A1B04;display:inline-block;
+    padding:.04em .22em .08em;transform:rotate(-2deg)}
+  h1 .hl::before{content:"";position:absolute;inset:-.14em -.05em .1em -.05em;z-index:-1;border-radius:.22em;
+    background:linear-gradient(103deg,#FFD766,var(--gold) 45%,var(--gold-2));box-shadow:0 4px 0 rgba(0,0,0,.22)}
+  /* text-wrap:balance divide le righe in parti uguali: niente parole solitarie a fine frase. */
+  .claim{color:var(--dim);font-size:clamp(15px,3.6vw,19px);margin:16px auto 0;max-width:38ch;
+    line-height:1.5;text-wrap:balance}
+  .claim + .claim{margin-top:6px}
+  .claim b{color:var(--cream)}
+
+  /* ---------- griglia di bottoni ---------- */
+  .grid{display:grid;gap:18px;grid-template-columns:1fr;justify-items:center}
+  @media (min-width:370px){.grid{grid-template-columns:1fr 1fr}}
+  @media (min-width:780px){.grid{grid-template-columns:repeat(3,1fr)}}
+
+  .app{
+    width:100%;max-width:300px;display:flex;flex-direction:column;align-items:center;
+    text-align:center;text-decoration:none;color:inherit;gap:12px;
+  }
+  /* il bottone vero e proprio: grande, tondo, con la faccia dell'app */
+  .btn{
+    position:relative;width:min(168px,40vw);aspect-ratio:1;border-radius:34px;
+    display:grid;place-items:center;
+    background:linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255,255,.05));
+    border:3px solid var(--accent,var(--gold));
+    box-shadow:0 10px 0 var(--accent-dark,rgba(0,0,0,.45)), 0 18px 34px rgba(0,0,0,.35);
+    transition:transform .12s ease, box-shadow .12s ease;
+  }
+  .btn::before{
+    content:"";position:absolute;inset:-26px;border-radius:50%;z-index:-1;
+    background:radial-gradient(closest-side, var(--accent-glow,rgba(255,201,60,.3)), transparent 75%);
+  }
+  .btn img{width:76%;height:76%;border-radius:24px;object-fit:cover;display:block;
+    box-shadow:0 6px 16px rgba(0,0,0,.4)}
+  .btn .emoji{font-size:clamp(44px,11vw,58px);line-height:1}
+
+  .app:hover .btn,.app:focus-visible .btn{
+    transform:translateY(-4px);
+    box-shadow:0 14px 0 var(--accent-dark,rgba(0,0,0,.45)), 0 22px 40px rgba(0,0,0,.4);
+  }
+  .app:active .btn{
+    transform:translateY(6px);
+    box-shadow:0 4px 0 var(--accent-dark,rgba(0,0,0,.45)), 0 8px 18px rgba(0,0,0,.35);
+  }
+  .app:focus-visible{outline:none}
+  .app:focus-visible .btn{outline:4px solid var(--cream);outline-offset:6px}
+
+  .name{font-family:var(--display);font-weight:800;font-size:clamp(20px,5.4vw,24px);
+    line-height:1.1;margin:0;color:var(--ink);text-wrap:balance}
+  .desc{margin:0;color:var(--dim);font-size:14.5px;line-height:1.45;max-width:24ch;
+    text-wrap:balance;hyphens:none}
+
+  /* il bottone dell'app che non c'e' ancora */
+  .app.soon{cursor:default}
+  .app.soon .btn{border-style:dashed;border-color:rgba(255,255,255,.28);
+    background:rgba(255,255,255,.04);box-shadow:none}
+  .app.soon:hover .btn,.app.soon:active .btn{transform:none;box-shadow:none}
+  .app.soon .btn::before{display:none}
+  .app.soon .name{color:var(--dim)}
+
+  /* ---------- piede ---------- */
+  footer{margin-top:34px;text-align:center;color:var(--dim);font-size:14.5px;line-height:1.6;
+    text-wrap:balance}
+  footer .hint{display:inline-block;margin-top:12px;padding:10px 16px;border-radius:16px;
+    background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);max-width:44ch}
+  footer a{color:var(--cream)}
+
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <img class="boat" src="icon-512.png" width="96" height="96" alt="" aria-hidden="true">
+    <h1>Le app di <span class="hl">Ulisse</span></h1>
+    <p class="claim">Ulisse ha <b>6&nbsp;anni</b> e scrive app con l'aiuto di&nbsp;papà.</p>
+    <p class="claim">Scegli quella che vuoi aprire.</p>
+  </header>
+
+  <main class="grid" id="grid">
+    <noscript>
+      <a class="app" href="nomi-cose-citta/"><p class="name">Nomi Cose Città</p></a>
+      <a class="app" href="linea-del-20/"><p class="name">Linea del 20</p></a>
+    </noscript>
+  </main>
+
+  <footer>
+    Funzionano anche <b>senza&nbsp;rete</b> e si possono installare sul telefono.
+    <br>
+    <span class="hint">Su iPhone: apri l'app, tocca <b>Condividi</b> e poi <b>Aggiungi&nbsp;a&nbsp;Home</b>.</span>
+  </footer>
+
+</div>
+
+<script>
+/* =========================================================
+   L'ELENCO DELLE APP
+   Per aggiungerne una nuova in futuro:
+   1. copia la cartella dell'app qui dentro (es. "memory-degli-animali/")
+   2. aggiungi qui sotto una riga come le altre
+   3. salva e carica su GitHub. Fine.
+   ========================================================= */
+const APPS = [
+  {
+    nome: "Nomi Cose Città",
+    testo: "Il gioco di sempre, ma i punti li tiene l'app.",
+    cartella: "nomi-cose-citta/",
+    icona: "nomi-cose-citta/icon-192.png",
+    colore: "#FFC93C"
+  },
+  {
+    nome: "Linea del 20",
+    testo: "Linea del 20, del 100 e casa del 1000.",
+    cartella: "linea-del-20/",
+    icona: "linea-del-20/icon-192.png",
+    colore: "#FF6B4A"
+  }
+];
+
+/* Da un colore #RRGGBB ricaviamo l'alone morbido e l'ombra "spessa" del bottone. */
+function tinte(hex){
+  const n = parseInt(hex.slice(1), 16);
+  const r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255;
+  return {
+    glow: `rgba(${r},${g},${b},.30)`,
+    dark: `rgb(${Math.round(r * .45)},${Math.round(g * .45)},${Math.round(b * .45)})`
+  };
+}
+
+const grid = document.getElementById("grid");
+grid.innerHTML = "";
+
+for (const app of APPS){
+  const t = tinte(app.colore);
+  const a = document.createElement("a");
+  a.className = "app";
+  a.href = app.cartella;
+  a.style.setProperty("--accent", app.colore);
+  a.style.setProperty("--accent-glow", t.glow);
+  a.style.setProperty("--accent-dark", t.dark);
+  a.innerHTML = `
+    <span class="btn"><img src="${app.icona}" width="128" height="128" alt="" loading="lazy"></span>
+    <p class="name">${app.nome}</p>
+    <p class="desc">${app.testo}</p>`;
+  grid.append(a);
+}
+
+/* L'ultimo bottone è sempre quello dell'app che Ulisse deve ancora inventare. */
+const soon = document.createElement("div");
+soon.className = "app soon";
+soon.innerHTML = `
+  <span class="btn"><span class="emoji" aria-hidden="true">🚧</span></span>
+  <p class="name">La prossima app</p>
+  <p class="desc">Ulisse la sta ancora inventando.</p>`;
+grid.append(soon);
+</script>
+</body>
+</html>
