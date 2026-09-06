@@ -274,6 +274,13 @@ body.scrolled .brandbar{
   animation:qin .44s var(--spring) backwards}
 @keyframes qin{0%{opacity:0;transform:translateY(10px) scale(.96)}100%{opacity:1;transform:none}}
 .q.parola{text-transform:uppercase;font-size:clamp(21px,5vw,34px);letter-spacing:.005em}
+/* Una cifra in euro e' piu' lunga di un numero: le si lascia respirare su due righe. */
+.q.eur{font-size:clamp(21px,4.6vw,32px);line-height:1.2}
+.q.eur.parola{font-size:clamp(16px,3.6vw,24px)}
+/* Una domanda lunga si rimpicciolisce e va a capo fra le parole:
+   un bambino non deve rimettere insieme "no-vantasei" spezzato a meta'. */
+.q.long{font-size:clamp(17px,3.4vw,23px);line-height:1.25;hyphens:manual;-webkit-hyphens:manual}
+.q.long.parola{font-size:clamp(15px,3vw,20px)}
 .qresult-slot{flex:1;display:flex;align-items:center;justify-content:center;min-height:1px}
 .qresult-slot:empty{display:none}
 
@@ -351,6 +358,9 @@ body.scrolled .brandbar{
   font-variant-numeric:tabular-nums}
 .rescircle .num.dig3{font-size:clamp(20px,4.6vw,27px)}
 .rescircle .num.dig4{font-size:clamp(15px,3.6vw,21px)}
+.cur{font-family:var(--display);font-weight:600;font-size:clamp(9px,1.9vw,12px);line-height:1;
+  color:var(--soft);margin-top:1px;letter-spacing:.02em}
+.qresult-slot .cur{font-size:clamp(10px,2.2vw,13px)}
 .resinfo{display:flex;flex-direction:column;gap:2px;min-width:0;text-align:left}
 .resinfo .word{font-family:var(--display);font-weight:500;font-size:clamp(14px,2.8vw,20px);line-height:1.15;
   text-transform:uppercase;letter-spacing:.01em;overflow-wrap:break-word;word-break:break-word;hyphens:auto}
@@ -645,6 +655,10 @@ body.scrolled .brandbar{
   .qanswer .qlab-answer{display:none}
   .q{font-size:clamp(25px,7.6vw,34px);min-height:1.15em}
   .q.parola{font-size:clamp(17px,5.2vw,24px)}
+  .q.eur{font-size:clamp(18px,5.4vw,26px)}
+  .q.eur.parola{font-size:clamp(14px,4.1vw,19px)}
+  .q.long{font-size:clamp(15px,4vw,19px)}
+  .q.long.parola{font-size:clamp(13px,3.5vw,17px)}
   .qresult-slot .rescircle{width:clamp(52px,14vw,66px);height:clamp(52px,14vw,66px)}
   .qresult-slot .rescircle .num{font-size:clamp(24px,6.4vw,32px)}
   .qresult-slot .rescircle .num.dig3{font-size:clamp(19px,5.2vw,26px)}
@@ -825,6 +839,7 @@ body.scrolled .brandbar{
       <div class="sb-result">
         <button type="button" class="rescircle" id="resBtn" aria-label="Rileggi il numero ad alta voce">
           <span class="num" id="bigNum">0</span>
+          <span class="cur" id="curTag" hidden aria-hidden="true">&#8364;</span>
         </button>
         <div class="resinfo">
           <div class="word" id="numWord">zero</div>
@@ -888,6 +903,15 @@ body.scrolled .brandbar{
       <button data-lev="4" aria-pressed="false">Sfida</button>
     </div>
     <p class="levhint" id="levHint">Calcoli semplici, numeri piccoli.</p>
+  </div>
+
+  <div class="grp-set" id="grpUnit">
+    <h3>Cosa contiamo</h3>
+    <div class="seg" id="segUnit">
+      <button data-unit="num" aria-pressed="true">Numeri</button>
+      <button data-unit="eur" aria-pressed="false">Euro</button>
+    </div>
+    <p class="levhint" id="unitHint"></p>
   </div>
 
   <div class="grp-set">
@@ -973,6 +997,11 @@ body.scrolled .brandbar{
   </div>
 
   <div class="grp-set">
+    <h3>Il modo euro</h3>
+    <p class="infotext">Nelle impostazioni la linea del 100 si trasforma in un euro: cento palline, cento centesimi. La casa del 1000 diventa dieci euro, una finestra per ogni euro. Il numero resta lo stesso, cambia solo come lo si legge, e sotto compaiono le monete che servono per formarlo.</p>
+  </div>
+
+  <div class="grp-set">
     <h3>Una nota</h3>
     <p class="infotext">Questa app non è un prodotto ufficiale di Camillo Bortolato. È stata realizzata in autonomia, ispirandosi ai principi e agli strumenti descritti nei suoi libri, per uso didattico.</p>
   </div>
@@ -1011,7 +1040,7 @@ function words(n){
 }
 
 /* ---------- stato ---------- */
-var S={tool:"20",mode:"free",op:"compose",lev:1,pips:false,sound:true,haptics:true,theme:"auto",
+var S={tool:"20",mode:"free",op:"compose",lev:1,pips:false,sound:true,haptics:true,theme:"auto",unit:"num",
        v:{"20":0,"100":0,"1000":0},target:null,solved:false,dirty:false,
        done:0,serie:10,streak:0,best:{"20":0,"100":0,"1000":0}};
 var MAX={"20":20,"100":100,"1000":1000};
@@ -1037,6 +1066,35 @@ var THEME={
   "100":{a:"#E08A0C",a2:"#96590A",b1:"#1F3A5F",b2:"#0A1626"},
   "1000":{a:"#2E62D8",a2:"#1B3F97",b1:"#79C4EE",b2:"#5CB68E"}
 };
+/* ---------- modo euro ----------
+   Lo strumento non cambia: cambia l'unita' che rappresenta.
+   Cento palline sono cento centesimi, cioe' un euro.
+   Mille pallini sono dieci euro, uno per finestra.
+   Sulla linea del 20 non si applica: con venti centesimi non si fa un euro. */
+var COIN={"100":[1,2,5,10,20,50],"1000":[1,2,5,10,20,50,100,200]};
+function isEur(){ return S.unit==="eur"&&S.tool!=="20"; }
+function eurStr(c){
+  var e=Math.floor(c/100),r=c%100;
+  return e+","+(r<10?"0":"")+r;
+}
+function eurQ(c){ return eurStr(c)+" \u20AC"; }
+function eurWords(c){
+  if(c===0) return "zero euro";
+  var e=Math.floor(c/100),r=c%100,out=[];
+  if(e===1) out.push("un euro"); else if(e>1) out.push(words(e)+" euro");
+  if(r===1) out.push("un centesimo"); else if(r>1) out.push(words(r)+" centesimi");
+  return out.join(" e ");
+}
+function coinLabel(v){ return v>=100?(v/100)+" \u20AC":v+"c"; }
+/* Le monete che servono davvero per formare la cifra: si parte dalla piu' grande. */
+function coinSplit(c){
+  if(c===0) return "salvadanaio vuoto";
+  var V=(COIN[S.tool]||COIN["100"]).slice().sort(function(a,b){return b-a;});
+  var out=[],i,n;
+  for(i=0;i<V.length;i++){ n=Math.floor(c/V[i]); c-=n*V[i]; if(n) out.push(n+" da "+coinLabel(V[i])); }
+  return out.join(", ");
+}
+
 var $=function(i){return document.getElementById(i);};
 var board=$("board");
 var reduceMotion=window.matchMedia?matchMedia("(prefers-reduced-motion:reduce)"):{matches:false};
@@ -1066,7 +1124,7 @@ function speak(t){
     speechSynthesis.speak(u);
   }catch(e){}
 }
-function sayNumber(){ speak(words(S.v[S.tool])); }
+function sayNumber(){ speak(isEur()?eurWords(S.v[S.tool]):words(S.v[S.tool])); }
 /* una vibrazione breve conferma il gesto anche a volume spento */
 function buzz(pattern){
   if(!S.haptics||!navigator.vibrate) return;
@@ -1145,7 +1203,7 @@ function paint100(v){
 }
 
 /* ---------- casa del 1000 ---------- */
-var dots1000=[],winEls1000=[];
+var dots1000=[],winEls1000=[],caps1000=[];
 (function(){
   var W=$("walls");
   for(var w=0;w<10;w++){
@@ -1165,9 +1223,15 @@ var dots1000=[],winEls1000=[];
     }
     winEls1000.push(win);
     var cap=document.createElement("div"); cap.className="cap"; cap.textContent=(w+1)*100;
+    caps1000.push(cap);
     cell.appendChild(win); cell.appendChild(cap); W.appendChild(cell);
   }
 })();
+function paintCaps(){
+  for(var i=0;i<caps1000.length;i++){
+    caps1000[i].textContent=isEur()?((i+1)+" \u20AC"):String((i+1)*100);
+  }
+}
 function paint1000(v){
   for(var k=0;k<dots1000.length;k++){
     dots1000[k].classList.toggle("on",parseInt(dots1000[k].dataset.n,10)<=v);
@@ -1203,15 +1267,18 @@ function updateHint(){
   else winEls1000[0].classList.add("hint-pulse");
 }
 function refresh(){
-  var v=S.v[S.tool];
+  var v=S.v[S.tool],eur=isEur();
   if(S.tool==="20") paint20(v); else if(S.tool==="100") paint100(v); else paint1000(v);
-  var bn=$("bigNum"),len=String(v).length;
-  bn.textContent=v;
+  var bn=$("bigNum");
+  /* In euro la virgola non conta come cifra: a decidere il corpo sono i numeri. */
+  var len=eur?(v>=1000?4:3):String(v).length;
+  bn.textContent=eur?eurStr(v):String(v);
   bn.classList.toggle("dig3",len===3);
   bn.classList.toggle("dig4",len>=4);
-  $("numWord").textContent=words(v);
-  $("numSplit").textContent=splitText(v);
-  $("resBtn").setAttribute("aria-label","Il numero è "+words(v)+". Tocca per riascoltarlo.");
+  $("curTag").hidden=!eur;
+  $("numWord").textContent=eur?eurWords(v):words(v);
+  $("numSplit").textContent=eur?coinSplit(v):splitText(v);
+  $("resBtn").setAttribute("aria-label",(eur?eurWords(v):words(v))+". Tocca per riascoltare.");
   updateHint();
 }
 function setValue(n,opts){
@@ -1272,8 +1339,13 @@ $("resBtn").addEventListener("click",sayNumber);
 
 /* ---------- tastierino ---------- */
 var STEPS={"20":[1,5],"100":[1,10],"1000":[1,10,100]};
+/* In euro i passi diventano monete vere: un centesimo, dieci centesimi, un euro. */
+function steps(){
+  if(!isEur()) return STEPS[S.tool];
+  return S.tool==="100"?[1,5,10]:[1,10,100];
+}
 function buildPad(){
-  var pad=$("pad"),st=STEPS[S.tool],i;
+  var pad=$("pad"),st=steps(),i;
   pad.innerHTML="";
   pad.style.setProperty("--cols",st.length*2);
   for(i=st.length-1;i>=0;i--) pad.appendChild(padBtn(-st[i]));
@@ -1282,7 +1354,7 @@ function buildPad(){
 function padBtn(d){
   var b=document.createElement("button");
   if(d>0) b.className="plus";
-  b.textContent=(d>0?"+":"−")+Math.abs(d);
+  b.textContent=(d>0?"+":"−")+(isEur()?coinLabel(Math.abs(d)):String(Math.abs(d)));
   b.addEventListener("click",function(){ if(S.solved) return; setValue(S.v[S.tool]+d); sayNumber(); });
   return b;
 }
@@ -1372,6 +1444,72 @@ function compose(){
   if(S.lev===4) return {q:words(t),t:t,word:true,lab:"Fai vedere questo numero",say:"Fai vedere "+words(t)};
   return {q:String(t),t:t,lab:"Fai vedere questo numero",say:"Fai vedere "+words(t)};
 }
+/* ---------- esercizi in euro ----------
+   La domanda resta corta e la cornice sta nell'etichetta sopra: "Quanto resta?",
+   "Quanto manca a 1 euro?". Cosi' la cifra resta grande e leggibile. */
+function eurStep(){
+  if(S.lev===1) return S.tool==="1000"?100:10;
+  if(S.lev===2) return S.tool==="1000"?10:5;
+  return 1;
+}
+function eurAmt(lo,hi){
+  var st=eurStep();
+  if(hi<st) return Math.max(1,hi);
+  if(lo<st) lo=st;
+  var a=Math.ceil(lo/st),b=Math.floor(hi/st);
+  if(b<a) b=a;
+  return rnd(a,b)*st;
+}
+/* Al livello Sfida una delle cifre e' scritta a parole, non tutte:
+   leggere "due euro e trenta" fra i numeri e' gia' abbastanza. */
+function eurWordify(q){
+  var done=false;
+  return q.replace(/(\d+),(\d{2})\s*\u20AC/g,function(m,e,c){
+    if(done) return m;
+    done=true;
+    return eurWords(parseInt(e,10)*100+parseInt(c,10));
+  });
+}
+function finishEur(q,t,lev,lab){
+  return {q:lev===4?eurWordify(q):q,t:t,lab:lab};
+}
+function composeEur(){
+  var t;
+  if(S.tool==="100") t=S.lev===1?rnd(1,10)*10:(S.lev===2?rnd(1,20)*5:rnd(1,100));
+  else t=S.lev===1?rnd(1,10)*100:(S.lev===2?rnd(1,9)*100+rnd(0,9)*10:rnd(1,1000));
+  var lab="Fai vedere questa cifra",say="Fai vedere "+eurWords(t);
+  if(S.lev===4) return {q:eurWords(t),t:t,word:true,lab:lab,say:say};
+  return {q:eurQ(t),t:t,lab:lab,say:say};
+}
+function exEur(op,lev){
+  var max=MAX[S.tool],st=eurStep(),a,b;
+  if(op==="mul"){
+    var cs=COIN[S.tool].filter(function(v){ return v*2<=max; });
+    var coin=cs[rnd(0,cs.length-1)];
+    var n=rnd(2,Math.min(9,Math.floor(max/coin)));
+    return {q:n+" \u00D7 "+coinLabel(coin),t:coin*n,lab:"Quanto fanno in tutto?"};
+  }
+  if(op==="div"){
+    var parts=rnd(2,5);
+    var each=eurAmt(st,Math.floor(max/parts));
+    return finishEur(eurQ(each*parts)+" \u00F7 "+parts,each,lev,"Quanto tocca a ognuno?");
+  }
+  if(op==="add"){
+    /* Il resto da un euro tondo: il conto che si fa davvero al banco della scuola. */
+    if(lev>=2&&Math.random()<.4){
+      var whole=S.tool==="100"?100:rnd(1,10)*100;
+      a=eurAmt(st,whole-st);
+      return finishEur(eurQ(a),whole-a,lev,"Quanto manca a "+eurQ(whole)+"?");
+    }
+    a=eurAmt(st,max-st);
+    b=eurAmt(st,max-a);
+    return finishEur(eurQ(a)+" + "+eurQ(b),a+b,lev,"Quanto fa in tutto?");
+  }
+  a=eurAmt(2*st,max);
+  b=eurAmt(st,a-st);
+  return finishEur(eurQ(a)+" \u2212 "+eurQ(b),a-b,lev,"Quanto resta?");
+}
+
 function buildProg(){
   var p=$("prog"); p.innerHTML="";
   for(var i=0;i<S.serie;i++){
@@ -1398,7 +1536,8 @@ function newTask(reset){
   if(qa0) qa0.classList.remove("win-flash","fb-cold","fb-hot");
   buildProg(); paintStreak();
   var e;
-  if(S.op==="compose") e=compose();
+  if(isEur()) e=S.op==="compose"?composeEur():exEur(pick(),S.lev);
+  else if(S.op==="compose") e=compose();
   else{
     var op=pick();
     e=S.tool==="20"?ex20(op,S.lev):(S.tool==="100"?ex100(op,S.lev):ex1000(op,S.lev));
@@ -1406,7 +1545,8 @@ function newTask(reset){
   e.t=Math.max(0,Math.min(MAX[S.tool],e.t));
   S.target=e.t;
   $("qlab").textContent=e.lab||"Quanto fa?";
-  var q=$("question"); q.textContent=e.q; q.className="q"+(e.word?" parola":"");
+  var q=$("question"); q.textContent=e.q;
+  q.className="q"+(e.word?" parola":"")+(isEur()?" eur":"")+(e.q.length>16?" long":"");
   setFb("","Muovi lo strumento");
   $("next").classList.remove("show","countdown");
   $("hint").textContent=hint();
@@ -1421,10 +1561,16 @@ function setFb(cls,txt,emoji){
   if(emoji){ ic.classList.remove("pop"); void ic.offsetWidth; ic.classList.add("pop"); }
 }
 function hint(){
-  if(S.mode!=="free") return "Muovi lo strumento fino al numero: si controlla da solo.";
+  if(S.mode!=="free") return isEur()
+    ? "Muovi lo strumento fino alla cifra: si controlla da sola."
+    : "Muovi lo strumento fino al numero: si controlla da solo.";
   if(S.tool==="20") return "Le leve partono abbassate: tocca o scorri per alzarle.";
-  if(S.tool==="100") return "Tira le barrette verso destra per scoprire le palline.";
-  return "Ogni finestra vale cento: quattro gruppi da venticinque.";
+  if(S.tool==="100") return isEur()
+    ? "Ogni pallina vale un centesimo: una barretta intera fa dieci centesimi."
+    : "Tira le barrette verso destra per scoprire le palline.";
+  return isEur()
+    ? "Ogni finestra vale un euro: cento centesimi, in quattro gruppi da venticinque."
+    : "Ogni finestra vale cento: quattro gruppi da venticinque.";
 }
 var timer=null;
 function scheduleCheck(){
@@ -1634,6 +1780,28 @@ function setLevel(lev){
   newTask(true);
 }
 segPick("#segLev",function(b){ setLevel(parseInt(b.dataset.lev,10)); });
+
+function unitHintText(){
+  if(S.tool==="1000") return S.unit==="eur"
+    ? "La casa diventa dieci euro: ogni finestra vale un euro, ogni pallino un centesimo."
+    : "La casa arriva a mille: ogni finestra vale cento.";
+  return S.unit==="eur"
+    ? "La linea diventa un euro: ogni pallina vale un centesimo."
+    : "La linea arriva a cento: ogni barretta vale dieci.";
+}
+function syncUnit(){
+  /* Con venti centesimi non si arriva a un euro: sulla linea del 20 la scelta non compare. */
+  $("grpUnit").hidden=S.tool==="20";
+  $("unitHint").textContent=unitHintText();
+  document.querySelectorAll("#segUnit button").forEach(function(x){
+    x.setAttribute("aria-pressed",x.dataset.unit===S.unit?"true":"false");
+  });
+}
+function setUnit(u){
+  S.unit=u;
+  syncUnit(); paintCaps(); buildPad(); refresh(); newTask(true);
+}
+segPick("#segUnit",function(b){ setUnit(b.dataset.unit); });
 $("lvl").addEventListener("click",function(){ setLevel(S.lev%4+1); });
 
 /* ---------- aspetto: automatico, chiaro, scuro ---------- */
@@ -1699,7 +1867,7 @@ function selectTool(t){
     b.setAttribute("aria-selected",b.dataset.tool===t?"true":"false");
   });
   $("panel20").hidden=t!=="20"; $("panel100").hidden=t!=="100"; $("panel1000").hidden=t!=="1000";
-  buildPad(); refresh(); newTask(true);
+  syncUnit(); paintCaps(); buildPad(); refresh(); newTask(true);
 }
 document.addEventListener("keydown",function(e){
   if(openPanelEl) return;
@@ -1818,7 +1986,7 @@ function store(k,v){
 function saveState(){
   try{ localStorage.setItem(LSKEY,JSON.stringify({
     tool:S.tool,lev:S.lev,sound:S.sound,haptics:S.haptics,pips:S.pips,
-    mode:S.mode,op:S.op,theme:S.theme,best:S.best
+    mode:S.mode,op:S.op,theme:S.theme,unit:S.unit,best:S.best
   })); }catch(e){}
 }
 document.addEventListener("click",function(){ setTimeout(saveState,0); },true);
@@ -1828,6 +1996,7 @@ var saved=null;
 try{ saved=JSON.parse(localStorage.getItem(LSKEY)||localStorage.getItem("bortolato.tools.v1")||"null"); }catch(e){}
 if(saved&&typeof saved==="object"){
   if(saved.theme==="light"||saved.theme==="dark") setTheme(saved.theme);
+  if(saved.unit==="eur") S.unit="eur";
   if(saved.sound===false) setSound(false);
   if(saved.haptics===false){ S.haptics=false; $("tgHaptics").setAttribute("aria-pressed","false"); }
   if(saved.best&&typeof saved.best==="object"){
