@@ -244,7 +244,8 @@ body.scrolled .brandbar{
   transition:transform .16s var(--spring),background .22s,color .22s,border-color .22s}
 .lvl:active{transform:scale(.94)}
 .lvl svg{opacity:.55;flex:0 0 auto}
-#calcSwitch[aria-pressed="true"]{background:var(--accent-fill);color:var(--on-accent);border-color:transparent}
+#calcSwitch[aria-pressed="true"],#paySwitch[aria-pressed="true"]{
+  background:var(--accent-fill);color:var(--on-accent);border-color:transparent}
 #calcSwitch[aria-pressed="true"] svg{opacity:.85}
 
 /* filata di risposte pulite: si accende solo quando c'e' davvero qualcosa da mostrare */
@@ -504,6 +505,72 @@ body.scrolled .brandbar{
 .pad button:active{transform:translateY(3px);box-shadow:0 0 0 var(--edge)}
 .pad .plus{background:var(--accent-wash);color:var(--accent-ink);border-color:var(--accent-edge)}
 
+/* ---------- le monete ----------
+   Rame per 1, 2 e 5 centesimi; ottone per 10, 20 e 50; bicolore per 1 e 2 euro.
+   Sono le famiglie di colore vere: servono a riconoscere la moneta prima di contarla. */
+/* Il cassetto non si allarga con la scheda: le colonne hanno un tetto e il gruppo
+   sta al centro, cosi' monete e banconote restano della loro misura.
+   Niente margini automatici: su un elemento di griglia annullano lo stiramento
+   e il cassetto collassa. Il tetto va sulle colonne. */
+.coins{display:grid;grid-template-columns:repeat(var(--ccols,4),minmax(0,86px));gap:10px;
+  justify-content:center;justify-items:center}
+.coin{position:relative;width:100%;max-width:80px;aspect-ratio:1;border-radius:50%;border:0;cursor:pointer;
+  font-family:var(--display);font-weight:600;font-size:clamp(12px,3.2vw,17px);white-space:nowrap;
+  display:grid;place-items:center;padding:0;font-variant-numeric:tabular-nums;
+  transition:transform .13s var(--spring),box-shadow .13s,filter .2s}
+.coin>span{position:relative;z-index:1}
+.coin:active{transform:translateY(3px) scale(.96)}
+/* Spenta, non svanita: deve restare leggibile quale banconota adesso e' troppo grande.
+   Perde il rilievo, cosi' si vede a colpo d'occhio che non si puo' premere. */
+.coin:disabled,.note:disabled{cursor:default;filter:grayscale(.55);opacity:.55;
+  box-shadow:inset 0 0 0 1.5px rgba(22,26,43,.16)}
+/* Le stesse tre famiglie valgono sia nel vassoio sia fra le monete gia' date.
+   Il rame e' schiarito e le scritte scurite: sul bordo basso del degrade'
+   il valore deve restare leggibile, non solo indovinabile. */
+.coin.cu,.paidcoin.cu{background:linear-gradient(160deg,#EDB086,#C4703F);color:#2A1206}
+.coin.au,.paidcoin.au{background:linear-gradient(160deg,#F2CB63,#BE871A);color:#2E1F03}
+.coin.bi,.paidcoin.bi{background:linear-gradient(160deg,#EBE7DB,#AFA997);color:#2A2A22}
+.coin.bi::before,.paidcoin.bi::before{content:"";position:absolute;inset:19%;border-radius:50%;
+  background:linear-gradient(160deg,#F2CB63,#C4901F);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.4)}
+.coin.cu{box-shadow:0 4px 0 #93502A,inset 0 2px 0 rgba(255,255,255,.45)}
+.coin.au{box-shadow:0 4px 0 #98680F,inset 0 2px 0 rgba(255,255,255,.48)}
+.coin.bi{box-shadow:0 4px 0 #8D8878,inset 0 2px 0 rgba(255,255,255,.6)}
+.coin:active{box-shadow:inset 0 2px 0 rgba(255,255,255,.4)}
+
+/* Le banconote non sono monete piu' grandi: hanno un'altra forma e un altro colore.
+   Grigia la cinque, rossa la dieci, come quelle vere. */
+.notes{display:grid;grid-template-columns:repeat(2,minmax(0,190px));gap:10px;margin-top:2px;
+  justify-content:center;justify-items:center}
+.note{width:100%;max-width:186px;aspect-ratio:2.1/1;border-radius:9px;border:0;cursor:pointer;padding:0;
+  font-family:var(--display);font-weight:600;font-size:clamp(15px,3.8vw,20px);white-space:nowrap;
+  display:grid;place-items:center;position:relative;overflow:hidden;
+  transition:transform .13s var(--spring),box-shadow .13s,filter .2s}
+.note>span{position:relative;z-index:1}
+.note::before{content:"";position:absolute;inset:6px;border-radius:5px;
+  border:1.5px solid rgba(255,255,255,.38);pointer-events:none}
+.note:active{transform:translateY(3px) scale(.98);box-shadow:inset 0 2px 0 rgba(255,255,255,.4)}
+.note.n5,.paidcoin.n5{background:linear-gradient(150deg,#D8DCE2,#9BA3AD);color:#20242A}
+.note.n10,.paidcoin.n10{background:linear-gradient(150deg,#F2B79B,#D06B4A);color:#2E1008}
+.note.n5{box-shadow:0 4px 0 #7C848F,inset 0 2px 0 rgba(255,255,255,.55)}
+.note.n10{box-shadow:0 4px 0 #A85234,inset 0 2px 0 rgba(255,255,255,.45)}
+.paidcoin.isnote{width:54px;height:36px;border-radius:6px}
+
+.paid{display:flex;flex-wrap:wrap;align-items:center;gap:7px;
+  padding-top:10px;border-top:1.5px solid var(--line)}
+.plabel{font-size:12px;font-weight:800;color:var(--soft);letter-spacing:.01em}
+.pcoins{display:flex;flex-wrap:wrap;gap:6px;align-items:center;min-height:38px;flex:1}
+.pcoins:empty::after{content:"niente, per ora";font-size:12.5px;font-weight:700;color:var(--soft);opacity:.75}
+.paidcoin{flex:0 0 auto;width:38px;height:38px;border-radius:50%;border:0;cursor:pointer;padding:0;
+  font-family:var(--display);font-weight:600;font-size:11px;white-space:nowrap;
+  display:grid;place-items:center;position:relative;
+  box-shadow:0 2px 0 rgba(22,26,43,.25),inset 0 1px 0 rgba(255,255,255,.4);
+  animation:coinin .3s var(--spring) backwards;
+  transition:transform .13s var(--spring)}
+.paidcoin>span{position:relative;z-index:1}
+.paidcoin:active{transform:scale(.9)}
+@keyframes coinin{0%{transform:scale(.4);opacity:0}100%{transform:scale(1);opacity:1}}
+
 .hint{text-align:center;color:var(--soft);font-size:13px;font-weight:700;margin:14px 6px 0;line-height:1.45}
 
 /* ---------- pannelli a scomparsa ---------- */
@@ -615,21 +682,19 @@ body.scrolled .brandbar{
   .walls{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
 }
 
-/* ---------- telefono e tablet: la plancia scende sotto il pollice ---------- */
+/* ---------- telefono e tablet: la plancia resta in alto, sotto l'intestazione ---------- */
 @media (max-width:1059px){
-  :root{--dockh:92px}
-  .controlbar{position:fixed;left:0;right:0;bottom:0;z-index:14;margin:0;
-    padding:8px max(10px,env(safe-area-inset-left)) calc(8px + env(safe-area-inset-bottom)) max(10px,env(safe-area-inset-right));
-    border-radius:26px 26px 0 0;border:0;border-top:1px solid var(--hairline);
-    background:var(--glass);backdrop-filter:blur(20px) saturate(180%);
-    -webkit-backdrop-filter:blur(20px) saturate(180%);
-    box-shadow:0 -18px 40px -30px rgba(22,26,43,.55)}
-  .controlbar::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
-    box-shadow:inset 0 1px 0 var(--glass-edge)}
+  :root{--dockh:0px}
   .switches{grid-auto-columns:56px}
-}
-@media (max-width:1059px) and (prefers-reduced-transparency:reduce){
-  .controlbar{background:var(--card);backdrop-filter:none;-webkit-backdrop-filter:none}
+
+  /* Al negozio le due cose da guardare insieme sono il prezzo e il denaro che dai.
+     Il cassetto sale sotto la scheda e lo strumento resta sotto per la verifica:
+     altrimenti fra le monete e il totale ci sono settecento pixel di casa. */
+  .stage{display:flex;flex-direction:column}
+  .board{order:1}
+  .padbar{order:2}
+  .hint{order:3}
+  body.mode-pay .padbar{order:0;margin-top:0;margin-bottom:12px}
 }
 
 /* ---------- schermi piccoli: strumento e scheda in una schermata ---------- */
@@ -652,10 +717,11 @@ body.scrolled .brandbar{
 
   .quest{padding:11px;gap:9px;margin-bottom:10px}
   .qtop{row-gap:8px}
-  .prog{flex:1 1 88px;order:0}
+  /* Con "Calcolo", "Paga", la filata e il livello sulla stessa riga si va a capo
+     in modo casuale: il progresso si prende la sua riga e i chip stanno in fila. */
   .prog i{height:7px}
-  .lvl,.streak{padding:10px 13px;min-height:42px;font-size:12.5px}
-  .streak{padding:0 12px}
+  .lvl,.streak{padding:9px 12px;min-height:42px;font-size:12.5px}
+  .streak{padding:0 11px}
   #qbody{gap:9px}
   .qgoal,.qanswer{padding:9px 7px;gap:3px}
   .qlab{font-size:11px}
@@ -693,7 +759,6 @@ body.scrolled .brandbar{
 }
 
 @media (max-width:420px){
-  :root{--dockh:88px}
   .switches{grid-auto-columns:52px;gap:5px;padding-left:6px}
   .qk{font-size:10px;padding:7px 2px}
   .qkeur{font-size:16px;height:15px}
@@ -712,10 +777,10 @@ body.scrolled .brandbar{
   .mark i{height:4px}
   /* Tre strumenti e tre interruttori su 320px: cede qualche pixel ciascuno,
      ma "1000" deve restare leggibile per intero. */
-  .switches{grid-auto-columns:42px;gap:4px;padding-left:5px}
+  .switches{grid-auto-columns:40px;gap:4px;padding-left:5px}
   .qk{font-size:9px;padding:7px 1px;gap:2px}
   .qkeur{font-size:15px;height:14px}
-  .tab b{font-size:17px}
+  .tab b{font-size:16px}
   .tab span{font-size:8.5px}
 }
 
@@ -822,7 +887,8 @@ body.scrolled .brandbar{
         <div class="prog" id="prog" aria-hidden="true"></div>
         <span class="streak" id="streak"><span aria-hidden="true">&#128293;</span><span id="streakNum">0</span><span class="vh">di fila senza errori</span></span>
         <button type="button" class="lvl" id="calcSwitch" aria-pressed="false">Calcolo</button>
-        <button type="button" class="lvl" id="opBtn" hidden aria-label="Cambia operazione">
+        <button type="button" class="lvl" id="paySwitch" hidden aria-pressed="false">Negozio</button>
+      <button type="button" class="lvl" id="opBtn" hidden aria-label="Cambia operazione">
           <span id="opText">+</span>
           <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M17 2.1l4 4-4 4M3 12.9V11a4 4 0 0 1 4-4h14M7 21.9l-4-4 4-4M21 11.1V13a4 4 0 0 1-4 4H3"/></svg>
         </button>
@@ -892,6 +958,12 @@ body.scrolled .brandbar{
     <div class="padbar card">
       <div class="pads">
         <div class="pad" id="pad"></div>
+        <div class="coins" id="coins" hidden></div>
+        <div class="notes" id="notes" hidden></div>
+        <div class="paid" id="paid" hidden>
+          <span class="plabel">Hai dato</span>
+          <span class="pcoins" id="paidCoins"></span>
+        </div>
       </div>
     </div>
 
@@ -1071,7 +1143,7 @@ function words(n){
 /* ---------- stato ---------- */
 var S={tool:"20",mode:"free",op:"compose",lev:1,pips:false,sound:true,haptics:true,theme:"auto",unit:"num",
        v:{"20":0,"100":0,"1000":0},target:null,solved:false,dirty:false,
-       done:0,serie:10,streak:0,best:{"20":0,"100":0,"1000":0}};
+       done:0,serie:10,streak:0,paid:[],best:{"20":0,"100":0,"1000":0}};
 var MAX={"20":20,"100":100,"1000":1000};
 var LEVNAME={1:"Facile",2:"Medio",3:"Difficile",4:"Sfida"};
 var PRAISE=["Ottimo risultato!","Congratulazioni!","Grande impegno!","Proprio così!",
@@ -1100,7 +1172,7 @@ var THEME={
    Cento palline sono cento centesimi, cioe' un euro.
    Mille pallini sono dieci euro, uno per finestra.
    Sulla linea del 20 non si applica: con venti centesimi non si fa un euro. */
-var COIN={"100":[1,2,5,10,20,50],"1000":[1,2,5,10,20,50,100,200]};
+var COIN={"100":[1,2,5,10,20,50],"1000":[1,2,5,10,20,50,100,200,500,1000]};
 function isEur(){ return S.unit==="eur"&&S.tool!=="20"; }
 function eurStr(c){
   var e=Math.floor(c/100),r=c%100;
@@ -1333,7 +1405,7 @@ function hitValue(e,root){
 function drag(root,resolve){
   var on=false;
   root.addEventListener("pointerdown",function(e){
-    if(S.solved) return;
+    if(S.solved||isPay()) return;
     var n=resolve(e,true); if(n===null) return;
     on=true; try{root.setPointerCapture(e.pointerId);}catch(x){}
     setValue(n); e.preventDefault();
@@ -1375,6 +1447,13 @@ function steps(){
   return S.tool==="100"?[1,5,10]:[1,10,100];
 }
 function buildPad(){
+  /* Quando si paga non si aggiunge "piu' uno": si danno monete. */
+  var pay=isPay();
+  $("pad").hidden=pay;
+  $("coins").hidden=!pay;
+  $("paid").hidden=!pay;
+  if(pay){ buildCoins(); renderPaid(); return; }
+  $("notes").hidden=true;
   var pad=$("pad"),st=steps(),i;
   pad.innerHTML="";
   pad.style.setProperty("--cols",st.length*2);
@@ -1388,7 +1467,11 @@ function padBtn(d){
   b.addEventListener("click",function(){ if(S.solved) return; setValue(S.v[S.tool]+d); sayNumber(); });
   return b;
 }
-$("btnZero").addEventListener("click",function(){ if(S.solved) return; setValue(0); });
+$("btnZero").addEventListener("click",function(){
+  if(S.solved) return;
+  S.paid=[]; setValue(0);
+  if(isPay()) renderPaid();
+});
 
 /* ---------- esercizi ---------- */
 function rnd(a,b){ return a+Math.floor(Math.random()*(b-a+1)); }
@@ -1540,6 +1623,100 @@ function exEur(op,lev){
   return finishEur(eurQ(a)+" \u2212 "+eurQ(b),a-b,lev,"Quanto resta?");
 }
 
+/* ---------- il gioco "Paga" ----------
+   Un prezzo, un vassoio di monete, e lo strumento che conta quello che dai.
+   Qui il bambino non legge una scomposizione gia' fatta: la costruisce lui,
+   e scopre da solo che cinquanta centesimi si fanno in piu' modi. */
+var PAYSET={
+  "100":{1:[5,10,20,50],2:[2,5,10,20,50],3:[1,2,5,10,20,50],4:[1,2,5,10,20,50]},
+  "1000":{1:[50,100,200,500,1000],2:[5,10,20,50,100,200,500,1000],
+          3:[1,2,5,10,20,50,100,200,500,1000],4:[1,2,5,10,20,50,100,200,500,1000]}
+};
+/* Prezzi verosimili: una caramella non costa come un libro. */
+var GOODS={
+  "100":[["la gomma",20,80],["la matita",30,90],["la caramella",5,35],["il pane",40,95],
+         ["la mela",25,70],["la figurina",10,50],["il francobollo",45,95],["la biglia",10,40]],
+  "1000":[["il quaderno",100,350],["il gelato",150,400],["il libro",450,990],["la pizza",500,900],
+          ["i pennarelli",250,700],["il panino",200,450],["il gioco",350,950],["il succo",120,300]]
+};
+function isPay(){ return S.mode==="game"&&S.op==="pay"&&isEur(); }
+function isNote(v){ return v>=500; }
+function moneyClass(v){
+  if(v>=1000) return "n10";
+  if(v>=500) return "n5";
+  if(v<=5) return "cu";
+  if(v<100) return "au";
+  return "bi";
+}
+function paySum(){
+  var t=0,i; for(i=0;i<S.paid.length;i++) t+=S.paid[i];
+  return t;
+}
+function payEx(){
+  var list=GOODS[S.tool],g=list[rnd(0,list.length-1)];
+  var price=Math.max(eurStep(),Math.min(MAX[S.tool],eurAmt(g[1],g[2])));
+  var lab="Paga "+g[0],say=lab+", "+eurWords(price);
+  if(S.lev===4) return {q:eurWords(price),t:price,word:true,lab:lab,say:say};
+  return {q:eurQ(price),t:price,lab:lab,say:say};
+}
+function renderPaid(){
+  var box=$("paidCoins");
+  box.innerHTML="";
+  S.paid.forEach(function(v,i){
+    var b=document.createElement("button");
+    b.type="button";
+    b.className="paidcoin "+moneyClass(v)+(isNote(v)?" isnote":"");
+    b.style.animationDelay=(Math.min(i,8)*.02)+"s";
+    b.innerHTML='<span>'+coinLabel(v)+'</span>';
+    b.setAttribute("aria-label","Togli "+(isNote(v)?"la banconota":"la moneta")+" da "+coinLabel(v));
+    b.addEventListener("click",function(){
+      if(S.solved) return;
+      S.paid.splice(i,1);
+      applyPaid();
+    });
+    box.appendChild(b);
+  });
+  /* Quello che sfonderebbe lo strumento non si puo' dare: si spegne invece di sparire,
+     cosi' resta chiaro perche' quella banconota, adesso, non si puo' usare. */
+  var left=MAX[S.tool]-paySum();
+  document.querySelectorAll("#coins .coin,#notes .note").forEach(function(c){
+    c.disabled=parseInt(c.dataset.v,10)>left;
+  });
+}
+function applyPaid(){
+  setValue(paySum());
+  renderPaid();
+}
+function moneyBtn(v){
+  var note=isNote(v);
+  var b=document.createElement("button");
+  b.type="button";
+  b.className=(note?"note ":"coin ")+moneyClass(v);
+  b.dataset.v=v;
+  b.innerHTML='<span>'+coinLabel(v)+'</span>';
+  b.setAttribute("aria-label","Dai "+(note?"una banconota":"una moneta")+" da "+coinLabel(v));
+  b.addEventListener("click",function(){
+    if(S.solved||b.disabled) return;
+    S.paid.push(v);
+    /* La banconota fa un fruscio piu' basso, la moneta un tintinnio. */
+    tone(note?260:700+v,note?.14:.09,note?"triangle":"sine",.1);
+    buzz(12);
+    applyPaid();
+  });
+  return b;
+}
+function buildCoins(){
+  var set=PAYSET[S.tool][S.lev]||PAYSET[S.tool][3];
+  var coins=set.filter(function(v){ return !isNote(v); });
+  var notes=set.filter(isNote);
+  var cbox=$("coins"),nbox=$("notes");
+  cbox.innerHTML=""; nbox.innerHTML="";
+  cbox.style.setProperty("--ccols",coins.length<=5?coins.length:Math.ceil(coins.length/2));
+  coins.forEach(function(v){ cbox.appendChild(moneyBtn(v)); });
+  notes.forEach(function(v){ nbox.appendChild(moneyBtn(v)); });
+  nbox.hidden=!notes.length;
+}
+
 function buildProg(){
   var p=$("prog"); p.innerHTML="";
   for(var i=0;i<S.serie;i++){
@@ -1556,8 +1733,10 @@ function paintStreak(){
 function newTask(reset){
   clearTimeout(autoNextTimer);
   document.body.classList.toggle("mode-game",S.mode!=="free");
+  document.body.classList.toggle("mode-pay",isPay());
   if(reset){ S.done=0; S.streak=0; }
   S.solved=false; S.dirty=false;
+  S.paid=[]; buildPad();
   $("lvlText").textContent=LEVNAME[S.lev];
   if(S.mode==="free"){ $("quest").hidden=true; $("hint").textContent=hint(); updateHint(); paintStreak(); return; }
   $("quest").hidden=false;
@@ -1566,7 +1745,7 @@ function newTask(reset){
   if(qa0) qa0.classList.remove("win-flash","fb-cold","fb-hot");
   buildProg(); paintStreak();
   var e;
-  if(isEur()) e=S.op==="compose"?composeEur():exEur(pick(),S.lev);
+  if(isEur()) e=S.op==="pay"?payEx():(S.op==="compose"?composeEur():exEur(pick(),S.lev));
   else if(S.op==="compose") e=compose();
   else{
     var op=pick();
@@ -1577,7 +1756,7 @@ function newTask(reset){
   $("qlab").textContent=e.lab||"Quanto fa?";
   var q=$("question"); q.textContent=e.q;
   q.className="q"+(e.word?" parola":"")+(isEur()?" eur":"")+(e.q.length>16?" long":"");
-  setFb("","Muovi lo strumento");
+  setFb("",isPay()?(S.tool==="1000"?"Tocca monete e banconote":"Tocca le monete"):"Muovi lo strumento");
   $("next").classList.remove("show","countdown");
   $("hint").textContent=hint();
   setValue(0,{check:false,silent:true});
@@ -1591,6 +1770,9 @@ function setFb(cls,txt,emoji){
   if(emoji){ ic.classList.remove("pop"); void ic.offsetWidth; ic.classList.add("pop"); }
 }
 function hint(){
+  if(isPay()) return S.tool==="1000"
+    ? "Tocca monete e banconote per pagare: la casa conta quello che hai dato."
+    : "Tocca le monete per pagare: la linea conta quello che hai dato.";
   if(S.mode!=="free") return isEur()
     ? "Muovi lo strumento fino alla cifra: si controlla da sola."
     : "Muovi lo strumento fino al numero: si controlla da solo.";
@@ -1773,26 +1955,38 @@ function applyMode(m){
   S.mode=m;
   $("qkGame").setAttribute("aria-pressed",String(m==="game"));
   placeResult(m!=="free");
+  syncOpVisibility();
   if(m==="game") setOp("compose"); else newTask(true);
 }
 function syncOpVisibility(){
-  var calcOn=S.mode==="game"&&S.op!=="compose";
+  var calcOn=S.mode==="game"&&S.op!=="compose"&&S.op!=="pay";
   $("opBtn").hidden=!calcOn;
   $("grpOp").hidden=!calcOn;
+  /* Pagare ha senso solo con gli euro. */
+  $("paySwitch").hidden=!(S.mode==="game"&&isEur());
+}
+function syncActivityChips(){
+  $("opText").textContent=OPLABEL[S.op]||"+";
+  $("calcSwitch").setAttribute("aria-pressed",String(S.op!=="compose"&&S.op!=="pay"));
+  $("paySwitch").setAttribute("aria-pressed",String(S.op==="pay"));
+  document.querySelectorAll(".op-btn").forEach(function(x){
+    x.setAttribute("aria-pressed",x.dataset.op===S.op?"true":"false");
+  });
+  syncOpVisibility();
 }
 function setOp(op){
   S.op=op;
-  if(op!=="compose") lastConcreteOp=op;
-  $("opText").textContent=OPLABEL[op]||"+";
-  $("calcSwitch").setAttribute("aria-pressed",String(op!=="compose"));
-  document.querySelectorAll(".op-btn").forEach(function(x){
-    x.setAttribute("aria-pressed",x.dataset.op===op?"true":"false");
-  });
-  syncOpVisibility();
+  if(op!=="compose"&&op!=="pay") lastConcreteOp=op;
+  syncActivityChips();
+  buildPad();
   newTask(true);
 }
 $("calcSwitch").addEventListener("click",function(){
-  setOp(S.op!=="compose"?"compose":lastConcreteOp);
+  var calcOn=S.op!=="compose"&&S.op!=="pay";
+  setOp(calcOn?"compose":lastConcreteOp);
+});
+$("paySwitch").addEventListener("click",function(){
+  setOp(S.op==="pay"?"compose":"pay");
 });
 document.querySelectorAll(".op-btn").forEach(function(b){
   b.addEventListener("click",function(){ setOp(b.dataset.op); });
@@ -1807,6 +2001,7 @@ function setLevel(lev){
     x.setAttribute("aria-pressed",parseInt(x.dataset.lev,10)===lev?"true":"false");
   });
   $("levHint").textContent=LEVDESC[lev];
+  buildPad();
   newTask(true);
 }
 segPick("#segLev",function(b){ setLevel(parseInt(b.dataset.lev,10)); });
@@ -1833,7 +2028,9 @@ function syncUnit(){
 }
 function setUnit(u){
   S.unit=u;
-  syncUnit(); paintCaps(); buildPad(); refresh(); newTask(true);
+  syncUnit(); paintCaps(); refresh();
+  if(!isEur()&&S.op==="pay"){ setOp("compose"); return; }
+  syncActivityChips(); buildPad(); newTask(true);
 }
 segPick("#segUnit",function(b){ setUnit(b.dataset.unit); });
 $("qkEuro").addEventListener("click",function(){ setUnit(S.unit==="eur"?"num":"eur"); });
@@ -1902,12 +2099,15 @@ function selectTool(t){
     b.setAttribute("aria-selected",b.dataset.tool===t?"true":"false");
   });
   $("panel20").hidden=t!=="20"; $("panel100").hidden=t!=="100"; $("panel1000").hidden=t!=="1000";
-  syncUnit(); paintCaps(); buildPad(); refresh(); newTask(true);
+  syncUnit(); paintCaps();
+  if(!isEur()&&S.op==="pay") S.op="compose";
+  syncActivityChips(); buildPad(); refresh(); newTask(true);
 }
 document.addEventListener("keydown",function(e){
   if(openPanelEl) return;
   var tag=(e.target&&e.target.tagName)||"";
   if(tag==="INPUT"||tag==="TEXTAREA") return;
+  if(isPay()&&(e.key==="ArrowRight"||e.key==="ArrowUp"||e.key==="ArrowLeft"||e.key==="ArrowDown")) return;
   var st=e.shiftKey?(S.tool==="1000"?100:10):1;
   if(e.key==="ArrowRight"||e.key==="ArrowUp"){ setValue(S.v[S.tool]+st); e.preventDefault(); }
   else if(e.key==="ArrowLeft"||e.key==="ArrowDown"){ setValue(S.v[S.tool]-st); e.preventDefault(); }
@@ -2055,16 +2255,11 @@ if(saved&&typeof saved==="object"){
     S.mode="game";
     $("qkGame").setAttribute("aria-pressed","true");
     placeResult(true);
-    if(saved.op==="compose"||OPORDER.indexOf(saved.op)>=0){
+    if(saved.op==="compose"||saved.op==="pay"||OPORDER.indexOf(saved.op)>=0){
       S.op=saved.op;
-      if(saved.op!=="compose") lastConcreteOp=saved.op;
+      if(saved.op!=="compose"&&saved.op!=="pay") lastConcreteOp=saved.op;
     }
-    $("opText").textContent=OPLABEL[S.op]||"+";
-    $("calcSwitch").setAttribute("aria-pressed",String(S.op!=="compose"));
-    document.querySelectorAll(".op-btn").forEach(function(x){
-      x.setAttribute("aria-pressed",x.dataset.op===S.op?"true":"false");
-    });
-    syncOpVisibility();
+    syncActivityChips();
   }
 }
 selectTool(saved&&MAX[saved.tool]?saved.tool:"20");
