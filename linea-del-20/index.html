@@ -811,10 +811,28 @@ body.scrolled .brandbar{
   .pad button:hover{background:var(--paper-3)}
   .lvl:hover{background:var(--paper-3)}
 }
+
+/* ---------- torna alle app di Ulisse ---------- */
+.uphome{
+  display:inline-flex;align-items:center;gap:9px;margin:calc(10px + env(safe-area-inset-top)) 0 0;
+  padding:6px 15px 6px 6px;border-radius:999px;text-decoration:none;
+  font-family:var(--text);font-weight:800;font-size:14.5px;color:var(--ink);
+  background:var(--card);border:1.5px solid var(--border-soft);
+  box-shadow:0 2px 10px -6px rgba(22,26,43,.5);
+  transition:transform .14s ease, border-color .14s ease;
+}
+.uphome img{width:26px;height:26px;border-radius:9px;display:block}
+.uphome:hover,.uphome:focus-visible{border-color:var(--accent);transform:translateX(-2px);outline:none}
+.uphome:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.uphome:active{transform:scale(.97)}
+/* la barra del titolo e' appiccicata in alto: senza questo il chip le finisce sotto */
+.brandbar{padding-top:10px}
 </style>
 </head>
 <body>
 <div class="app">
+
+  <a class="uphome" href="../" aria-label="Torna a tutte le app di Ulisse"><img src="ulisse-72.png" width="26" height="26" alt=""><span>&larr; Le app di Ulisse</span></a>
 
   <header class="brandbar">
     <div class="mark" aria-hidden="true"><i></i><i></i><i></i></div>

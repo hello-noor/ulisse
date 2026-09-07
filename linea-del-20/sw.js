@@ -3,7 +3,7 @@
    cosi' la linea del 20 si apre anche in aereo, in treno o senza rete.
    Per pubblicare una versione nuova basta cambiare CACHE (v2, v3...). */
 
-const CACHE = 'bortolato-v2';
+const CACHE = 'bortolato-v4';
 /* Tutte le app di Ulisse stanno sullo stesso sito: qui ripuliamo solo
    le cache di questa app, altrimenti cancelleremmo quelle delle altre. */
 const CACHE_PREFIX = 'bortolato-';
@@ -16,7 +16,8 @@ const ASSETS = [
   './icon-512.png',
   './icon-maskable-512.png',
   './apple-touch-icon.png',
-  './favicon-32.png'
+  './favicon-32.png',
+  './ulisse-72.png'
 ];
 
 self.addEventListener('install', e => {
