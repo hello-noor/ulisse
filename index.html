@@ -218,6 +218,11 @@ soon.innerHTML = `
   <p class="name">La prossima app</p>
   <p class="desc">Ulisse la sta ancora inventando.</p>`;
 grid.append(soon);
+
+/* La pagina si ricorda di sé: così l'elenco si apre anche senza rete. */
+if ("serviceWorker" in navigator){
+  addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+}
 </script>
 </body>
 </html>

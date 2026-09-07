@@ -4,6 +4,7 @@
   "description": "Le app scritte da Ulisse, 6 anni, con l'aiuto di papà. Giochi e strumenti che funzionano anche senza rete.",
   "lang": "it",
   "dir": "ltr",
+  "id": "/",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
