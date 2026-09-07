@@ -3,7 +3,7 @@
    così il gioco parte anche senza rete: in auto, in treno, in montagna.
    Per pubblicare una nuova versione basta cambiare CACHE (es. v2, v3...). */
 
-const CACHE = 'ncc-v2';
+const CACHE = 'ncc-v4';
 /* Tutte le app di Ulisse stanno sullo stesso sito: qui ripuliamo solo
    le cache di questa app, altrimenti cancelleremmo quelle delle altre. */
 const CACHE_PREFIX = 'ncc-';
@@ -16,7 +16,8 @@ const ASSETS = [
   './icon-512.png',
   './icon-maskable-512.png',
   './apple-touch-icon.png',
-  './favicon-32.png'
+  './favicon-32.png',
+  './ulisse-72.png'
 ];
 
 self.addEventListener('install', e => {

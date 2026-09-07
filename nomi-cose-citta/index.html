@@ -374,10 +374,26 @@
   @keyframes cfall{from{opacity:1;transform:translateY(-20px) rotate(0)}to{opacity:0;transform:translateY(88vh) rotate(620deg)}}
 
   @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+
+  /* ---------- torna alle app di Ulisse ---------- */
+  .uphome{
+    display:inline-flex;align-items:center;gap:9px;margin:2px 0 12px;
+    padding:6px 15px 6px 6px;border-radius:999px;text-decoration:none;
+    font-family:var(--body);font-weight:800;font-size:14.5px;color:var(--ink);
+    background:rgba(var(--panel-tint),.10);border:1.5px solid rgba(var(--panel-tint),.22);
+    transition:transform .14s ease, background .14s ease, border-color .14s ease;
+  }
+  .uphome img{width:26px;height:26px;border-radius:9px;display:block}
+  .uphome:hover,.uphome:focus-visible{background:rgba(var(--panel-tint),.18);
+    border-color:var(--gold);transform:translateX(-2px);outline:none}
+  .uphome:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+  .uphome:active{transform:scale(.97)}
 </style>
 </head>
 <body>
 <div class="wrap">
+
+  <a class="uphome" href="../" aria-label="Torna a tutte le app di Ulisse"><img src="ulisse-72.png" width="26" height="26" alt=""><span>&larr; Le app di Ulisse</span></a>
 
   <div class="brand">
     <div class="titles">
