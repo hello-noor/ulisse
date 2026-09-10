@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#8b5cf6">
+  <title>Per Nonna Rosella - Diario LDL</title>
+
+  <!-- Collegamento PWA Manifest -->
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💖</text></svg>">
+
+  <!-- Font e Chart.js -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    :root {
+      --primary-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
+      --card-bg: rgba(255, 255, 255, 0.95);
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --opt: #10b981;
+      --good: #0ea5e9;
+      --warn: #f59e0b;
+      --danger: #ef4444;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: radial-gradient(circle at 10% 20%, #e0e7ff 0%, #fae8ff 50%, #ffe4e6 100%);
+      min-height: 100vh;
+      padding: 20px 14px;
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+    }
+
+    .container {
+      max-width: 540px;
+      width: 100%;
+    }
+
+    .card {
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      border-radius: 28px;
+      padding: 30px 22px;
+      box-shadow: 0 20px 45px -10px rgba(99, 102, 241, 0.18), 0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+      margin-bottom: 24px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .pill-badge {
+      display: inline-flex;
+      align-items: center;
+      background: #fdf2f8;
+      color: #be185d;
+      border: 1px solid #fbcfe8;
+      padding: 6px 16px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.9rem;
+      font-weight: 800;
+      color: #0f172a;
+      letter-spacing: -0.5px;
+    }
+
+    .input-group { margin-bottom: 14px; }
+
+    .field-card {
+      background: #ffffff;
+      border: 2px solid #e2e8f0;
+      border-radius: 18px;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .field-card:focus-within {
+      border-color: #8b5cf6;
+      box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.15);
+    }
+
+    .field-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      flex-shrink: 0;
+    }
+
+    .icon-totale { background: #fee2e2; }
+    .icon-hdl { background: #dcfce7; }
+    .icon-trig { background: #fef3c7; }
+
+    .field-body { flex-grow: 1; }
+
+    label {
+      display: block;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #334155;
+    }
+
+    .hint {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .input-wrapper {
+      display: flex;
+      align-items: baseline;
+      width: 100px;
+    }
+
+    input[type="number"] {
+      width: 100%;
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      text-align: right;
+      border: none;
+      outline: none;
+      color: #0f172a;
+      background: transparent;
+      padding-right: 4px;
+      -moz-appearance: textfield;
+    }
+
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+    }
+
+    .unit {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #94a3b8;
+    }
+
+    .btn-calc {
+      width: 100%;
+      background: var(--primary-gradient);
+      color: white;
+      border: none;
+      border-radius: 18px;
+      padding: 16px;
+      font-size: 1.2rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 10px 22px rgba(168, 85, 247, 0.35);
+      transition: all 0.2s ease;
+      margin-top: 8px;
+    }
+
+    .btn-calc:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.05);
+    }
+
+    /* Risultato Istantaneo */
+    .result-container {
+      display: none;
+      margin-top: 20px;
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 20px;
+      border: 1px solid #e2e8f0;
+      text-align: center;
+    }
+
+    .result-number {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2.8rem;
+      font-weight: 800;
+      line-height: 1;
+      margin: 6px 0;
+    }
+
+    .result-tag {
+      display: inline-block;
+      padding: 5px 16px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: white;
+    }
+
+    /* Sezione Storico e Grafico */
+    .history-card {
+      background: var(--card-bg);
+      border-radius: 28px;
+      padding: 24px;
+      box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+    }
+
+    .history-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .history-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    .btn-clear {
+      background: #fee2e2;
+      color: #ef4444;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 10px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .chart-wrapper {
+      position: relative;
+      height: 240px;
+      width: 100%;
+      margin-bottom: 18px;
+    }
+
+    .history-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 180px;
+      overflow-y: auto;
+    }
+
+    .history-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: white;
+      padding: 10px 14px;
+      border-radius: 12px;
+      border: 1px solid #f1f5f9;
+      font-size: 0.9rem;
+    }
+
+    .item-date { color: var(--text-muted); font-weight: 500; }
+    .item-val { font-weight: 800; font-family: 'Outfit', sans-serif; font-size: 1.1rem; }
+
+    footer {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 0.8rem;
+      color: #94a3b8;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="card">
+      <header>
+        <div class="pill-badge">💝 Fatto con amore da Ulisse</div>
+        <h1>Diario LDL di Nonna Rosella</h1>
+        <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 4px;">Salva e monitora le tue analisi nel tempo</p>
+      </header>
+
+      <div class="input-group">
+        <div class="field-card">
+          <div class="field-icon icon-totale">🩸</div>
+          <div class="field-body">
+            <label for="totale">Colesterolo Totale</label>
+            <div class="hint">Dal referto</div>
+          </div>
+          <div class="input-wrapper">
+            <input type="number" id="totale" placeholder="200" inputmode="numeric">
+            <span class="unit">mg/dL</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <div class="field-card">
+          <div class="field-icon icon-hdl">🛡️</div>
+          <div class="field-body">
+            <label for="hdl">Colesterolo HDL</label>
+            <div class="hint">Quello "buono"</div>
+          </div>
+          <div class="input-wrapper">
+            <input type="number" id="hdl" placeholder="55" inputmode="numeric">
+            <span class="unit">mg/dL</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <div class="field-card">
+          <div class="field-icon icon-trig">✨</div>
+          <div class="field-body">
+            <label for="trigliceridi">Trigliceridi</label>
+            <div class="hint">Grassi nel sangue</div>
+          </div>
+          <div class="input-wrapper">
+            <input type="number" id="trigliceridi" placeholder="125" inputmode="numeric">
+            <span class="unit">mg/dL</span>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn-calc" onclick="salvaECalcola()">✨ Calcola e Salva nel Diario</button>
+
+      <!-- Risultato Immediato -->
+      <div id="risultato" class="result-container">
+        <div style="font-size: 0.9rem; font-weight: 700; color: #64748b; text-transform: uppercase;">Colesterolo LDL Calcolato</div>
+        <div id="ldl-num" class="result-number">--</div>
+        <div id="status-pill" class="result-tag">--</div>
+      </div>
+    </div>
+
+    <!-- Scheda Storico con Grafico -->
+    <div class="history-card">
+      <div class="history-header">
+        <div class="history-title">📈 Andamento nel Tempo</div>
+        <button class="btn-clear" onclick="svuotaStorico()">Azzera</button>
+      </div>
+
+      <div class="chart-wrapper">
+        <canvas id="trendChart"></canvas>
+      </div>
+
+      <div class="history-list" id="history-list">
+        <!-- Voci salvate generate in JS -->
+      </div>
+    </div>
+
+    <footer>
+      Applicazione per Nonna Rosella · Formula di Friedewald.<br>
+      Mostra sempre il grafico al tuo medico di famiglia!
+    </footer>
+  </div>
+
+  <script>
+    // Registrazione Service Worker per PWA Offline
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(() => console.log("PWA Registrata con successo!"))
+          .catch((err) => console.log("Errore SW:", err));
+      });
+    }
+
+    let chartInstance = null;
+
+    // Carica lo storico dal LocalStorage
+    function caricaStorico() {
+      return JSON.parse(localStorage.getItem('nonna_ldl_history') || '[]');
+    }
+
+    function salvaNelDiario(valoreLDL) {
+      const storico = caricaStorico();
+      const nuovaMisurazione = {
+        data: new Date().toLocaleDateString('it-IT', { day: '2-digit', month: 'short' }),
+        valore: valoreLDL,
+        orario: new Date().toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' })
+      };
+      storico.push(nuovaMisurazione);
+      localStorage.setItem('nonna_ldl_history', JSON.stringify(storico));
+      aggiornaVistaStorico();
+    }
+
+    function svuotaStorico() {
+      if (confirm("Nonna, vuoi davvero cancellare tutto lo storico delle misurazioni?")) {
+        localStorage.removeItem('nonna_ldl_history');
+        aggiornaVistaStorico();
+      }
+    }
+
+    function aggiornaVistaStorico() {
+      const storico = caricaStorico();
+      const listEl = document.getElementById('history-list');
+      listEl.innerHTML = '';
+
+      if (storico.length === 0) {
+        listEl.innerHTML = '<div style="text-align:center; color:#94a3b8; font-size:0.9rem; padding: 10px;">Nessuna misurazione salvata. Fai il tuo primo calcolo!</div>';
+      } else {
+        [...storico].reverse().forEach(item => {
+          let colore = item.valore < 100 ? 'var(--opt)' : (item.valore <= 129 ? 'var(--good)' : (item.valore <= 159 ? 'var(--warn)' : 'var(--danger)'));
+          listEl.innerHTML += `
+            <div class="history-item">
+              <span class="item-date">📅 ${item.data} (${item.orario})</span>
+              <span class="item-val" style="color: ${colore}">${item.valore} mg/dL</span>
+            </div>
+          `;
+        });
+      }
+
+      aggiornaGrafico(storico);
+    }
+
+    function aggiornaGrafico(storico) {
+      const ctx = document.getElementById('trendChart').getContext('2d');
+      const labels = storico.map(item => item.data);
+      const dataValues = storico.map(item => item.valore);
+
+      if (chartInstance) chartInstance.destroy();
+
+      chartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels.length ? labels : ['Nessun dato'],
+          datasets: [
+            {
+              label: 'LDL di Nonna (mg/dL)',
+              data: dataValues.length ? dataValues : [0],
+              borderColor: '#8b5cf6',
+              backgroundColor: 'rgba(139, 92, 246, 0.1)',
+              fill: true,
+              tension: 0.35,
+              borderWidth: 3,
+              pointRadius: 6,
+              pointBackgroundColor: '#ec4899',
+            },
+            {
+              label: 'Soglia Ottimale (100)',
+              data: Array(labels.length || 1).fill(100),
+              borderColor: 'rgba(16, 185, 129, 0.6)',
+              borderDash: [5, 5],
+              fill: false,
+              pointRadius: 0
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { position: 'bottom', labels: { boxWidth: 12, font: { weight: 600 } } }
+          },
+          scales: {
+            y: {
+              beginAtZero: false,
+              suggestedMin: 50,
+              suggestedMax: 200,
+              grid: { color: '#f1f5f9' }
+            },
+            x: { grid: { display: false } }
+          }
+        }
+      });
+    }
+
+    function salvaECalcola() {
+      const totale = parseFloat(document.getElementById('totale').value);
+      const hdl = parseFloat(document.getElementById('hdl').value);
+      const trigliceridi = parseFloat(document.getElementById('trigliceridi').value);
+
+      if (isNaN(totale) || isNaN(hdl) || isNaN(trigliceridi)) {
+        alert('Nonna Rosella, controlla di aver inserito tutti e tre i valori!');
+        return;
+      }
+
+      const ldl = Math.round(totale - hdl - (trigliceridi / 5));
+      const displayLdl = ldl < 0 ? 0 : ldl;
+
+      // Aggiorna scheda risultato
+      const resBox = document.getElementById('risultato');
+      const numElem = document.getElementById('ldl-num');
+      const pillElem = document.getElementById('status-pill');
+
+      resBox.style.display = 'block';
+      numElem.innerText = displayLdl + " mg/dL";
+
+      if (displayLdl < 100) {
+        pillElem.style.background = "var(--opt)";
+        pillElem.innerText = "🌟 Ottimale (< 100)";
+        numElem.style.color = "var(--opt)";
+      } else if (displayLdl <= 129) {
+        pillElem.style.background = "var(--good)";
+        pillElem.innerText = "👍 Buono (100 - 129)";
+        numElem.style.color = "var(--good)";
+      } else if (displayLdl <= 159) {
+        pillElem.style.background = "var(--warn)";
+        pillElem.innerText = "⚠️ Al limite (130 - 159)";
+        numElem.style.color = "var(--warn)";
+      } else {
+        pillElem.style.background = "var(--danger)";
+        pillElem.innerText = "❗ Alto (≥ 160)";
+        numElem.style.color = "var(--danger)";
+      }
+
+      // Salva nello storico e rigenera grafico
+      salvaNelDiario(displayLdl);
+    }
+
+    // Inizializza visualizzazione all'avvio
+    document.addEventListener('DOMContentLoaded', () => {
+      aggiornaVistaStorico();
+    });
+  </script>
+</body>
+</html>
