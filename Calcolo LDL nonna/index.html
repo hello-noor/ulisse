@@ -6,12 +6,11 @@
   <meta name="theme-color" content="#8b5cf6">
   <title>Diario LDL di Nonna Rosella</title>
 
-  <!-- FAVICON SVG INTEGRATA CON CUORE E GOCCIA -->
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='26' fill='%238b5cf6'/><text x='50%' y='66%' font-size='56' text-anchor='middle'>💖</text></svg>">
-  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='26' fill='%238b5cf6'/><text x='50%' y='66%' font-size='56' text-anchor='middle'>💖</text></svg>">
-
-  <!-- MANIFEST PWA INLINE (Funziona anche senza file esterno) -->
-  <link rel="manifest" href="data:application/manifest+json;base64,eyJuYW1lIjoiRGlhcmlvIExETCBkaSBOb25uYSBSb3NlbGxhIiwic2hvcnRfbmFtZSI6Ik5vbm5hIFJvc2VsbGEiLCJzdGFydF91cmwiOiIuLyIsImRpc3BsYXkiOiJzdGFuZGFsb25lIiwiYmFja2dyb3VuZF9jb2xvciI6IiNmOGZhZmMiLCJ0aGVtZV9jb2xvciI6IiM4YjVjZjYifQ==">
+  <!-- FAVICON ED ICONE PNG REALI -->
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="manifest" href="manifest.json">
 
   <!-- Font e Chart.js -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -22,14 +21,13 @@
   <style>
     :root {
       --primary-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
-      --card-bg: rgba(255, 255, 255, 0.96);
-      --text-main: #0f172a;
+      --card-bg: rgba(255, 255, 255, 0.95);
+      --text-main: #1e293b;
       --text-muted: #64748b;
-      --opt: #10b981;    /* Verde smeraldo */
-      --good: #0ea5e9;   /* Azzurro cielo */
-      --warn: #f59e0b;   /* Ambra / Arancio */
-      --danger: #ef4444; /* Rosso corallo */
-      --wa: #25d366;
+      --opt: #10b981;
+      --good: #0ea5e9;
+      --warn: #f59e0b;
+      --danger: #ef4444;
     }
 
     * {
@@ -43,7 +41,7 @@
     body {
       background: radial-gradient(circle at 10% 15%, #e0e7ff 0%, #fae8ff 50%, #ffe4e6 100%);
       min-height: 100vh;
-      padding: 20px 14px 40px;
+      padding: 20px 14px;
       color: var(--text-main);
       display: flex;
       justify-content: center;
@@ -54,15 +52,15 @@
       width: 100%;
     }
 
-    /* Banner per installare l'app */
+    /* Banner per installare l'app sul telefono */
     .install-banner {
       display: none;
       background: #ffffff;
       border-radius: 20px;
       padding: 12px 18px;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
       border: 1px solid #e2e8f0;
-      box-shadow: 0 8px 24px rgba(99, 102, 241, 0.12);
+      box-shadow: 0 10px 25px rgba(139, 92, 246, 0.12);
       align-items: center;
       justify-content: space-between;
       gap: 12px;
@@ -71,10 +69,10 @@
     .install-info {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       font-size: 0.95rem;
       font-weight: 700;
-      color: #1e293b;
+      color: #334155;
     }
 
     .install-btn {
@@ -87,20 +85,15 @@
       font-weight: 700;
       cursor: pointer;
       flex-shrink: 0;
-      box-shadow: 0 4px 14px rgba(139, 92, 246, 0.35);
-      transition: transform 0.15s ease;
-    }
-
-    .install-btn:active {
-      transform: scale(0.96);
+      box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
     }
 
     .card {
       background: var(--card-bg);
       backdrop-filter: blur(16px);
-      border-radius: 30px;
-      padding: 30px 22px;
-      box-shadow: 0 20px 45px -10px rgba(99, 102, 241, 0.18), 0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+      border-radius: 28px;
+      padding: 28px 22px;
+      box-shadow: 0 20px 45px -10px rgba(99, 102, 241, 0.18);
       margin-bottom: 22px;
       position: relative;
       overflow: hidden;
@@ -118,53 +111,46 @@
 
     header {
       text-align: center;
-      margin-bottom: 24px;
+      margin-bottom: 22px;
     }
 
     .pill-badge {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
       background: #fdf2f8;
       color: #be185d;
       border: 1px solid #fbcfe8;
       padding: 6px 16px;
       border-radius: 999px;
-      font-size: 0.92rem;
+      font-size: 0.95rem;
       font-weight: 700;
-      box-shadow: 0 2px 8px rgba(244, 114, 182, 0.15);
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     h1 {
       font-family: 'Outfit', sans-serif;
-      font-size: 2.1rem;
+      font-size: 1.95rem;
       font-weight: 800;
       color: #0f172a;
       letter-spacing: -0.5px;
-      line-height: 1.2;
     }
 
     .subtitle {
-      font-size: 1rem;
+      font-size: 0.95rem;
       color: var(--text-muted);
-      margin-top: 6px;
-      line-height: 1.4;
+      margin-top: 4px;
     }
 
-    .input-group {
-      margin-bottom: 14px;
-    }
+    .input-group { margin-bottom: 12px; }
 
     .field-card {
       background: #ffffff;
       border: 2px solid #e2e8f0;
-      border-radius: 18px;
-      padding: 12px 16px;
+      border-radius: 16px;
+      padding: 10px 14px;
       display: flex;
       align-items: center;
-      gap: 14px;
-      transition: border-color 0.2s, box-shadow 0.2s;
+      gap: 12px;
     }
 
     .field-card:focus-within {
@@ -173,47 +159,45 @@
     }
 
     .field-icon {
-      width: 44px;
-      height: 44px;
-      border-radius: 14px;
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.35rem;
+      font-size: 1.3rem;
       flex-shrink: 0;
     }
 
-    .icon-date { background: #e0e7ff; }
     .icon-totale { background: #fee2e2; }
     .icon-hdl { background: #dcfce7; }
     .icon-trig { background: #fef3c7; }
+    .icon-date { background: #e0e7ff; }
 
-    .field-body {
-      flex-grow: 1;
-    }
+    .field-body { flex-grow: 1; }
 
     label {
       display: block;
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       font-weight: 700;
-      color: #1e293b;
+      color: #334155;
     }
 
     .hint {
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       color: var(--text-muted);
     }
 
     .input-wrapper {
       display: flex;
       align-items: baseline;
-      width: 110px;
+      width: 105px;
     }
 
     input[type="number"], input[type="date"] {
       width: 100%;
       font-family: 'Outfit', sans-serif;
-      font-size: 1.45rem;
+      font-size: 1.35rem;
       font-weight: 700;
       text-align: right;
       border: none;
@@ -224,10 +208,9 @@
     }
 
     input[type="date"] {
-      font-size: 1.05rem;
+      font-size: 1rem;
       width: 135px;
       cursor: pointer;
-      text-align: center;
     }
 
     input[type="number"]::-webkit-outer-spin-button,
@@ -236,8 +219,8 @@
     }
 
     .unit {
-      font-size: 0.85rem;
-      font-weight: 700;
+      font-size: 0.8rem;
+      font-weight: 600;
       color: #94a3b8;
     }
 
@@ -246,81 +229,52 @@
       background: var(--primary-gradient);
       color: white;
       border: none;
-      border-radius: 20px;
-      padding: 17px;
+      border-radius: 18px;
+      padding: 16px;
       font-size: 1.25rem;
       font-weight: 700;
       cursor: pointer;
-      box-shadow: 0 10px 24px rgba(139, 92, 246, 0.35);
-      transition: transform 0.15s ease, filter 0.15s ease;
-      margin-top: 10px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 10px;
+      box-shadow: 0 10px 22px rgba(168, 85, 247, 0.35);
+      margin-top: 8px;
     }
 
-    .btn-calc:hover {
-      filter: brightness(1.04);
-    }
-
-    .btn-calc:active {
-      transform: scale(0.98);
-    }
-
-    /* Risultato e Barra Grafica */
+    /* Scheda Risultato */
     .result-container {
       display: none;
-      margin-top: 24px;
+      margin-top: 20px;
       background: #ffffff;
-      border-radius: 24px;
-      padding: 22px 18px;
+      border-radius: 20px;
+      padding: 20px 16px;
       border: 1px solid #e2e8f0;
       text-align: center;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.04);
-      animation: fadeIn 0.35s ease forwards;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .result-name-tag {
-      font-size: 0.95rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-      color: var(--text-muted);
     }
 
     .result-number {
       font-family: 'Outfit', sans-serif;
-      font-size: 3.2rem;
+      font-size: 3rem;
       font-weight: 800;
-      line-height: 1.1;
+      line-height: 1;
       margin: 6px 0;
     }
 
     .result-tag {
       display: inline-block;
-      padding: 6px 20px;
+      padding: 5px 16px;
       border-radius: 999px;
       font-weight: 700;
-      font-size: 1.05rem;
+      font-size: 1rem;
       color: white;
-      margin-bottom: 6px;
     }
 
-    /* Barra Graduata con Indicatore Cursore */
+    /* Barra Graduata */
     .meter-area {
-      margin: 28px 4px 10px;
+      margin: 24px 4px 10px;
       position: relative;
     }
 
     .pointer-box {
       position: relative;
-      height: 38px;
+      height: 34px;
       width: 100%;
     }
 
@@ -328,7 +282,7 @@
       position: absolute;
       top: 0;
       transform: translateX(-50%);
-      transition: left 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transition: left 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -336,13 +290,12 @@
 
     .pointer-bubble {
       font-family: 'Outfit', sans-serif;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       font-weight: 800;
       background: #0f172a;
       color: #ffffff;
-      padding: 4px 10px;
-      border-radius: 8px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      padding: 3px 8px;
+      border-radius: 6px;
       white-space: nowrap;
     }
 
@@ -351,7 +304,7 @@
       height: 0;
       border-left: 6px solid transparent;
       border-right: 6px solid transparent;
-      border-top: 7px solid #0f172a;
+      border-top: 6px solid #0f172a;
     }
 
     .rainbow-track {
@@ -360,13 +313,13 @@
       border-radius: 999px;
       display: flex;
       overflow: hidden;
-      box-shadow: inset 0 2px 5px rgba(0,0,0,0.15);
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.15);
       gap: 2px;
       background: #e2e8f0;
       padding: 2px;
     }
 
-    .track-seg { height: 100%; border-radius: 5px; }
+    .track-seg { height: 100%; border-radius: 4px; }
     .seg-1 { width: 35%; background: var(--opt); }
     .seg-2 { width: 20%; background: var(--good); }
     .seg-3 { width: 20%; background: var(--warn); }
@@ -376,7 +329,7 @@
       display: flex;
       justify-content: space-between;
       padding: 6px 2px 0;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       font-weight: 700;
       color: #94a3b8;
     }
@@ -384,103 +337,96 @@
     .mini-legend {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      margin-top: 16px;
+      gap: 6px;
+      margin-top: 14px;
       text-align: left;
     }
 
     .legend-chip {
       background: #f8fafc;
       border: 1px solid #f1f5f9;
-      padding: 7px 11px;
-      border-radius: 12px;
+      padding: 6px 10px;
+      border-radius: 10px;
       display: flex;
       align-items: center;
-      gap: 8px;
-      font-size: 0.82rem;
+      gap: 6px;
+      font-size: 0.78rem;
       font-weight: 600;
       color: #475569;
     }
 
     .legend-dot {
-      width: 10px;
-      height: 10px;
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
       flex-shrink: 0;
     }
 
     .advice-box {
       background: #f8fafc;
-      border-left: 5px solid #8b5cf6;
-      padding: 14px 16px;
-      border-radius: 0 14px 14px 0;
-      margin-top: 16px;
-      font-size: 1.05rem;
-      line-height: 1.5;
+      border-left: 4px solid #8b5cf6;
+      padding: 12px;
+      border-radius: 0 12px 12px 0;
+      margin-top: 14px;
+      font-size: 0.95rem;
+      line-height: 1.4;
       text-align: left;
       color: #334155;
     }
 
-    /* Bottone WhatsApp */
     .btn-wa {
       width: 100%;
-      background: var(--wa);
+      background: #25d366;
       color: white;
       border: none;
-      border-radius: 18px;
-      padding: 15px;
-      font-size: 1.15rem;
+      border-radius: 16px;
+      padding: 14px;
+      font-size: 1.1rem;
       font-weight: 700;
       cursor: pointer;
-      margin-top: 16px;
+      margin-top: 14px;
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 10px;
-      box-shadow: 0 8px 20px rgba(37, 211, 102, 0.3);
-      transition: transform 0.15s ease, filter 0.15s ease;
+      gap: 8px;
+      box-shadow: 0 6px 18px rgba(37, 211, 102, 0.35);
     }
 
-    .btn-wa:hover { filter: brightness(1.05); }
-    .btn-wa:active { transform: scale(0.98); }
-
-    /* Sezione Storico e Grafico */
+    /* Storico e Grafico */
     .history-card {
       background: var(--card-bg);
-      border-radius: 30px;
+      border-radius: 28px;
       padding: 24px 20px;
       box-shadow: 0 15px 35px -10px rgba(0,0,0,0.06);
-      border: 1px solid rgba(255,255,255,0.8);
     }
 
     .history-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
 
     .history-title {
       font-family: 'Outfit', sans-serif;
-      font-size: 1.4rem;
+      font-size: 1.35rem;
       font-weight: 800;
       color: #0f172a;
     }
 
     .chart-wrapper {
       position: relative;
-      height: 250px;
+      height: 230px;
       width: 100%;
-      margin-bottom: 18px;
+      margin-bottom: 16px;
     }
 
     .history-list {
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      max-height: 240px;
+      gap: 8px;
+      max-height: 200px;
       overflow-y: auto;
-      padding-right: 4px;
     }
 
     .history-item {
@@ -488,63 +434,36 @@
       justify-content: space-between;
       align-items: center;
       background: white;
-      padding: 12px 14px;
+      padding: 10px 12px;
       border-radius: 14px;
-      border: 1px solid #e2e8f0;
+      border: 1px solid #f1f5f9;
     }
 
-    .item-left {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .item-date {
-      font-weight: 700;
-      font-size: 0.95rem;
-      color: #1e293b;
-    }
-
-    .item-sub {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-    }
-
-    .item-right {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .item-val {
-      font-family: 'Outfit', sans-serif;
-      font-size: 1.3rem;
-      font-weight: 800;
-    }
+    .item-left { display: flex; flex-direction: column; gap: 2px; }
+    .item-date { font-weight: 700; font-size: 0.92rem; color: #334155; }
+    .item-sub { font-size: 0.75rem; color: var(--text-muted); }
+    .item-right { display: flex; align-items: center; gap: 12px; }
+    .item-val { font-family: 'Outfit', sans-serif; font-size: 1.25rem; font-weight: 800; }
 
     .btn-delete-item {
       background: #fee2e2;
       color: #ef4444;
       border: none;
-      width: 36px;
-      height: 36px;
-      border-radius: 10px;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      font-size: 1rem;
-      transition: background 0.15s;
+      font-size: 0.95rem;
     }
 
-    .btn-delete-item:active { background: #fecaca; }
-
     footer {
-      margin-top: 24px;
+      margin-top: 20px;
       text-align: center;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       color: #94a3b8;
-      line-height: 1.5;
     }
   </style>
 </head>
@@ -552,41 +471,39 @@
 
   <div class="container">
     
-    <!-- Banner per Installare l'App -->
+    <!-- Banner Scarica / Installa -->
     <div id="install-banner" class="install-banner">
       <div class="install-info">
-        <span style="font-size: 1.5rem;">📲</span>
-        <span>Scarica l'app di Nonna Rosella sul telefono</span>
+        <span style="font-size: 1.4rem;">💖</span>
+        <span>Installa l'app di Nonna Rosella</span>
       </div>
       <button id="btn-install" class="install-btn" onclick="installaApp()">Installa</button>
     </div>
 
     <div class="card">
       <header>
-        <div class="pill-badge">💝 Con affetto da Ulisse per Nonna Rosella</div>
-        <h1>Diario LDL di Nonna Rosella</h1>
-        <p class="subtitle">Bentornata Nonna! Inserisci i valori delle tue analisi per calcolare e salvare il colesterolo LDL</p>
+        <div class="pill-badge">💝 Per Nonna Rosella, da Ulisse</div>
+        <h1>Diario di Nonna Rosella</h1>
+        <p class="subtitle">Calcola, visualizza sulla barra e salva il colesterolo LDL</p>
       </header>
 
-      <!-- Data misurazione -->
       <div class="input-group">
         <div class="field-card">
           <div class="field-icon icon-date">📅</div>
           <div class="field-body">
             <label for="data-misura">Data del referto</label>
-            <div class="hint">Giorno del prelievo</div>
+            <div class="hint">Giorno delle analisi</div>
           </div>
           <input type="date" id="data-misura">
         </div>
       </div>
 
-      <!-- Totale -->
       <div class="input-group">
         <div class="field-card">
           <div class="field-icon icon-totale">🩸</div>
           <div class="field-body">
             <label for="totale">Colesterolo Totale</label>
-            <div class="hint">Valore generale sul referto</div>
+            <div class="hint">Valore generale</div>
           </div>
           <div class="input-wrapper">
             <input type="number" id="totale" placeholder="200" inputmode="numeric">
@@ -595,13 +512,12 @@
         </div>
       </div>
 
-      <!-- HDL -->
       <div class="input-group">
         <div class="field-card">
           <div class="field-icon icon-hdl">🛡️</div>
           <div class="field-body">
             <label for="hdl">Colesterolo HDL</label>
-            <div class="hint">Quello "buono" che protegge</div>
+            <div class="hint">Quello "buono"</div>
           </div>
           <div class="input-wrapper">
             <input type="number" id="hdl" placeholder="55" inputmode="numeric">
@@ -610,13 +526,12 @@
         </div>
       </div>
 
-      <!-- Trigliceridi -->
       <div class="input-group">
         <div class="field-card">
           <div class="field-icon icon-trig">✨</div>
           <div class="field-body">
             <label for="trigliceridi">Trigliceridi</label>
-            <div class="hint">Grassi presenti nel sangue</div>
+            <div class="hint">Grassi del sangue</div>
           </div>
           <div class="input-wrapper">
             <input type="number" id="trigliceridi" placeholder="125" inputmode="numeric">
@@ -625,17 +540,15 @@
         </div>
       </div>
 
-      <button class="btn-calc" onclick="salvaECalcola()">
-        <span>✨ Calcola e Salva nel Diario di Nonna</span>
-      </button>
+      <button class="btn-calc" onclick="salvaECalcola()">✨ Calcola Risultato per Nonna Rosella</button>
 
-      <!-- Scheda Risultato con Barra e Indicatore -->
+      <!-- Risultato -->
       <div id="risultato" class="result-container">
-        <div class="result-name-tag">Colesterolo LDL di Nonna Rosella ("Cattivo")</div>
+        <div style="font-size: 0.9rem; font-weight: 700; color: #64748b; text-transform: uppercase;">LDL Calcolato per Nonna Rosella</div>
         <div id="ldl-num" class="result-number">--</div>
         <div id="status-pill" class="result-tag">--</div>
 
-        <!-- Barra Graduata con Indicatore Cursore -->
+        <!-- Barra Graduata -->
         <div class="meter-area">
           <div class="pointer-box">
             <div id="pointer" class="pointer" style="left: 0%;">
@@ -660,7 +573,6 @@
           </div>
         </div>
 
-        <!-- Mini Legenda -->
         <div class="mini-legend">
           <div class="legend-chip"><span class="legend-dot" style="background: var(--opt);"></span> &lt; 100: Ottimale</div>
           <div class="legend-chip"><span class="legend-dot" style="background: var(--good);"></span> 100-129: Buono</div>
@@ -670,17 +582,13 @@
 
         <div id="advice-text" class="advice-box"></div>
 
-        <!-- Tasto WhatsApp -->
         <button class="btn-wa" onclick="condividiWhatsApp()">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.664-.698c.969.541 1.761.817 2.796.818h.005c3.179 0 5.766-2.587 5.767-5.766.001-3.182-2.585-5.805-5.772-5.805zm0 10.372h-.004c-.958 0-1.802-.277-2.555-.724l-.183-.109-1.58.414.421-1.541-.12-.191c-.519-.824-.827-1.636-.826-2.455.001-2.535 2.063-4.597 4.601-4.597 2.535 0 4.597 2.063 4.597 4.598 0 2.537-2.062 4.605-4.531 4.605z"/>
-          </svg>
-          <span>Invia referto di Nonna su WhatsApp</span>
+          <span>📲 Invia referto di Nonna Rosella su WhatsApp</span>
         </button>
       </div>
     </div>
 
-    <!-- Scheda Storico con Grafico e Cancellazione Singoli Punti -->
+    <!-- Storico -->
     <div class="history-card">
       <div class="history-header">
         <div class="history-title">📈 Andamento di Nonna Rosella</div>
@@ -690,26 +598,18 @@
         <canvas id="trendChart"></canvas>
       </div>
 
-      <div style="font-size: 0.95rem; font-weight: 700; margin-bottom: 10px; color: #475569;">
-        Misurazioni Salvate di Nonna Rosella:
-      </div>
-
-      <div class="history-list" id="history-list">
-        <!-- Voci storiche inserite via JS con pulsante cestino -->
-      </div>
+      <div class="history-list" id="history-list"></div>
     </div>
 
     <footer>
-      Diario LDL creato con amore per Nonna Rosella da Ulisse.<br>
-      Formula di Friedewald · Mostra sempre questi valori al tuo medico curante!
+      Diario di Nonna Rosella creato da Ulisse · Formula di Friedewald.
     </footer>
   </div>
 
   <script>
-    // Imposta la data odierna come default
     document.getElementById('data-misura').value = new Date().toISOString().split('T')[0];
 
-    // GESTIONE INSTALLAZIONE PWA
+    // Installazione PWA
     let deferredPrompt;
     const installBanner = document.getElementById('install-banner');
 
@@ -731,52 +631,43 @@
       } else {
         const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
         if (isIOS) {
-          alert("Nonna Rosella, per installare l'app su iPhone:\n1. Tocca il tasto Condividi in basso (il quadratino con la freccia)\n2. Scegli 'Aggiungi alla schermata Home'");
+          alert("Nonna Rosella, per installare l'app su iPhone:\n1. Tocca il tasto Condividi in basso (il quadrato con la freccia)\n2. Seleziona 'Aggiungi alla schermata Home'");
         } else {
-          alert("Nonna Rosella, per aggiungere l'app allo schermo:\nApri il menu del browser (i 3 puntini in alto a destra) e tocca 'Aggiungi a schermata Home' o 'Installa'.");
+          alert("Nonna Rosella, per installare l'app:\nApri il menu in alto a destra (3 puntini) e premi 'Installa app' o 'Aggiungi a schermata Home'.");
         }
       }
     }
 
     window.addEventListener('DOMContentLoaded', () => {
       const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-      if (!isStandalone) {
-        installBanner.style.display = 'flex';
-      }
+      if (!isStandalone) installBanner.style.display = 'flex';
       aggiornaVistaStorico();
     });
 
-    // REGISTRAZIONE SERVICE WORKER
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('./sw.js')
-        .catch(err => console.log('SW Info:', err));
+      navigator.serviceWorker.register('./sw.js').catch(err => console.log(err));
     }
 
     let chartInstance = null;
     let ultimoRisultato = null;
 
     function caricaStorico() {
-      return JSON.parse(localStorage.getItem('nonna_rosella_ldl_history_v3') || '[]');
+      return JSON.parse(localStorage.getItem('nonna_ldl_history_v2') || '[]');
     }
 
     function salvaStorico(storico) {
-      localStorage.setItem('nonna_rosella_ldl_history_v3', JSON.stringify(storico));
+      localStorage.setItem('nonna_ldl_history_v2', JSON.stringify(storico));
     }
 
     function eliminaPunto(id) {
       let storico = caricaStorico();
-      const puntoDaEliminare = storico.find(item => item.id === id);
-      const dataStr = puntoDaEliminare ? puntoDaEliminare.data : "selezionata";
+      const p = storico.find(item => item.id === id);
+      const dataStr = p ? p.data : "";
 
-      if (confirm(`Nonna Rosella, vuoi cancellare la misurazione del ${dataStr}?`)) {
+      if (confirm(`Nonna Rosella, vuoi eliminare la misurazione del ${dataStr}?`)) {
         storico = storico.filter(item => item.id !== id);
         salvaStorico(storico);
         aggiornaVistaStorico();
-
-        if (ultimoRisultato && ultimoRisultato.id === id) {
-          document.getElementById('risultato').style.display = 'none';
-          ultimoRisultato = null;
-        }
       }
     }
 
@@ -786,7 +677,7 @@
       listEl.innerHTML = '';
 
       if (storico.length === 0) {
-        listEl.innerHTML = '<div style="text-align:center; color:#94a3b8; font-size:0.9rem; padding: 14px;">Nessuna misurazione ancora salvata nel diario di Nonna Rosella. Fai il tuo primo calcolo!</div>';
+        listEl.innerHTML = '<div style="text-align:center; color:#94a3b8; font-size:0.9rem; padding: 12px;">Nessuna misurazione salvata. Esegui il tuo primo calcolo!</div>';
       } else {
         [...storico].reverse().forEach(item => {
           let colore = item.valore < 100 ? 'var(--opt)' : (item.valore <= 129 ? 'var(--good)' : (item.valore <= 159 ? 'var(--warn)' : 'var(--danger)'));
@@ -794,11 +685,11 @@
             <div class="history-item">
               <div class="item-left">
                 <span class="item-date">📅 ${item.data}</span>
-                <span class="item-sub">Totale: ${item.totale} | HDL: ${item.hdl} | Trig: ${item.trig}</span>
+                <span class="item-sub">Tot: ${item.totale} | HDL: ${item.hdl} | Trig: ${item.trig}</span>
               </div>
               <div class="item-right">
                 <span class="item-val" style="color: ${colore}">${item.valore} <small style="font-size:0.75rem; color:#94a3b8;">mg/dL</small></span>
-                <button class="btn-delete-item" onclick="eliminaPunto('${item.id}')" title="Elimina questa misurazione di Nonna Rosella">🗑️</button>
+                <button class="btn-delete-item" onclick="eliminaPunto('${item.id}')" title="Elimina valore">🗑️</button>
               </div>
             </div>
           `;
@@ -814,13 +705,6 @@
       const labels = sorted.map(item => item.data);
       const dataValues = sorted.map(item => item.valore);
 
-      const pointColors = dataValues.map(val => {
-        if (val < 100) return '#10b981';
-        if (val <= 129) return '#0ea5e9';
-        if (val <= 159) return '#f59e0b';
-        return '#ef4444';
-      });
-
       if (chartInstance) chartInstance.destroy();
 
       chartInstance = new Chart(ctx, {
@@ -832,19 +716,18 @@
               label: 'LDL di Nonna Rosella (mg/dL)',
               data: dataValues.length ? dataValues : [null],
               borderColor: '#8b5cf6',
-              backgroundColor: 'rgba(139, 92, 246, 0.12)',
+              backgroundColor: 'rgba(139, 92, 246, 0.1)',
               fill: true,
               tension: 0.3,
               borderWidth: 3,
-              pointRadius: 7,
-              pointHoverRadius: 9,
-              pointBackgroundColor: pointColors.length ? pointColors : '#8b5cf6',
+              pointRadius: 6,
+              pointBackgroundColor: '#ec4899',
             },
             {
               label: 'Soglia Ottimale (100)',
               data: Array(labels.length || 1).fill(100),
-              borderColor: 'rgba(16, 185, 129, 0.7)',
-              borderDash: [6, 6],
+              borderColor: 'rgba(16, 185, 129, 0.6)',
+              borderDash: [5, 5],
               fill: false,
               pointRadius: 0
             }
@@ -854,30 +737,16 @@
           responsive: true,
           maintainAspectRatio: false,
           plugins: {
-            legend: { 
-              position: 'bottom', 
-              labels: { boxWidth: 12, font: { weight: 600, family: 'Plus Jakarta Sans' } } 
-            },
-            tooltip: {
-              callbacks: {
-                label: function(ctx) {
-                  return ` LDL di Nonna Rosella: ${ctx.parsed.y} mg/dL`;
-                }
-              }
-            }
+            legend: { position: 'bottom', labels: { boxWidth: 12, font: { weight: 600 } } }
           },
           scales: {
             y: {
               beginAtZero: false,
               suggestedMin: 50,
               suggestedMax: 200,
-              grid: { color: '#f1f5f9' },
-              ticks: { font: { weight: 600 } }
+              grid: { color: '#f1f5f9' }
             },
-            x: { 
-              grid: { display: false },
-              ticks: { font: { weight: 600 } }
-            }
+            x: { grid: { display: false } }
           }
         }
       });
@@ -890,11 +759,10 @@
       const dataInput = document.getElementById('data-misura').value;
 
       if (isNaN(totale) || isNaN(hdl) || isNaN(trigliceridi)) {
-        alert('Nonna Rosella, controlla di aver inserito tutti e tre i valori delle analisi!');
+        alert('Nonna Rosella, controlla di aver inserito tutti e tre i valori!');
         return;
       }
 
-      // Formula di Friedewald
       const ldl = Math.round(totale - hdl - (trigliceridi / 5));
       const displayLdl = ldl < 0 ? 0 : ldl;
 
@@ -909,61 +777,47 @@
       numElem.innerText = displayLdl + " mg/dL";
       bubbleVal.innerText = displayLdl;
 
-      // Posizionamento sulla scala
       let pos = 0;
-      if (displayLdl <= 100) {
-        pos = (displayLdl / 100) * 35;
-      } else if (displayLdl <= 130) {
-        pos = 35 + ((displayLdl - 100) / 30) * 20;
-      } else if (displayLdl <= 160) {
-        pos = 55 + ((displayLdl - 130) / 30) * 20;
-      } else {
-        pos = 75 + Math.min((displayLdl - 160) / 40 * 25, 23);
-      }
+      if (displayLdl <= 100) pos = (displayLdl / 100) * 35;
+      else if (displayLdl <= 130) pos = 35 + ((displayLdl - 100) / 30) * 20;
+      else if (displayLdl <= 160) pos = 55 + ((displayLdl - 130) / 30) * 20;
+      else pos = 75 + Math.min((displayLdl - 160) / 40 * 25, 23);
 
       setTimeout(() => {
         pointer.style.left = Math.max(4, Math.min(pos, 96)) + "%";
       }, 50);
 
       let statoTesto = "";
-      if (trigliceridi > 400) {
-        pillElem.style.background = "var(--warn)";
-        pillElem.innerText = "Attenzione: Stima Approssimativa";
-        numElem.style.color = "var(--warn)";
-        adviceElem.innerHTML = "<strong>Nota per Nonna Rosella:</strong> Con trigliceridi superiori a 400 mg/dL la formula matematica è meno precisa. Chiedi al medico se consiglia la misurazione diretta in laboratorio.";
-        statoTesto = "Stima Approssimativa (Trigliceridi > 400)";
-      } else if (displayLdl < 100) {
+      if (displayLdl < 100) {
         pillElem.style.background = "var(--opt)";
         pillElem.innerText = "🌟 Livello Ottimale (< 100)";
         numElem.style.color = "var(--opt)";
-        adviceElem.innerHTML = "Ottime notizie Nonna Rosella! Sei nella <strong>fascia verde</strong>: il livello ideale per proteggere il tuo cuore. Continua con le tue sane abitudini!";
-        statoTesto = "Ottimale (< 100 mg/dL)";
+        adviceElem.innerHTML = "Complimenti Nonna Rosella! Sei nella <strong>fascia verde</strong>: il valore ideale per il tuo cuore. Continua così!";
+        statoTesto = "Ottimale (<100)";
       } else if (displayLdl <= 129) {
         pillElem.style.background = "var(--good)";
         pillElem.innerText = "👍 Livello Buono (100 - 129)";
         numElem.style.color = "var(--good)";
-        adviceElem.innerHTML = "Molto bene Nonna Rosella! Sei nella <strong>fascia blu</strong>. Con una dieta equilibrata e le tue camminate mantieni il cuore protetto.";
-        statoTesto = "Buono (100 - 129 mg/dL)";
+        adviceElem.innerHTML = "Molto bene Nonna Rosella! Sei nella <strong>fascia blu</strong>. Un buon livello che si mantiene stabile con un'alimentazione sana.";
+        statoTesto = "Buono (100-129)";
       } else if (displayLdl <= 159) {
         pillElem.style.background = "var(--warn)";
         pillElem.innerText = "⚠️ Livello da Monitorare (130 - 159)";
         numElem.style.color = "var(--warn)";
-        adviceElem.innerHTML = "Nonna Rosella, sei nella <strong>fascia arancione</strong>. Niente paura, ma fai un po' di attenzione ai cibi più grassi e mostra questo valore al tuo medico alla prossima visita.";
-        statoTesto = "Al limite (130 - 159 mg/dL)";
+        adviceElem.innerHTML = "Nonna Rosella, sei nella <strong>fascia arancione</strong>. Fai una bella passeggiata e segnalalo al dottore alla prossima visita.";
+        statoTesto = "Al limite (130-159)";
       } else {
         pillElem.style.background = "var(--danger)";
-        pillElem.innerText = "❗ Livello Più Alto del Normale (≥ 160)";
+        pillElem.innerText = "❗ Livello Più Alto (≥ 160)";
         numElem.style.color = "var(--danger)";
-        adviceElem.innerHTML = "Nonna Rosella, sei nella <strong>fascia rossa</strong>. Mostra questo foglio al tuo medico: ti saprà consigliare un piccolo aggiustamento nell'alimentazione o nella terapia.";
-        statoTesto = "Alto (≥ 160 mg/dL)";
+        adviceElem.innerHTML = "Nonna Rosella, sei nella <strong>fascia rossa</strong>. Mostra questo referto al dottore per valutare insieme la migliore cura o dieta.";
+        statoTesto = "Alto (≥160)";
       }
 
       const dataObj = dataInput ? new Date(dataInput + 'T00:00:00') : new Date();
       const dataFormatted = dataObj.toLocaleDateString('it-IT', { day: '2-digit', month: 'short', year: 'numeric' });
-      const nuovoId = 'id_' + Date.now();
 
       ultimoRisultato = {
-        id: nuovoId,
         data: dataFormatted,
         totale,
         hdl,
@@ -974,11 +828,11 @@
 
       const storico = caricaStorico();
       storico.push({
-        id: nuovoId,
+        id: 'id_' + Date.now(),
         timestamp: dataObj.getTime(),
         data: dataFormatted,
-        totale: totale,
-        hdl: hdl,
+        totale,
+        hdl,
         trig: trigliceridi,
         valore: displayLdl
       });
@@ -990,33 +844,25 @@
 
     function condividiWhatsApp() {
       if (!ultimoRisultato) {
-        alert("Nonna Rosella, fai prima un calcolo per inviare il risultato!");
+        alert("Esegui prima un calcolo!");
         return;
       }
 
       const testo = 
-`❤️ *Analisi del Colesterolo di Nonna Rosella* 🩺
+`🩺 *Analisi del Colesterolo di Nonna Rosella* 💖
 📅 Data: ${ultimoRisultato.data}
 
 • Colesterolo Totale: ${ultimoRisultato.totale} mg/dL
 • Colesterolo Buono (HDL): ${ultimoRisultato.hdl} mg/dL
 • Trigliceridi: ${ultimoRisultato.trigliceridi} mg/dL
 
-📊 *Colesterolo LDL ("cattivo") calcolato: ${ultimoRisultato.ldl} mg/dL*
-📌 Fascia: ${ultimoRisultato.stato}
+📊 *Colesterolo LDL Calcolato: ${ultimoRisultato.ldl} mg/dL*
+📌 Giudizio: ${ultimoRisultato.stato}
 
-_Calcolato con il Diario di Nonna Rosella realizzato con affetto da Ulisse_`;
+(Calcolato con l'app di Nonna Rosella creata da Ulisse)`;
 
-      if (navigator.share) {
-        navigator.share({
-          title: 'Referto Colesterolo Nonna Rosella',
-          text: testo
-        }).catch(() => {
-          window.open("https://wa.me/?text=" + encodeURIComponent(testo), '_blank');
-        });
-      } else {
-        window.open("https://wa.me/?text=" + encodeURIComponent(testo), '_blank');
-      }
+      const url = "https://wa.me/?text=" + encodeURIComponent(testo);
+      window.open(url, '_blank');
     }
   </script>
 </body>
