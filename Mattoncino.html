@@ -185,6 +185,8 @@ button.tn:hover b{text-decoration:underline}
 .coderow{display:flex;align-items:center;gap:10px;margin-bottom:10px}
 .coderow .msg2{font-size:12px;color:var(--muted)}
 #toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:#1D2025;color:#fff;padding:8px 14px;border-radius:9px;font-size:12.5px;z-index:50}
+.lfilter{display:flex;margin:0 0 8px;width:100%}
+.lfilter button{flex:1}
 /* measures + tree */
 .btools{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);display:flex;flex-direction:column;gap:6px;width:min(440px,calc(100% - 20px))}
 .btools .secbox{position:static;transform:none;width:100%}
@@ -770,6 +772,94 @@ const EXAMPLES=[
  place:[{use:'boa',at:[[2,1,19],[20,1,3]]}]}
 ];
 
+const EX_SIMPLE=(()=>{
+const out=[];
+out.push({name:'Fiore in vaso',summary:'Un fiore rosso con foglie verdi in un vaso arancione. Perfetto per iniziare.',size:[8,8],components:[],ops:[
+  {t:'box',x:0,y:0,z:0,w:8,d:8,h:1,c:'G'},
+  {t:'box',x:2,y:1,z:2,w:4,d:4,h:6,c:'O'},
+  {t:'box',x:2,y:7,z:2,w:4,d:4,h:1,c:'E'},
+  {t:'round',x:3,y:8,z:3,d:1,h:10,c:'N'},
+  {t:'box',x:0,y:11,z:3,w:4,d:1,h:1,c:'L'},{t:'box',x:3,y:14,z:2,w:1,d:3,h:1,c:'L'},
+  {t:'box',x:2,y:18,z:2,w:4,d:4,h:1,c:'R'},{t:'round',x:3,y:19,z:3,d:1,h:1,c:'Y'}],place:[]});
+out.push({name:'Pinguino',summary:'Un pinguino con pancia bianca, becco e piedi arancioni, sulla neve.',size:[10,10],components:[],ops:[
+  {t:'box',x:0,y:0,z:0,w:10,d:10,h:1,c:'W'},
+  {t:'box',x:2,y:1,z:6,w:6,d:1,h:1,c:'O'},
+  {t:'box',x:2,y:1,z:2,w:6,d:4,h:15,c:'K'},
+  {t:'box',x:3,y:2,z:5,w:4,d:1,h:13,c:'W'},
+  {t:'box',x:3,y:16,z:2,w:4,d:4,h:9,c:'K'},
+  {t:'box',x:4,y:18,z:5,w:2,d:1,h:2,c:'O'},
+  {t:'round',x:3,y:21,z:5,d:1,h:1,c:'W'},{t:'round',x:6,y:21,z:5,d:1,h:1,c:'W'},
+  {t:'tile',x:3,y:25,z:2,w:4,d:4,h:1,c:'K'}],place:[]});
+out.push({name:'Auto sportiva',summary:'Una piccola auto rossa con abitacolo di vetro, fari gialli e ruote nere.',size:[16,8],components:[{id:'ruota',name:'Ruota',ops:[{t:'round',x:0,y:0,z:0,d:2,h:3,c:'K'}]}],ops:[
+  {t:'box',x:0,y:3,z:1,w:16,d:6,h:1,c:'D'},
+  {t:'box',x:0,y:4,z:1,w:16,d:6,h:6,c:'R'},
+  {t:'box',x:15,y:6,z:1,w:1,d:1,h:2,c:'Y'},{t:'box',x:15,y:6,z:6,w:1,d:1,h:2,c:'Y'},
+  {t:'box',x:0,y:6,z:1,w:1,d:1,h:2,c:'M'},{t:'box',x:0,y:6,z:6,w:1,d:1,h:2,c:'M'},
+  {t:'box',x:4,y:10,z:1,w:7,d:6,h:6,c:'I'},
+  {t:'box',x:4,y:10,z:1,w:1,d:6,h:6,c:'R'},{t:'box',x:10,y:10,z:1,w:1,d:6,h:6,c:'R'},
+  {t:'tile',x:4,y:16,z:1,w:7,d:6,h:1,c:'R'},
+  {t:'tile',x:11,y:10,z:1,w:5,d:6,h:1,c:'R'},{t:'tile',x:0,y:10,z:1,w:4,d:6,h:1,c:'R'}],
+  place:[{use:'ruota',at:[[2,0,0],[2,0,6],[11,0,0],[11,0,6]]}]});
+out.push({name:'Robot simpatico',summary:'Un robottino blu con occhi gialli, antenna e braccia agganciate alle spalle.',size:[12,10],components:[
+  {id:'gamba',name:'Gamba',ops:[{t:'box',x:0,y:0,z:0,w:3,d:4,h:3,c:'D'},{t:'box',x:0,y:3,z:1,w:2,d:2,h:9,c:'G'}]},
+  {id:'braccio',name:'Braccio',ops:[{t:'box',x:0,y:0,z:0,w:2,d:2,h:2,c:'Y'},{t:'box',x:0,y:2,z:0,w:2,d:2,h:12,c:'G'}]}],ops:[
+  {t:'box',x:0,y:0,z:0,w:12,d:10,h:1,c:'G'},
+  {t:'box',x:2,y:13,z:3,w:8,d:4,h:12,c:'B'},
+  {t:'box',x:4,y:16,z:6,w:4,d:1,h:6,c:'S'},{t:'round',x:4,y:18,z:6,d:1,h:1,c:'R'},{t:'round',x:6,y:18,z:6,d:1,h:1,c:'Y'},
+  {t:'box',x:0,y:25,z:3,w:12,d:4,h:1,c:'D'},
+  {t:'round',x:5,y:26,z:4,d:2,h:3,c:'D'},
+  {t:'box',x:3,y:29,z:3,w:6,d:4,h:9,c:'G'},
+  {t:'round',x:4,y:32,z:6,d:1,h:3,c:'Y'},{t:'round',x:7,y:32,z:6,d:1,h:3,c:'Y'},{t:'box',x:5,y:30,z:6,w:2,d:1,h:1,c:'K'},
+  {t:'round',x:5,y:38,z:4,d:1,h:3,c:'K'},{t:'cone1',x:5,y:41,z:4,c:'R'}],
+  place:[{use:'gamba',at:[[2,1,3],[7,1,3]]},{use:'braccio',at:[[0,11,4],[10,11,4]]}]});
+out.push({name:'Casetta semplice',summary:'Una casetta bianca con tetto rosso, porta, due finestre e un vialetto.',size:[16,16],components:[
+  {id:'fiore',name:'Fiore',ops:[{t:'round',x:0,y:0,z:0,d:1,h:3,c:'L'},{t:'round',x:0,y:3,z:0,d:1,h:1,c:'Y'}]}],ops:[
+  {t:'box',x:0,y:0,z:0,w:16,d:16,h:1,c:'N'},
+  {t:'tile',x:7,y:1,z:11,w:2,d:5,h:1,c:'T'},
+  {t:'walls',x:3,y:1,z:3,w:10,d:8,h:15,c:'W'},
+  {t:'cut',x:7,y:1,z:10,w:2,d:1,h:10},{t:'box',x:7,y:1,z:10,w:2,d:1,h:10,c:'E'},
+  {t:'box',x:4,y:5,z:10,w:2,d:1,h:6,c:'S'},{t:'box',x:10,y:5,z:10,w:2,d:1,h:6,c:'S'},
+  {t:'box',x:3,y:16,z:3,w:10,d:8,h:1,c:'W'},
+  {t:'roof',x:2,y:17,z:2,w:12,d:10,c:'R',ridge:'x'},
+  {t:'box',x:10,y:17,z:5,w:2,d:2,h:21,c:'D'},{t:'tile',x:10,y:38,z:5,w:2,d:2,h:1,c:'K'}],
+  place:[{use:'fiore',at:[[4,1,12],[5,1,13],[11,1,12],[10,1,13]]}]});
+out.push({name:'Razzo spaziale',summary:'Un razzo bianco a strisce rosse con alette, oblò e punta conica, sulla rampa di lancio.',size:[12,12],components:[
+  {id:'aletta',name:'Aletta',ops:[{t:'box',x:0,y:0,z:0,w:2,d:2,h:9,c:'R'},{t:'box',x:0,y:9,z:0,w:1,d:2,h:3,c:'R'}]}],ops:[
+  {t:'box',x:0,y:0,z:0,w:12,d:12,h:1,c:'D'},
+  {t:'tile',x:0,y:1,z:0,w:12,d:1,h:1,c:'Y'},{t:'tile',x:0,y:1,z:11,w:12,d:1,h:1,c:'Y'},
+  {t:'cyl',cx:6,cz:6,y:1,r:2.6,h:36,c:'W'},
+  {t:'cyl',cx:6,cz:6,y:10,r:2.6,h:3,c:'R'},{t:'cyl',cx:6,cz:6,y:28,r:2.6,h:3,c:'R'},
+  {t:'box',x:5,y:18,z:8,w:2,d:1,h:5,c:'S'},
+  {t:'cone',cx:6,cz:6,y:37,r:2.6,h:12,c:'R'}],
+  place:[{use:'aletta',at:[[1,1,5],[9,1,5]]},{use:'aletta',at:[[5,1,1],[5,1,9]],rot:90}]});
+out.push((()=>{ const ops=[
+  {t:'box',x:0,y:0,z:0,w:14,d:14,h:1,c:'W'},
+  {t:'round',x:6,y:1,z:6,d:2,h:6,c:'E'},
+  {t:'cyl',cx:7,cz:7,y:7,r:6,h:1,c:'N'},
+  {t:'cone',cx:7,cz:7,y:8,r:6,h:36,c:'N'}];
+  const cols=['R','Y','B','R','Y','P'], ang=[0.3,2.4,4.3,1.3,3.5,5.4];
+  for(let k=1;k<=10;k++){ const rk=Math.max(.72,6*(1-k/12)), a=ang[k%6]+k*.7; let best=null,bd=-1e9;
+    for(let x=0;x<14;x++) for(let z=0;z<14;z++){ const dx=x+.5-7, dz=z+.5-7; if(Math.hypot(dx,dz)>rk) continue; const d=dx*Math.cos(a)+dz*Math.sin(a); if(d>bd){ bd=d; best=[x,z]; } }
+    if(best&&k%2===1) ops.push({t:'round',x:best[0],y:8+3*k,z:best[1],d:1,h:3,c:cols[k%6]}); }
+  ops.push({t:'round',x:6,y:44,z:6,d:2,h:3,c:'Y'},{t:'cone1',x:6,y:47,z:6,c:'Y'});
+  for(const [x,z,c] of [[2,11,'R'],[10,2,'B']]) ops.push({t:'box',x,y:1,z,w:2,d:2,h:4,c},{t:'box',x,y:5,z:z,w:2,d:2,h:1,c:'Y'});
+  return {name:'Albero di Natale',summary:'Un abete addobbato con palline colorate, stella in cima e due regali sotto.',size:[14,14],components:[],ops,place:[]}; })());
+out.push({name:'Barca a vela',summary:'Una barca bianca e rossa con due vele, albero di legno e bandierina, sul mare.',size:[20,10],components:[],ops:[
+  {t:'box',x:0,y:0,z:0,w:20,d:10,h:1,c:'B'},
+  {t:'tile',x:1,y:1,z:1,w:4,d:1,h:1,c:'I'},{t:'tile',x:14,y:1,z:8,w:5,d:1,h:1,c:'I'},
+  {t:'box',x:5,y:1,z:4,w:10,d:2,h:3,c:'W'},
+  {t:'box',x:3,y:4,z:3,w:14,d:4,h:3,c:'W'},
+  {t:'box',x:3,y:7,z:3,w:14,d:4,h:1,c:'R'},
+  {t:'tile',x:4,y:8,z:4,w:12,d:2,h:1,c:'T'},
+  {t:'round',x:9,y:8,z:4,d:1,h:45,c:'E'},
+  {t:'box',x:3,y:44,z:4,w:14,d:1,h:1,c:'E'},
+  {t:'box',x:10,y:14,z:4,w:6,d:1,h:30,c:'W'},{t:'box',x:4,y:17,z:4,w:4,d:1,h:27,c:'W'},
+  {t:'box',x:10,y:26,z:4,w:6,d:1,h:3,c:'R'},
+  {t:'box',x:9,y:53,z:4,w:3,d:1,h:1,c:'R'},{t:'box',x:10,y:50,z:4,w:2,d:1,h:3,c:'R'}],place:[]});
+return out;
+})();
+
+{ const byN=n=>EXAMPLES.find(e=>e.name===n); const adv=[byN('Faro sullo scoglio'),byN('Chalet alpino'),byN('Castello di pietra')]; EXAMPLES.length=0; EXAMPLES.push(...EX_SIMPLE,...adv); }
 (() => {
 'use strict';
 const $=id=>document.getElementById(id);
@@ -1281,7 +1371,7 @@ function saveLib(res,quiet){
   setLib(l); if(!quiet) toast('Salvato nella libreria');
 }
 $('save').onclick=()=>S.res&&saveLib(S.res);
-const exThumbs=[], exMeta=[];
+const exThumbs=[], exMeta=[], exLvl=[]; let exFilter='Tutti';
 function libItem(name,summary,meta,thumb,onOpen,onDel){
   const row=el('div','litem'); const b=el('button','lopen'); const im=el('img'); if(thumb) im.src=thumb; im.alt=''; im.width=96; im.height=72;
   const t=el('span','lt'); t.append(el('b',null,name),el('small',null,summary),el('small','muted',meta)); b.append(im,t); b.onclick=onOpen; row.append(b);
@@ -1289,7 +1379,8 @@ function libItem(name,summary,meta,thumb,onOpen,onDel){
   return row; }
 function renderLib(){
   const ex=$('libEx'); ex.textContent='';
-  EXAMPLES.forEach((p,i)=>ex.append(libItem(p.name,p.summary,exMeta[i]||'Esempio',exThumbs[i],()=>{ openProg(p,'Esempio aperto'); })));
+  const fl=el('div','pill lfilter'); ['Tutti','Facile','Medio','Avanzato'].forEach(f=>{ const b=el('button',null,f); b.setAttribute('aria-pressed',String(f===exFilter)); b.onclick=()=>{ exFilter=f; renderLib(); }; fl.append(b); }); ex.append(fl);
+  EXAMPLES.forEach((p,i)=>{ if(exFilter!=='Tutti'&&exLvl[i]&&exLvl[i]!==exFilter) return; ex.append(libItem(p.name,p.summary,exMeta[i]||'…',exThumbs[i],()=>{ openProg(p,'Esempio aperto'); })); });
   const mine=$('libMine'); mine.textContent=''; const l=getLib(); $('libMineH').hidden=!l.length;
   l.forEach(it=>mine.append(libItem(it.name,it.summary,`${fmt(it.stats?.p||0)} pezzi · ${new Date(it.date).toLocaleDateString('it-IT',{day:'numeric',month:'short'})}`,it.thumb,()=>openProg(it.prog,'Aperto dalla libreria'),()=>setLib(getLib().filter(x=>x.id!==it.id)))));
 }
@@ -1298,7 +1389,7 @@ function setSide(t){ document.querySelectorAll('#sideSeg button').forEach(b=>b.s
 document.querySelectorAll('#sideSeg button').forEach(b=>b.onclick=()=>setSide(b.dataset.s));
 let exDone=false;
 async function makeExThumbs(){ if(exDone) return; exDone=true;
-  for(let i=0;i<EXAMPLES.length;i++){ await new Promise(r=>requestAnimationFrame(r)); const res=compile(EXAMPLES[i]); const v=makeView(res); exThumbs[i]=snap(v,-1,{w:160,h:160,q:.75}); exMeta[i]=`${fmt(res.pieces.length)} pezzi · ${fmt(res.steps.length)} passi`; v.dispose(); }
+  for(let i=0;i<EXAMPLES.length;i++){ await new Promise(r=>requestAnimationFrame(r)); const res=compile(EXAMPLES[i]); const v=makeView(res); exThumbs[i]=snap(v,-1,{w:160,h:160,q:.75}); const n=res.pieces.length; exLvl[i]=n<120?'Facile':n<600?'Medio':'Avanzato'; exMeta[i]=`${exLvl[i]} · ${fmt(n)} pezzi · ${fmt(res.steps.length)} passi`; v.dispose(); if(i%3===2) renderLib(); }
   renderLib(); }
 
 /* ================= menus, downloads, toast ================= */
@@ -1569,7 +1660,7 @@ async function buildTreeView(){
 
 /* ================= boot ================= */
 stageBg(); intro(); setMode('new'); setSide('chat');
-pushVersion(compile(EXAMPLES[0]),'Esempio aperto'); renderLib();
+pushVersion(compile(EXAMPLES.find(e=>e.name==='Chalet alpino')||EXAMPLES[0]),'Esempio aperto'); renderLib();
 requestAnimationFrame(loop);
 (async()=>{
   if(!window.claude||!claude.use){ aiOff(); $('dlBtn').disabled=true; return; }
