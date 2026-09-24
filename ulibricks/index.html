@@ -2234,7 +2234,14 @@ function sparkle(box){const p=new V3(rnd(box.min.x,box.max.x),rnd(box.min.y,box.
   spawn(p,{color:[0xFFE27A,0xFFFFFF,0x9FD3F2][Math.floor(Math.random()*3)],additive:true,size:rnd(.3,.7),v:new V3(0,rnd(.5,1.5),0),life:rnd(.6,1.1),kind:'spark'});}
 
 /* ================= PERSONAGGI VIVI ================= */
-const FIG_TALK=['Ciao!','Che bella costruzione!','Mi fai il solletico!','Ancora un piano!','Evviva!','Dove andiamo?','Ho fame!','Che vista da quassù!','Attento alla dinamite!','Sono il capo cantiere!','Mi piace questo colore!','Costruiamo un castello?'];
+const FIG_TALK=[
+  'Ciao!','Mi fai il solletico!','Evviva!','Che bella giornata per costruire!','Sto facendo due passi.','Sto esplorando la base.','Sali anche tu quassù?','Tocca a te costruire ora!','Che silenzio quassù.','Fammi vedere cosa costruisci dopo!',
+  'Che bella costruzione!','Ancora un piano!','Costruiamo un castello?','Sono il capo cantiere!','Qui ci vuole una torre.','Questa base è enorme.','Attento alla dinamite!','Quanti bottoncini ci sono qui?','Un’altra piastra qui starebbe bene.','Chi ha messo questo pezzo storto?',
+  'Adoro i mattoncini tondi.','Gli archi sono la mia parte preferita.','Guarda che bottoncini lucidi!','Questo mattoncino è enorme!','Un pilastro così alto mi fa venire le vertigini.','Le finestre fanno entrare la luce.','Che bel tetto spiovente.','Adoro le scale a gradini.','Mi piace incastrare i pezzi nuovi.','Che bel pezzo raro!',
+  'Il rosso è il mio colore preferito!','Quel vetro azzurro è bellissimo.','L’oro luccica tantissimo!','Mi piace come si abbina il verde al blu.','Che bel colore hai scelto!','Il vetro si vede attraverso, magico!','Vorrei un mattoncino di questo colore.','Che tinta vivace!',
+  'Da quassù si vede tutto.','Che vista panoramica!','Non guardare giù!','Attenzione al bordo!','Sto cercando un buon posto per sedermi.','Qui il vento è più forte.','Che bel panorama da questo tetto.','Da qui vedo tutta la base.',
+  'Ho fame di... piastre!','Dove andiamo dopo?','Mi sono un po’ perso.','Che avventura!','Sono stanco di camminare!','Un salto e sono già là.'
+];
 function figOf(b){return b.mesh.children.find(c=>c.userData&&c.userData.fig);}
 function figsAll(fn){bricks.forEach(b=>{if(b.shape==='personaggio'){const f=figOf(b);if(f)fn(f.userData,b);}});}
 const bubbles=[];
@@ -2506,7 +2513,8 @@ function applyVita(){
 }
 function topAt(i,j){
   if(i<0||j<0||i>=G||j>=G||!mask[i*G+j])return null;
-  let top=0;for(let p=0;p<MAXP;p++)if(occ.has(key(i,j,p)))top=p+1;
+  let top=0;
+  for(let p=0;p<MAXP;p++){const v=occ.get(key(i,j,p));if(v&&v.b.shape!=='personaggio')top=p+1;}
   return top;
 }
 const LIFE_DIRS=[[1,0],[-1,0],[0,1],[0,-1],[1,1],[1,-1],[-1,1],[-1,-1]];
