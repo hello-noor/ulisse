@@ -1,9 +1,0 @@
-ULIBRICKS - app installabile (PWA)
-
-Per pubblicarla serve un indirizzo https. Il modo più rapido:
-1. Vai su app.netlify.com/drop
-2. Trascina dentro l'intera cartella "ulibricks-pwa"
-3. Apri l'indirizzo che ti dà Netlify: comparirà il pulsante per installare l'app
-
-In alternativa: GitHub Pages (carica i file in un repository e attiva Pages).
-Una volta pubblicata, l'app funziona anche senza connessione.
