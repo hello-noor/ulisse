@@ -88,13 +88,26 @@ body.trayclosed #toolRail{transform:translateX(130%);opacity:0;pointer-events:no
 .sheet{background:var(--tray);color:var(--ink);border-radius:18px;width:min(560px,96vw);max-height:90vh;overflow:auto;padding:16px 18px 18px;box-shadow:0 20px 60px rgba(0,0,0,.35);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
 .sheet.wide{width:min(880px,96vw)}
 .sheetHead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:-16px -18px 10px;padding:12px 18px 8px;position:sticky;top:-16px;z-index:3;background:var(--tray);border-radius:18px 18px 0 0}
+.sheetHead h2{display:flex;align-items:center;gap:8px}
 .sheetHead h2{margin:0;font-family:var(--display);font-weight:400;font-size:20px}
 .x{width:42px;height:42px;border-radius:50%;border:0;background:#1B2340;color:#fff;font-size:18px;font-weight:800;flex:none}
 .sheetBtns{display:flex;gap:8px;justify-content:flex-end;margin-top:14px;flex-wrap:wrap}
 .sheetBtns button{height:44px;border-radius:12px;border:0;padding:0 18px;font-weight:800;background:var(--chip)}
 .sheetBtns .primary{background:var(--sel);color:#1B2340}
 .sheetBtns .danger{background:transparent;color:var(--danger);margin-right:auto}
-#shotImg{width:100%;max-height:52vh;object-fit:contain;border-radius:12px;display:block;background:var(--chip)}
+.shotFrame{border-radius:16px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.16);background:var(--chip)}
+#shotImg{width:100%;max-height:50vh;object-fit:contain;display:block}
+.shotOpts{display:flex;flex-direction:column;gap:10px;margin-top:14px}
+.titleWrap{display:flex;align-items:center;gap:10px;background:var(--chip);border-radius:12px;padding:0 4px 0 14px;height:46px}
+.titleWrap .ti{opacity:.5;font-size:15px}
+.titleWrap input{flex:1;border:0;background:none;height:100%;font:inherit;font-weight:700;font-size:14.5px;color:var(--ink)}
+.titleWrap input:focus{outline:none}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chk{position:relative;display:flex;align-items:center;gap:6px;height:40px;padding:0 14px 0 12px;border-radius:20px;background:var(--chip);font-weight:800;font-size:13px;cursor:pointer;border:2px solid transparent;transition:background .15s,border-color .15s}
+.chk::before{content:attr(data-i);font-size:14px}
+.chk input{position:absolute;opacity:0;width:0;height:0}
+.chk:has(input:checked){background:#FFF3C4;border-color:#FFC914;color:#7A5B00}
+:root[data-theme="dark"] .chk:has(input:checked),@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .chk:has(input:checked){background:#4a3f14;border-color:#FFC914;color:#FFE39A}}
 .note{font-size:13px;color:var(--muted);margin:8px 0 0;line-height:1.4}
 .charGrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:14px}
 .charPv{background:var(--chip);border-radius:14px;min-height:340px;position:relative}
@@ -460,16 +473,18 @@ body.tetris .top,body.tetris .tray,body.tetris #empty,body.tetris #kitCard,body.
 <div id="flash"></div>
 <div id="boomText" aria-live="polite">BOOM!</div>
 <div class="modal" id="shotModal" hidden><div class="sheet">
-  <div class="sheetHead"><h2>Foto</h2><button class="x" data-close aria-label="Chiudi">✕</button></div>
-  <img id="shotImg" alt="Foto della costruzione ULIBRICKS">
+  <div class="sheetHead"><h2>📸 Foto</h2><button class="x" data-close aria-label="Chiudi">✕</button></div>
+  <div class="shotFrame"><img id="shotImg" alt="Foto della costruzione ULIBRICKS"></div>
   <div class="shotOpts">
-    <input id="shotTitle" class="cname" type="text" maxlength="40" placeholder="Titolo della costruzione (facoltativo)" aria-label="Titolo della costruzione">
-    <label class="chk"><input type="checkbox" id="shotFrame">Inquadra tutto</label>
-    <label class="chk"><input type="checkbox" id="shotStats" checked>Statistiche</label>
-    <label class="chk"><input type="checkbox" id="shotDate">Data</label>
+    <div class="titleWrap"><span class="ti">✎</span><input id="shotTitle" type="text" maxlength="40" placeholder="Dai un titolo alla tua costruzione" aria-label="Titolo della costruzione"></div>
+    <div class="chips">
+      <label class="chk" data-i="⛶"><input type="checkbox" id="shotFrame">Inquadra tutto</label>
+      <label class="chk" data-i="📊"><input type="checkbox" id="shotStats" checked>Statistiche</label>
+      <label class="chk" data-i="📅"><input type="checkbox" id="shotDate">Data</label>
+    </div>
   </div>
   <p class="note" id="shotNote"></p>
-  <div class="sheetBtns"><button data-close>Chiudi</button><button id="shotSave">Salva</button><button id="shotShare" class="primary">Invia</button></div>
+  <div class="sheetBtns"><button data-close>Chiudi</button><button id="shotSave">⬇ Salva</button><button id="shotShare" class="primary">↗ Invia</button></div>
 </div></div>
 
 <div class="modal" id="infoModal" hidden><div class="sheet info">
@@ -481,8 +496,9 @@ body.tetris .top,body.tetris .tray,body.tetris #empty,body.tetris #kitCard,body.
   <p><b>Costruisci</b> posa pezzi nuovi. <b>Sposta</b> prende un pezzo e lo rimette altrove. <b>Blocco</b> sposta più pezzi insieme: disegna un giro intorno ai pezzi (lazo) o toccali uno per uno, poi premi "Sposta". "Attaccati" aggiunge tutto ciò che è collegato ai pezzi scelti. <b>Gomma</b> toglie, <b>Pennello</b> ricolora, <b>Copia</b> prende forma, misura e colore di un pezzo già posato per costruirne altri uguali. Da telefono, quando sposti un pezzo o un blocco, tocca dove vuoi metterlo: compare l'anteprima e una barra con <b>Posa qui</b>. Puoi toccare altri punti o ruotare prima di confermare.</p>
   <h3>Dinamite</h3>
   <p>Premi Dinamite e tocca la scena per piazzare fino a 5 candelotti. Scegli la potenza, poi Accendi: conto alla rovescia 3, 2, 1 e BOOM.</p>
-  <h3>Personaggi</h3>
-  <p>Nella forma "Personaggio" crei i tuoi omini: capelli o cappello, faccia, colori dei vestiti e un oggetto in mano. Poi li posi sulla costruzione come un pezzo qualunque.</p>
+  <h3>Personaggi e Vita</h3>
+  <p>Nella forma "Personaggio" crei i tuoi omini: capelli o cappello, faccia, colori dei vestiti e un oggetto in mano. Poi li posi sulla costruzione come un pezzo qualunque. Toccane uno per farlo saltare e parlare.</p>
+  <p>Con <b>Vita</b> attiva (nelle Impostazioni) i personaggi si muovono da soli: passeggiano sulla costruzione, salgono e scendono i gradini, si fermano qualche secondo, salutano o saltano, poi ripartono verso un altro punto. Per spostarli o cancellarli a mano, spegni prima Vita.</p>
   <h3>Le quattro modalità</h3>
   <p>In basso scegli cosa fare: <b>Costruisci</b> (costruzione libera, con i pezzi divisi per categoria e il pallino del colore), <b>Kit</b> (modelli da montare o da posare pronti), <b>Gioca</b> (Pioggia di mattoncini, Terremoto, Dinamite) e <b>Mostra</b> (titolo, foto e presentazione). Gli strumenti Costruisci, Sposta, Blocco, Gomma, Pennello e Copia stanno nella barra sul lato destro. In alto restano Annulla e le Impostazioni (suono, base, vista, istruzioni, installazione).</p>
   <h3>Pioggia di mattoncini</h3>
@@ -549,6 +565,7 @@ body.tetris .top,body.tetris .tray,body.tetris #empty,body.tetris #kitCard,body.
     <button class="mtile" data-go="base"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 15l10 5 10-5-10-5z"/><path d="M2 11l10 5 10-5"/></svg>Base</button>
     <button class="mtile" data-go="view"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg>Centra la vista</button>
     <button class="mtile" data-go="info"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v6"/><circle cx="12" cy="7.5" r=".6" fill="currentColor"/></svg>Istruzioni</button>
+    <button class="mtile" data-go="life" id="mVita"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13" cy="4.5" r="1.8"/><path d="M13 8v5l3 2.5M13 13l-2.5 2M13 13l4-1M10.5 15l-2 5M16 15.5l1.5 4.5"/></svg><span>Vita: attiva</span></button>
     <button class="mtile" data-go="install"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></svg>Installa l'app</button>
   </div>
 </div></div>
@@ -631,6 +648,8 @@ const SHAPES={
   spicchio:{label:'Spicchio',plates:2,studs:false,sizes:[[1,1],[2,1],[1,2],[2,2]],icon:'<path d="M5 19h14L5 11z"/>'},
   angolo:{label:'Angolo',plates:3,studs:true,sizes:[[2,2],[3,3],[4,4],[6,6]],icon:'<path d="M3 20V9h8v5h10v6z"/><rect x="5" y="6" width="4" height="3"/><rect x="15" y="11" width="4" height="3"/>'},
   arco:{label:'Arco',plates:3,studs:true,sizes:[[1,3],[1,4],[1,6],[1,8]],icon:'<path d="M3 20V8h18v12h-4v-3a5 5 0 0 0-10 0v3z"/><rect x="5" y="5" width="4" height="3"/><rect x="15" y="5" width="4" height="3"/>'},
+  arcoA:{label:'Arco 1×6×2',plates:6,studs:true,sizes:[[1,6]],icon:'<path d="M3 20v-9h18v9h-4v-2a5 5 0 0 0-10 0v2z"/><rect x="5" y="6.5" width="4" height="2.5"/><rect x="15" y="6.5" width="4" height="2.5"/>'},
+  arcoB:{label:'Arco 1×6×6',plates:18,studs:true,sizes:[[1,6]],icon:'<path d="M3 20V6h18v14h-4V9a5 5 0 0 0-10 0v11z"/><rect x="5" y="3" width="4" height="2.5"/><rect x="15" y="3" width="4" height="2.5"/>'},
   finestra:{label:'Finestra',plates:9,studs:true,sizes:[[1,2],[1,3],[1,4],[1,6]],icon:'<rect x="5" y="4" width="14" height="17" rx="1"/><rect x="8" y="7" width="8" height="11"/>'},
   snot:{label:'SNOT',plates:3,studs:true,sizes:[[1,2],[1,3],[1,4],[2,2],[2,3],[2,4]],icon:'<rect x="4" y="8" width="16" height="11" rx="1"/><rect x="7" y="5" width="4" height="3"/><rect x="13" y="5" width="4" height="3"/><rect x="1" y="11" width="3" height="3" rx="1"/><rect x="20" y="11" width="3" height="3" rx="1"/>'},
   jumper:{label:'Jumper',plates:1,studs:true,sizes:[[1,2],[1,3],[2,2],[1,4]],icon:'<rect x="3" y="13" width="18" height="6" rx="1.5"/><rect x="10" y="9" width="4" height="4" rx="1"/>'},
@@ -808,7 +827,7 @@ function localCells(shape,w,d){
     else if(shape==='gradini'){c.y1=(d-z)*3;}
     else if(shape==='rovescia'){if(z>0)c.socket=false;}
     else if(shape==='angolo'||shape==='angoloP'){if(x>0&&z>0)continue;}
-    else if(shape==='arco'){if(z>0&&z<d-1){c.y0=h-1;c.socket=false;}}
+    else if(shape==='arco'||shape==='arcoA'||shape==='arcoB'){if(z>0&&z<d-1){c.y0=h-1;c.socket=false;}}
     out.push(c);
   }
   cellCache.set(k,out);return out;
@@ -862,7 +881,7 @@ function brickGeo(shape,w,d){
   else if(shape==='cupola'){const r=w/2-g;
     parts.push(new THREE.SphereGeometry(r,32,14,0,Math.PI*2,0,Math.PI/2).scale(1,h/r,1));
     parts.push(new THREE.CircleGeometry(r,32).rotateX(Math.PI/2));}
-  else if(['tegola','ripida','rovescia','colmo','arco','curva','spicchio'].indexOf(shape)>=0)parts.push(profile(shape,w,d,h,g));
+  else if(['tegola','ripida','rovescia','colmo','arco','arcoA','arcoB','curva','spicchio'].indexOf(shape)>=0)parts.push(profile(shape,w,d,h,g));
   else if(shape==='gradini'){for(let z=0;z<d;z++){const hz=(d-z)*3*PH;parts.push(new THREE.BoxGeometry(w-2*g,hz,1-2*g).translate(0,hz/2,-d/2+z+.5));}}
   else if(shape==='tubo'){const r=w/2-g,sh=new THREE.Shape();sh.absarc(0,0,r,0,Math.PI*2,false);const ho=new THREE.Path();ho.absarc(0,0,r*.52,0,Math.PI*2,true);sh.holes.push(ho);
     const eg=new THREE.ExtrudeGeometry(sh,{depth:h,bevelEnabled:false,curveSegments:32});eg.rotateX(-Math.PI/2);parts.push(eg);}
@@ -1456,7 +1475,7 @@ window.addEventListener('keydown',e=>{
 });
 
 /* ================= ANTEPRIMA PEZZO ================= */
-const pv=document.getElementById('pv');
+const pv=document.getElementById('pv');pv.style.cursor='grab';
 const pr=new THREE.WebGLRenderer({canvas:pv,antialias:true,alpha:true});
 pr.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
 const pscene=new THREE.Scene();
@@ -1478,7 +1497,7 @@ function pvUpdate(){
     list.forEach(it=>{const m=new THREE.Mesh(brickGeo(it.data.shape,it.data.w,it.data.d),HIT_MAT);styleMesh(m,it.data.color);addExtras(m,it.data);placeMesh(m,it.data);pgroup.add(m);});
     const box=new THREE.Box3().setFromObject(pgroup),c=box.getCenter(new V3()),sz=box.getSize(new V3());
     pgroup.position.sub(c);forAlt(pgroup);pscene.add(pgroup);
-    const m=Math.max(sz.x,sz.z,sz.y*1.2,2);pcam.position.set(m*1.5,m*1.55,m*2.1);pcam.lookAt(0,0,0);
+    const m=Math.max(sz.x,sz.z,sz.y*1.2,2);pvSpherical(m);
     {const gb=document.getElementById('gripBtn');gb.textContent='✋';gb.title='Blocco di '+list.length+(list.length===1?' pezzo':' pezzi')+': presa sul punto toccato';gb.setAttribute('aria-label',gb.title);}pvDirty=true;return;
   }
   pmesh.visible=true;parrow.visible=true;
@@ -1488,7 +1507,7 @@ function pvUpdate(){
   const g=gripCell(sp);pgrip.visible=w*d>1&&!carryG&&sp.shape!=='personaggio';pgrip.position.set(g.gx+.5-w/2,h+STUD_H+.08,g.gz+.5-d/2);
   {const gb=document.getElementById('gripBtn');gb.textContent='✋';gb.title='Cambia presa (ora: '+GRIP_LABEL[curGrip(sp)]+')';gb.setAttribute('aria-label',gb.title);}
   const m=Math.max(w,d,h*1.2);
-  pcam.position.set(m*1.5,m*1.55,m*2.1);pcam.lookAt(0,0,0);
+  pvSpherical(m);
   parrow.scale.setScalar(Math.max(.8,m/3));pvDirty=true;
 }
 function pvTick(dt){
@@ -1502,7 +1521,26 @@ function pvTick(dt){
   parrow.rotation.set(Math.PI/2,0,0);parrow.rotation.z=0;parrow.rotateOnWorldAxis(new V3(0,1,0),pvAngle);
   pr.render(pscene,pcam);pvDirty=false;
 }
-pv.addEventListener('click',()=>rotate(1));
+const pvView={theta:.62,phi:.95,zoom:1};let pvDrag=null;
+function pvSpherical(m){
+  const R=m*2.62*pvView.zoom,hr=R*Math.sin(pvView.phi);
+  pcam.position.set(hr*Math.sin(pvView.theta),R*Math.cos(pvView.phi)*1.05,hr*Math.cos(pvView.theta));pcam.lookAt(0,0,0);
+}
+pv.addEventListener('pointerdown',e=>{try{pv.setPointerCapture(e.pointerId);}catch(_){}pvDrag={sx:e.clientX,sy:e.clientY,lx:e.clientX,ly:e.clientY,moved:false};pv.style.cursor='grabbing';});
+pv.addEventListener('pointermove',e=>{
+  if(!pvDrag)return;const dx=e.clientX-pvDrag.lx,dy=e.clientY-pvDrag.ly;pvDrag.lx=e.clientX;pvDrag.ly=e.clientY;
+  if(!pvDrag.moved&&Math.hypot(e.clientX-pvDrag.sx,e.clientY-pvDrag.sy)>5)pvDrag.moved=true;
+  if(pvDrag.moved){pvView.theta-=dx*.012;pvView.phi=clamp(pvView.phi-dy*.012,.2,1.5);pvDirty=true;}
+});
+function pvEnd(e){if(!pvDrag)return;const moved=pvDrag.moved;pvDrag=null;pv.style.cursor='grab';if(!moved)rotate(1);}
+pv.addEventListener('pointerup',pvEnd);pv.addEventListener('pointercancel',pvEnd);
+pv.addEventListener('wheel',e=>{e.preventDefault();pvView.zoom=clamp(pvView.zoom*Math.exp(e.deltaY*.0014),.45,2.4);pvDirty=true;},{passive:false});
+const pvT=new Map();let pvPinch=null;
+pv.addEventListener('pointerdown',e=>{pvT.set(e.pointerId,{x:e.clientX,y:e.clientY});if(pvT.size>=2){const a=[...pvT.values()];pvPinch={d:Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y)||1,z:pvView.zoom};pvDrag=null;}});
+pv.addEventListener('pointermove',e=>{const q=pvT.get(e.pointerId);if(q){q.x=e.clientX;q.y=e.clientY;}
+  if(pvPinch&&pvT.size>=2){const a=[...pvT.values()],d=Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y)||1;pvView.zoom=clamp(pvPinch.z*pvPinch.d/d,.45,2.4);pvDirty=true;}});
+function pvTEnd(e){pvT.delete(e.pointerId);if(pvT.size<2)pvPinch=null;}
+pv.addEventListener('pointerup',pvTEnd);pv.addEventListener('pointercancel',pvTEnd);
 document.getElementById('rotL').addEventListener('click',()=>rotate(-1));
 document.getElementById('rotR').addEventListener('click',()=>rotate(1));
 function cycleGrip(){
@@ -1545,9 +1583,9 @@ const LOGO_COLS=['#E3000B','#0057B8','#00852B','#D65A00','#C4007A','#E3000B','#0
 function logoInk(){return'#FFFFFF';}
 'ULIBRICKS'.split('').forEach((ch,i)=>{const s=document.createElement('span');s.textContent=ch.toUpperCase();s.setAttribute('aria-hidden','true');s.style.background=LOGO_COLS[i];s.style.color=logoInk(LOGO_COLS[i]);logo.appendChild(s);});
 const shapesEl=document.getElementById('shapes'),sizesEl=document.getElementById('sizes'),toolsEl=document.getElementById('tools');
-const CATS=[['mattoni','Mattoni',['mattone','basso','alto','altissimo','lisciaM','angolo','gradini','arco','snot']],['piastre','Piastre',['piastra','liscia','angoloP','jumper','angolata','cuneoS','cuneoD','freccia','clip']],
+const CATS=[['mattoni','Mattoni',['mattone','basso','alto','altissimo','lisciaM','angolo','gradini','snot']],['piastre','Piastre',['piastra','liscia','angoloP','jumper','angolata','cuneoS','cuneoD','freccia','clip']],
   ['tondi','Tondi',['tondo','colonna','tubo','disco','bottone','cono','cupola']],['tetti','Tetti',['tegola','ripida','curva','rovescia','colmo','spicchio']],
-  ['aperture','Porte e finestre',['finestra','ante','vetrata','oblo','porta','recinto','parabrezza']],['personaggi','Personaggi',['personaggio']]];
+  ['archi','Archi',['arco','arcoA','arcoB']],['aperture','Porte e finestre',['finestra','ante','vetrata','oblo','porta','recinto','parabrezza']],['personaggi','Personaggi',['personaggio']]];
 function catOf(id){const c=CATS.find(c=>c[2].indexOf(id)>=0);return c?c[0]:'mattoni';}
 Object.keys(SHAPES).forEach(id=>{
   const b=document.createElement('button');b.className='shape';b.dataset.id=id;
@@ -2214,8 +2252,9 @@ function sayRandom(list){const figs=bricks.filter(b=>b.shape==='personaggio');if
 let nextChat=performance.now()+20000;
 function animFigures(now,dt){
   for(const b of bricks){if(b.shape!=='personaggio')continue;const f=figOf(b);if(!f)continue;const u=f.userData,t=now/1000+u.phase;
-    let y=Math.abs(Math.sin(t*2.1))*.035;u.head.rotation.y=Math.sin(t*.55)*.5;u.head.rotation.x=Math.sin(t*.9)*.05;
-    u.arms[0].rotation.x=-.3+Math.sin(t*1.5)*.14;u.arms[1].rotation.x=-.3+Math.sin(t*1.5+1.4)*.14;
+    const wk=u.walking,fr=wk?7.5:2.1,am=wk?.11:.035;
+    let y=Math.abs(Math.sin(t*fr))*am;u.head.rotation.y=wk?Math.sin(t*1.4)*.12:Math.sin(t*.55)*.5;u.head.rotation.x=Math.sin(t*.9)*.05;
+    u.arms[0].rotation.x=-.3+Math.sin(t*(wk?7.5:1.5))*(wk?.6:.14);u.arms[1].rotation.x=-.3+Math.sin(t*(wk?7.5:1.5)+(wk?Math.PI:1.4))*(wk?.6:.14);
     let zl=-.12,zr=.12;
     if(u.jump>0){u.jump=Math.max(0,u.jump-dt);const k=Math.sin((1-u.jump/.6)*Math.PI);y+=k*1.1;zl-=k*1.3;zr+=k*1.3;}
     if(u.wave>0){u.wave=Math.max(0,u.wave-dt);zr=2.5+Math.sin(now/90)*.35;}
@@ -2453,7 +2492,79 @@ function soundLabel(){return{all:'Musica e suoni',sfx:'Solo suoni',off:'Silenzio
 document.getElementById('menuBtn').addEventListener('click',()=>{document.getElementById('mSound').querySelector('span').textContent=soundLabel();closeBase();openModal('menuModal');});
 document.querySelectorAll('#menuModal [data-go]').forEach(b=>b.addEventListener('click',()=>{
   if(b.dataset.go==='sound'){document.getElementById('soundBtn').click();b.querySelector('span').textContent=soundLabel();return;}
+  if(b.dataset.go==='life'){VITA.on=!VITA.on;applyVita();return;}
   menuAct(b.dataset.go);}));
+
+/* ================= VITA: personaggi che girano da soli ================= */
+const VITA={on:true};
+try{VITA.on=(localStorage.getItem('ulibricks-vita')||'on')==='on';}catch(e){}
+const lifeState=new WeakMap();
+function applyVita(){
+  try{localStorage.setItem('ulibricks-vita',VITA.on?'on':'off');}catch(e){}
+  const b=document.getElementById('mVita');if(b)b.querySelector('span').textContent='Vita: '+(VITA.on?'attiva':'ferma');
+  if(!VITA.on){bricks.forEach(bk=>{if(bk.shape==='personaggio'){placeMesh(bk.mesh,bk);lifeState.delete(bk);const f=figOf(bk);if(f)f.userData.walking=0;}});}
+}
+function topAt(i,j){
+  if(i<0||j<0||i>=G||j>=G||!mask[i*G+j])return null;
+  let top=0;for(let p=0;p<MAXP;p++)if(occ.has(key(i,j,p)))top=p+1;
+  return top;
+}
+const LIFE_DIRS=[[1,0],[-1,0],[0,1],[0,-1],[1,1],[1,-1],[-1,1],[-1,-1]];
+function planPath(b){
+  let si=Math.round(b.mesh.position.x+G/2-.5),sj=Math.round(b.mesh.position.z+G/2-.5);
+  let top0=topAt(si,sj);
+  if(top0==null){si=clamp(b.i0,0,G-1);sj=clamp(b.j0,0,G-1);top0=topAt(si,sj);if(top0==null)return null;}
+  const STEP=4,radius=Math.floor(rnd(3,7)),K=(i,j)=>i+','+j;
+  const visited=new Map();visited.set(K(si,sj),{i:si,j:sj,prev:null,top:top0});
+  const queue=[[si,sj,0]],reach=[];
+  while(queue.length){
+    const [ci,cj,dist]=queue.shift();
+    if(dist>0)reach.push(K(ci,cj));
+    if(dist>=radius)continue;
+    for(const [di,dj] of LIFE_DIRS){
+      const ni=ci+di,nj=cj+dj,k3=K(ni,nj);
+      if(visited.has(k3)||ni<0||nj<0||ni>=G||nj>=G||!mask[ni*G+nj])continue;
+      const t=topAt(ni,nj);if(t==null)continue;
+      if(Math.abs(t-visited.get(K(ci,cj)).top)>STEP)continue;
+      visited.set(k3,{i:ni,j:nj,prev:K(ci,cj),top:t});queue.push([ni,nj,dist+1]);
+    }
+  }
+  if(!reach.length)return null;
+  let cur=visited.get(reach[Math.floor(Math.random()*reach.length)]);const path=[];
+  while(cur){path.unshift(cur);cur=cur.prev?visited.get(cur.prev):null;}
+  return path.map(c=>({x:c.i-G/2+.5,z:c.j-G/2+.5,y:c.top*PH}));
+}
+function lifeTick(dt,now){
+  if(!VITA.on||PR.on||KIT.on||TET.on||QUAKE.on||dyn.mode)return;
+  bricks.forEach(b=>{
+    if(b.shape!=='personaggio')return;
+    if(carry&&carry.b===b)return;if(carryG&&carryG.list.some(x=>x.b===b))return;
+    let ls=lifeState.get(b);if(!ls){ls={mode:'pause',pauseT:rnd(.4,2.2)};lifeState.set(b,ls);}
+    const fig=figOf(b);
+    if(ls.mode==='pause'){
+      ls.pauseT-=dt;
+      if(ls.pauseT<=0){
+        const path=planPath(b);
+        if(path&&path.length>1){ls.mode='walk';ls.path=path;ls.idx=1;ls.t=0;
+          const a=path[0],c=path[1];ls.segDur=Math.max(.25,Math.hypot(c.x-a.x,c.z-a.z,c.y-a.y)/1.6);}
+        else ls.pauseT=rnd(1,2);
+      }
+      return;
+    }
+    ls.t+=dt;const a=ls.path[ls.idx-1],c=ls.path[ls.idx],k=clamp(ls.t/ls.segDur,0,1);
+    const hop=Math.sin(k*Math.PI)*(.12+Math.min(.55,Math.abs(c.y-a.y)*.7));
+    b.mesh.position.set(a.x+(c.x-a.x)*k,a.y+(c.y-a.y)*k+hop,a.z+(c.z-a.z)*k);
+    const dx=c.x-a.x,dz=c.z-a.z;if(Math.hypot(dx,dz)>1e-4)b.mesh.rotation.y=Math.atan2(dx,dz);
+    if(fig)fig.userData.walking=1;
+    if(k>=1){
+      ls.idx++;
+      if(ls.idx>=ls.path.length){
+        ls.mode='pause';ls.pauseT=rnd(2,5);if(fig){fig.userData.walking=0;if(Math.random()<.5)fig.userData.wave=1.4;else fig.userData.jump=.5;}
+        if(Math.random()<.4)bubble(b,FIG_TALK[Math.floor(Math.random()*FIG_TALK.length)],1800);
+      } else {ls.t=0;const a2=ls.path[ls.idx-1],c2=ls.path[ls.idx];ls.segDur=Math.max(.25,Math.hypot(c2.x-a2.x,c2.z-a2.z,c2.y-a2.y)/1.6);}
+    }
+  });
+}
 
 /* ================= PIOGGIA DI MATTONCINI ================= */
 const TPIECES=[
@@ -2881,7 +2992,7 @@ function frame(now){
   if(flashLight.intensity>0){flashLight.intensity*=Math.pow(.015,dt);if(flashLight.intensity<.02)flashLight.intensity=0;}
   if(shake>0)shake=Math.max(0,shake-dt*1.5);
 
-  animFigures(now,dt);quakeTick(dt);kitTick(now);tetTick(dt,now);
+  animFigures(now,dt);lifeTick(dt,now);quakeTick(dt);kitTick(now);tetTick(dt,now);
   if(PR.on)presentTick(now);
   updateCamera();renderer.render(scene,camera);
   updateBubbles();
@@ -2894,7 +3005,7 @@ function dismissHint(){if(hintGone)return;hintGone=true;const el=document.getEle
 setTimeout(dismissHint,3000);
 window.addEventListener('pointerdown',dismissHint,{capture:true,once:true});
 window.addEventListener('keydown',dismissHint,{once:true});
-load();applySound();renderBase();pvResize();renderUI();afterChange();
+load();applySound();applyVita();renderBase();pvResize();renderUI();afterChange();
 requestAnimationFrame(frame);
 })();
 </script>
