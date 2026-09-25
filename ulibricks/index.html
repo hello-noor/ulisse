@@ -95,7 +95,9 @@ body.trayclosed #toolRail{transform:translateX(130%);opacity:0;pointer-events:no
 .sheetBtns button{height:44px;border-radius:12px;border:0;padding:0 18px;font-weight:800;background:var(--chip)}
 .sheetBtns .primary{background:var(--sel);color:#1B2340}
 .sheetBtns .danger{background:transparent;color:var(--danger);margin-right:auto}
-.shotFrame{border-radius:16px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.16);background:var(--chip)}
+.shotFrame{position:relative;border-radius:16px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.16);background:var(--chip);cursor:grab;touch-action:none}
+.shotFrame:active{cursor:grabbing}
+.shotHint{position:absolute;left:0;right:0;bottom:0;margin:0;padding:7px 10px;text-align:center;font-size:11.5px;font-weight:800;color:#fff;background:linear-gradient(transparent,rgba(0,0,0,.45));pointer-events:none;transition:opacity .4s}
 #shotImg{width:100%;max-height:50vh;object-fit:contain;display:block}
 .shotOpts{display:flex;flex-direction:column;gap:10px;margin-top:14px}
 .titleWrap{display:flex;align-items:center;gap:10px;background:var(--chip);border-radius:12px;padding:0 4px 0 14px;height:46px}
@@ -474,7 +476,10 @@ body.tetris .top,body.tetris .tray,body.tetris #empty,body.tetris #kitCard,body.
 <div id="boomText" aria-live="polite">BOOM!</div>
 <div class="modal" id="shotModal" hidden><div class="sheet">
   <div class="sheetHead"><h2>📸 Foto</h2><button class="x" data-close aria-label="Chiudi">✕</button></div>
-  <div class="shotFrame"><img id="shotImg" alt="Foto della costruzione ULIBRICKS"></div>
+  <div class="shotFrame" id="shotFrameEl"><img id="shotImg" alt="Foto della costruzione ULIBRICKS">
+    <button class="gripbtn" id="shotReset" title="Torna alla vista attuale" aria-label="Torna alla vista attuale">↺</button>
+    <p class="shotHint" id="shotHint">Trascina per girare · pizzica o rotella per zoom</p>
+  </div>
   <div class="shotOpts">
     <div class="titleWrap"><span class="ti">✎</span><input id="shotTitle" type="text" maxlength="40" placeholder="Dai un titolo alla tua costruzione" aria-label="Titolo della costruzione"></div>
     <div class="chips">
@@ -498,7 +503,7 @@ body.tetris .top,body.tetris .tray,body.tetris #empty,body.tetris #kitCard,body.
   <p>Premi Dinamite e tocca la scena per piazzare fino a 5 candelotti. Scegli la potenza, poi Accendi: conto alla rovescia 3, 2, 1 e BOOM.</p>
   <h3>Personaggi e Vita</h3>
   <p>Nella forma "Personaggio" crei i tuoi omini: capelli o cappello, faccia, colori dei vestiti e un oggetto in mano. Poi li posi sulla costruzione come un pezzo qualunque. Toccane uno per farlo saltare e parlare.</p>
-  <p>Con <b>Vita</b> attiva (nelle Impostazioni) i personaggi si muovono da soli: passeggiano sulla costruzione, salgono e scendono i gradini, si fermano qualche secondo, salutano o saltano, poi ripartono verso un altro punto. Per spostarli o cancellarli a mano, spegni prima Vita.</p>
+  <p>Con <b>Vita</b> attiva (nelle Impostazioni) i personaggi si muovono da soli: passeggiano sulla costruzione, saltano per salire sui blocchi alti, si fermano a riposare o a sedersi su un pezzo, salutano o saltellano, e se due si incontrano si fermano a chiacchierare. Per spostarli o cancellarli a mano, spegni prima Vita.</p>
   <h3>Le quattro modalità</h3>
   <p>In basso scegli cosa fare: <b>Costruisci</b> (costruzione libera, con i pezzi divisi per categoria e il pallino del colore), <b>Kit</b> (modelli da montare o da posare pronti), <b>Gioca</b> (Pioggia di mattoncini, Terremoto, Dinamite) e <b>Mostra</b> (titolo, foto e presentazione). Gli strumenti Costruisci, Sposta, Blocco, Gomma, Pennello e Copia stanno nella barra sul lato destro. In alto restano Annulla e le Impostazioni (suono, base, vista, istruzioni, installazione).</p>
   <h3>Pioggia di mattoncini</h3>
@@ -508,7 +513,9 @@ body.tetris .top,body.tetris .tray,body.tetris #empty,body.tetris #kitCard,body.
   <h3>Presentazione</h3>
   <p>Il pulsante con lo schermo e il triangolo avvia un piccolo video della tua costruzione: titolo, montaggio pezzo per pezzo, misure reali, vista esplosa, colori, personaggi e riepilogo. Usa le frecce per cambiare scena, il tasto pausa per fermarti, la X per uscire. Il titolo è quello che scrivi nella finestra Foto.</p>
   <h3>Base, foto e vista</h3>
-  <p>L'icona della base cambia forma, colore e dimensione anche a gioco iniziato. La macchina fotografica scatta una foto con il logo, da salvare o inviare. Trascina per girare la vista, pizzica o usa la rotella per lo zoom, tasto destro o due dita per spostarla.</p>
+  <p>L'icona della base cambia forma, colore e dimensione anche a gioco iniziato. Trascina per girare la vista, pizzica o usa la rotella per lo zoom, tasto destro o due dita per spostarla. La foto ha una sua vista separata: apri "Foto", poi trascina o pizzica direttamente sull'immagine per inquadrarla come vuoi, senza toccare la vista della costruzione; ↺ torna a quello che stavi guardando.</p>
+  <h3>Salvare il progetto</h3>
+  <p>Nelle Impostazioni, "Salva progetto" scarica un file con tutta la costruzione, i personaggi e la base. "Carica progetto" lo rilegge: sostituisce quello che stai costruendo, quindi salva prima quello attuale se vuoi tenerlo.</p>
   <h3>Scorciatoie da tastiera</h3>
   <div class="keys">
     <kbd>1</kbd><span>Costruisci</span><kbd>2</kbd><span>Sposta</span><kbd>3</kbd><span>Blocco</span><kbd>4</kbd><span>Gomma</span><kbd>5</kbd><span>Pennello</span><kbd>6</kbd><span>Copia un pezzo</span>
@@ -566,6 +573,9 @@ body.tetris .top,body.tetris .tray,body.tetris #empty,body.tetris #kitCard,body.
     <button class="mtile" data-go="view"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg>Centra la vista</button>
     <button class="mtile" data-go="info"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v6"/><circle cx="12" cy="7.5" r=".6" fill="currentColor"/></svg>Istruzioni</button>
     <button class="mtile" data-go="life" id="mVita"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13" cy="4.5" r="1.8"/><path d="M13 8v5l3 2.5M13 13l-2.5 2M13 13l4-1M10.5 15l-2 5M16 15.5l1.5 4.5"/></svg><span>Vita: attiva</span></button>
+    <button class="mtile" data-go="saveproj"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h11l3 3v13H5z"/><path d="M8 4v5h8V4M8 14h8v6H8z"/></svg>Salva progetto</button>
+    <button class="mtile" data-go="loadproj"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7a2 2 0 0 1 2-2h4l2 2h6a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/></svg>Carica progetto</button>
+    <input type="file" id="loadFile" accept="application/json,.json" hidden>
     <button class="mtile" data-go="install"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></svg>Installa l'app</button>
   </div>
 </div></div>
@@ -1469,7 +1479,7 @@ window.addEventListener('keydown',e=>{
   else if(k==='q')rotate(-1);
   else if(k==='z'){e.preventDefault();undo();}
   else if(k==='g')cycleGrip();
-  else if(k==='f')takeShot();
+  else if(k==='f')openShot();
   else if(k==='i')openModal('infoModal');
   else if(k==='1')setMode('build');else if(k==='2')setMode('move');else if(k==='3')setMode('block');else if(k==='4')setMode('erase');else if(k==='5')setMode('paint');else if(k==='6')setMode('copy');
 });
@@ -1801,6 +1811,17 @@ function drawInfo(x,W,H){
   x.font='700 '+s+'px Nunito, "Trebuchet MS", sans-serif';x.fillStyle='#1B2340';
   lines.forEach(l=>{x.fillText(l,pad+s*.95,y);y+=lh;});
 }
+let shotView=null;
+function camNow(){return{theta:cam.theta,phi:cam.phi,radius:cam.radius,target:cam.target.clone()};}
+function fitShotView(){
+  if(!bricks.length)return;const b=new THREE.Box3();bricks.forEach(x=>b.expandByObject(x.mesh));if(b.isEmpty())return;
+  const saved=camNow();fitTo(b,1.5);cam.phi=1.02;
+  if(document.getElementById('shotStats').checked){const sz=b.getSize(new V3());cam.target.y-=Math.max(sz.x,sz.z,sz.y)*.12;}
+  shotView=camNow();cam.theta=saved.theta;cam.phi=saved.phi;cam.radius=saved.radius;cam.target.copy(saved.target);
+}
+function openShot(){
+  shotView=null;if(document.getElementById('shotFrame').checked)fitShotView();takeShot();
+}
 function composeShot(open){
   if(!shotRaw)return;
   const W=shotRaw.width,H=shotRaw.height,out=document.createElement('canvas');out.width=W;out.height=H;const x=out.getContext('2d');
@@ -1820,18 +1841,38 @@ function composeShot(open){
 }
 function captureRaw(){
   const temp=[ghost,gripMark,outline,outlineG,ghostG,cursorDyn.g,cursorDyn.ring].filter(o=>o.visible);temp.forEach(o=>o.visible=false);
-  const saved={theta:cam.theta,phi:cam.phi,radius:cam.radius,target:cam.target.clone()};
-  const frameIt=document.getElementById('shotFrame').checked&&bricks.length&&!PR.on;
-  if(frameIt){const b=new THREE.Box3();bricks.forEach(x=>b.expandByObject(x.mesh));fitTo(b,1.5);cam.phi=1.02;
-    const st=document.getElementById('shotStats').checked;if(st){const sz=b.getSize(new V3());cam.target.y-=Math.max(sz.x,sz.z,sz.y)*.12;}}
+  const saved=camNow();if(!shotView)shotView=camNow();
+  cam.theta=shotView.theta;cam.phi=shotView.phi;cam.radius=shotView.radius;cam.target.copy(shotView.target);
   updateCamera();renderer.render(scene,camera);
   const W=canvas.width,H=canvas.height,raw=document.createElement('canvas');raw.width=W;raw.height=H;const x=raw.getContext('2d');
   const cs=getComputedStyle(document.documentElement),top=cs.getPropertyValue('--sky-top').trim()||'#9FD3F2',bot=cs.getPropertyValue('--sky-bottom').trim()||'#E4ECF3';
   const gr=x.createLinearGradient(0,0,0,H);gr.addColorStop(0,top);gr.addColorStop(.62,bot);gr.addColorStop(1,bot);x.fillStyle=gr;x.fillRect(0,0,W,H);
   x.drawImage(canvas,0,0);temp.forEach(o=>o.visible=true);
-  if(frameIt){cam.theta=saved.theta;cam.phi=saved.phi;cam.radius=saved.radius;cam.target.copy(saved.target);}
+  cam.theta=saved.theta;cam.phi=saved.phi;cam.radius=saved.radius;cam.target.copy(saved.target);
   shotRaw=raw;
 }
+const shotFrameEl=document.getElementById('shotFrameEl');
+let shotDrag=null;const shotT=new Map();let shotPinch=null;
+function shotRefresh(){captureRaw();composeShot(false);}
+function shotManual(){const cb=document.getElementById('shotFrame');if(cb.checked)cb.checked=false;document.getElementById('shotHint').style.opacity='0';}
+shotFrameEl.addEventListener('pointerdown',e=>{
+  try{shotFrameEl.setPointerCapture(e.pointerId);}catch(_){}
+  shotT.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  if(shotT.size>=2){const a=[...shotT.values()];shotPinch={d:Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y)||1,r:shotView?shotView.radius:cam.radius};shotDrag=null;return;}
+  shotDrag={sx:e.clientX,sy:e.clientY,lx:e.clientX,ly:e.clientY,moved:false};
+});
+shotFrameEl.addEventListener('pointermove',e=>{
+  const q=shotT.get(e.pointerId);if(q){q.x=e.clientX;q.y=e.clientY;}
+  if(shotPinch&&shotT.size>=2){const a=[...shotT.values()],d=Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y)||1;
+    if(!shotView)shotView=camNow();shotManual();shotView.radius=clamp(shotPinch.r*shotPinch.d/d,4,220);shotRefresh();return;}
+  if(!shotDrag)return;const dx=e.clientX-shotDrag.lx,dy=e.clientY-shotDrag.ly;shotDrag.lx=e.clientX;shotDrag.ly=e.clientY;
+  if(!shotDrag.moved&&Math.hypot(e.clientX-shotDrag.sx,e.clientY-shotDrag.sy)>4)shotDrag.moved=true;
+  if(shotDrag.moved){if(!shotView)shotView=camNow();shotManual();shotView.theta-=dx*.012;shotView.phi=clamp(shotView.phi-dy*.012,.15,1.5);shotRefresh();}
+});
+function shotEnd(e){shotT.delete(e.pointerId);if(shotT.size<2)shotPinch=null;shotDrag=null;}
+shotFrameEl.addEventListener('pointerup',shotEnd);shotFrameEl.addEventListener('pointercancel',shotEnd);
+shotFrameEl.addEventListener('wheel',e=>{e.preventDefault();if(!shotView)shotView=camNow();shotManual();shotView.radius=clamp(shotView.radius*Math.exp(e.deltaY*.0014),4,220);shotRefresh();},{passive:false});
+document.getElementById('shotReset').addEventListener('click',()=>{shotView=camNow();document.getElementById('shotFrame').checked=false;document.getElementById('shotHint').style.opacity='1';shotRefresh();});
 function drawShotOverlay(x,W,H){
   const cs=getComputedStyle(document.documentElement),ink=cs.getPropertyValue('--ink').trim()||'#1B2340',muted=cs.getPropertyValue('--muted').trim()||'#5B6480',
     skyTop=cs.getPropertyValue('--sky-top').trim()||'#9FD3F2',card=cs.getPropertyValue('--tray').trim()||'rgba(255,255,255,.95)';
@@ -1871,8 +1912,8 @@ function takeShot(){
 let shotTimer=0;
 document.getElementById('shotTitle').addEventListener('input',()=>{clearTimeout(shotTimer);shotTimer=setTimeout(()=>composeShot(false),300);});
 ['shotStats','shotDate'].forEach(id=>document.getElementById(id).addEventListener('change',()=>{if(id==='shotStats'&&document.getElementById('shotFrame').checked)captureRaw();composeShot(false);}));
-document.getElementById('shotFrame').addEventListener('change',()=>{captureRaw();composeShot(false);});
-document.getElementById('shotBtn').addEventListener('click',takeShot);
+document.getElementById('shotFrame').addEventListener('change',()=>{if(document.getElementById('shotFrame').checked)fitShotView();else shotView=camNow();captureRaw();composeShot(false);});
+document.getElementById('shotBtn').addEventListener('click',openShot);
 async function saveShot(){
   if(!shotBlob)return;
   if(!dlCap){toast('Tieni premuto sulla foto per salvarla');return;}
@@ -2234,14 +2275,25 @@ function sparkle(box){const p=new V3(rnd(box.min.x,box.max.x),rnd(box.min.y,box.
   spawn(p,{color:[0xFFE27A,0xFFFFFF,0x9FD3F2][Math.floor(Math.random()*3)],additive:true,size:rnd(.3,.7),v:new V3(0,rnd(.5,1.5),0),life:rnd(.6,1.1),kind:'spark'});}
 
 /* ================= PERSONAGGI VIVI ================= */
+const CHAT_PAIRS=[
+  ['Ciao! Bel colore che hai scelto.','Grazie, il tuo pezzo è più raro del mio!'],
+  ['Cosa costruiamo qui?','Magari una torre più alta!'],
+  ['Hai visto la vista da lassù?','Sì, mozzafiato!'],
+  ['Attento alla dinamite!','Scappiamo insieme allora.'],
+  ['Mi siedo un attimo qui.','Buona idea, anch’io sono stanco.'],
+  ['Che bel mattoncino nuovo.','È il mio preferito.'],
+  ['Chi ha costruito questa scala?','Bella domanda!'],
+  ['Facciamo una gara fino a lassù?','Ultimo che arriva monta la torre!'],
+  ['Che colore metteresti qui?','Io proverei il giallo.'],
+  ['Sali anche tu?','Arrivo!']
+];
 const FIG_TALK=[
   'Ciao!','Mi fai il solletico!','Evviva!','Che bella giornata per costruire!','Sto facendo due passi.','Sto esplorando la base.','Sali anche tu quassù?','Tocca a te costruire ora!','Che silenzio quassù.','Fammi vedere cosa costruisci dopo!',
   'Che bella costruzione!','Ancora un piano!','Costruiamo un castello?','Sono il capo cantiere!','Qui ci vuole una torre.','Questa base è enorme.','Attento alla dinamite!','Quanti bottoncini ci sono qui?','Un’altra piastra qui starebbe bene.','Chi ha messo questo pezzo storto?',
   'Adoro i mattoncini tondi.','Gli archi sono la mia parte preferita.','Guarda che bottoncini lucidi!','Questo mattoncino è enorme!','Un pilastro così alto mi fa venire le vertigini.','Le finestre fanno entrare la luce.','Che bel tetto spiovente.','Adoro le scale a gradini.','Mi piace incastrare i pezzi nuovi.','Che bel pezzo raro!',
   'Il rosso è il mio colore preferito!','Quel vetro azzurro è bellissimo.','L’oro luccica tantissimo!','Mi piace come si abbina il verde al blu.','Che bel colore hai scelto!','Il vetro si vede attraverso, magico!','Vorrei un mattoncino di questo colore.','Che tinta vivace!',
   'Da quassù si vede tutto.','Che vista panoramica!','Non guardare giù!','Attenzione al bordo!','Sto cercando un buon posto per sedermi.','Qui il vento è più forte.','Che bel panorama da questo tetto.','Da qui vedo tutta la base.',
-  'Ho fame di... piastre!','Dove andiamo dopo?','Mi sono un po’ perso.','Che avventura!','Sono stanco di camminare!','Un salto e sono già là.'
-];
+  'Ho fame di... piastre!','Dove andiamo dopo?','Mi sono un po’ perso.','Che avventura!','Sono stanco di camminare!','Un salto e sono già là.','Che bel salto!','Sali con un balzo!'];
 function figOf(b){return b.mesh.children.find(c=>c.userData&&c.userData.fig);}
 function figsAll(fn){bricks.forEach(b=>{if(b.shape==='personaggio'){const f=figOf(b);if(f)fn(f.userData,b);}});}
 const bubbles=[];
@@ -2266,6 +2318,8 @@ function animFigures(now,dt){
     if(u.jump>0){u.jump=Math.max(0,u.jump-dt);const k=Math.sin((1-u.jump/.6)*Math.PI);y+=k*1.1;zl-=k*1.3;zr+=k*1.3;}
     if(u.wave>0){u.wave=Math.max(0,u.wave-dt);zr=2.5+Math.sin(now/90)*.35;}
     if(u.scared>0){u.scared=Math.max(0,u.scared-dt);f.position.x=(Math.random()-.5)*.1;zl=-2.6;zr=2.6;}else f.position.x=0;
+    u.sitAmt=u.sitAmt||0;u.sitAmt+=((u.sitting?1:0)-u.sitAmt)*Math.min(1,dt*4);
+    if(u.sitAmt>.01){y-=u.sitAmt*.62;f.rotation.x=u.sitAmt*.18;zl=zl*(1-u.sitAmt)-u.sitAmt*.55;zr=zr*(1-u.sitAmt)+u.sitAmt*.55;}else f.rotation.x=0;
     u.arms[0].rotation.z=zl;u.arms[1].rotation.z=zr;f.position.y=y;}
   if(now>nextChat){nextChat=now+rnd(25000,45000);if(!PR.on&&!KIT.on&&!dyn.mode&&!document.hidden){const figs=bricks.filter(b=>b.shape==='personaggio');
     if(figs.length){const b=figs[Math.floor(Math.random()*figs.length)],f=figOf(b);if(f){f.userData.wave=1.6;bubble(b,FIG_TALK[Math.floor(Math.random()*FIG_TALK.length)],2200);}}}}
@@ -2362,6 +2416,32 @@ function openKits(){
 document.getElementById('kitBtn').addEventListener('click',openKits);
 function snapshot(){return bricks.map(b=>[b.shape,b.w,b.d,b.color,b.rot,b.i0,b.j0,b.level]);}
 function clearAll(){bricks.slice().forEach(b=>{detach(b);scene.remove(b.mesh);});flying.slice().forEach(f=>scene.remove(f.mesh));flying.length=0;}
+function projectName(){return(document.getElementById('shotTitle').value||'').trim()||'ulibricks-progetto';}
+function slugify(s){return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'')||'ulibricks-progetto';}
+function exportProject(){
+  const data={app:'ULIBRICKS',v:1,title:projectName(),base:{shape:base.shape,color:base.color,mult:base.mult},chars,
+    b:bricks.map(b=>[b.shape,b.w,b.d,b.color,b.rot,b.i0,b.j0,b.level])};
+  const blob=new Blob([JSON.stringify(data)],{type:'application/json'}),name=slugify(data.title)+'.json';
+  if(dlCap){dlCap.save({filename:name,data:blob}).then(()=>toast('Progetto salvato')).catch(e=>{if(e&&e.code==='declined')return;dlFallback(blob,name);});}
+  else dlFallback(blob,name);
+}
+function dlFallback(blob,name){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();
+  setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1000);toast('Progetto scaricato');}
+function importProject(file){
+  if(!file)return;const r=new FileReader();
+  r.onload=()=>{let data;try{data=JSON.parse(r.result);}catch(e){toast('File non valido');return;}
+    if(!data||!Array.isArray(data.b)){toast('File non valido');return;}
+    cancelDyn();cancelCarry();closeBase();if(KIT.on)kitExit(false);if(TET.on)exitTetris();
+    if(Array.isArray(data.chars))chars=data.chars;
+    if(data.base&&BASES[data.base.shape]){base.shape=data.base.shape;base.color=data.base.color||base.color;base.mult=clampMult(base.shape,data.base.mult||1);}
+    buildBase();restoreSnap(data.b);undoStack=[];
+    if(data.title)document.getElementById('shotTitle').value=data.title;
+    renderBase();setTab('build');renderUI();afterChange();scheduleSave();
+    toast('Progetto caricato');
+  };
+  r.readAsText(file);
+}
+document.getElementById('loadFile').addEventListener('change',e=>{const f=e.target.files&&e.target.files[0];importProject(f);e.target.value='';});
 function restoreSnap(arr){clearAll();(arr||[]).forEach(a=>{if(!SHAPES[a[0]])return;if(String(a[3])[0]==='@'&&!charById(String(a[3]).slice(1)))return;
   const d={shape:a[0],w:a[1],d:a[2],color:a[3],rot:a[4],i0:a[5],j0:a[6],level:a[7]};
   const cells=worldCells(d);if(cells.some(c=>c.i<0||c.j<0||c.i>=G||c.j>=G||[...Array(c.y1-c.y0)].some((_,k)=>occ.has(key(c.i,c.j,c.y0+k)))))return;attach(makeBrick(d),false);});settle(true);}
@@ -2500,6 +2580,8 @@ document.getElementById('menuBtn').addEventListener('click',()=>{document.getEle
 document.querySelectorAll('#menuModal [data-go]').forEach(b=>b.addEventListener('click',()=>{
   if(b.dataset.go==='sound'){document.getElementById('soundBtn').click();b.querySelector('span').textContent=soundLabel();return;}
   if(b.dataset.go==='life'){VITA.on=!VITA.on;applyVita();return;}
+  if(b.dataset.go==='saveproj'){document.getElementById('menuModal').hidden=true;exportProject();return;}
+  if(b.dataset.go==='loadproj'){document.getElementById('menuModal').hidden=true;document.getElementById('loadFile').click();return;}
   menuAct(b.dataset.go);}));
 
 /* ================= VITA: personaggi che girano da soli ================= */
@@ -2509,7 +2591,7 @@ const lifeState=new WeakMap();
 function applyVita(){
   try{localStorage.setItem('ulibricks-vita',VITA.on?'on':'off');}catch(e){}
   const b=document.getElementById('mVita');if(b)b.querySelector('span').textContent='Vita: '+(VITA.on?'attiva':'ferma');
-  if(!VITA.on){bricks.forEach(bk=>{if(bk.shape==='personaggio'){placeMesh(bk.mesh,bk);lifeState.delete(bk);const f=figOf(bk);if(f)f.userData.walking=0;}});}
+  if(!VITA.on){bricks.forEach(bk=>{if(bk.shape==='personaggio'){placeMesh(bk.mesh,bk);lifeState.delete(bk);const f=figOf(bk);if(f){f.userData.walking=0;f.userData.sitting=false;}}});}
 }
 function topAt(i,j){
   if(i<0||j<0||i>=G||j>=G||!mask[i*G+j])return null;
@@ -2522,7 +2604,7 @@ function planPath(b){
   let si=Math.round(b.mesh.position.x+G/2-.5),sj=Math.round(b.mesh.position.z+G/2-.5);
   let top0=topAt(si,sj);
   if(top0==null){si=clamp(b.i0,0,G-1);sj=clamp(b.j0,0,G-1);top0=topAt(si,sj);if(top0==null)return null;}
-  const STEP=4,radius=Math.floor(rnd(3,7)),K=(i,j)=>i+','+j;
+  const STEP=9,radius=Math.floor(rnd(3,7)),K=(i,j)=>i+','+j;
   const visited=new Map();visited.set(K(si,sj),{i:si,j:sj,prev:null,top:top0});
   const queue=[[si,sj,0]],reach=[];
   while(queue.length){
@@ -2542,6 +2624,21 @@ function planPath(b){
   while(cur){path.unshift(cur);cur=cur.prev?visited.get(cur.prev):null;}
   return path.map(c=>({x:c.i-G/2+.5,z:c.j-G/2+.5,y:c.top*PH}));
 }
+function nearbyIdlePartner(b,radius){
+  let best=null,bd=radius;
+  bricks.forEach(o=>{if(o===b||o.shape!=='personaggio')return;const ls2=lifeState.get(o);if(!ls2||ls2.mode!=='pause'||ls2.chatUntil)return;
+    const d=b.mesh.position.distanceTo(o.mesh.position);if(d<bd){bd=d;best=o;}});
+  return best;
+}
+function startChat(b,ls){
+  const other=nearbyIdlePartner(b,3.4);if(!other||Math.random()>.5)return false;
+  const pair=CHAT_PAIRS[Math.floor(Math.random()*CHAT_PAIRS.length)],ls2=lifeState.get(other);
+  const dir=other.mesh.position.clone().sub(b.mesh.position);if(dir.lengthSq()>1e-6){b.mesh.rotation.y=Math.atan2(dir.x,dir.z);other.mesh.rotation.y=Math.atan2(-dir.x,-dir.z);}
+  bubble(b,pair[0],1700);ls.chatUntil=performance.now()+2300;
+  if(ls2){ls2.pauseT=Math.max(ls2.pauseT,2.6);ls2.chatUntil=performance.now()+2300;}
+  setTimeout(()=>{if(bricks.indexOf(other)>=0)bubble(other,pair[1],1700);},1000);
+  return true;
+}
 function lifeTick(dt,now){
   if(!VITA.on||PR.on||KIT.on||TET.on||QUAKE.on||dyn.mode)return;
   bricks.forEach(b=>{
@@ -2551,25 +2648,37 @@ function lifeTick(dt,now){
     const fig=figOf(b);
     if(ls.mode==='pause'){
       ls.pauseT-=dt;
+      if(ls.chatUntil&&now<ls.chatUntil)return;
       if(ls.pauseT<=0){
         const path=planPath(b);
-        if(path&&path.length>1){ls.mode='walk';ls.path=path;ls.idx=1;ls.t=0;
-          const a=path[0],c=path[1];ls.segDur=Math.max(.25,Math.hypot(c.x-a.x,c.z-a.z,c.y-a.y)/1.6);}
+        if(path&&path.length>1){ls.mode='walk';ls.path=path;ls.idx=1;ls.t=0;ls.chatUntil=0;if(fig)fig.userData.sitting=false;
+          const a=path[0],c=path[1];const dy0=Math.abs(c.y-a.y);ls.jumpSeg=dy0>3*PH;if(ls.jumpSeg&&fig)fig.userData.jump=.5;
+          ls.segDur=Math.max(.25,Math.hypot(c.x-a.x,c.z-a.z,c.y-a.y)/1.6);}
         else ls.pauseT=rnd(1,2);
       }
       return;
     }
     ls.t+=dt;const a=ls.path[ls.idx-1],c=ls.path[ls.idx],k=clamp(ls.t/ls.segDur,0,1);
-    const hop=Math.sin(k*Math.PI)*(.12+Math.min(.55,Math.abs(c.y-a.y)*.7));
+    const hop=Math.sin(k*Math.PI)*(.12+Math.min(1.5,Math.abs(c.y-a.y)*.95));
     b.mesh.position.set(a.x+(c.x-a.x)*k,a.y+(c.y-a.y)*k+hop,a.z+(c.z-a.z)*k);
     const dx=c.x-a.x,dz=c.z-a.z;if(Math.hypot(dx,dz)>1e-4)b.mesh.rotation.y=Math.atan2(dx,dz);
     if(fig)fig.userData.walking=1;
     if(k>=1){
+      if(ls.jumpSeg){puff(new V3(c.x,c.y,c.z),5);sndThud();ls.jumpSeg=false;}
       ls.idx++;
       if(ls.idx>=ls.path.length){
-        ls.mode='pause';ls.pauseT=rnd(2,5);if(fig){fig.userData.walking=0;if(Math.random()<.5)fig.userData.wave=1.4;else fig.userData.jump=.5;}
-        if(Math.random()<.4)bubble(b,FIG_TALK[Math.floor(Math.random()*FIG_TALK.length)],1800);
-      } else {ls.t=0;const a2=ls.path[ls.idx-1],c2=ls.path[ls.idx];ls.segDur=Math.max(.25,Math.hypot(c2.x-a2.x,c2.z-a2.z,c2.y-a2.y)/1.6);}
+        ls.mode='pause';ls.pauseT=rnd(2.5,6);ls.chatUntil=0;
+        if(fig){fig.userData.walking=0;
+          if(!startChat(b,ls)){
+            const r=Math.random();
+            if(r<.3){fig.userData.wave=1.4;}
+            else if(r<.55){fig.userData.jump=.5;}
+            else if(r<.8){fig.userData.sitting=true;ls.pauseT=rnd(3.5,7);}
+            if(r>=.8&&Math.random()<.4)bubble(b,FIG_TALK[Math.floor(Math.random()*FIG_TALK.length)],1800);
+          }
+        }
+      } else {ls.t=0;const a2=ls.path[ls.idx-1],c2=ls.path[ls.idx];const dy2=Math.abs(c2.y-a2.y);ls.jumpSeg=dy2>3*PH;if(ls.jumpSeg&&fig)fig.userData.jump=.5;
+        ls.segDur=Math.max(.25,Math.hypot(c2.x-a2.x,c2.z-a2.z,c2.y-a2.y)/1.6);}
     }
   });
 }
@@ -2877,7 +2986,7 @@ function renderKitCards(){
 renderKitCards();
 document.querySelectorAll('#panelPlay [data-play]').forEach(b=>b.addEventListener('click',()=>{ensureAudio();const a=b.dataset.play;
   if(a==='rain')openTetStart();else if(a==='quake')startQuake();else{setTab('build');enterAim();}}));
-document.querySelectorAll('#panelShow [data-show]').forEach(b=>b.addEventListener('click',()=>{ensureAudio();if(b.dataset.show==='shot')takeShot();else startPresent();}));
+document.querySelectorAll('#panelShow [data-show]').forEach(b=>b.addEventListener('click',()=>{ensureAudio();if(b.dataset.show==='shot')openShot();else startPresent();}));
 document.getElementById('titleIn').addEventListener('input',e=>{document.getElementById('shotTitle').value=e.target.value;});
 document.getElementById('shotTitle').addEventListener('input',e=>{document.getElementById('titleIn').value=e.target.value;});
 setTab('build');
