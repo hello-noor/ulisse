@@ -61,16 +61,18 @@ button:focus-visible{outline:3px solid var(--sel);outline-offset:2px}
 #boomBtn[aria-pressed="true"]{outline:3px solid var(--sel);outline-offset:3px}
 #boomBtn{position:relative}
 .dynCount{position:absolute;top:-6px;right:-6px;min-width:22px;height:22px;border-radius:11px;background:#FFC914;color:#1B2340;font:800 12px var(--body);display:grid;place-items:center;border:2px solid #fff;padding:0 5px}
-#dynMenu{position:fixed;right:12px;top:calc(env(safe-area-inset-top,0px) + 66px);z-index:40;background:var(--tray);border-radius:18px;padding:8px;box-shadow:0 14px 36px rgba(0,0,0,.25);display:flex;flex-direction:column;gap:6px;width:240px;transform-origin:top right;animation:dmIn .18s ease-out}
+#dynMenu{position:fixed;right:calc(10px + 72px + 8px);top:calc(env(safe-area-inset-top,0px) + 70px);z-index:40;background:var(--tray);border-radius:16px;padding:6px;box-shadow:0 14px 36px rgba(0,0,0,.25);display:flex;flex-direction:column;gap:4px;width:100px;transform-origin:top right;animation:dmIn .18s ease-out}
+@media (max-width:640px){#dynMenu{right:calc(10px + 66px + 6px)}}
 #dynMenu[hidden]{display:none}
 @keyframes dmIn{from{opacity:0;transform:scale(.9) translateY(-6px)}}
-.dm-item{display:flex;align-items:center;gap:10px;border:2px solid transparent;border-radius:14px;background:var(--chip);padding:6px 10px;text-align:left;color:var(--ink)}
+.dm-item{display:flex;flex-direction:column;align-items:center;gap:2px;border:2px solid transparent;border-radius:12px;background:var(--chip);padding:6px 2px 5px;text-align:center;color:var(--ink)}
 .dm-item.on{border-color:#E4262C;background:var(--danger-soft)}
-.dm-ico{width:52px;height:52px;display:grid;place-items:center;flex:none}
-.dm-ico svg{width:calc(44px * var(--s));height:calc(44px * var(--s))}
-.dm-t b{display:block;font-family:var(--display);font-weight:400;font-size:16px}
-.dm-t small{font-size:12px;font-weight:700;color:var(--muted)}
-.dm-cancel{border:0;border-radius:12px;height:40px;background:transparent;color:#E4262C;font-weight:800}
+.dm-ico{width:100%;height:38px;display:grid;place-items:center;flex:none}
+.dm-ico svg{width:calc(30px * var(--s));height:calc(30px * var(--s))}
+.dm-t{width:100%}
+.dm-t b{display:block;font-family:var(--display);font-weight:400;font-size:12.5px;line-height:1.15}
+.dm-t small{display:none}
+.dm-cancel{border:0;border-radius:10px;height:34px;background:transparent;color:#E4262C;font-weight:800;font-size:12px;padding:0 4px}
 
 #basePanel{position:fixed;right:14px;top:calc(env(safe-area-inset-top,0px) + 70px);z-index:25;width:min(92vw,330px);background:var(--tray);border:1px solid var(--line);border-radius:14px;padding:12px 14px 14px;box-shadow:0 10px 30px rgba(0,0,0,.18);display:flex;flex-direction:column;gap:8px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
 #basePanel .opts{flex-wrap:wrap}
@@ -194,7 +196,8 @@ body.twistbar #toast{top:calc(env(safe-area-inset-top,0px) + 150px)}
 @media (max-width:560px){#twistBar{left:10px;transform:none;max-width:calc(100vw - 86px)}}
 #navBar{position:fixed;left:50%;bottom:calc(var(--dockH,0px) + 18px);transform:translateX(-50%);z-index:14;display:flex;flex-direction:column;align-items:center;gap:8px;pointer-events:none}
 #navBar>*{pointer-events:auto}
-#navBar .nvh{font-size:12px;font-weight:800;color:var(--ink);text-shadow:0 1px 6px var(--sky-bottom),0 0 3px var(--sky-bottom);text-align:center;pointer-events:none;max-width:92vw}
+#navBar .nvh{font-size:12px;font-weight:800;color:var(--ink);text-shadow:0 1px 6px var(--sky-bottom),0 0 3px var(--sky-bottom);text-align:center;pointer-events:none;max-width:92vw;transition:opacity .5s}
+#navBar .nvh.fade{opacity:0}
 #navBar .nvb{display:flex;gap:4px;background:rgba(27,35,64,.92);border-radius:20px;padding:5px;box-shadow:0 6px 18px rgba(0,0,0,.22)}
 #navBar .nvb button{width:54px;height:50px;border:0;border-radius:14px;background:transparent;color:#fff;font-size:20px;font-weight:800;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;padding:0}
 #navBar .nvb button small{font-size:9.5px;font-weight:800;opacity:.8}
@@ -1134,7 +1137,7 @@ function localCells(shape,w,d){
     if(ROUND.indexOf(shape)>=0&&w>2){const r=Math.hypot(x+.5-w/2,z+.5-d/2);if(r>w/2)continue;if(r>w/2-.35)c.stud=false;}
     if(POLY[shape]&&!pip(x+.5+1e-3,z+.5+1e-3,POLY[shape](w,d)))continue;
     if(shape==='parabrezza'&&z>0)c.stud=false;
-    if(shape==='cono'&&w>1)c.stud=(w===2)||(x>=1&&x<=2&&z>=1&&z<=2);
+    if(shape==='cono'&&w>1)c.stud=w===2?(x===0&&z===0):(x>=1&&x<=2&&z>=1&&z<=2);
     else if(shape==='tegola'||shape==='ripida'){if(z>0)c.stud=false;}
     else if(shape==='gradini'){c.y1=(d-z)*3;}
     else if(shape==='rovescia'){if(z>0)c.socket=false;}
@@ -1818,7 +1821,7 @@ function openDynMenu(){
   ['tutto','media','piccola'].forEach(k=>{const R=RADII[k],b=document.createElement('button');b.className='dm-item'+(dyn.mode&&dyn.radius===k?' on':'');
     b.innerHTML='<span class="dm-ico" style="--s:'+R.sc+'">'+DYN_SVG+'</span><span class="dm-t"><b>'+R.label+'</b><small>'+R.sub+'</small></span>';
     b.addEventListener('click',()=>{enterAim(k);});dynMenu.appendChild(b);});
-  if(dyn.mode==='aim'){const c=document.createElement('button');c.className='dm-cancel';c.textContent=dyn.list.length?'✕ Togli tutte le dinamiti':'✕ Annulla';c.addEventListener('click',()=>{closeDynMenu();cancelDyn();});dynMenu.appendChild(c);}
+  if(dyn.mode==='aim'){const c=document.createElement('button');c.className='dm-cancel';c.textContent=dyn.list.length?'✕ Togli tutte':'✕ Annulla';c.title=dyn.list.length?'Togli tutte le dinamiti':'Annulla';c.addEventListener('click',()=>{closeDynMenu();cancelDyn();});dynMenu.appendChild(c);}
   dynMenu.hidden=false;document.getElementById('boomBtn').setAttribute('aria-expanded','true');
 }
 function closeDynMenu(){if(dynMenu){dynMenu.hidden=true;document.getElementById('boomBtn').setAttribute('aria-expanded','false');}}
@@ -3310,7 +3313,7 @@ function startDrive(wb){
   carryG={list:list.map(b=>({b,from:{i0:b.i0,j0:b.j0,level:b.level,rot:b.rot}})),pivot:list[0],pi:Math.floor((i0+i1)/2),pj:Math.floor((j0+j1)/2),r:0,minL:Math.min.apply(null,list.map(b=>b.level))};
   list.forEach(b=>detach(b));
   const g=new THREE.Group();g.position.set(carryG.pi+.5-G/2,0,carryG.pj+.5-G/2);scene.add(g);list.forEach(b=>g.attach(b.mesh));
-  Object.assign(DRIVE,{on:true,group:g,list,h:0,x:0,z:0,v:0,keys:{}});driveReleaseAll();
+  Object.assign(DRIVE,{on:true,group:g,list,h:0,x:0,z:0,v:0,keys:{}});driveReleaseAll();cam.theta=0;
   DRIVE.wheels=[];list.forEach(b=>b.mesh.traverse(o=>{if(o.userData.wheel)DRIVE.wheels.push(o);}));
   DRIVE.boxes=bricks.map(b=>new THREE.Box3().setFromObject(b.mesh).expandByScalar(-.1));
   document.body.classList.add('driving');document.getElementById('driveBar').hidden=false;try{renderTwistBar();}catch(e){}
@@ -3327,6 +3330,7 @@ function driveCollides(){
     const i=Math.floor(x+G/2),j=Math.floor(z+G/2);if(i<0||j<0||i>=G||j>=G||!mask[i*G+j])return true;}
   return false;
 }
+function angLerp(a,b,t){let d=((b-a+Math.PI)%(2*Math.PI))-Math.PI;if(d<-Math.PI)d+=2*Math.PI;return a+d*t;}
 function driveTick(dt){
   if(!DRIVE.on)return;const k=DRIVE.keys;let acc=(k.up?1:0)-(k.down?1:0),steer=(k.left?1:0)-(k.right?1:0);
   if(TILT.on&&TILT.has){acc=clamp(acc+TILT.acc*.8,-1,1);steer=clamp(steer+TILT.steer*.75,-1,1);}
@@ -3339,6 +3343,7 @@ function driveTick(dt){
   if(DRIVE.eng){DRIVE.eng.o.frequency.setTargetAtTime(40+Math.abs(DRIVE.v)*14,ac.currentTime,.05);DRIVE.eng.gn.gain.setTargetAtTime(Math.abs(DRIVE.v)>.05?.05:.02,ac.currentTime,.1);}
   const se=document.getElementById('dSpeed');if(se)se.textContent=Math.round(Math.abs(DRIVE.v)*7);
   const gp=DRIVE.group.position;cam.target.x+=(gp.x-cam.target.x)*Math.min(1,dt*2.5);cam.target.z+=(gp.z-cam.target.z)*Math.min(1,dt*2.5);
+  if(!drag&&ptrs.size===0&&Math.abs(DRIVE.v)>.3)cam.theta=angLerp(cam.theta,-DRIVE.h,Math.min(1,dt*2.4));
 }
 /* ---------- guida inclinando il telefono ---------- */
 const TILT={supported:typeof window.DeviceOrientationEvent!=='undefined'&&('ontouchstart' in window||navigator.maxTouchPoints>0),
@@ -3929,10 +3934,15 @@ document.addEventListener('wheel',e=>{if(e.ctrlKey&&e.target!==canvas)e.preventD
 
 /* ================= GUARDA: solo navigazione ================= */
 const NAV={spin:false,anim:null};
+let navHintT=null,navHintShown=false;
 function renderNavBar(){
   const show=state.mode==='nav'&&!DRIVE.on&&!dyn.mode&&!KIT.on&&!TET.on&&!PR.on&&document.body.dataset.tab==='build';
   document.getElementById('navBar').hidden=!show;document.body.classList.toggle('navmode',show);
   const sp=document.querySelector('#navBar [data-n=spin]');if(sp)sp.setAttribute('aria-pressed',NAV.spin);
+  const hint=document.querySelector('#navBar .nvh');
+  if(show&&!navHintShown){navHintShown=true;hint.classList.remove('fade');
+    if('ontouchstart' in window||navigator.maxTouchPoints>0){clearTimeout(navHintT);navHintT=setTimeout(()=>hint.classList.add('fade'),3000);}}
+  else if(!show){navHintShown=false;clearTimeout(navHintT);if(hint)hint.classList.remove('fade');}
 }
 function navTo(tgt,dur){NAV.anim={from:{theta:cam.theta,phi:cam.phi,radius:cam.radius,target:cam.target.clone()},to:tgt,t:0,dur:dur||.6};}
 function navTick(dt){
