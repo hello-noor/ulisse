@@ -5,14 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <title>ULIBRICKS</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22%3E%3Crect width=%2264%22 height=%2264%22 rx=%2214%22 fill=%22%23FFC914%22/%3E%3Crect x=%2215%22 y=%229%22 width=%2212%22 height=%229%22 rx=%222%22 fill=%22%23A30008%22/%3E%3Crect x=%2237%22 y=%229%22 width=%2212%22 height=%229%22 rx=%222%22 fill=%22%23A30008%22/%3E%3Crect x=%2215%22 y=%228%22 width=%2212%22 height=%224%22 rx=%222%22 fill=%22%23FF4A50%22/%3E%3Crect x=%2237%22 y=%228%22 width=%2212%22 height=%224%22 rx=%222%22 fill=%22%23FF4A50%22/%3E%3Crect x=%227%22 y=%2216%22 width=%2250%22 height=%2240%22 rx=%226%22 fill=%22%23E3000B%22/%3E%3Crect x=%227%22 y=%2250%22 width=%2250%22 height=%226%22 rx=%223%22 fill=%22%23A30008%22/%3E%3Cpath d=%22M22 25v12a10 10 0 0 0 20 0V25%22 fill=%22none%22 stroke=%22%23fff%22 stroke-width=%227%22 stroke-linecap=%22round%22/%3E%3C/svg%3E">
-<meta name="theme-color" content="#FFC914">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="ULIBRICKS">
-<link rel="manifest" href="manifest.webmanifest">
-<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
 <meta name="theme-color" content="#D7263D">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -972,7 +964,7 @@ body.tetris .top,body.tetris .tray,body.tetris #empty,body.tetris #kitCard,body.
 </div>
 <div id="err">Il visore 3D non si è caricato. Ricarica la pagina con una connessione attiva.</div>
 
-<script src="three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 /*ULIBRICKS*/(function(){
 'use strict';
@@ -989,20 +981,20 @@ const SHAPES={
   mattone:{label:'Mattone',plates:3,studs:true,sizes:SZ_B,icon:'<rect x="3" y="9" width="18" height="11" rx="1.5"/><rect x="6" y="6" width="4" height="3"/><rect x="14" y="6" width="4" height="3"/>'},
   basso:{label:'Basso',plates:2,studs:true,sizes:[[1,1],[1,2],[1,3],[1,4],[1,6],[2,2],[2,3],[2,4],[2,6],[4,4]],icon:'<rect x="3" y="11" width="18" height="8" rx="1.5"/><rect x="6" y="8" width="4" height="3"/><rect x="14" y="8" width="4" height="3"/>'},
   lisciaM:{label:'Liscio',plates:3,studs:false,sizes:[[1,1],[1,2],[1,3],[1,4],[1,6],[2,2],[2,4]],icon:'<rect x="3" y="8" width="18" height="11" rx="1.5"/>'},
-  altissimo:{label:'Pilastro',plates:15,studs:true,sizes:[[1,1],[1,2],[2,2]],icon:'<rect x="8" y="5" width="8" height="16" rx="1.2"/><rect x="10" y="2.5" width="4" height="2.5"/>'},
+  altissimo:{label:'Pilastro',plates:15,studs:true,sizes:[[1,1],[1,2],[2,2],[1,3],[2,3],[3,3]],icon:'<rect x="8" y="5" width="8" height="16" rx="1.2"/><rect x="10" y="2.5" width="4" height="2.5"/>'},
   gradini:{label:'Scala',plates:9,h:(w,d)=>d*3,studs:true,sizes:[[1,2],[2,2],[1,3],[2,3],[4,3]],icon:'<path d="M3 20h18V6h-5v5h-5v5H3z"/>'},
-  angoloP:{label:'Piastra a L',plates:1,studs:true,sizes:[[2,2],[3,3],[4,4],[6,6]],icon:'<path d="M3 20v-9h7v5h11v4z"/><rect x="5" y="8" width="3" height="3"/><rect x="16" y="13" width="3" height="3"/>'},
-  tubo:{label:'Tubo',plates:3,studs:true,sizes:[[2,2],[4,4]],icon:'<ellipse cx="12" cy="8" rx="7" ry="2.5"/><ellipse cx="12" cy="8" rx="3" ry="1"/><path d="M5 8v9a7 2.5 0 0 0 14 0V8"/>'},
-  ripida:{label:'Tegola ripida',plates:6,studs:true,sizes:[[1,2],[2,2],[1,3],[2,3]],icon:'<path d="M3 20h18v-3L12 4H3z"/><rect x="4" y="1.5" width="4" height="2.5"/>'},
+  angoloP:{label:'Piastra a L',plates:1,studs:true,sizes:[[2,2],[3,3],[4,4],[5,5],[6,6]],icon:'<path d="M3 20v-9h7v5h11v4z"/><rect x="5" y="8" width="3" height="3"/><rect x="16" y="13" width="3" height="3"/>'},
+  tubo:{label:'Tubo',plates:3,studs:true,sizes:[[2,2],[3,3],[4,4],[6,6]],icon:'<ellipse cx="12" cy="8" rx="7" ry="2.5"/><ellipse cx="12" cy="8" rx="3" ry="1"/><path d="M5 8v9a7 2.5 0 0 0 14 0V8"/>'},
+  ripida:{label:'Tegola ripida',plates:6,studs:true,sizes:[[1,2],[2,2],[1,3],[2,3],[1,4],[2,4]],icon:'<path d="M3 20h18v-3L12 4H3z"/><rect x="4" y="1.5" width="4" height="2.5"/>'},
   ruote:{label:'Ruote',plates:3,studs:true,sizes:[[2,2],[2,4],[2,6],[2,8],[4,4],[4,6],[4,8],[6,8],[6,10]],icon:'<rect x="5" y="7" width="14" height="5" rx="1"/><circle cx="6" cy="16" r="3.2"/><circle cx="18" cy="16" r="3.2"/><circle cx="6" cy="16" r="1" fill="currentColor"/><circle cx="18" cy="16" r="1" fill="currentColor"/>'},
   braccio:{label:'Braccio',plates:1,studs:true,sizes:[[1,1]],icon:'<rect x="6" y="17" width="12" height="4" rx="1"/><path d="M12 17V5"/><rect x="9" y="2.5" width="6" height="3" rx="1"/><circle cx="12" cy="15" r="1.6"/>'},
-  cerniera:{label:'Cerniera',plates:1,studs:true,sizes:[[1,2],[2,2]],icon:'<rect x="3" y="15" width="18" height="4" rx="1"/><path d="M4 14 14 5"/><rect x="11" y="3" width="8" height="4" rx="1" transform="rotate(-40 15 5)"/>'},
+  cerniera:{label:'Cerniera',plates:1,studs:true,sizes:[[1,2],[2,2],[1,3],[2,3],[1,4],[2,4]],icon:'<rect x="3" y="15" width="18" height="4" rx="1"/><path d="M4 14 14 5"/><rect x="11" y="3" width="8" height="4" rx="1" transform="rotate(-40 15 5)"/>'},
   albero:{label:'Albero',plates:12,studs:false,sizes:[[1,1]],icon:'<path d="M12 3 6 13h3l-3 5h12l-3-5h3z"/><path d="M12 18v3"/>'},
   cespuglio:{label:'Cespuglio',plates:4,studs:false,sizes:[[2,2],[3,3]],icon:'<circle cx="8" cy="14" r="4"/><circle cx="16" cy="14" r="4"/><circle cx="12" cy="10" r="4.5"/>'},
   fiore:{label:'Fiore',plates:3,studs:false,sizes:[[1,1]],icon:'<circle cx="12" cy="8" r="2"/><circle cx="12" cy="4.5" r="2"/><circle cx="15.5" cy="8" r="2"/><circle cx="8.5" cy="8" r="2"/><circle cx="12" cy="11.5" r="2"/><path d="M12 13v8M12 17l3-2"/>'},
   roccia:{label:'Roccia',plates:3,studs:false,sizes:[[2,2],[3,3]],icon:'<path d="M3 19l3-8 5-4 6 2 4 7-2 3z"/>'},
   bandiera:{label:'Bandiera',plates:12,studs:false,sizes:[[1,1]],icon:'<path d="M6 21V3"/><path d="M6 4h11l-2 3 2 3H6"/>'},
-  insegna:{label:'Insegna',plates:9,studs:false,sizes:[[1,2],[1,4]],icon:'<rect x="3" y="4" width="18" height="9" rx="1.5"/><path d="M7 13v8M17 13v8"/><path d="M7 8.5h10"/>'},
+  insegna:{label:'Insegna',plates:9,studs:false,sizes:[[1,2],[1,3],[1,4],[1,6]],icon:'<rect x="3" y="4" width="18" height="9" rx="1.5"/><path d="M7 13v8M17 13v8"/><path d="M7 8.5h10"/>'},
   elica:{label:'Elica',plates:2,studs:false,sizes:[[1,1]],icon:'<circle cx="12" cy="12" r="2"/><path d="M12 10c-1-4 0-7 2-7s2 4-2 7zM14 13c4 1 7 0 7-2s-4-2-7 2zM10 13c-3 3-6 4-7 2s2-4 7-2z"/>'},
   ingranaggio:{label:'Ingranaggio',plates:1,studs:false,sizes:[[2,2],[3,3]],icon:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/><circle cx="12" cy="12" r="7"/>'},
   faro:{label:'Faro',plates:3,studs:false,sizes:[[1,1]],icon:'<rect x="8" y="10" width="8" height="10" rx="2"/><circle cx="12" cy="7" r="3"/><path d="M12 1v2M6 3l1.5 1.5M18 3l-1.5 1.5"/>'},
@@ -1017,7 +1009,7 @@ const SHAPES={
   piastra:{label:'Piastra',plates:1,studs:true,sizes:SZ_P,icon:'<rect x="3" y="13" width="18" height="6" rx="1.5"/><rect x="6" y="10" width="4" height="3"/><rect x="14" y="10" width="4" height="3"/>'},
   liscia:{label:'Liscia',plates:1,studs:false,sizes:[[1,1],[1,2],[1,3],[1,4],[1,6],[1,8],[2,2],[2,3],[2,4],[2,6],[4,4],[6,6]],icon:'<rect x="3" y="12" width="18" height="6" rx="1.5"/>'},
   tondo:{label:'Tondo',plates:3,studs:true,sizes:[[1,1],[2,2],[4,4],[6,6]],icon:'<path d="M6 10v8a6 2 0 0 0 12 0v-8"/><ellipse cx="12" cy="10" rx="6" ry="2"/><rect x="10" y="5" width="4" height="3"/>'},
-  colonna:{label:'Colonna',plates:9,studs:true,sizes:[[1,1],[2,2]],icon:'<path d="M8 6v13a4 1.5 0 0 0 8 0V6"/><ellipse cx="12" cy="6" rx="4" ry="1.5"/>'},
+  colonna:{label:'Colonna',plates:9,studs:true,sizes:[[1,1],[2,2],[4,4]],icon:'<path d="M8 6v13a4 1.5 0 0 0 8 0V6"/><ellipse cx="12" cy="6" rx="4" ry="1.5"/>'},
   disco:{label:'Disco',plates:1,studs:true,sizes:[[1,1],[2,2],[4,4],[6,6],[8,8]],icon:'<ellipse cx="12" cy="13" rx="8" ry="3"/><path d="M4 13v3a8 3 0 0 0 16 0v-3"/>'},
   bottone:{label:'Tondino',plates:1,studs:false,sizes:[[1,1],[2,2]],icon:'<ellipse cx="12" cy="12" rx="5" ry="2"/><path d="M7 12v2.5a5 2 0 0 0 10 0V12"/>'},
   cono:{label:'Cono',plates:3,h:(w)=>w===1?3:6,studs:true,sizes:[[1,1],[2,2],[4,4]],icon:'<path d="M7 20h10l-2.5-11h-5z"/><rect x="10" y="5" width="4" height="4"/>'},
@@ -1028,19 +1020,19 @@ const SHAPES={
   colmo:{label:'Colmo',plates:3,studs:false,sizes:[[1,2],[2,2],[4,2],[6,2]],icon:'<path d="M3 20h18v-3l-9-9-9 9z"/>'},
   spicchio:{label:'Spicchio',plates:2,studs:false,sizes:[[1,1],[2,1],[1,2],[2,2]],icon:'<path d="M5 19h14L5 11z"/>'},
   angolo:{label:'Angolo',plates:3,studs:true,sizes:[[2,2],[3,3],[4,4],[6,6]],icon:'<path d="M3 20V9h8v5h10v6z"/><rect x="5" y="6" width="4" height="3"/><rect x="15" y="11" width="4" height="3"/>'},
-  arco:{label:'Arco',plates:3,studs:true,sizes:[[1,3],[1,4],[1,6],[1,8]],icon:'<path d="M3 20V8h18v12h-4v-3a5 5 0 0 0-10 0v3z"/><rect x="5" y="5" width="4" height="3"/><rect x="15" y="5" width="4" height="3"/>'},
-  arcoA:{label:'Arco 1×6×2',plates:6,studs:true,sizes:[[1,6]],icon:'<path d="M3 20v-9h18v9h-4v-2a5 5 0 0 0-10 0v2z"/><rect x="5" y="6.5" width="4" height="2.5"/><rect x="15" y="6.5" width="4" height="2.5"/>'},
-  arcoB:{label:'Arco 1×6×6',plates:18,studs:true,sizes:[[1,6]],icon:'<path d="M3 20V6h18v14h-4V9a5 5 0 0 0-10 0v11z"/><rect x="5" y="3" width="4" height="2.5"/><rect x="15" y="3" width="4" height="2.5"/>'},
+  arco:{label:'Arco',plates:3,studs:true,sizes:[[1,3],[1,4],[1,5],[1,6],[1,7],[1,8],[1,10],[1,12]],icon:'<path d="M3 20V8h18v12h-4v-3a5 5 0 0 0-10 0v3z"/><rect x="5" y="5" width="4" height="3"/><rect x="15" y="5" width="4" height="3"/>'},
+  arcoA:{label:'Arco basso',plates:6,studs:true,sizes:[[1,3],[1,4],[1,5],[1,6],[1,7],[1,8],[1,10],[1,12]],icon:'<path d="M3 20v-9h18v9h-4v-2a5 5 0 0 0-10 0v2z"/><rect x="5" y="6.5" width="4" height="2.5"/><rect x="15" y="6.5" width="4" height="2.5"/>'},
+  arcoB:{label:'Arco alto',plates:18,studs:true,sizes:[[1,3],[1,4],[1,5],[1,6],[1,7],[1,8],[1,10],[1,12]],icon:'<path d="M3 20V6h18v14h-4V9a5 5 0 0 0-10 0v11z"/><rect x="5" y="3" width="4" height="2.5"/><rect x="15" y="3" width="4" height="2.5"/>'},
   finestra:{label:'Finestra',plates:9,studs:true,sizes:[[1,2],[1,3],[1,4],[1,6]],icon:'<rect x="5" y="4" width="14" height="17" rx="1"/><rect x="8" y="7" width="8" height="11"/>'},
   snot:{label:'SNOT',plates:3,studs:true,sizes:[[1,2],[1,3],[1,4],[2,2],[2,3],[2,4]],icon:'<rect x="4" y="8" width="16" height="11" rx="1"/><rect x="7" y="5" width="4" height="3"/><rect x="13" y="5" width="4" height="3"/><rect x="1" y="11" width="3" height="3" rx="1"/><rect x="20" y="11" width="3" height="3" rx="1"/>'},
   snotc:{label:'SNOT lato corto',plates:3,studs:true,sizes:[[1,2],[1,3],[1,4],[2,2],[2,3],[2,4]],icon:'<rect x="4" y="8" width="16" height="11" rx="1"/><rect x="7" y="5" width="4" height="3"/><rect x="13" y="5" width="4" height="3"/><rect x="9" y="20" width="3" height="3" rx="1"/><rect x="13" y="20" width="3" height="3" rx="1"/>'},
-  jumper:{label:'Jumper',plates:1,studs:true,sizes:[[1,2],[1,3],[2,2],[1,4]],icon:'<rect x="3" y="13" width="18" height="6" rx="1.5"/><rect x="10" y="9" width="4" height="4" rx="1"/>'},
-  clip:{label:'Clip',plates:1,studs:true,sizes:[[1,1],[1,2]],icon:'<rect x="7" y="10" width="12" height="8" rx="1.5"/><path d="M5 11v4a2 2 0 0 0 2 2" fill="none" stroke-width="2"/>'},
-  ante:{label:'Con ante',plates:9,studs:true,sizes:[[1,2],[1,3]],icon:'<rect x="8" y="4" width="8" height="16"/><path d="M8 5 3 7v11l5 2M16 5l5 2v11l-5 2"/>'},
-  vetrata:{label:'Vetrata',plates:9,studs:true,sizes:[[1,4],[1,6]],icon:'<rect x="3" y="5" width="18" height="15"/><path d="M9 5v15M15 5v15M3 12h18"/>'},
-  oblo:{label:'Oblò',plates:6,h:(w,d)=>d===2?6:9,studs:true,sizes:[[1,2],[1,3]],icon:'<rect x="4" y="4" width="16" height="16" rx="1"/><circle cx="12" cy="12" r="5"/>'},
-  porta:{label:'Porta',plates:15,h:(w,d)=>d===4?18:15,studs:true,sizes:[[1,3],[1,4]],icon:'<path d="M5 21V3h14v18"/><rect x="8" y="6" width="8" height="15"/><circle cx="14" cy="14" r=".8" fill="currentColor"/>'},
-  parabrezza:{label:'Parabrezza',plates:6,h:(w,d)=>d===3?4:6,studs:true,sizes:[[4,2],[4,3],[6,2]],icon:'<path d="M3 19h18v-2L15 6H9L3 17z"/><path d="M9 9h6"/>'},
+  jumper:{label:'Jumper',plates:1,studs:true,sizes:[[1,2],[1,3],[2,2],[1,4],[2,3],[2,4],[1,6]],icon:'<rect x="3" y="13" width="18" height="6" rx="1.5"/><rect x="10" y="9" width="4" height="4" rx="1"/>'},
+  clip:{label:'Clip',plates:1,studs:true,sizes:[[1,1],[1,2],[1,3]],icon:'<rect x="7" y="10" width="12" height="8" rx="1.5"/><path d="M5 11v4a2 2 0 0 0 2 2" fill="none" stroke-width="2"/>'},
+  ante:{label:'Con ante',plates:9,studs:true,sizes:[[1,2],[1,3],[1,4]],icon:'<rect x="8" y="4" width="8" height="16"/><path d="M8 5 3 7v11l5 2M16 5l5 2v11l-5 2"/>'},
+  vetrata:{label:'Vetrata',plates:9,studs:true,sizes:[[1,2],[1,3],[1,4],[1,6],[1,8]],icon:'<rect x="3" y="5" width="18" height="15"/><path d="M9 5v15M15 5v15M3 12h18"/>'},
+  oblo:{label:'Oblò',plates:6,h:(w,d)=>d===2?6:9,studs:true,sizes:[[1,2],[1,3],[1,4]],icon:'<rect x="4" y="4" width="16" height="16" rx="1"/><circle cx="12" cy="12" r="5"/>'},
+  porta:{label:'Porta',plates:15,h:(w,d)=>d===4?18:15,studs:true,sizes:[[1,3],[1,4],[1,6]],icon:'<path d="M5 21V3h14v18"/><rect x="8" y="6" width="8" height="15"/><circle cx="14" cy="14" r=".8" fill="currentColor"/>'},
+  parabrezza:{label:'Parabrezza',plates:6,h:(w,d)=>d===3?4:6,studs:true,sizes:[[4,2],[4,3],[6,2],[6,3]],icon:'<path d="M3 19h18v-2L15 6H9L3 17z"/><path d="M9 9h6"/>'},
   angolata:{label:'Angolo tagliato',plates:1,studs:true,sizes:[[2,2],[3,3],[4,4],[6,6]],icon:'<path d="M3 5h18v7l-7 7H3z"/>'},
   cuneoS:{label:'Cuneo sin.',plates:1,studs:true,sizes:[[2,2],[2,3],[2,4],[3,6],[4,6]],icon:'<path d="M3 20V4h6l12 16z"/>'},
   cuneoD:{label:'Cuneo des.',plates:1,studs:true,sizes:[[2,2],[2,3],[2,4],[3,6],[4,6]],icon:'<path d="M21 20V4h-6L3 20z"/>'},
@@ -2205,7 +2197,7 @@ const CATS=[['mattoni','Mattoni',['mattone','basso','alto','altissimo','lisciaM'
   ['meccanica','Meccanica',['ruote','braccio','cerniera','elica','ingranaggio','faro','antenna']],['decorazioni','Decorazioni',['albero','palma','cespuglio','fiore','fungo','roccia','panchina','lampione','cartello','bandiera','insegna']],['personaggi','Personaggi',['personaggio']]];
 (function(){const C=Object.fromEntries(CATS.map(c=>[c[0],c]));const L=(k)=>C[k]?C[k][2]:[];
   const NEW=[['personaggi','🙂 Personaggi',L('personaggi')],['mattoni','Mattoni',L('mattoni')],['piastre','Piastre',L('piastre')],
-    ['forme','Forme',L('tondi').concat(L('aperture'))],['tetti','Tetti e archi',L('tetti').concat(L('archi'))],
+    ['forme','Forme',L('tondi').concat(L('aperture'))],['tetti','Tetti e Archi',L('tetti').concat(L('archi'))],
     ['meccanica','Meccanica',L('meccanica')],['decorazioni','Decorazioni',L('decorazioni')]];
   CATS.length=0;NEW.forEach(c=>CATS.push(c));})();
 function catOf(id){const c=CATS.find(c=>c[2].indexOf(id)>=0);return c?c[0]:'mattoni';}
@@ -4026,7 +4018,7 @@ document.addEventListener('wheel',e=>{if(e.ctrlKey&&e.target!==canvas)e.preventD
 /* ================= LIBRETTO DELLE ISTRUZIONI ================= */
 function loadJsPDF(){
   if(window.jspdf)return Promise.resolve(window.jspdf);
-  return new Promise((res,rej)=>{const sc=document.createElement('script');sc.src='jspdf.umd.min.js';
+  return new Promise((res,rej)=>{const sc=document.createElement('script');sc.src='https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
     sc.onload=()=>window.jspdf?res(window.jspdf):rej(new Error('jsPDF'));sc.onerror=()=>rej(new Error('jsPDF'));document.head.appendChild(sc);});
 }
 const COLOR_NAME={};Object.values(COLOR_GROUPS).forEach(g=>g.forEach(([c,n])=>{COLOR_NAME[c]=n;}));
