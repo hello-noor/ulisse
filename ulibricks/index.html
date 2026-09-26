@@ -6,6 +6,10 @@
 <title>ULIBRICKS</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22%3E%3Crect width=%2264%22 height=%2264%22 rx=%2214%22 fill=%22%23FFC914%22/%3E%3Crect x=%2215%22 y=%229%22 width=%2212%22 height=%229%22 rx=%222%22 fill=%22%23A30008%22/%3E%3Crect x=%2237%22 y=%229%22 width=%2212%22 height=%229%22 rx=%222%22 fill=%22%23A30008%22/%3E%3Crect x=%2215%22 y=%228%22 width=%2212%22 height=%224%22 rx=%222%22 fill=%22%23FF4A50%22/%3E%3Crect x=%2237%22 y=%228%22 width=%2212%22 height=%224%22 rx=%222%22 fill=%22%23FF4A50%22/%3E%3Crect x=%227%22 y=%2216%22 width=%2250%22 height=%2240%22 rx=%226%22 fill=%22%23E3000B%22/%3E%3Crect x=%227%22 y=%2250%22 width=%2250%22 height=%226%22 rx=%223%22 fill=%22%23A30008%22/%3E%3Cpath d=%22M22 25v12a10 10 0 0 0 20 0V25%22 fill=%22none%22 stroke=%22%23fff%22 stroke-width=%227%22 stroke-linecap=%22round%22/%3E%3C/svg%3E">
 <meta name="theme-color" content="#FFC914">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="ULIBRICKS">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
@@ -38,9 +42,9 @@
   --strong:#EEF1F8; --strong-ink:#141A2B; --hl:#3E3514; --hl-ink:#FFE08A; --danger-soft:#4A1E24; --bubble:#EEF1F8; --bubble-ink:#141A2B;
 }
 *,*::before,*::after{box-sizing:inherit}
-html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+html{height:100%;min-height:100%;scroll-padding-top:env(safe-area-inset-top,0px);background:var(--tray)}
 html,body{margin:0;overflow:hidden}
-body{height:100%;font-family:var(--body);color:var(--ink);
+body{height:100%;min-height:100vh;min-height:100dvh;font-family:var(--body);color:var(--ink);
   background:linear-gradient(180deg,var(--sky-top) 0%,var(--sky-bottom) 62%);
   -webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
 #scene{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none;cursor:crosshair}
@@ -411,14 +415,14 @@ body.kit #toast{top:calc(env(safe-area-inset-top,0px) + 200px)}
 #flash.on{animation:flash .5s ease-out}
 @keyframes flash{0%{opacity:.85}100%{opacity:0}}
 .actions>button:not(#undoBtn):not(#menuBtn):not(#boomBtn){display:none!important}
-:root{--dockH:calc(62px + env(safe-area-inset-bottom,0px))}
+:root{--dockH:calc(50px + env(safe-area-inset-bottom,0px))}
 body.kit,body.presenting,body.tetris{--dockH:0px}
 body.kit .tray{padding-bottom:calc(10px + env(safe-area-inset-bottom,0px))}
 body.kit #dock,body.presenting #dock,body.tetris #dock,body.presenting #toolRail,body.tetris #toolRail,body.tetris .panel,body.presenting .panel{display:none!important}
 body:not([data-tab="build"]) .tray,body:not([data-tab="build"]) #toolRail{display:none!important}
-#dock{position:fixed;left:0;right:0;bottom:0;z-index:15;height:var(--dockH);padding:6px 8px env(safe-area-inset-bottom,0px);display:flex;justify-content:center;gap:4px;background:var(--tray);border-top:1px solid var(--line);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
-#dock button{flex:1;max-width:120px;border:0;background:none;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-weight:800;font-size:11.5px;color:var(--muted)}
-#dock button svg{width:24px;height:24px}
+#dock{position:fixed;left:0;right:0;bottom:0;z-index:15;height:var(--dockH);padding:4px 8px env(safe-area-inset-bottom,0px);display:flex;justify-content:center;gap:4px;background:var(--tray);border-top:1px solid var(--line);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+#dock button{flex:1;max-width:110px;border:0;background:none;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;font-weight:800;font-size:10.5px;color:var(--muted);line-height:1.1}
+#dock button svg{width:20px;height:20px}
 #dock button[aria-pressed="true"]{color:#1B2340;background:#FFC914}
 .panel{position:fixed;left:0;right:0;bottom:var(--dockH);z-index:10;background:var(--tray);border-top:1px solid var(--line);padding:12px 14px 14px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
 .phead{display:flex;align-items:baseline;gap:10px;margin-bottom:10px;flex-wrap:wrap}
@@ -456,7 +460,7 @@ body.kit #toolRail{display:none!important}
 .colorDot i{width:100%;height:100%;border-radius:50%;display:block}
 .palsec{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
 .palsec .swatch{width:40px;height:40px}
-@media (max-width:640px){#toolRail{right:6px}#toolRail .tool{width:56px;height:46px;font-size:9px}.card{width:150px}.card.hero{width:190px}#dock button{font-size:10.5px}}
+@media (max-width:640px){#toolRail{right:6px}#toolRail .tool{width:56px;height:46px;font-size:9px}.card{width:150px}.card.hero{width:190px}#dock button{font-size:10px}}
 #funBar{display:none!important}
 #menuBtn{width:auto;border-radius:23px;padding:0 14px 0 12px;display:flex;gap:6px;align-items:center;font-weight:800;font-size:14px}
 @media (max-width:430px){#menuBtn span{display:none}#menuBtn{padding:0;width:36px;justify-content:center}}
@@ -580,6 +584,58 @@ body.tetris .top,body.tetris .tray,body.tetris #empty,body.tetris #kitCard,body.
   @keyframes soft{0%,70%{opacity:1;transform:translate(-50%,-50%)}100%{opacity:0;transform:translate(-50%,-50%)}}
 }
 #err{position:fixed;inset:0;display:none;place-items:center;text-align:center;padding:24px;font-weight:800}
+
+/* ---------- barre contestuali: stile unico ---------- */
+:root{--ctx-top:calc(env(safe-area-inset-top,0px) + 66px);--ctx-bg:rgba(27,35,64,.94)}
+#selBar,#navBar,#twistBar{position:fixed;left:50%;top:var(--ctx-top);bottom:auto;transform:translateX(-50%);z-index:14;display:flex;flex-direction:column;align-items:center;gap:6px;pointer-events:none;background:none;box-shadow:none;padding:0;max-width:calc(100vw - 90px);width:auto}
+#selBar>*,#navBar>*,#twistBar>*{pointer-events:auto}
+#selBar .segm,#selBar .acts,#navBar .nvb,.twp,#placeBar,#driveTop{background:var(--ctx-bg);border-radius:20px;padding:5px;gap:3px;box-shadow:0 8px 22px rgba(0,0,0,.24);display:flex;align-items:center}
+#placeBar{top:var(--ctx-top)}
+#driveTop{top:var(--ctx-top);padding:5px 14px 5px 5px}
+.ctxb,#navBar .nvb button,#selBar .acts button,.twp button,#placeBar button{height:44px;min-width:44px;border:0;border-radius:14px;background:transparent;color:#fff;font-weight:800;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;padding:0 8px;font-size:18px;line-height:1.05;white-space:nowrap}
+#navBar .nvb button small,#selBar .acts button small,.twp button small{font-size:9.5px;font-weight:800;opacity:.8}
+#navBar .nvb button:active,#selBar .acts button:active,.twp button:active,#placeBar button:active{background:rgba(255,255,255,.15)}
+#navBar .nvb button[aria-pressed="true"],#selBar .segm button[aria-pressed="true"]{background:#FFC914;color:#1B2340}
+#selBar .acts .go,.twp .go,#placeBar .go{background:#FFC914;color:#1B2340;flex-direction:row;gap:6px;font-size:14px;padding:0 14px}
+#placeBar .go:disabled{background:#6b6f7c;color:#c9ccd4}
+#selBar .segm button{height:38px;border-radius:15px}
+.twp button{flex-direction:row;gap:6px;font-size:13px;padding:0 12px}
+.twp button b{font-size:18px}
+#twistBar .twp button{background:transparent;height:44px;border-radius:14px}
+#twistBar .twp button.go{background:#FFC914;color:#1B2340}
+@media (max-width:560px){#selBar .acts{gap:0}#selBar .acts button{min-width:33px;padding:0 3px;font-size:16px}#selBar .acts .go{padding:0 10px;font-size:13px}#selBar .acts .cnt{min-width:24px;height:24px;font-size:12px;margin:0 3px}#twistBar .twp button{padding:0 9px}}
+/* ---------- suggerimenti: stile unico, spariscono da soli ---------- */
+.ctxHint{font-size:11.5px;font-weight:800;color:var(--ink);text-shadow:0 1px 6px var(--sky-bottom),0 0 3px var(--sky-bottom);text-align:center;max-width:280px;pointer-events:none;transition:opacity .6s,transform .6s}
+.ctxHint.fade{opacity:0;transform:translateY(-4px)}
+.ctxHint u{pointer-events:auto;text-decoration:none;background:#FFC914;color:#1B2340;text-shadow:none;border-radius:8px;padding:2px 7px;margin-left:2px;display:inline-block}
+#driveBar .ctxHint{position:fixed;left:50%;top:calc(var(--ctx-top) + 56px);transform:translateX(-50%)}
+#driveBar .ctxHint.fade{transform:translate(-50%,-4px)}
+@media (max-width:560px){#selBar,#navBar,#twistBar{left:calc((100vw - 76px)/2)}#navBar .nvb button{min-width:40px;padding:0 5px}}
+/* ---------- 3) finestre: stesso schema ---------- */
+.sheetBtns .primary,.sheetBtns button.primary{background:#FFC914;color:#1B2340;box-shadow:0 4px 12px rgba(255,201,20,.35)}
+.sheetHead h2{display:flex;align-items:center;gap:8px}
+/* ---------- 4) carte Gioca uguali con anteprima animata ---------- */
+#panelPlay .card,#panelPlay .card.hero{width:170px;min-height:132px}
+.cprev{position:relative;display:block;width:72px;height:52px;margin:0 0 8px;border-radius:12px;background:var(--tray);box-shadow:inset 0 0 0 1px var(--line);overflow:hidden}
+.cprev i{position:absolute;width:14px;height:10px;border-radius:2px;box-shadow:inset 0 -2px 0 rgba(0,0,0,.2)}
+.pv-rain i{top:-12px;animation:pvFall 1.8s ease-in infinite}
+.pv-rain i:nth-child(1){left:8px;background:#E3000B}
+.pv-rain i:nth-child(2){left:25px;background:#0057B8;animation-delay:.6s}
+.pv-rain i:nth-child(3){left:42px;background:#00852B;animation-delay:1.2s}
+@keyframes pvFall{0%{top:-12px}70%,100%{top:36px}}
+.pv-quake i{left:18px;width:28px}
+.pv-quake i:nth-child(1){bottom:4px;background:#00852B}
+.pv-quake i:nth-child(2){bottom:14px;background:#0057B8}
+.pv-quake i:nth-child(3){bottom:24px;background:#E3000B}
+.pv-quake{animation:pvShake .9s ease-in-out infinite}
+@keyframes pvShake{0%,40%,100%{transform:translateX(0)}50%{transform:translateX(-3px) rotate(-2deg)}60%{transform:translateX(3px) rotate(2deg)}70%{transform:translateX(-2px)}80%{transform:translateX(2px)}}
+.pv-boom i:nth-child(1){left:22px;top:18px;width:10px;height:24px;background:#E4262C}
+.pv-boom i:nth-child(2){left:33px;top:18px;width:10px;height:24px;background:#D01C22}
+.pv-boom i:nth-child(3){left:38px;top:9px;width:8px;height:8px;border-radius:50%;background:#FFC914;box-shadow:0 0 8px 3px rgba(255,201,20,.8);animation:pvSpark .5s steps(2) infinite}
+@keyframes pvSpark{50%{transform:scale(.55);opacity:.6}}
+/* ---------- 5) categorie: Personaggi come pulsante a sé ---------- */
+.cat.figcat{border:2px solid #FFC914;background:var(--hl);color:var(--hl-ink)}
+.cat.figcat[aria-pressed="true"]{background:#FFC914;color:#1B2340}
 </style>
 </head>
 <body>
@@ -647,9 +703,9 @@ body.tetris .top,body.tetris .tray,body.tetris #empty,body.tetris #kitCard,body.
 <div class="panel" id="panelPlay" hidden>
   <div class="phead"><b>Giochi</b><span>Pezzi che piovono, terremoti ed esplosioni</span></div>
   <div class="cards">
-    <button class="card hero" data-play="rain"><span class="ce">🧱</span><b>Pioggia di mattoncini</b><span>Tetris 3D: fai esplodere i blocchi</span></button>
-    <button class="card" data-play="quake"><span class="ce">🌋</span><b>Terremoto</b><span>La tua costruzione resiste?</span></button>
-    <button class="card" data-play="boom"><span class="ce">🧨</span><b>Dinamite</b><span>Fino a 5 candelotti</span></button>
+    <button class="card" data-play="rain"><span class="cprev pv-rain" aria-hidden="true"><i></i><i></i><i></i></span><b>Pioggia di mattoncini</b><span>Tetris 3D: fai esplodere i blocchi</span></button>
+    <button class="card" data-play="quake"><span class="cprev pv-quake" aria-hidden="true"><i></i><i></i><i></i></span><b>Terremoto</b><span>La tua costruzione resiste?</span></button>
+    <button class="card" data-play="boom"><span class="cprev pv-boom" aria-hidden="true"><i></i><i></i><i></i></span><b>Dinamite</b><span>Fino a 5 candelotti</span></button>
   </div>
 </div>
 <div class="panel" id="panelShow" hidden>
@@ -668,7 +724,7 @@ body.tetris .top,body.tetris .tray,body.tetris #empty,body.tetris #kitCard,body.
   <button data-tab="show" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M10 9.2v5.6l4.8-2.8z" fill="currentColor"/></svg><span>Mostra</span></button>
 </nav>
 <div class="modal" id="paletteModal" hidden><div class="sheet">
-  <div class="sheetHead"><h2>Colore</h2><button class="x" data-close aria-label="Chiudi">✕</button></div>
+  <div class="sheetHead"><h2>🎨 Colore</h2><button class="x" data-close aria-label="Chiudi">✕</button></div>
   <div class="palsec"><span class="lbl">Colori</span><div class="opts wrap" id="colors"></div></div>
   <div class="palsec"><span class="lbl">Vetro</span><div class="opts wrap" id="colorsT"></div></div>
   <div class="palsec"><span class="lbl">Metallici</span><div class="opts wrap" id="colorsM"></div></div>
@@ -703,7 +759,7 @@ body.tetris .top,body.tetris .tray,body.tetris #empty,body.tetris #kitCard,body.
 </div></div>
 
 <div class="modal" id="infoModal" hidden><div class="sheet info">
-  <div class="sheetHead"><h2>Come si gioca</h2><button class="x" data-close aria-label="Chiudi">✕</button></div>
+  <div class="sheetHead"><h2>ℹ️ Come si gioca</h2><button class="x" data-close aria-label="Chiudi">✕</button></div>
   <h3>Costruire</h3>
   <p>Scegli forma, misura e colore nel vassoio in basso, poi tocca la base o un altro pezzo per posarlo. I pezzi si incastrano solo sui bottoncini: se l'anteprima è rossa lì non si aggancia.</p>
   <p>L'anello giallo indica la <b>presa</b>, il punto da cui tieni il pezzo. Il pulsante "Presa" nell'anteprima la sposta: centro, capi e, per i pezzi grandi, i quattro angoli.</p>
@@ -756,7 +812,7 @@ body.tetris .top,body.tetris .tray,body.tetris #empty,body.tetris #kitCard,body.
 </div></div>
 
 <div class="modal" id="installModal" hidden><div class="sheet info">
-  <div class="sheetHead"><h2>Installa ULIBRICKS</h2><button class="x" data-close aria-label="Chiudi">✕</button></div>
+  <div class="sheetHead"><h2>📲 Installa ULIBRICKS</h2><button class="x" data-close aria-label="Chiudi">✕</button></div>
   <p id="installLead">ULIBRICKS si può installare come un'app, con la sua icona, a tutto schermo e anche senza connessione.</p>
   <h3>iPhone e iPad</h3><p>Apri ULIBRICKS in Safari, tocca Condividi e scegli "Aggiungi alla schermata Home".</p>
   <h3>Android</h3><p>In Chrome tocca il menu ⋮ e scegli "Installa app".</p>
@@ -765,7 +821,7 @@ body.tetris .top,body.tetris .tray,body.tetris #empty,body.tetris #kitCard,body.
   <div class="sheetBtns"><button id="installGo" class="primary" hidden>Installa ora</button><button id="dlHtml" hidden>Scarica il file dell'app</button></div>
 </div></div>
 <div class="modal" id="gripModal" hidden><div class="sheet">
-  <div class="sheetHead"><h2>Da dove lo tieni?</h2><button class="x" data-close aria-label="Chiudi">✕</button></div>
+  <div class="sheetHead"><h2>✋ Da dove lo tieni?</h2><button class="x" data-close aria-label="Chiudi">✕</button></div>
   <p class="note" style="margin-top:0">Tocca il bottoncino da cui vuoi tenere il pezzo. L'anello giallo lo segna anche sulla costruzione.</p>
   <div id="gripGrid"></div>
   <p class="front">▼ davanti</p>
@@ -773,12 +829,12 @@ body.tetris .top,body.tetris .tray,body.tetris #empty,body.tetris #kitCard,body.
 </div></div>
 <div id="present" hidden aria-live="polite"></div>
 <div class="modal" id="kitModal" hidden><div class="sheet">
-  <div class="sheetHead"><h2>Kit da costruire</h2><button class="x" data-close aria-label="Chiudi">✕</button></div>
+  <div class="sheetHead"><h2>🧩 Kit da costruire</h2><button class="x" data-close aria-label="Chiudi">✕</button></div>
   <p class="note" style="margin-top:0"><b>Passo passo</b>: il pezzo fantasma ti mostra cosa montare. Scegli tu la forma e la misura giuste nel vassoio, girale come il fantasma e posale sopra (il colore lo decidi tu). La tua costruzione viene messa da parte e la ritrovi quando esci.<br><b>Mettilo pronto</b>: posa il modello già montato sulla tua costruzione, quante volte vuoi. Perfetto per una foresta di alberi o un castello con tante torri.</p>
   <div class="kits" id="kitList"></div>
 </div></div>
 <div class="modal" id="kitDone" hidden><div class="sheet">
-  <div class="sheetHead"><h2>Kit completato!</h2><button class="x" data-close aria-label="Chiudi">✕</button></div>
+  <div class="sheetHead"><h2>🎉 Kit completato!</h2><button class="x" data-close aria-label="Chiudi">✕</button></div>
   <div class="stars">⭐⭐⭐</div>
   <p class="note" id="kitDoneTxt" style="text-align:center;font-size:15px"></p>
   <div class="sheetBtns"><button id="kitBack2">Torna alla mia costruzione</button><button id="kitKeep">Tienilo e continua</button><button id="kitPres" class="primary">Presentazione</button></div>
@@ -863,7 +919,7 @@ body.tetris .top,body.tetris .tray,body.tetris #empty,body.tetris #kitCard,body.
   <div id="tbList"></div>
 </div></div>
 <div class="modal" id="tetPause" hidden><div class="sheet">
-  <div class="sheetHead"><h2>Pausa</h2></div>
+  <div class="sheetHead"><h2>⏸ Pausa</h2></div>
   <p class="note" style="margin-top:0">Frecce o trascinamento per spostare, R o tocco sul pezzo per girare, spazio per farlo cadere.</p>
   <div class="sheetBtns"><button id="tPExit">Esci dal gioco</button><button id="tPGo" class="primary">Riprendi</button></div>
 </div></div>
@@ -882,7 +938,6 @@ body.tetris .top,body.tetris .tray,body.tetris #empty,body.tetris #kitCard,body.
 </div>
 <div id="selBar" hidden></div>
 <div id="navBar" hidden>
-  <div class="nvh">👆 Trascina per girare · ✌️ due dita per spostare · 🤏 pizzica per lo zoom</div>
   <div class="nvb">
     <button data-n="in" aria-label="Avvicina">＋</button><button data-n="out" aria-label="Allontana">－</button>
     <button data-n="spin" aria-label="Giro automatico">⟳<small>Giro</small></button>
@@ -890,6 +945,7 @@ body.tetris .top,body.tetris .tray,body.tetris #empty,body.tetris #kitCard,body.
     <button data-n="fit" aria-label="Inquadra tutto">⛶<small>Tutto</small></button>
     <button data-n="home" aria-label="Vista iniziale">⌂<small>Inizio</small></button>
   </div>
+  <div class="ctxHint nvh" data-h="nav">👆 Trascina per girare · ✌️ due dita per spostarti · 🤏 pizzica per lo zoom</div>
 </div>
 <div id="twistBar" hidden></div>
 <div id="driveBar" hidden>
@@ -904,6 +960,7 @@ body.tetris .top,body.tetris .tray,body.tetris #empty,body.tetris #kitCard,body.
     <div class="fbtn f-horn"><button id="dHorn" aria-label="Clacson"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5h3.5v3H3z"/><path d="M6.5 10.5 19 5v14L6.5 13.5"/><path d="M19 9.5h2M19 14.5h2"/></svg></button><span>Clacson</span></div>
     <div class="fbtn f-park"><button id="dPark" class="go" aria-label="Parcheggia">P</button><span>Parcheggia</span></div>
   </div>
+  <div class="ctxHint" data-h="drive" id="driveHint"></div>
   <div id="driveTop"><button id="dCancel" aria-label="Esci dalla guida e rimetti il veicolo al suo posto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6 6 18"/></svg>Esci</button><span class="spd"><b id="dSpeed">0</b> km/h</span></div>
 </div>
 <div id="tiltMeter" aria-hidden="true"><i></i><span>Tocca per ricalibrare</span></div>
@@ -1524,8 +1581,8 @@ function pan(dx,dy){
   cam.target.addScaledVector(right,-dx*s).addScaledVector(fwd,dy*s);
   cam.target.x=clamp(cam.target.x,-G/2,G/2);cam.target.z=clamp(cam.target.z,-G/2,G/2);
 }
-function resize(){const w=window.innerWidth,h=window.innerHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();}
-window.addEventListener('resize',resize);resize();
+function resize(){const w=window.innerWidth,h=Math.max(window.innerHeight,document.documentElement.clientHeight||0,(window.visualViewport&&window.visualViewport.height)||0);renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();}
+window.addEventListener('resize',resize);window.addEventListener('orientationchange',()=>setTimeout(resize,250));window.addEventListener('pageshow',()=>setTimeout(resize,50));if(window.visualViewport)visualViewport.addEventListener('resize',resize);resize();setTimeout(resize,400);
 
 /* ================= COSTRUZIONE ================= */
 const ray=new THREE.Raycaster(),ndc=new THREE.Vector2();
@@ -2146,6 +2203,11 @@ const CATS=[['mattoni','Mattoni',['mattone','basso','alto','altissimo','lisciaM'
   ['tondi','Tondi',['tondo','colonna','tubo','disco','bottone','cono','cupola']],['tetti','Tetti',['tegola','ripida','curva','rovescia','colmo','spicchio']],
   ['archi','Archi',['arco','arcoA','arcoB']],['aperture','Porte e finestre',['finestra','ante','vetrata','oblo','porta','recinto','parabrezza']],
   ['meccanica','Meccanica',['ruote','braccio','cerniera','elica','ingranaggio','faro','antenna']],['decorazioni','Decorazioni',['albero','palma','cespuglio','fiore','fungo','roccia','panchina','lampione','cartello','bandiera','insegna']],['personaggi','Personaggi',['personaggio']]];
+(function(){const C=Object.fromEntries(CATS.map(c=>[c[0],c]));const L=(k)=>C[k]?C[k][2]:[];
+  const NEW=[['personaggi','🙂 Personaggi',L('personaggi')],['mattoni','Mattoni',L('mattoni')],['piastre','Piastre',L('piastre')],
+    ['forme','Forme',L('tondi').concat(L('aperture'))],['tetti','Tetti e archi',L('tetti').concat(L('archi'))],
+    ['meccanica','Meccanica',L('meccanica')],['decorazioni','Decorazioni',L('decorazioni')]];
+  CATS.length=0;NEW.forEach(c=>CATS.push(c));})();
 function catOf(id){const c=CATS.find(c=>c[2].indexOf(id)>=0);return c?c[0]:'mattoni';}
 Object.keys(SHAPES).forEach(id=>{
   const b=document.createElement('button');b.className='shape';b.dataset.id=id;
@@ -2175,13 +2237,13 @@ Object.keys(COLOR_GROUPS).forEach(gid=>{
 TOOLS.forEach(t=>{
   const b=document.createElement('button');b.className='tool';b.dataset.id=t.id;
   b.innerHTML=svgIcon(t.icon,2.4)+'<span>'+t.label+'</span>';
-  b.addEventListener('click',()=>{const was=state.mode;setMode(t.id);if(t.id==='paint'){selPaintPending=false;document.querySelector('#paletteModal h2').textContent='Colore';if(was==='paint')openModal('paletteModal');else toast('Tocca di nuovo il pennello per scegliere il colore');}});
+  b.addEventListener('click',()=>{const was=state.mode;setMode(t.id);if(t.id==='paint'){selPaintPending=false;document.querySelector('#paletteModal h2').textContent='🎨 Colore';if(was==='paint')openModal('paletteModal');else toast('Tocca di nuovo il pennello per scegliere il colore');}});
   if(t.id==='paint')b.addEventListener('dblclick',()=>openModal('paletteModal'));
   toolsEl.appendChild(b);
 });
 function toBuild(){if(dyn.mode&&dyn.mode!=='count')cancelDyn();cancelCarry();if(state.mode!=='build')state.mode='build';}
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.hidden=false;clearTimeout(toast._t);toast._t=setTimeout(()=>{t.hidden=true;},2200);}
-function setMode(m){try{if(m!=='nav')NAV.spin=0;}catch(e){}if(dyn.mode&&dyn.mode!=='count')cancelDyn();cancelCarry();if(m!=='block')selClear();state.mode=m;hideHover();renderUI();if(m==='block'){SEL.lasso=true;if(!SEL.set.size)toast('Disegna un giro intorno ai pezzi, o toccali uno per uno');}}
+function setMode(m){try{if(m!=='nav')NAV.spin=0;}catch(e){}if(m!==state.mode)hintReset(m);if(dyn.mode&&dyn.mode!=='count')cancelDyn();cancelCarry();if(m!=='block')selClear();state.mode=m;hideHover();renderUI();if(m==='block'){SEL.lasso=true;}}
 function rotate(dir){if(carryG){carryG.r=(carryG.r+dir+4)%4;renderUI();return;}if(carry){carry.rot=(carry.rot+dir+4)%4;renderUI();return;}state.rot=(state.rot+dir+4)%4;toBuild();renderUI();}
 function renderUI(){
   shapesEl.querySelectorAll('.shape').forEach(b=>b.setAttribute('aria-pressed',b.dataset.id===state.shape));
@@ -2382,7 +2444,7 @@ function drawLogo(x,W,H){
     x.fillStyle=logoInk(LOGO_COLS[i]);x.fillText(L[i],tw/2,th/2+s*.03);x.restore();
   }
 }
-function shotName(){const d=new Date(),p=n=>String(n).padStart(2,'0');return'ulibricks-'+d.getFullYear()+p(d.getMonth()+1)+p(d.getDate())+'-'+p(d.getHours())+p(d.getMinutes())+'.png';}
+function shotName(){const d=new Date(),p=n=>String(n).padStart(2,'0');return'ulibricks-'+d.getFullYear()+p(d.getMonth()+1)+p(d.getDate())+'-'+p(d.getHours())+p(d.getMinutes())+'.jpg';}
 let shotRaw=null;
 function shotStats(){
   const pieces=bricks.filter(b=>b.shape!=='personaggio'),figs=bricks.length-pieces.length;
@@ -2442,29 +2504,30 @@ function composeShot(open,cb){
   if(!shotRaw)return;
   const W0=shotRaw.width,H0=shotRaw.height,f=SHOT_FMT.find(v=>v[0]===shotFmt),ar=f?f[2]:null;
   let W=W0,H=H0,sx=0,sy=0;if(ar){if(W0/H0>ar){W=Math.round(H0*ar);sx=(W0-W)/2;}else{H=Math.round(W0/ar);sy=(H0-H)/2;}}
-  const out=document.createElement('canvas');out.width=W;out.height=H;const x=out.getContext('2d');
-  x.drawImage(shotRaw,sx,sy,W,H,0,0,W,H);drawShotOverlay(x,W,H);
+  const k=Math.min(1,1920/Math.max(W,H)),OW=Math.round(W*k),OH=Math.round(H*k);
+  const out=document.createElement('canvas');out.width=OW;out.height=OH;const x=out.getContext('2d');
+  x.imageSmoothingQuality='high';x.drawImage(shotRaw,sx,sy,W,H,0,0,OW,OH);drawShotOverlay(x,OW,OH);
   out.toBlob(b=>{
     if(!b){toast('Foto non riuscita');return;}
     shotBlob=b;if(shotURL)URL.revokeObjectURL(shotURL);shotURL=URL.createObjectURL(b);
     document.getElementById('shotImg').src=shotURL;
     if(open){
       renderShotFmt();
-      const canShare=!!(navigator.canShare&&navigator.canShare({files:[new File([b],'x.png',{type:'image/png'})]}));
+      const canShare=!!(navigator.canShare&&navigator.canShare({files:[new File([b],'x.jpg',{type:'image/jpeg'})]}));
       document.getElementById('shotShare').hidden=!canShare&&!dlCap;
       document.getElementById('shotSave').hidden=!dlCap;
       document.getElementById('shotNote').textContent=(!dlCap&&!canShare)?'Tieni premuto sulla foto per salvarla o condividerla.':'';
       openModal('shotModal');
     }
     if(cb)cb(b);
-  },'image/png');
+  },'image/jpeg',.88);
 }
 async function presentShare(){
   if(!bricks.length)return;
   const btn=document.getElementById('presShareBtn');if(btn)btn.disabled=true;
   ensureAudio();shotView=null;captureRaw();
   composeShot(false,async blob=>{
-    const file=new File([blob],shotName(),{type:'image/png'});
+    const file=new File([blob],shotName(),{type:'image/jpeg'});
     let done=false;
     if(navigator.canShare&&navigator.canShare({files:[file]})){
       try{await navigator.share({files:[file],title:'ULIBRICKS',text:'Guarda cosa ho costruito con ULIBRICKS!'});done=true;}
@@ -2558,7 +2621,7 @@ async function saveShot(){
 }
 document.getElementById('shotSave').addEventListener('click',saveShot);
 document.getElementById('shotShare').addEventListener('click',async()=>{
-  if(!shotBlob)return;const file=new File([shotBlob],shotName(),{type:'image/png'});
+  if(!shotBlob)return;const file=new File([shotBlob],shotName(),{type:'image/jpeg'});
   if(navigator.canShare&&navigator.canShare({files:[file]})){
     try{await navigator.share({files:[file],title:'ULIBRICKS',text:'Guarda cosa ho costruito con ULIBRICKS!'});return;}
     catch(e){if(e&&e.name==='AbortError')return;}
@@ -3316,10 +3379,11 @@ function renderTwistBar(){
   mov.forEach(b=>{let h=twistHelpers.get(b);if(!h){h=new THREE.BoxHelper(b.mesh,0xFFC914);h.material.transparent=true;h.material.depthTest=false;h.renderOrder=6;scene.add(h);twistHelpers.set(b,h);}h.update();});
   if(!show)return;
   const cnt={};mov.forEach(b=>{cnt[b.shape]=(cnt[b.shape]||0)+1;});
-  if(!mov.length){bar.innerHTML='<div class="tt">Nessun pezzo da azionare nella costruzione</div><div class="tc"><button class="go" id="twGo">＋ Prendi pezzi dalla Meccanica</button></div>';
+  if(!mov.length){bar.innerHTML='<div class="twp"><button class="go" id="twGo">＋ Prendi pezzi dalla Meccanica</button></div><div class="ctxHint'+hintState('twist')+'" data-h="twist">Nella costruzione non ci sono pezzi che si muovono</div>';
     document.getElementById('twGo').addEventListener('click',()=>{state.shape='ruote';state.size=[2,4];setMode('build');});return;}
-  bar.innerHTML='<div class="tt">Tocca un pezzo evidenziato per azionarlo</div><div class="tc">'+
-    Object.keys(cnt).map(k=>'<button data-k="'+k+'">'+MOVABLE[k][0]+' '+MOVABLE[k][1]+(cnt[k]>1?' ×'+cnt[k]:'')+' <small>· '+MOVABLE[k][2]+'</small></button>').join('')+'</div>';
+  bar.innerHTML='<div class="twp">'+
+    Object.keys(cnt).map(k=>'<button data-k="'+k+'"><b>'+MOVABLE[k][0]+'</b>'+MOVABLE[k][1]+(cnt[k]>1?' ×'+cnt[k]:'')+'</button>').join('')+
+    '</div><div class="ctxHint'+hintState('twist')+'" data-h="twist">Tocca un pezzo evidenziato per azionarlo · tocca un nome per trovarlo</div>';
   bar.querySelectorAll('[data-k]').forEach(x=>x.addEventListener('click',()=>{
     const list=mov.filter(b=>b.shape===x.dataset.k);if(!list.length)return;
     TWIST_CYCLE[x.dataset.k]=((TWIST_CYCLE[x.dataset.k]||0)+1)%list.length;const b=list[TWIST_CYCLE[x.dataset.k]];
@@ -3347,7 +3411,7 @@ function startDrive(wb){
   document.getElementById('dTilt').hidden=!TILT.supported;
   if(ac&&!muted){const o=ac.createOscillator(),f=ac.createBiquadFilter(),gn=ac.createGain();o.type='sawtooth';o.frequency.value=45;f.type='lowpass';f.frequency.value=380;gn.gain.value=.0001;
     o.connect(f).connect(gn).connect(master);o.start();DRIVE.eng={o,gn};}
-  toast(lastPointerType==='mouse'?'Guida con le frecce o WASD, spazio per il clacson, Invio per parcheggiare':'Guida con i pulsanti, poi Parcheggia');
+  hintReset('drive');{const dh=document.getElementById('driveHint');dh.textContent=lastPointerType==='mouse'?'Frecce o WASD per guidare · spazio clacson · Invio parcheggia':'Usa la croce per guidare, poi P per parcheggiare';dh.className='ctxHint'+hintState('drive');}
 }
 function driveApply(){const g=DRIVE.group;g.position.set(carryG.pi+.5-G/2+DRIVE.x,0,carryG.pj+.5-G/2+DRIVE.z);g.rotation.y=-DRIVE.h;g.updateMatrixWorld(true);}
 function driveCollides(){
@@ -3916,7 +3980,7 @@ let curCat=null,lastShape=null;
 function renderCatsUI(){
   if(state.shape!==lastShape){curCat=catOf(state.shape);lastShape=state.shape;}
   const box=document.getElementById('cats');
-  if(!box.childElementCount)CATS.forEach(([id,l])=>{const b=document.createElement('button');b.className='cat';b.dataset.cat=id;b.textContent=l;
+  if(!box.childElementCount)CATS.forEach(([id,l])=>{const b=document.createElement('button');b.className='cat'+(id==='personaggi'?' figcat':'');b.dataset.cat=id;b.textContent=l;
     b.addEventListener('click',()=>{curCat=id;renderCatsUI();document.getElementById('shapes').parentElement.scrollLeft=0;});box.appendChild(b);});
   box.querySelectorAll('.cat').forEach(b=>b.setAttribute('aria-pressed',b.dataset.cat===curCat));
   shapesEl.querySelectorAll('.shape').forEach(b=>{const vis=b.dataset.cat===curCat;b.style.display=vis?'':'none';
@@ -3927,7 +3991,7 @@ function renderCatsUI(){
   try{renderTwistBar();}catch(e){}
   try{renderSignInput();}catch(e){}
 }
-document.getElementById('colorDot').addEventListener('click',()=>{selPaintPending=false;document.querySelector('#paletteModal h2').textContent='Colore';openModal('paletteModal');});
+document.getElementById('colorDot').addEventListener('click',()=>{selPaintPending=false;document.querySelector('#paletteModal h2').textContent='🎨 Colore';openModal('paletteModal');});
 document.getElementById('paletteModal').addEventListener('click',e=>{if(e.target.closest('.swatch'))setTimeout(()=>{document.getElementById('paletteModal').hidden=true;},140);});
 function setTab(t){
   document.body.dataset.tab=t;
@@ -4003,11 +4067,11 @@ function renderStepImage(shown,current){
   bricks.forEach(b=>{vis.set(b.mesh,b.mesh.visible);b.mesh.visible=shown.has(b);
     if(shown.has(b)&&!current.has(b))b.mesh.traverse(o=>{if(o.isMesh){saved.set(o,o.material);o.material=dimMat();}});});
   renderer.render(scene,camera);
-  const W=canvas.width,H=canvas.height,out=document.createElement('canvas'),sc=Math.min(1,1200/W);out.width=Math.round(W*sc);out.height=Math.round(H*sc);
+  const W=canvas.width,H=canvas.height,out=document.createElement('canvas'),sc=Math.min(1,900/W);out.width=Math.round(W*sc);out.height=Math.round(H*sc);
   const x=out.getContext('2d');const cs=getComputedStyle(document.documentElement);
   x.fillStyle='#FFFFFF';x.fillRect(0,0,out.width,out.height);x.drawImage(canvas,0,0,out.width,out.height);
   saved.forEach((m,o)=>{o.material=m;});vis.forEach((v,m)=>{m.visible=v;});
-  return{url:out.toDataURL('image/jpeg',.86),w:out.width,h:out.height};
+  return{url:out.toDataURL('image/jpeg',.72),w:out.width,h:out.height};
 }
 let bookBusy=false;
 async function makeBooklet(){
@@ -4015,18 +4079,18 @@ async function makeBooklet(){
   bookBusy=true;toast('Preparo il libretto…');
   let lib;try{lib=await loadJsPDF();}catch(e){bookBusy=false;toast('Non riesco a caricare lo strumento per il PDF: controlla la connessione');return;}
   try{
-    const {jsPDF}=lib,doc=new jsPDF({unit:'mm',format:'a4'}),PW=210,PH2=297,M=14;
+    const {jsPDF}=lib,doc=new jsPDF({unit:'mm',format:'a4',compress:true}),PW=210,PH2=297,M=14;
     const title=(document.getElementById('titleIn').value||document.getElementById('shotTitle').value||'').trim()||'La mia costruzione';
     const steps=bookSteps(),all=[];bricks.forEach(b=>brickParts(b).forEach(p=>all.push(p)));const parts=countParts(all);
     // vista e oggetti temporanei
     const temp=[ghost,gripMark,outline,outlineG,ghostG,cursorDyn.g,cursorDyn.ring,sideGhost].filter(o=>o&&o.visible);temp.forEach(o=>o.visible=false);
     const hideSel=[];SEL.helpers&&SEL.helpers.forEach(h=>{if(h.visible){h.visible=false;hideSel.push(h);}});twistHelpers.forEach(h=>{if(h.visible){h.visible=false;hideSel.push(h);}});
     const camSaved={theta:cam.theta,phi:cam.phi,radius:cam.radius,target:cam.target.clone()};
-    const rsz=renderer.getSize(new THREE.Vector2()),asp=camera.aspect;renderer.setSize(1200,900,false);camera.aspect=4/3;camera.updateProjectionMatrix();
+    const rsz=renderer.getSize(new THREE.Vector2()),asp=camera.aspect,pr=renderer.getPixelRatio();renderer.setPixelRatio(1);renderer.setSize(1200,900,false);camera.aspect=4/3;camera.updateProjectionMatrix();
     const bx=new THREE.Box3();bricks.forEach(b=>bx.expandByObject(b.mesh));fitTo(bx,1.55);cam.theta=.72;cam.phi=.98;updateCamera();
     const shown=new Set(),finalImg=renderStepImage(new Set(bricks),new Set(bricks));
     const stepImgs=steps.map(g=>{g.forEach(b=>shown.add(b));return renderStepImage(shown,new Set(g));});
-    renderer.setSize(rsz.x,rsz.y,false);camera.aspect=asp;camera.updateProjectionMatrix();window.dispatchEvent(new Event('resize'));
+    renderer.setPixelRatio(pr);renderer.setSize(rsz.x,rsz.y,false);camera.aspect=asp;camera.updateProjectionMatrix();window.dispatchEvent(new Event('resize'));
     cam.theta=camSaved.theta;cam.phi=camSaved.phi;cam.radius=camSaved.radius;cam.target.copy(camSaved.target);updateCamera();
     temp.forEach(o=>o.visible=true);hideSel.forEach(h=>h.visible=true);
     const hexRGB=h=>{const v=String(h).replace(/^[TM]/,'').replace('#','');return[parseInt(v.slice(0,2),16),parseInt(v.slice(2,4),16),parseInt(v.slice(4,6),16)];};
@@ -4086,6 +4150,15 @@ async function makeBooklet(){
   bookBusy=false;
 }
 
+/* ================= SUGGERIMENTI CHE SPARISCONO ================= */
+const HINTS={};
+function hintState(k){
+  const t=HINTS[k];
+  if(!t){HINTS[k]=Date.now();setTimeout(()=>document.querySelectorAll('.ctxHint[data-h="'+k+'"]').forEach(e=>e.classList.add('fade')),3500);return'';}
+  return Date.now()-t>3500?' fade':'';
+}
+function hintReset(k){delete HINTS[k];}
+
 /* ================= GUARDA: solo navigazione ================= */
 const NAV={spin:false,anim:null};
 let navHintT=null,navHintShown=false;
@@ -4093,10 +4166,7 @@ function renderNavBar(){
   const show=state.mode==='nav'&&!DRIVE.on&&!dyn.mode&&!KIT.on&&!TET.on&&!PR.on&&document.body.dataset.tab==='build';
   document.getElementById('navBar').hidden=!show;document.body.classList.toggle('navmode',show);
   const sp=document.querySelector('#navBar [data-n=spin]');if(sp){sp.setAttribute('aria-pressed',!!NAV.spin);sp.querySelector('small').textContent=NAV.spin===1?'Lento':NAV.spin===2?'Veloce':'Giro';}
-  const hint=document.querySelector('#navBar .nvh');
-  if(show&&!navHintShown){navHintShown=true;hint.classList.remove('fade');
-    if('ontouchstart' in window||navigator.maxTouchPoints>0){clearTimeout(navHintT);navHintT=setTimeout(()=>hint.classList.add('fade'),3000);}}
-  else if(!show){navHintShown=false;clearTimeout(navHintT);if(hint)hint.classList.remove('fade');}
+  const hint=document.querySelector('#navBar .ctxHint');if(hint)hint.className='ctxHint nvh'+(show?hintState('nav'):'');
 }
 function navTo(tgt,dur){NAV.anim={from:{theta:cam.theta,phi:cam.phi,radius:cam.radius,target:cam.target.clone()},to:tgt,t:0,dur:dur||.6};}
 function navTick(dt){
@@ -4141,8 +4211,8 @@ function renderSelBar(){
     '<button data-a="del" class="del" title="Elimina">🗑<small>Elimina</small></button>'+
     '<button data-a="clear" title="Svuota la selezione">✕<small>Svuota</small></button>'+
     '<button data-a="take" class="go">✋ Sposta</button></div>';}
-  else if(multi)h+='<div class="sbHint">Disegna un giro intorno ai pezzi o toccali · <u data-a="all" style="cursor:pointer">scegli tutto</u></div>';
-  else h+='<div class="sbHint">Tocca un pezzo: lo prendi con quelli che ha sopra</div>';
+  else if(multi)h+='<div class="ctxHint'+hintState('block')+'" data-h="block">Disegna un giro intorno ai pezzi o toccali · <u data-a="all" style="cursor:pointer">scegli tutto</u></div>';
+  else h+='<div class="ctxHint'+hintState('move')+'" data-h="move">Tocca un pezzo: lo prendi con quelli che ha sopra</div>';
   bar.innerHTML=h;
   bar.querySelectorAll('[data-a]').forEach(x=>x.addEventListener('click',()=>{const a=x.dataset.a;
     if(a==='one'){if(state.mode!=='move')setMode('move');}
@@ -4152,7 +4222,7 @@ function renderSelBar(){
     else if(a==='clear')selClear();
     else if(a==='take')selTake();
     else if(a==='dup')selDuplicate();
-    else if(a==='paint'){selPaintPending=true;document.querySelector('#paletteModal h2').textContent='Colora '+n+(n===1?' pezzo':' pezzi');openModal('paletteModal');}
+    else if(a==='paint'){selPaintPending=true;document.querySelector('#paletteModal h2').textContent='🎨 Colora '+n+(n===1?' pezzo':' pezzi');openModal('paletteModal');}
     else if(a==='del')selDelete();}));
 }
 function recData(a){return{shape:a[0],w:a[1],d:a[2],color:a[3],rot:a[4],i0:a[5],j0:a[6],level:a[7],x:a[8]};}
