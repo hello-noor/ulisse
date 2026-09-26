@@ -192,6 +192,16 @@ body.selbar #toast{top:calc(env(safe-area-inset-top,0px) + 150px)}
 #twistBar button.go{background:#FFC914;color:#1B2340}
 body.twistbar #toast{top:calc(env(safe-area-inset-top,0px) + 150px)}
 @media (max-width:560px){#twistBar{left:10px;transform:none;max-width:calc(100vw - 86px)}}
+#navBar{position:fixed;left:50%;bottom:calc(var(--dockH,0px) + 18px);transform:translateX(-50%);z-index:14;display:flex;flex-direction:column;align-items:center;gap:8px;pointer-events:none}
+#navBar>*{pointer-events:auto}
+#navBar .nvh{font-size:12px;font-weight:800;color:var(--ink);text-shadow:0 1px 6px var(--sky-bottom),0 0 3px var(--sky-bottom);text-align:center;pointer-events:none;max-width:92vw}
+#navBar .nvb{display:flex;gap:4px;background:rgba(27,35,64,.92);border-radius:20px;padding:5px;box-shadow:0 6px 18px rgba(0,0,0,.22)}
+#navBar .nvb button{width:54px;height:50px;border:0;border-radius:14px;background:transparent;color:#fff;font-size:20px;font-weight:800;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;padding:0}
+#navBar .nvb button small{font-size:9.5px;font-weight:800;opacity:.8}
+#navBar .nvb button:active{background:rgba(255,255,255,.15)}
+#navBar .nvb button[aria-pressed="true"]{background:#FFC914;color:#1B2340}
+body.navmode .tray,body.navmode #trayToggle{display:none!important}
+@media (max-width:560px){#navBar .nvb button{width:46px}#navBar .nvh{font-size:11px}}
 #driveBar{position:fixed;left:0;right:0;bottom:calc(env(safe-area-inset-bottom,0px) + 14px);z-index:30;display:flex;justify-content:space-between;align-items:flex-end;padding:0 18px;pointer-events:none}
 #driveBar button{pointer-events:auto;border:0;font-weight:800;box-shadow:0 6px 18px rgba(0,0,0,.22);touch-action:none;user-select:none;-webkit-user-select:none;transition:transform .05s,filter .05s}
 #driveBar button:active,#driveBar button.held{transform:scale(.9);filter:brightness(.85)}
@@ -681,7 +691,7 @@ body.tetris .top,body.tetris .tray,body.tetris #empty,body.tetris #kitCard,body.
   <p>Scegli forma, misura e colore nel vassoio in basso, poi tocca la base o un altro pezzo per posarlo. I pezzi si incastrano solo sui bottoncini: se l'anteprima è rossa lì non si aggancia.</p>
   <p>L'anello giallo indica la <b>presa</b>, il punto da cui tieni il pezzo. Il pulsante "Presa" nell'anteprima la sposta: centro, capi e, per i pezzi grandi, i quattro angoli.</p>
   <h3>Strumenti</h3>
-  <p><b>Costruisci</b> posa pezzi nuovi. <b>Sposta</b> ha due modi, scelti dalla barra in alto. «Un pezzo»: tocchi un pezzo e lo prendi insieme a tutto quello che ha sopra, dal punto in cui lo tocchi. «Più pezzi»: disegni un giro intorno ai pezzi o li tocchi uno per uno, poi puoi spostarli, duplicarli, colorarli o eliminarli insieme; 🎨 apre la tavolozza per scegliere il colore, 🔗 Aggiungi prende anche tutti i pezzi attaccati a quelli scelti. <b>Gomma</b> toglie, <b>Pennello</b> ricolora, <b>Copia</b> prende forma, misura e colore di un pezzo già posato per costruirne altri uguali. Da telefono, quando sposti un pezzo o un blocco, tocca dove vuoi metterlo: compare l'anteprima e una barra con <b>Posa qui</b>. Puoi toccare altri punti o ruotare prima di confermare.</p>
+  <p><b>Guarda</b> serve solo a muoversi nella scena senza toccare niente: trascina per girare, due dita per spostarti, pizzica per lo zoom; in basso ci sono avvicina/allontana, giro automatico, vista dall'alto, inquadra tutto e vista iniziale. <b>Costruisci</b> posa pezzi nuovi. <b>Sposta</b> ha due modi, scelti dalla barra in alto. «Un pezzo»: tocchi un pezzo e lo prendi insieme a tutto quello che ha sopra, dal punto in cui lo tocchi. «Più pezzi»: disegni un giro intorno ai pezzi o li tocchi uno per uno, poi puoi spostarli, duplicarli (⧉ ti dà una copia dopo l’altra finché non cambi strumento o premi ✕), colorarli o eliminarli insieme; 🎨 apre la tavolozza per scegliere il colore, 🔗 Aggiungi prende anche tutti i pezzi attaccati a quelli scelti. <b>Gomma</b> toglie, <b>Pennello</b> ricolora, <b>Copia</b> prende forma, misura e colore di un pezzo già posato per costruirne altri uguali. Da telefono, quando sposti un pezzo o un blocco, tocca dove vuoi metterlo: compare l'anteprima e una barra con <b>Posa qui</b>. Puoi toccare altri punti o ruotare prima di confermare.</p>
   <h3>Dinamite</h3>
   <p>Premi Dinamite e scegli la grandezza dal menu: Piccola, Media o Maxi (fa saltare tutto). Poi tocca la scena per piazzare fino a 5 candelotti e, quando sei pronto, tocca una delle dinamiti già piazzate: parte il conto alla rovescia 3, 2, 1 e BOOM. Per annullare, riapri il menu Dinamite.</p>
   <h3>Personaggi e Vita</h3>
@@ -854,6 +864,16 @@ body.tetris .top,body.tetris .tray,body.tetris #empty,body.tetris #kitCard,body.
   <div class="th-bot"><button id="tView" aria-label="Gira la vista">⟲</button><button id="tRot" class="big" aria-label="Ruota il pezzo">↻</button><button id="tDrop" class="big go" aria-label="Fai cadere il pezzo">⬇</button></div>
 </div>
 <div id="selBar" hidden></div>
+<div id="navBar" hidden>
+  <div class="nvh">👆 Trascina per girare · ✌️ due dita per spostare · 🤏 pizzica per lo zoom</div>
+  <div class="nvb">
+    <button data-n="in" aria-label="Avvicina">＋</button><button data-n="out" aria-label="Allontana">－</button>
+    <button data-n="spin" aria-label="Giro automatico">⟳<small>Giro</small></button>
+    <button data-n="top" aria-label="Vista dall'alto">⬇<small>Alto</small></button>
+    <button data-n="fit" aria-label="Inquadra tutto">⛶<small>Tutto</small></button>
+    <button data-n="home" aria-label="Vista iniziale">⌂<small>Inizio</small></button>
+  </div>
+</div>
 <div id="twistBar" hidden></div>
 <div id="driveBar" hidden>
   <div class="dpad">
@@ -979,6 +999,7 @@ const BASES={
 function maxMult(shape){return Math.floor(((G/2-1)/Math.max.apply(null,BASES[shape].dims))*10)/10;}
 function clampMult(shape,v){return clamp(Math.round(v*10)/10,.5,maxMult(shape));}
 const TOOLS=[
+  {id:'nav',label:'Guarda',icon:'<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>'},
   {id:'build',label:'Costruisci',icon:'<path d="M12 5v14M5 12h14"/>'},
   {id:'move',label:'Sposta',icon:'<path d="M12 3v18M3 12h18"/><path d="m9 6 3-3 3 3M9 18l3 3 3-3M6 9l-3 3 3 3M18 9l3 3-3 3"/>'},
   {id:'erase',label:'Gomma',icon:'<path d="m7 21-4-4 11-11 7 7-8 8z"/><path d="M7 21h13"/>'},
@@ -1568,6 +1589,7 @@ function groupPlacement(hit){
 const gripMark=new THREE.Mesh(new THREE.TorusGeometry(.36,.07,8,28),new THREE.MeshBasicMaterial({color:0xFFC914,depthTest:false,transparent:true}));
 gripMark.rotation.x=Math.PI/2;gripMark.renderOrder=5;gripMark.visible=false;scene.add(gripMark);
 function updateHover(cx,cy){
+  if(state.mode==='nav'){lastPointer={x:cx,y:cy};hideHover();return;}
   lastPointer={x:cx,y:cy};hideHover();hoverHit=null;
   if(dyn.mode||QUAKE.on||TET.on||DRIVE.on)return;
   const hit=pick(cx,cy);if(!hit)return;hoverHit=hit;
@@ -1656,10 +1678,11 @@ function dropCarry(){
 }
 function dropGroup(){
   gplace.list.forEach(it=>{const b=it.b;b.i0=it.data.i0;b.j0=it.data.j0;b.level=it.data.level;b.rot=it.data.rot;b.cells=worldCells(b);b.mesh.visible=true;attach(b,false);});
-  const fallen=settle(false),isNew=carryG.isNew,kit=carryG.kit,r=carryG.r;
+  const fallen=settle(false),isNew=carryG.isNew,kit=carryG.kit,r=carryG.r,dup=carryG.dup;
   if(isNew)undoStack.push({t:'addg',list:gplace.list.map(x=>x.b)});
   else undoStack.push({t:'moveg',list:carryG.list.map(x=>({b:x.b,from:x.from})),fallen});
   carryG=null;ghostG.clear();ghostG.visible=false;sndClack();if(fallen.length)setTimeout(sndThud,350);
+  if(isNew&&dup){DUPN++;const md=state.mode;setTimeout(()=>{if(!carryG&&state.mode===md){startDup(dup,r,false);toast(DUPN+(DUPN===1?' copia posata':' copie posate')+' · eccone un’altra');renderUI();if(lastPointer)updateHover(lastPointer.x,lastPointer.y);armTouchPreview();}},0);}
   if(isNew){puff(gplace.list[0].b.mesh.position.clone(),8);if(kit)setTimeout(()=>{if(!carryG&&state.mode==='block')startPronto(kit,r,true);},0);}
 }
 let placeBarUsed=false;
@@ -1676,7 +1699,7 @@ function placeKey(){
   return null;
 }
 function act(){
-  if(DRIVE.on)return;
+  if(DRIVE.on||state.mode==='nav')return;
   if(hoveredAtt&&(state.mode==='erase'||state.mode==='paint')){attAct(hoveredAtt);return;}
   if(state.mode==='build'&&placement&&placement.side){if(!placement.ok){sndNope();return;}
     const a=placement.att;addAttachment(placement.host,a);undoStack.push({t:'attadd',host:placement.host,a});sndClack();afterChange();return;}
@@ -1976,6 +1999,7 @@ window.addEventListener('keydown',e=>{
   else if(k==='g')cycleGrip();
   else if(k==='f')openShot();
   else if(k==='i')openModal('infoModal');
+  else if(k==='0')setMode('nav');
   else if(k==='1')setMode('build');else if(k==='2')setMode('move');else if(k==='3')setMode('block');else if(k==='4')setMode('erase');else if(k==='5')setMode('paint');else if(k==='6')setMode('copy');else if(k==='7')setMode('twist');
 });
 
@@ -2130,7 +2154,7 @@ TOOLS.forEach(t=>{
 });
 function toBuild(){if(dyn.mode&&dyn.mode!=='count')cancelDyn();cancelCarry();if(state.mode!=='build')state.mode='build';}
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.hidden=false;clearTimeout(toast._t);toast._t=setTimeout(()=>{t.hidden=true;},2200);}
-function setMode(m){if(dyn.mode&&dyn.mode!=='count')cancelDyn();cancelCarry();if(m!=='block')selClear();state.mode=m;hideHover();renderUI();if(m==='block'){SEL.lasso=true;if(!SEL.set.size)toast('Disegna un giro intorno ai pezzi, o toccali uno per uno');}}
+function setMode(m){try{if(m!=='nav')NAV.spin=false;}catch(e){}if(dyn.mode&&dyn.mode!=='count')cancelDyn();cancelCarry();if(m!=='block')selClear();state.mode=m;hideHover();renderUI();if(m==='block'){SEL.lasso=true;if(!SEL.set.size)toast('Disegna un giro intorno ai pezzi, o toccali uno per uno');}}
 function rotate(dir){if(carryG){carryG.r=(carryG.r+dir+4)%4;renderUI();return;}if(carry){carry.rot=(carry.rot+dir+4)%4;renderUI();return;}state.rot=(state.rot+dir+4)%4;toBuild();renderUI();}
 function renderUI(){
   shapesEl.querySelectorAll('.shape').forEach(b=>b.setAttribute('aria-pressed',b.dataset.id===state.shape));
@@ -3867,6 +3891,7 @@ function renderCatsUI(){
     if(vis){const img=b.querySelector('img.th'),u=thumbFor(b.dataset.id,DECO_COL[b.dataset.id]&&b.dataset.id!==state.shape?DECO_COL[b.dataset.id]:state.color);if(u&&img.getAttribute('src')!==u)img.setAttribute('src',u);}});
   const dot=document.querySelector('#colorDot i');if(dot)dot.style.background=swatchBg(state.color);
   try{renderSelBar();}catch(e){}
+  try{renderNavBar();}catch(e){}
   try{renderTwistBar();}catch(e){}
   try{renderSignInput();}catch(e){}
 }
@@ -3901,6 +3926,33 @@ setTab('build');
 document.addEventListener('touchmove',e=>{if(e.touches.length>1&&e.target!==canvas)e.preventDefault();},{passive:false});
 let lastTouchEnd=0;document.addEventListener('touchend',e=>{const now=Date.now();if(now-lastTouchEnd<320&&e.target!==canvas&&!(e.target.closest&&e.target.closest('input,textarea')))e.preventDefault();lastTouchEnd=now;},{passive:false});
 document.addEventListener('wheel',e=>{if(e.ctrlKey&&e.target!==canvas)e.preventDefault();},{passive:false});
+
+/* ================= GUARDA: solo navigazione ================= */
+const NAV={spin:false,anim:null};
+function renderNavBar(){
+  const show=state.mode==='nav'&&!DRIVE.on&&!dyn.mode&&!KIT.on&&!TET.on&&!PR.on&&document.body.dataset.tab==='build';
+  document.getElementById('navBar').hidden=!show;document.body.classList.toggle('navmode',show);
+  const sp=document.querySelector('#navBar [data-n=spin]');if(sp)sp.setAttribute('aria-pressed',NAV.spin);
+}
+function navTo(tgt,dur){NAV.anim={from:{theta:cam.theta,phi:cam.phi,radius:cam.radius,target:cam.target.clone()},to:tgt,t:0,dur:dur||.6};}
+function navTick(dt){
+  if(NAV.spin&&state.mode==='nav')cam.theta+=dt*.35;
+  if(NAV.anim){const a=NAV.anim;a.t+=dt/a.dur;const k=a.t>=1?1:1-Math.pow(1-a.t,3);
+    cam.theta=a.from.theta+(a.to.theta-a.from.theta)*k;cam.phi=a.from.phi+(a.to.phi-a.from.phi)*k;cam.radius=a.from.radius+(a.to.radius-a.from.radius)*k;
+    cam.target.lerpVectors(a.from.target,a.to.target,k);if(a.t>=1)NAV.anim=null;}
+}
+function camSnap(){return{theta:cam.theta,phi:cam.phi,radius:cam.radius,target:cam.target.clone()};}
+function camSet(v){cam.theta=v.theta;cam.phi=v.phi;cam.radius=v.radius;cam.target.copy(v.target);}
+document.querySelectorAll('#navBar [data-n]').forEach(b=>b.addEventListener('click',()=>{
+  const n=b.dataset.n,cur=camSnap();tone('sine',560,560,.04,.05);
+  if(n==='in')navTo(Object.assign(cur,{radius:clamp(cam.radius*.72,10,100)}),.3);
+  else if(n==='out')navTo(Object.assign(cur,{radius:clamp(cam.radius*1.38,10,100)}),.3);
+  else if(n==='spin'){NAV.spin=!NAV.spin;renderNavBar();}
+  else if(n==='top')navTo(Object.assign(cur,{phi:cam.phi<.3?1.0:.12}));
+  else if(n==='fit'){if(!bricks.length){toast('Non c\u2019è ancora niente da inquadrare');return;}const bx=new THREE.Box3();bricks.forEach(x=>bx.expandByObject(x.mesh));
+    const saved=camSnap();fitTo(bx,1.4);const to=camSnap();to.radius=clamp(to.radius,10,100);camSet(saved);navTo(to);}
+  else if(n==='home'){const saved=camSnap();resetView();const to=camSnap();camSet(saved);navTo(to);}
+}));
 
 /* ================= SELEZIONE A LAZO ================= */
 const SEL={set:new Set(),helpers:new Map(),lasso:true,pts:null,sx:0,sy:0,moved:false};
@@ -3942,15 +3994,19 @@ function renderSelBar(){
 function recData(a){return{shape:a[0],w:a[1],d:a[2],color:a[3],rot:a[4],i0:a[5],j0:a[6],level:a[7],x:a[8]};}
 function selDuplicate(){
   const src=[...SEL.set].filter(b=>bricks.indexOf(b)>=0);if(!src.length)return;
-  const list=src.map(b=>makeBrick(recData(brickRec(b))));
+  const recs=src.map(b=>brickRec(b));SEL.set.clear();selRefresh();startDup(recs,0,true);
+}
+function startDup(recs,r,first){
+  const list=recs.map(a=>makeBrick(recData(a)));
   let i0=1e9,i1=-1e9,j0=1e9,j1=-1e9;list.forEach(b=>b.cells.forEach(c=>{i0=Math.min(i0,c.i);i1=Math.max(i1,c.i);j0=Math.min(j0,c.j);j1=Math.max(j1,c.j);}));
-  SEL.set.clear();selRefresh();
-  carryG={list:list.map(b=>({b,from:{i0:b.i0,j0:b.j0,level:b.level,rot:b.rot}})),pivot:list[0],pi:Math.floor((i0+i1)/2),pj:Math.floor((j0+j1)/2),r:0,minL:Math.min.apply(null,list.map(b=>b.level)),isNew:true};
+  carryG={list:list.map(b=>({b,from:{i0:b.i0,j0:b.j0,level:b.level,rot:b.rot}})),pivot:list[0],pi:Math.floor((i0+i1)/2),pj:Math.floor((j0+j1)/2),r:r||0,minL:Math.min.apply(null,list.map(b=>b.level)),isNew:true,dup:recs};
+  if(first)DUPN=0;
   ghostG.clear();carryG.list.forEach(it=>{const m=new THREE.Mesh(it.b.mesh.geometry,gmat(it.b.color));m.renderOrder=2;it.gm=m;ghostG.add(m);});
-  tone('sine',400,900,.16,.2);toast(lastPointerType==='mouse'?'Copia pronta: clicca dove posarla':'Copia pronta: tocca dove posarla, poi Posa qui');
+  tone('sine',400,900,.16,.2);
+  if(first)toast((lastPointerType==='mouse'?'Clicca dove posare la copia':'Tocca dove posare la copia, poi Posa qui')+'. Ne avrai subito un’altra, finché non cambi strumento o premi ✕');
   renderUI();if(lastPointerType!=='mouse'&&lastPointer)armTouchPreview();
 }
-let selPaintPending=false;
+let selPaintPending=false,DUPN=0;
 function selPaint(){
   const list=[...SEL.set].filter(b=>bricks.indexOf(b)>=0&&b.shape!=='personaggio'&&b.color!==state.color);
   if(!list.length){toast('Sono già tutti di questo colore');return;}
@@ -4077,7 +4133,7 @@ function frame(now){
   if(flashLight.intensity>0){flashLight.intensity*=Math.pow(.015,dt);if(flashLight.intensity<.02)flashLight.intensity=0;}
   if(shake>0)shake=Math.max(0,shake-dt*1.5);
 
-  animFigures(now,dt);animFlags(now,dt);animMech(dt);twistPulse(now);driveTick(dt);lifeTick(dt,now);quakeTick(dt);kitTick(now);tetTick(dt,now);
+  animFigures(now,dt);animFlags(now,dt);animMech(dt);twistPulse(now);navTick(dt);driveTick(dt);lifeTick(dt,now);quakeTick(dt);kitTick(now);tetTick(dt,now);
   if(PR.on)presentTick(now);
   updateCamera();renderer.render(scene,camera);
   updateBubbles();
