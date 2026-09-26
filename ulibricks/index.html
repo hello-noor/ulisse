@@ -165,21 +165,24 @@ kbd{display:inline-block;min-width:26px;text-align:center;padding:2px 7px;border
 body.placing #toast{top:calc(env(safe-area-inset-top,0px) + 136px)}
 #placeBar .go{background:#FFC914;color:#1B2340;font-size:16px;padding:0 18px}
 #placeBar .go:disabled{background:#6b6f7c;color:#c9ccd4}
-#selBar{position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 70px);transform:translateX(-50%);z-index:14;background:#1B2340;color:#fff;border-radius:18px;padding:10px;display:flex;flex-direction:column;gap:8px;box-shadow:0 8px 24px rgba(0,0,0,.25);max-width:calc(100vw - 90px);width:max-content}
-#selBar .sh{display:flex;align-items:center;gap:10px;justify-content:space-between}
-#selBar .n{font-weight:800;font-size:14px;white-space:nowrap}
-#selBar .n small{display:block;font-size:11.5px;font-weight:700;opacity:.7;white-space:normal;max-width:260px}
-#selBar .sr{display:flex;gap:6px;flex-wrap:wrap}
-#selBar .segm{display:flex;background:rgba(255,255,255,.1);border-radius:12px;padding:3px;gap:2px}
-#selBar button{height:38px;border-radius:10px;border:0;padding:0 10px;font-weight:800;font-size:12.5px;background:rgba(255,255,255,.12);color:#fff;white-space:nowrap;display:flex;align-items:center;gap:5px}
-#selBar .segm button{background:transparent;height:32px}
+#selBar{position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 66px);transform:translateX(-50%);z-index:14;display:flex;flex-direction:column;align-items:center;gap:6px;pointer-events:none}
+#selBar>*{pointer-events:auto}
+#selBar .segm{display:flex;background:rgba(27,35,64,.92);border-radius:22px;padding:4px;gap:2px;box-shadow:0 6px 18px rgba(0,0,0,.22)}
+#selBar .segm button{height:36px;border:0;border-radius:18px;padding:0 14px;background:transparent;color:#fff;font-weight:800;font-size:13px;white-space:nowrap}
 #selBar .segm button[aria-pressed="true"]{background:#FFC914;color:#1B2340}
-#selBar .acts{border-top:1px solid rgba(255,255,255,.14);padding-top:8px}
-#selBar .go{background:#FFC914;color:#1B2340}
-#selBar .del{color:#FF8A8A}
-#selBar button:disabled{opacity:.4}
+#selBar .acts{display:flex;align-items:center;gap:2px;background:rgba(27,35,64,.92);border-radius:18px;padding:4px;box-shadow:0 6px 18px rgba(0,0,0,.22)}
+#selBar .acts .cnt{min-width:30px;height:30px;border-radius:15px;background:#FFC914;color:#1B2340;display:grid;place-items:center;font-weight:800;font-size:14px;margin:0 4px}
+#selBar .acts button{width:48px;height:46px;border:0;border-radius:13px;background:transparent;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;font-size:17px;padding:0}
+#selBar .acts button small{font-size:9.5px;font-weight:800;opacity:.8}
+#selBar .acts button:active{background:rgba(255,255,255,.14)}
+#selBar .acts .go{background:#FFC914;color:#1B2340;width:auto;padding:0 12px;flex-direction:row;gap:5px;font-size:14px;font-weight:800;height:38px;border-radius:12px;margin-left:2px}
+#selBar .acts .del{color:#FF8A8A}
+#selBar .sbHint u{pointer-events:auto;text-decoration:none;background:#FFC914;color:#1B2340;text-shadow:none;border-radius:8px;padding:2px 7px;margin-left:2px;display:inline-block}
+#selBar .sbHint{font-size:11.5px;font-weight:800;color:var(--ink);text-shadow:0 1px 6px var(--sky-bottom),0 0 3px var(--sky-bottom);pointer-events:none;text-align:center;max-width:260px}
+@media (max-width:560px){#selBar{left:calc((100vw - 76px)/2)}#selBar .acts{gap:0}#selBar .acts button{width:36px;font-size:16px}#selBar .acts button small{display:none}#selBar .acts .cnt{margin:0 2px;min-width:26px;height:26px;font-size:13px}#selBar .acts .go{padding:0 10px;font-size:13px}}
+#selBar .acts .go{white-space:nowrap}
 @media (max-width:560px){#selBar{left:10px;transform:none;max-width:calc(100vw - 86px)}}
-body.selbar #toast{top:calc(env(safe-area-inset-top,0px) + 128px)}
+body.selbar #toast{top:calc(env(safe-area-inset-top,0px) + 150px)}
 @media (max-width:560px){body.selbar #toast{top:calc(env(safe-area-inset-top,0px) + 190px)}}
  #twistBar{position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 70px);transform:translateX(-50%);z-index:14;background:#1B2340;color:#fff;border-radius:18px;padding:10px 12px;box-shadow:0 8px 24px rgba(0,0,0,.25);max-width:calc(100vw - 90px);width:max-content}
 #twistBar .tt{font-weight:800;font-size:13px;margin:0 2px 8px}
@@ -678,7 +681,7 @@ body.tetris .top,body.tetris .tray,body.tetris #empty,body.tetris #kitCard,body.
   <p>Scegli forma, misura e colore nel vassoio in basso, poi tocca la base o un altro pezzo per posarlo. I pezzi si incastrano solo sui bottoncini: se l'anteprima è rossa lì non si aggancia.</p>
   <p>L'anello giallo indica la <b>presa</b>, il punto da cui tieni il pezzo. Il pulsante "Presa" nell'anteprima la sposta: centro, capi e, per i pezzi grandi, i quattro angoli.</p>
   <h3>Strumenti</h3>
-  <p><b>Costruisci</b> posa pezzi nuovi. <b>Sposta</b> prende un pezzo e lo rimette altrove. <b>Blocco</b> sposta più pezzi insieme: disegna un giro intorno ai pezzi (lazo) o toccali uno per uno, poi premi "Sposta". "Attaccati" aggiunge tutto ciò che è collegato ai pezzi scelti. <b>Gomma</b> toglie, <b>Pennello</b> ricolora, <b>Copia</b> prende forma, misura e colore di un pezzo già posato per costruirne altri uguali. Da telefono, quando sposti un pezzo o un blocco, tocca dove vuoi metterlo: compare l'anteprima e una barra con <b>Posa qui</b>. Puoi toccare altri punti o ruotare prima di confermare.</p>
+  <p><b>Costruisci</b> posa pezzi nuovi. <b>Sposta</b> ha due modi, scelti dalla barra in alto. «Un pezzo»: tocchi un pezzo e lo prendi insieme a tutto quello che ha sopra, dal punto in cui lo tocchi. «Più pezzi»: disegni un giro intorno ai pezzi o li tocchi uno per uno, poi puoi spostarli, duplicarli, colorarli o eliminarli insieme; 🎨 apre la tavolozza per scegliere il colore, 🔗 Aggiungi prende anche tutti i pezzi attaccati a quelli scelti. <b>Gomma</b> toglie, <b>Pennello</b> ricolora, <b>Copia</b> prende forma, misura e colore di un pezzo già posato per costruirne altri uguali. Da telefono, quando sposti un pezzo o un blocco, tocca dove vuoi metterlo: compare l'anteprima e una barra con <b>Posa qui</b>. Puoi toccare altri punti o ruotare prima di confermare.</p>
   <h3>Dinamite</h3>
   <p>Premi Dinamite e scegli la grandezza dal menu: Piccola, Media o Maxi (fa saltare tutto). Poi tocca la scena per piazzare fino a 5 candelotti e, quando sei pronto, tocca una delle dinamiti già piazzate: parte il conto alla rovescia 3, 2, 1 e BOOM. Per annullare, riapri il menu Dinamite.</p>
   <h3>Personaggi e Vita</h3>
@@ -978,7 +981,6 @@ function clampMult(shape,v){return clamp(Math.round(v*10)/10,.5,maxMult(shape));
 const TOOLS=[
   {id:'build',label:'Costruisci',icon:'<path d="M12 5v14M5 12h14"/>'},
   {id:'move',label:'Sposta',icon:'<path d="M12 3v18M3 12h18"/><path d="m9 6 3-3 3 3M9 18l3 3 3-3M6 9l-3 3 3 3M18 9l3 3-3 3"/>'},
-  {id:'block',label:'Blocco',icon:'<rect x="3" y="12" width="8" height="8" rx="1"/><rect x="13" y="12" width="8" height="8" rx="1"/><rect x="8" y="3" width="8" height="8" rx="1"/>'},
   {id:'erase',label:'Gomma',icon:'<path d="m7 21-4-4 11-11 7 7-8 8z"/><path d="M7 21h13"/>'},
   {id:'paint',label:'Pennello',icon:'<path d="M18 3l3 3-9 9-3-3z"/><path d="M9 12c-3 0-5 2-5 5 0 2-1 3-2 4 4 0 8-1 8-5"/>'},
   {id:'copy',label:'Copia',icon:'<rect x="8" y="8" width="12" height="12" rx="2"/><path d="M4 16V5a1 1 0 0 1 1-1h11"/>'},
@@ -2115,20 +2117,20 @@ Object.keys(COLOR_GROUPS).forEach(gid=>{
   const host=document.getElementById(gid);
   COLOR_GROUPS[gid].forEach(([c,n])=>{
     const b=document.createElement('button');b.className='swatch';b.style.background=swatchBg(c);b.dataset.c=c;b.setAttribute('aria-label','Colore '+n);b.title=n;
-    b.addEventListener('click',()=>{state.color=c;if(state.mode==='erase')setMode('build');renderUI();});
+    b.addEventListener('click',()=>{state.color=c;if(selPaintPending&&state.mode==='block'&&SEL.set.size){selPaintPending=false;renderUI();selPaint();return;}selPaintPending=false;if(state.mode==='erase')setMode('build');renderUI();});
     host.appendChild(b);colorEls.push(b);
   });
 });
 TOOLS.forEach(t=>{
   const b=document.createElement('button');b.className='tool';b.dataset.id=t.id;
   b.innerHTML=svgIcon(t.icon,2.4)+'<span>'+t.label+'</span>';
-  b.addEventListener('click',()=>{const was=state.mode;setMode(t.id);if(t.id==='paint'){if(was==='paint')openModal('paletteModal');else toast('Tocca di nuovo il pennello per scegliere il colore');}});
+  b.addEventListener('click',()=>{const was=state.mode;setMode(t.id);if(t.id==='paint'){selPaintPending=false;document.querySelector('#paletteModal h2').textContent='Colore';if(was==='paint')openModal('paletteModal');else toast('Tocca di nuovo il pennello per scegliere il colore');}});
   if(t.id==='paint')b.addEventListener('dblclick',()=>openModal('paletteModal'));
   toolsEl.appendChild(b);
 });
 function toBuild(){if(dyn.mode&&dyn.mode!=='count')cancelDyn();cancelCarry();if(state.mode!=='build')state.mode='build';}
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.hidden=false;clearTimeout(toast._t);toast._t=setTimeout(()=>{t.hidden=true;},2200);}
-function setMode(m){if(dyn.mode&&dyn.mode!=='count')cancelDyn();cancelCarry();if(m!=='block')selClear();state.mode=m;hideHover();renderUI();if(m==='block'&&!SEL.set.size)toast(SEL.lasso?'Disegna un giro intorno ai pezzi, o toccali uno per uno':'Tocca i pezzi da spostare');}
+function setMode(m){if(dyn.mode&&dyn.mode!=='count')cancelDyn();cancelCarry();if(m!=='block')selClear();state.mode=m;hideHover();renderUI();if(m==='block'){SEL.lasso=true;if(!SEL.set.size)toast('Disegna un giro intorno ai pezzi, o toccali uno per uno');}}
 function rotate(dir){if(carryG){carryG.r=(carryG.r+dir+4)%4;renderUI();return;}if(carry){carry.rot=(carry.rot+dir+4)%4;renderUI();return;}state.rot=(state.rot+dir+4)%4;toBuild();renderUI();}
 function renderUI(){
   shapesEl.querySelectorAll('.shape').forEach(b=>b.setAttribute('aria-pressed',b.dataset.id===state.shape));
@@ -2148,7 +2150,7 @@ function renderUI(){
     sizesEl.appendChild(b);
   });
   colorEls.forEach(b=>b.setAttribute('aria-pressed',b.dataset.c===state.color));
-  toolsEl.querySelectorAll('.tool').forEach(b=>b.setAttribute('aria-pressed',b.dataset.id===state.mode));
+  toolsEl.querySelectorAll('.tool').forEach(b=>b.setAttribute('aria-pressed',b.dataset.id===state.mode||(b.dataset.id==='move'&&state.mode==='block')));
   canvas.style.cursor=state.mode==='build'?'crosshair':state.mode==='erase'?'not-allowed':(state.mode==='move'||state.mode==='block')?((carry||carryG)?'grabbing':'grab'):'cell';
   pvUpdate();renderCatsUI();
   if(lastPointer&&!dyn.mode&&(lastPointerType==='mouse'||carry||carryG))updateHover(lastPointer.x,lastPointer.y);
@@ -3868,7 +3870,7 @@ function renderCatsUI(){
   try{renderTwistBar();}catch(e){}
   try{renderSignInput();}catch(e){}
 }
-document.getElementById('colorDot').addEventListener('click',()=>openModal('paletteModal'));
+document.getElementById('colorDot').addEventListener('click',()=>{selPaintPending=false;document.querySelector('#paletteModal h2').textContent='Colore';openModal('paletteModal');});
 document.getElementById('paletteModal').addEventListener('click',e=>{if(e.target.closest('.swatch'))setTimeout(()=>{document.getElementById('paletteModal').hidden=true;},140);});
 function setTab(t){
   document.body.dataset.tab=t;
@@ -3912,21 +3914,29 @@ function selClear(){SEL.set.clear();selRefresh();}
 function selToggle(b){if(SEL.set.has(b)){SEL.set.delete(b);tone('sine',500,380,.08,.1);}else{SEL.set.add(b);tone('sine',520,780,.08,.12);}selRefresh();}
 function renderSelBar(){
   const bar=document.getElementById('selBar');
-  const show=state.mode==='block'&&!carryG&&!dyn.mode&&!KIT.on&&!TET.on&&!PR.on&&!(typeof DRIVE!=='undefined'&&DRIVE.on)&&document.body.dataset.tab==='build';
-  bar.hidden=!show;document.body.classList.toggle('selbar',show);if(!show)return;const n=SEL.set.size;
-  const help=n?'Aggiungi o togli pezzi, poi scegli cosa farne':(SEL.lasso?'Disegna un giro intorno ai pezzi, o toccali uno per uno':'Tocca i pezzi uno per uno per sceglierli');
-  bar.innerHTML='<div class="sh"><div class="n">'+(n?n+(n===1?' pezzo scelto':' pezzi scelti'):'Scegli i pezzi')+'<small>'+help+'</small></div>'+
-    '<div class="segm"><button data-a="lasso" aria-pressed="'+SEL.lasso+'">✏️ Lazo</button><button data-a="tap" aria-pressed="'+!SEL.lasso+'">👆 Tocco</button></div></div>'+
-    '<div class="sr"><button data-a="all">⊕ Tutto</button><button data-a="attach"'+(n?'':' disabled')+'>🔗 Attaccati</button><button data-a="clear"'+(n?'':' disabled')+'>Svuota</button></div>'+
-    (n?'<div class="sr acts"><button data-a="take" class="go">✋ Sposta</button><button data-a="dup">⧉ Duplica</button><button data-a="paint">🎨 Colora</button><button data-a="del" class="del">🗑 Elimina</button></div>':'');
-  bar.querySelectorAll('button').forEach(x=>x.addEventListener('click',()=>{const a=x.dataset.a;
-    if(a==='lasso'||a==='tap'){SEL.lasso=a==='lasso';renderSelBar();}
+  const show=(state.mode==='block'||(state.mode==='move'&&!carry))&&!carryG&&!dyn.mode&&!KIT.on&&!TET.on&&!PR.on&&!(typeof DRIVE!=='undefined'&&DRIVE.on)&&document.body.dataset.tab==='build';
+  bar.hidden=!show;document.body.classList.toggle('selbar',show);if(!show)return;
+  const multi=state.mode==='block',n=SEL.set.size;
+  let h='<div class="segm"><button data-a="one" aria-pressed="'+!multi+'">👆 Un pezzo</button><button data-a="multi" aria-pressed="'+multi+'">✏️ Più pezzi</button></div>';
+  if(multi&&n){h+='<div class="acts"><span class="cnt">'+n+'</span>'+
+    '<button data-a="attach" title="Aggiungi i pezzi attaccati a quelli scelti">🔗<small>Aggiungi</small></button>'+
+    '<button data-a="dup" title="Duplica">⧉<small>Duplica</small></button>'+
+    '<button data-a="paint" title="Colora con il colore scelto">🎨<small>Colora</small></button>'+
+    '<button data-a="del" class="del" title="Elimina">🗑<small>Elimina</small></button>'+
+    '<button data-a="clear" title="Svuota la selezione">✕<small>Svuota</small></button>'+
+    '<button data-a="take" class="go">✋ Sposta</button></div>';}
+  else if(multi)h+='<div class="sbHint">Disegna un giro intorno ai pezzi o toccali · <u data-a="all" style="cursor:pointer">scegli tutto</u></div>';
+  else h+='<div class="sbHint">Tocca un pezzo: lo prendi con quelli che ha sopra</div>';
+  bar.innerHTML=h;
+  bar.querySelectorAll('[data-a]').forEach(x=>x.addEventListener('click',()=>{const a=x.dataset.a;
+    if(a==='one'){if(state.mode!=='move')setMode('move');}
+    else if(a==='multi'){if(state.mode!=='block')setMode('block');}
     else if(a==='all'){bricks.forEach(b=>SEL.set.add(b));tone('triangle',600,900,.1,.1);selRefresh();}
     else if(a==='attach'){const add=new Set();SEL.set.forEach(b=>componentOf(b).forEach(c=>add.add(c)));const before=SEL.set.size;add.forEach(b=>SEL.set.add(b));toast('Aggiunti '+(SEL.set.size-before)+' pezzi attaccati');selRefresh();}
     else if(a==='clear')selClear();
     else if(a==='take')selTake();
     else if(a==='dup')selDuplicate();
-    else if(a==='paint')selPaint();
+    else if(a==='paint'){selPaintPending=true;document.querySelector('#paletteModal h2').textContent='Colora '+n+(n===1?' pezzo':' pezzi');openModal('paletteModal');}
     else if(a==='del')selDelete();}));
 }
 function recData(a){return{shape:a[0],w:a[1],d:a[2],color:a[3],rot:a[4],i0:a[5],j0:a[6],level:a[7],x:a[8]};}
@@ -3940,9 +3950,10 @@ function selDuplicate(){
   tone('sine',400,900,.16,.2);toast(lastPointerType==='mouse'?'Copia pronta: clicca dove posarla':'Copia pronta: tocca dove posarla, poi Posa qui');
   renderUI();if(lastPointerType!=='mouse'&&lastPointer)armTouchPreview();
 }
+let selPaintPending=false;
 function selPaint(){
   const list=[...SEL.set].filter(b=>bricks.indexOf(b)>=0&&b.shape!=='personaggio'&&b.color!==state.color);
-  if(!list.length){toast('Sono già tutti di questo colore: scegline un altro con il pallino');return;}
+  if(!list.length){toast('Sono già tutti di questo colore');return;}
   undoStack.push({t:'paintg',list:list.map(b=>[b,b.color])});
   list.forEach(b=>{b.color=state.color;styleMesh(b.mesh,b.color);if(b.shape==='bandiera'||b.shape==='braccio'||b.shape==='cerniera')refreshExtras(b);});
   sndPaint();afterChange();
