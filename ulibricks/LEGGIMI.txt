@@ -1,0 +1,20 @@
+ULIBRICKS - app installabile (PWA)
+
+PUBBLICARE
+Serve un indirizzo https. Il modo più rapido:
+1. Vai su app.netlify.com/drop
+2. Trascina dentro l'intera cartella "ulibricks-pwa"
+3. Apri l'indirizzo che ti dà Netlify: comparirà il pulsante per installare l'app
+In alternativa: GitHub Pages (carica i file in un repository e attiva Pages).
+
+AGGIORNARE UNA VERSIONE GIA' PUBBLICATA (importante)
+1. Sostituisci TUTTI i file, comprese le cartelle: index.html, sw.js, manifest.webmanifest, jspdf.umd.min.js, three.min.js e la cartella icons.
+2. Nella cartella icons cancella le vecchie icone (quelle senza -v2 nel nome).
+3. Attendi un paio di minuti che GitHub Pages pubblichi.
+
+AGGIORNARE L'ICONA SULL'IPHONE
+Le icone dell'iPhone restano in memoria a lungo. Per vedere quella nuova:
+1. Elimina dalla Home la vecchia icona ULIBRICKS.
+2. Impostazioni > Safari > Avanzate > Dati dei siti web: cerca "github", tocca Modifica, elimina il sito, poi Fine.
+3. Chiudi Safari dal selettore delle app, riaprilo e apri l'indirizzo dell'app.
+4. Condividi > Aggiungi alla schermata Home.
