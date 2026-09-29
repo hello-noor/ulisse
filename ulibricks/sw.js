@@ -1,7 +1,7 @@
-const CACHE='ulibricks-v18';
+const CACHE='ulibricks-v20';
 const FRESH=['./','./index.html','./manifest.webmanifest','./icons/icon-192-v2.png','./icons/icon-512-v2.png','./icons/maskable-512-v2.png','./icons/apple-touch-icon-v2.png','./icons/favicon-32-v2.png'];
 const HEAVY=['./three.min.js','./jspdf.umd.min.js'];
-self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(FRESH.concat(HEAVY))));self.skipWaiting();});
+self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>Promise.all(FRESH.concat(HEAVY).map(u=>c.add(u).catch(()=>null)))));self.skipWaiting();});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));});
 function isFresh(u){const p=new URL(u,self.location.href);return p.origin===self.location.origin&&(/\/$/.test(p.pathname)||/\.(html|webmanifest|png|svg)$/i.test(p.pathname));}
 self.addEventListener('fetch',e=>{
