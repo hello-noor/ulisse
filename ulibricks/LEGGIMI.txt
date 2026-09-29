@@ -12,6 +12,13 @@ AGGIORNARE UNA VERSIONE GIA' PUBBLICATA (importante)
 2. Nella cartella icons cancella le vecchie icone (quelle senza -v2 nel nome).
 3. Attendi un paio di minuti che GitHub Pages pubblichi.
 
+ANTEPRIMA DEL LINK (WhatsApp, Telegram, iMessage, Facebook...)
+Il file og-image.jpg deve stare accanto a index.html, nella cartella ulibricks:
+https://hello-noor.github.io/ulisse/ulibricks/og-image.jpg
+Le app di messaggi ricordano a lungo l'anteprima già vista: per forzare l'aggiornamento
+condividi il link con un finale diverso, per esempio .../ulibricks/?v=2
+Per Facebook e Instagram: developers.facebook.com/tools/debug, "Scrape again".
+
 AGGIORNARE L'ICONA SULL'IPHONE
 Le icone dell'iPhone restano in memoria a lungo. Per vedere quella nuova:
 1. Elimina dalla Home la vecchia icona ULIBRICKS.
