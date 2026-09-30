@@ -2485,12 +2485,14 @@ function act(){
   if(document.body.dataset.tab==='chars'&&!carry&&!carryG){
     const hb=hoverHit&&hoverHit.object.userData&&hoverHit.object.userData.brick;
     if(hb&&hb.shape==='personaggio'){
+      if(charArm){armChar(false,true);toast(LT(['Azioni attive: tocca la base per mandarlo','Actions on: tap the base to send them']));}
       if(charTool==='del'&&!charArm){removeCharBrick(hb);return;}
       if(charTool==='friend'&&!charArm&&charMarkBrick&&charMarkBrick!==hb&&bricks.indexOf(charMarkBrick)>=0){const a=charMarkBrick;charMarkBrick=null;updateCharMark();friendMeet(a,hb);renderUI();return;}
       walkSel=null;charPickBrick(hb);figReact(hb);return;}
     if(!charArm){
-      const sb=charMarkBrick;
+      const sb=(charTool==='go'||charTool==='move')?charTarget():charMarkBrick;
       if(sb&&bricks.indexOf(sb)>=0&&hoverHit&&lastPointer&&!hoverHit.object.userData.att){
+        charMarkBrick=sb;
         if(charTool==='go'){walkTo(sb,hoverHit.point,hb&&hb.shape!=='personaggio'?hb:null);}
         else if(charTool==='move'){
           startCharMove(sb,true);updateHover(lastPointer.x,lastPointer.y);
@@ -6159,13 +6161,19 @@ const BEHS=[
   ['friend',['Amico','Friend'],'heart',['Va dagli altri, chiacchiera e fa amicizia','Goes to the others, chats and makes friends']]];
 function charOf(b){return b&&b.shape==='personaggio'?charById(String(b.color).slice(1)):null;}
 function behOf(b){const c=charOf(b);return(c&&c.beh)||'walk';}
+// il personaggio scelto nella fila: quello in scena (il selezionato, altrimenti il primo)
+function charTarget(){
+  const id=state.charId;if(!id)return null;
+  const m=charMarkBrick;if(m&&bricks.indexOf(m)>=0){const c=charOf(m);if(c&&c.id===id)return m;}
+  return bricks.find(b=>{const c=charOf(b);return c&&c.id===id;})||null;
+}
 function removeCharBrick(b){
   detach(b);scene.remove(b.mesh);const fallen=settle(false,b.mesh.position);
   undoStack.push({t:'remove',list:[b].concat(fallen),fl:fallen});sndPop();if(fallen.length)setTimeout(sndThud,350);
   if(charMarkBrick===b)charMarkBrick=null;walkSel=null;afterChange();renderUI();toast(LT(['Tolto · ↶ per rimetterlo','Removed · ↶ to put back']));
 }
 function startCharMove(b,drag){
-  endSwing(b);
+  endSwing(b);if(charTool==='add')charTool='go';
   if(charArm){charArm=false;if(state.shape==='personaggio'){state.shape=charPrevShape||'mattone';state.size=(charPrevSize||[2,4]).slice();}}
   // teletrasporto: ferma qualsiasi camminata e parte subito dal punto nuovo
   {const ls=lifeState.get(b);if(ls){ls.mode='pause';ls.path=null;ls.cmd=false;ls.dest=null;ls.pauseT=1.2;}const f=figOf(b);if(f){f.userData.sitting=false;f.userData.faceTo=null;}}
@@ -6298,7 +6306,11 @@ function renderCharPanel(){
     const ce=t.querySelector('.cedit');if(ce)ce.addEventListener('click',e=>{e.stopPropagation();openCreator(c);});
     t.addEventListener('click',()=>{
       if(c.id===state.charId){openCreator(c);return;}
-      state.charId=c.id;charMarkBrick=null;updateCharMark();tone('sine',620,820,.05,.06);armChar(true,true);renderUI();});
+      state.charId=c.id;charMarkBrick=null;updateCharMark();tone('sine',620,820,.05,.06);
+      const inst=bricks.find(b=>{const cc=charOf(b);return cc&&cc.id===c.id;});
+      if(inst){charMarkBrick=inst;updateCharMark();if(charArm)armChar(false,true);if(charTool==='add')charTool='go';renderUI();
+        toast(LT([c.name+': tocca la base e ci va a piedi',c.name+': tap the base to send them there']));}
+      else armChar(true,true);});
     tw.appendChild(t);});
   const nt=document.createElement('button');nt.className='shape ctile cnew';nt.setAttribute('aria-label',LT(['Nuovo personaggio','New character']));
   nt.innerHTML='<b>'+icoSvg('plus',2.4)+'</b><span>'+LT(['Nuovo','New'])+'</span>';nt.addEventListener('click',()=>openCreator());tw.appendChild(nt);
@@ -6333,7 +6345,7 @@ function setTab(t){
   if(t==='show')document.getElementById('titleIn').value=document.getElementById('shotTitle').value;
   if(t==='chars'&&prev!=='chars'){charPrevMode=(state.mode==='char'||state.mode==='nav')?'build':state.mode;charArm=false;if(charTool==='add')charTool='go';setMode('char');
     if(!charById(state.charId)&&chars.length)state.charId=chars[0].id;
-    if(charById(state.charId)&&!bricks.some(b=>b.shape==='personaggio'))armChar(true,true);}
+    if(charById(state.charId)){const inst=charTarget();if(inst){charMarkBrick=inst;}else armChar(true,true);}}
   if(prev==='chars'&&t!=='chars'){
     charArm=false;if(state.shape==='personaggio'){state.shape=charPrevShape||'mattone';state.size=(charPrevSize||[2,4]).slice();}
     setMode(charPrevMode||'build');charMarkBrick=null;updateCharMark();}
