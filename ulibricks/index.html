@@ -1247,7 +1247,7 @@ body.charbar #toast{top:calc(env(safe-area-inset-top,0px) + 142px)}
   </div>
   <div class="setSec">Preferenze</div>
   <div class="setList">
-    <div class="setRow"><span class="si">🎵</span><span class="st"><b>Musica</b><small>Sottofondo jazz leggero</small></span><button class="sw" role="switch" id="swMusic" aria-label="Musica"><i></i></button></div>
+    <div class="setRow"><span class="si">🎵</span><span class="st"><b>Musica</b><small>Due brani jazz e bossa leggeri, si alternano</small></span><button class="sw" role="switch" id="swMusic" aria-label="Musica"><i></i></button></div>
     <div class="setRow"><span class="si">🔊</span><span class="st"><b>Effetti sonori</b><small>Incastri, esplosioni, voci</small></span><button class="sw" role="switch" id="swSfx" aria-label="Effetti sonori"><i></i></button></div>
     <div class="setRow"><span class="si">🙂</span><span class="st"><b>Vita dei personaggi</b><small>Passeggiano, chiacchierano, si siedono</small></span><button class="sw" role="switch" id="swVita" aria-label="Vita dei personaggi"><i></i></button></div>
     <div class="setRow"><span class="si">🌓</span><span class="st"><b>Tema</b></span><div class="seg3" id="swTheme"><button data-t="auto">Auto</button><button data-t="light">Chiaro</button><button data-t="dark">Scuro</button></div></div>
@@ -1452,7 +1452,7 @@ const SHAPES={
   roccia:{label:'Roccia',plates:3,studs:false,sizes:[[2,2],[3,3]],icon:'<path d="M3 19l3-8 5-4 6 2 4 7-2 3z"/>'},
   bandiera:{label:'Bandiera',plates:12,studs:false,sizes:[[1,1]],icon:'<path d="M6 21V3"/><path d="M6 4h11l-2 3 2 3H6"/>'},
   insegna:{label:'Insegna',plates:9,studs:false,sizes:[[1,2],[1,3],[1,4],[1,6]],icon:'<rect x="3" y="4" width="18" height="9" rx="1.5"/><path d="M7 13v8M17 13v8"/><path d="M7 8.5h10"/>'},
-  elica:{label:'Elica',plates:2,studs:false,sizes:[[1,1],[2,2],[4,4],[6,6]],icon:'<circle cx="12" cy="12" r="2"/><path d="M12 10c-1-4 0-7 2-7s2 4-2 7zM14 13c4 1 7 0 7-2s-4-2-7 2zM10 13c-3 3-6 4-7 2s2-4 7-2z"/>'},
+  elica:{label:'Elica',plates:2,studs:false,sizes:[[1,1],[2,2],[3,3],[4,4],[5,5],[6,6]],icon:'<circle cx="12" cy="12" r="2"/><path d="M12 10c-1-4 0-7 2-7s2 4-2 7zM14 13c4 1 7 0 7-2s-4-2-7 2zM10 13c-3 3-6 4-7 2s2-4 7-2z"/>'},
   ingranaggio:{label:'Ingranaggio',plates:1,studs:false,sizes:[[2,2],[3,3]],icon:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/><circle cx="12" cy="12" r="7"/>'},
   faro:{label:'Faro',plates:3,studs:false,sizes:[[1,1]],icon:'<rect x="8" y="10" width="8" height="10" rx="2"/><circle cx="12" cy="7" r="3"/><path d="M12 1v2M6 3l1.5 1.5M18 3l-1.5 1.5"/>'},
   antenna:{label:'Antenna',plates:1,studs:false,sizes:[[1,1]],icon:'<rect x="7" y="17" width="10" height="4" rx="1"/><path d="M12 17V5"/><circle cx="12" cy="4" r="2"/><path d="M8 7a5 5 0 0 1 8 0"/>'},
@@ -1497,19 +1497,19 @@ const SHAPES={
 };
 Object.assign(SHAPES,{
   merlo:{label:'Merli',plates:3,studs:false,sizes:[[1,2],[1,4],[1,6],[1,8]],icon:'<path d="M3 20V9h3v4h3V9h3v4h3V9h3v11z"/>'},
-  piramide:{label:'Piramide',plates:3,h:(w)=>w*1.5,studs:false,sizes:[[2,2],[4,4],[6,6]],icon:'<path d="M12 3 21 19H3z"/><path d="M12 3v16"/>'},
+  piramide:{label:'Piramide',plates:3,h:(w)=>w*1.5,studs:false,sizes:[[2,2],[3,3],[4,4],[5,5],[6,6]],icon:'<path d="M12 3 21 19H3z"/><path d="M12 3v16"/>'},
   camino:{label:'Camino',plates:6,studs:false,sizes:[[1,1]],icon:'<rect x="8" y="6" width="8" height="14"/><rect x="6.5" y="3.5" width="11" height="3" rx=".8"/>'},
   barile:{label:'Barile',plates:3,studs:false,sizes:[[1,1]],icon:'<path d="M7 4c-2 5-2 11 0 16h10c2-5 2-11 0-16z"/><path d="M6 9h12M6 15h12"/>'},
   cannone:{label:'Cannone',plates:3,studs:false,sizes:[[1,2]],icon:'<path d="M3 12 14 7l2 4-11 5z"/><circle cx="14" cy="17" r="3.5"/><circle cx="14" cy="17" r="1" fill="currentColor"/>'},
-  fontana:{label:'Fontana',plates:6,studs:false,sizes:[[2,2],[4,4]],icon:'<path d="M3 17c0 2 4 3 9 3s9-1 9-3v-2H3z"/><path d="M12 15V7M8 8c2-3 6-3 8 0"/><path d="M12 4v1.5"/>'},
+  fontana:{label:'Fontana',plates:6,studs:false,sizes:[[2,2],[3,3],[4,4],[5,5]],icon:'<path d="M3 17c0 2 4 3 9 3s9-1 9-3v-2H3z"/><path d="M12 15V7M8 8c2-3 6-3 8 0"/><path d="M12 4v1.5"/>'},
   tavolo:{label:'Tavolo',plates:3,studs:false,sizes:[[2,2],[2,3]],icon:'<rect x="3" y="8" width="18" height="3" rx="1"/><path d="M5 11v9M19 11v9"/>'},
   sedia:{label:'Sedia',plates:3,studs:false,sizes:[[1,1]],icon:'<path d="M8 3v10h9"/><rect x="7" y="12" width="11" height="3" rx="1"/><path d="M8 15v6M17 15v6"/>'},
   letto:{label:'Letto',plates:3,studs:false,sizes:[[2,3]],icon:'<rect x="3" y="11" width="18" height="5" rx="1"/><rect x="5" y="7" width="6" height="4" rx="1.5"/><path d="M3 16v4M21 16v4"/>'},
-  elicaA:{label:'Elica aereo',plates:3,studs:true,sizes:[[1,1],[2,2],[4,4]],icon:'<path d="M12 4v16"/><path d="M12 12c-3-1-5-4-4-7 4 1 4 5 4 7zM12 12c3 1 5 4 4 7-4-1-4-5-4-7z"/><circle cx="12" cy="12" r="1.6"/>'},
+  elicaA:{label:'Elica aereo',plates:3,studs:true,sizes:[[1,1],[2,2],[3,3],[4,4]],icon:'<path d="M12 4v16"/><path d="M12 12c-3-1-5-4-4-7 4 1 4 5 4 7zM12 12c3 1 5 4 4 7-4-1-4-5-4-7z"/><circle cx="12" cy="12" r="1.6"/>'},
   mulino:{label:'Mulino',plates:9,studs:true,sizes:[[1,1]],icon:'<path d="M12 21V11"/><circle cx="12" cy="10" r="1.3"/><path d="M12 10 5 6M12 10l7 4M12 10l-4 7M12 10l4-7"/>'},
   radar:{label:'Radar',plates:6,studs:true,sizes:[[1,1]],icon:'<path d="M12 21v-7"/><path d="M5 10a7 7 0 0 0 14 0z"/><path d="M12 10 16 4"/>'},
-  giostra:{label:'Giostra',plates:2,studs:false,sizes:[[4,4],[6,6]],icon:'<path d="M4 9 12 3l8 6z"/><path d="M6 9v9M12 9v9M18 9v9"/><path d="M3 19h18"/>'},
-  altalena:{label:'Altalena',plates:12,studs:false,sizes:[[1,3]],icon:'<path d="M4 20 8 4h8l4 16"/><path d="M10 4l-1 11M14 4l1 11"/><rect x="8" y="15" width="8" height="2" rx="1"/>'},
+  giostra:{label:'Giostra',plates:2,studs:false,sizes:[[3,3],[4,4],[5,5],[6,6]],icon:'<path d="M4 9 12 3l8 6z"/><path d="M6 9v9M12 9v9M18 9v9"/><path d="M3 19h18"/>'},
+  altalena:{label:'Altalena',plates:12,studs:false,sizes:[[1,3],[1,5],[1,6]],icon:'<path d="M4 20 8 4h8l4 16"/><path d="M10 4l-1 11M14 4l1 11"/><rect x="8" y="15" width="8" height="2" rx="1"/>'},
   pistone:{label:'Pistone',plates:6,studs:true,sizes:[[1,1],[2,2],[3,3],[4,4],[2,4],[2,6],[4,6],[4,8]],icon:'<rect x="7" y="12" width="10" height="8" rx="1"/><path d="M12 12V5"/><rect x="8" y="3" width="8" height="3" rx="1"/>'},
   semaforo:{label:'Semaforo',plates:12,studs:false,sizes:[[1,1]],icon:'<rect x="8" y="3" width="8" height="13" rx="2"/><circle cx="12" cy="6.5" r="1.3"/><circle cx="12" cy="9.5" r="1.3"/><circle cx="12" cy="12.5" r="1.3"/><path d="M12 16v5"/>'},
   orologio:{label:'Orologio',plates:6,studs:true,sizes:[[2,2]],icon:'<circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2"/>'},
@@ -1875,10 +1875,11 @@ function addExtras(mesh,data){
       g2.add(new THREE.Mesh(cachedGeo('gsrod',()=>new THREE.CylinderGeometry(.04,.04,2.3,6).translate(0,1.3,0)),mat('M#D4AF37')));
       const hs=new THREE.Mesh(cachedGeo('gshorse',()=>new THREE.BoxGeometry(.5,.36,.22).translate(0,.75,0)),mat(hc[k%4]));hs.castShadow=true;g2.add(hs);sp.add(g2);}
     mesh.add(sp);}
-  if(shape==='altalena'){const pv=new THREE.Group();pv.position.set(0,h-.08,0);pv.userData.swing=.6;
-    [-1,1].forEach(sz=>pv.add(new THREE.Mesh(cachedGeo('altrope',()=>new THREE.CylinderGeometry(.02,.02,h-1,6).translate(0,-(h-1)/2,0)),mat('#5A5F66')).translateZ(sz*.4)));
-    const seat=new THREE.Mesh(cachedGeo('altseat',()=>new THREE.BoxGeometry(.4,.07,1.0).translate(0,-(h-1),0)),mat(data.color));seat.castShadow=true;pv.add(seat);
-    const an=new THREE.Object3D();an.position.set(0,-(h-1)+.04,0);pv.add(an);pv.userData.anchor=an;mesh.add(pv);}
+  if(shape==='altalena'){const zs=d>=5?[-(d/2-1.5),d/2-1.5]:[0];
+    zs.forEach((zz,si)=>{const pv=new THREE.Group();pv.position.set(0,h-.08,zz);pv.userData.swing=.6;pv.userData.phase=si*Math.PI;pv.userData.seatIdx=si;
+      [-1,1].forEach(sz=>pv.add(new THREE.Mesh(cachedGeo('altrope',()=>new THREE.CylinderGeometry(.02,.02,h-1,6).translate(0,-(h-1)/2,0)),mat('#5A5F66')).translateZ(sz*.4)));
+      const seat=new THREE.Mesh(cachedGeo('altseat',()=>new THREE.BoxGeometry(.4,.07,1.0).translate(0,-(h-1),0)),mat(si?'#F28DB2':data.color));seat.castShadow=true;pv.add(seat);
+      const an=new THREE.Object3D();an.position.set(0,-(h-1)+.04,0);pv.add(an);pv.userData.anchor=an;mesh.add(pv);});}
   if(shape==='pistone'){const sm=Math.min(w,d),g2=new THREE.Group();g2.position.set(0,h-.2,0);g2.userData.lift=1.2+.28*sm;g2.userData.base=h-.2;
     g2.add(new THREE.Mesh(cachedGeo('pirod'+w+'x'+d,()=>{const rr=Math.min(.14*sm+.04,.5);return new THREE.CylinderGeometry(rr,rr,1.2+.28*sm+.4,14).translate(0,-(1.2+.28*sm+.4)/2,0);}),mat('M#C4C8CD')));
     const pl=new THREE.Mesh(cachedGeo('pipl'+w+'x'+d,()=>{const ps=[new THREE.BoxGeometry(w-.14,.2,d-.14).translate(0,.1,0)];for(let i=0;i<w;i++)for(let j=0;j<d;j++)ps.push(stud(i+.5-w/2,.2,j+.5-d/2));return merge(ps);}),mat(data.color));pl.castShadow=true;g2.add(pl);mesh.add(g2);}
@@ -2299,7 +2300,9 @@ function spec(){
 }
 const GRIP_LABEL={custom:'scelta',preso:'tuo punto',centro:'centro',inizio:'capo A',fine:'capo B',a1:'angolo 1',a2:'angolo 2',a3:'angolo 3',a4:'angolo 4'};
 function gripOptions(sp){const o=[];if(sp.w>=2&&sp.d>=2)o.push('a1','a2','a3','a4');if(Math.max(sp.w,sp.d)>1)o.push('inizio','fine');o.push('centro');return o;}
+const CENTER_GRIP=['elica','elicaA','pistone','giostra','fontana','piramide','radar','mulino'];
 function curGrip(sp){if(carryG)return'preso';if(carry)return carry.gripMode;if(state.grip&&typeof state.grip==='object')return'custom';
+  if(state.grip==='a1'&&CENTER_GRIP.indexOf(sp.shape)>=0)return'centro';
   const o=gripOptions(sp);if(o.indexOf(state.grip)>=0)return state.grip;
   if(state.grip==='a1'||state.grip==='a2'||state.grip==='a3'||state.grip==='a4')return o.indexOf('inizio')>=0?'inizio':'centro';
   return'centro';}
@@ -4185,9 +4188,26 @@ function mNoise(t,dur,vol,type,freq){
 }
 function mKick(t,v){const o=ac.createOscillator();o.frequency.setValueAtTime(130,t);o.frequency.exponentialRampToValueAtTime(45,t+.13);const g=ac.createGain();g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.001,t+.22);o.connect(g).connect(MUS.gain);o.start(t);o.stop(t+.25);}
 function ep(n,t,d,v){mOsc('sine',NOTE(n),t,d,v,.012);mOsc('triangle',NOTE(n)*2,t,d*.45,v*.22,.006,2600);}
+// secondo brano: bossa leggera in Fa maggiore, si alterna al primo ogni 16 battute
+const PROGB=[[65,69,72,76],[62,65,69,72],[67,70,74,77],[60,64,67,70],[65,69,72,76],[70,74,77,81],[67,70,74,77],[60,64,67,70]];
+const MELB=[[[0,81],[3,84],[4,88],[6,84]],[[0,81],[2,77],[4,81],[6,84]],[[0,82],[3,86],[4,89],[6,86]],[[0,79],[2,82],[4,84],[7,82]],
+  [[0,84],[3,88],[4,84],[6,81]],[[0,86],[2,84],[4,81],[6,84],[7,86]],[[0,82],[3,86],[4,89],[6,91]],[[0,82],[2,79],[4,76],[6,72]]];
+function musPlayB(step,t,e){
+  const bar=Math.floor(step/8)%PROGB.length,b8=step%8,ch=PROGB[bar],r=ch[0]-24;
+  if(b8===0||b8===3||b8===6)ch.forEach((n,i)=>ep(n-12,t+i*.01,b8===0?e*2.6:e*1.3,b8===0?.06:.045));
+  if(b8===0)mOsc('triangle',NOTE(r),t,e*2.2,.2,.01,900);
+  if(b8===3)mOsc('triangle',NOTE(r+7),t,e*1.3,.17,.01,900);
+  if(b8===4)mOsc('triangle',NOTE(r),t,e*1.6,.18,.01,900);
+  if(b8===7)mOsc('triangle',NOTE(r+7),t,e*.9,.13,.01,900);
+  if(b8===0||b8===4)mKick(t,.3);
+  if(b8===2||b8===6)mNoise(t,.05,.11,'bandpass',3200);
+  mNoise(t,.03,b8%2?.07:.04,'highpass',8000);
+  MELB[bar].forEach(([st,n])=>{if(st===b8){mOsc('sine',NOTE(n),t,e*2.4,.085,.004);mOsc('triangle',NOTE(n+12),t,e*.8,.03,.003,3000);}});
+}
 function musTick(){
-  if(!ac)return;const pres=MUS.mode==='pres',e=60/(pres?112:92)/2;
-  while(MUS.next<ac.currentTime+.25){const s=MUS.step,sw=(s%2)?e*.18:0;musPlay(s,MUS.next+sw,e,pres);MUS.next+=e;MUS.step++;}
+  if(!ac)return;const pres=MUS.mode==='pres';
+  while(MUS.next<ac.currentTime+.25){const s=MUS.step,tb=!pres&&Math.floor(s/128)%2===1,e=60/(pres?112:tb?104:92)/2,sw=(s%2)?e*(tb?.12:.18):0;
+    if(tb)musPlayB(s,MUS.next+sw,e);else musPlay(s,MUS.next+sw,e,pres);MUS.next+=e;MUS.step++;}
 }
 function musPlay(step,t,e,pres){
   const P=PROG[pres?'pres':'game'],bar=Math.floor(step/8)%P.length,b8=step%8,ch=P[bar],nx=P[(bar+1)%P.length];
@@ -5208,7 +5228,7 @@ function animMech(dt){
     b.mesh.children.forEach(c=>{const u=c.userData;
       if(u.blur)c.visible=!off;
       if(u.spin&&!off)c.rotation[u.axis||'y']+=u.spin*dt;
-      if(u.swing&&!off)c.rotation.z=Math.sin(t*1.9)*u.swing*(swingRider.has(b)?1.35:1);
+      if(u.swing&&!off)c.rotation.z=Math.sin(t*1.9+(u.phase||0))*u.swing*(swingHasRider(b,u.seatIdx)?1.35:1);
       if(u.lift&&!off)c.position.y=u.base+(Math.sin(t*2.2)*.5+.5)*u.lift;
       if(u.clock&&!off){const m=dn.getMinutes()+dn.getSeconds()/60,hh=(dn.getHours()%12)+m/60;c.rotation.z=-(u.clock==='m'?m/60:hh/12)*Math.PI*2;}});});
 }
@@ -5462,8 +5482,12 @@ function settleWalker(b,st){
   b.mesh.rotation.y=ry;if(f){f.userData.faceTo=-st.rot*Math.PI/2;f.userData.kneeT=st.kind===3?Math.PI/2:0;}
   afterChange();
 }
-// ---- altalena: i personaggi ci vanno, si siedono e si dondolano
-const swingRider=new Map(),_sp=new V3();
+// ---- altalena: i personaggi ci vanno, si siedono e si dondolano (1 o 2 posti)
+const swingOcc=new Map(),_sp=new V3();
+function swingSeatCount(sw){return sw.d>=5?2:1;}
+function swingSeats(sw){return sw.mesh.children.filter(c=>c.userData.anchor);}
+function swingFreeSeat(sw,who){const arr=swingOcc.get(sw)||[];for(let i=0;i<swingSeatCount(sw);i++){const r=arr[i];if(!r||r===who||bricks.indexOf(r)<0)return i;}return -1;}
+function swingHasRider(sw,idx){const arr=swingOcc.get(sw);if(!arr)return false;if(idx==null)return arr.some(r=>r&&bricks.indexOf(r)>=0);const r=arr[idx];return !!(r&&bricks.indexOf(r)>=0);}
 function swingApproach(b,sw){
   const fp0=new Set(sw.cells.map(c=>c.i+','+c.j)),cand=[];
   sw.cells.forEach(c=>[[1,0],[-1,0],[0,1],[0,-1]].forEach(([di,dj])=>{const i=c.i+di,j=c.j+dj;
@@ -5474,28 +5498,30 @@ function swingApproach(b,sw){
   return null;
 }
 function planSwingTrip(b){
-  const free=bricks.filter(x=>x.shape==='altalena'&&!swingRider.has(x)&&x.mesh.position.distanceTo(b.mesh.position)<30).sort(()=>Math.random()-.5);
+  const free=bricks.filter(x=>x.shape==='altalena'&&swingFreeSeat(x,b)>=0&&x.mesh.position.distanceTo(b.mesh.position)<30).sort(()=>Math.random()-.5);
   for(const sw of free.slice(0,3)){const path=swingApproach(b,sw);if(path)return{path,swing:sw};}
   return null;
 }
 function endSwing(b){
   const ls=lifeState.get(b);if(!ls||ls.mode!=='swing')return;
-  if(ls.swing)swingRider.delete(ls.swing);
+  if(ls.swing){const arr=swingOcc.get(ls.swing);if(arr&&arr[ls.seatIdx]===b)arr[ls.seatIdx]=null;}
   const f=figOf(b);ls.mode='pause';ls.swing=null;ls.cmd=false;ls.pauseT=rnd(2,5);ls.path=null;
   if(f){f.userData.sitting=false;f.userData.kneeT=0;f.userData.faceTo=null;f.userData.walking=0;}
   if(ls.standPos){b.mesh.position.copy(ls.standPos);ls.standPos=null;}
   afterChange();
 }
 function startSwing(b,ls,sw){
-  if(bricks.indexOf(sw)<0||swingRider.has(sw)){ls.mode='pause';ls.pauseT=rnd(1,3);return false;}
-  const f=figOf(b);ls.mode='swing';ls.swing=sw;ls.rideUntil=performance.now()+rnd(9000,18000);ls.cmd=true;ls.path=null;ls.standPos=b.mesh.position.clone();
-  swingRider.set(sw,b);if(f){f.userData.sitting=true;f.userData.kneeT=Math.PI/2;f.userData.walking=0;f.userData.faceTo=null;}
-  tone('sine',500,900,.1,.08);setTimeout(()=>{if(swingRider.get(sw)===b&&bricks.indexOf(b)>=0)bubble(b,LT(['Uiii!','Wheee!']),1500);},900);
+  const idx=bricks.indexOf(sw)<0?-1:swingFreeSeat(sw,b);
+  if(idx<0){ls.mode='pause';ls.pauseT=rnd(1,3);return false;}
+  const f=figOf(b);ls.mode='swing';ls.swing=sw;ls.seatIdx=idx;ls.rideUntil=performance.now()+rnd(9000,18000);ls.cmd=true;ls.path=null;ls.standPos=b.mesh.position.clone();
+  let arr=swingOcc.get(sw);if(!arr){arr=[];swingOcc.set(sw,arr);}arr[idx]=b;
+  if(f){f.userData.sitting=true;f.userData.kneeT=Math.PI/2;f.userData.walking=0;f.userData.faceTo=null;}
+  tone('sine',500,900,.1,.08);setTimeout(()=>{const a2=swingOcc.get(sw);if(a2&&a2[idx]===b&&bricks.indexOf(b)>=0)bubble(b,LT(['Uiii!','Wheee!']),1500);},900);
   return true;
 }
 function swingGo(b,sw){
-  if(swingRider.has(sw)&&swingRider.get(sw)!==b){sndNope();toast(LT(['L\u2019altalena è occupata','The swing is taken']));return;}
-  const path=swingApproach(b,sw);if(!path){sndNope();toast(LT(['Non riesce ad arrivare all\u2019altalena','It cannot reach the swing']));return;}
+  if(swingFreeSeat(sw,b)<0){sndNope();toast(LT(['L’altalena è piena','The swing is full']));return;}
+  const path=swingApproach(b,sw);if(!path){sndNope();toast(LT(['Non riesce ad arrivare all’altalena','It cannot reach the swing']));return;}
   let ls=lifeState.get(b);if(!ls){ls={mode:'pause',pauseT:1};lifeState.set(b,ls);}
   const fig=figOf(b);ls.mode='walk';ls.path=path;ls.idx=1;ls.t=0;ls.chatUntil=0;ls.cmd=true;ls.dest=null;ls.autoSeat=null;ls.friendTo=null;ls.swingTo=sw;
   if(fig){fig.userData.sitting=false;fig.userData.faceTo=null;}
@@ -5503,11 +5529,12 @@ function swingGo(b,sw){
   ls.segDur=Math.max(.25,Math.hypot(c.x-a.x,c.z-a.z,c.y-a.y)/1.6);walkSel=null;renderUI();
 }
 function positionRiders(){
-  swingRider.forEach((ch,sw)=>{const l=lifeState.get(ch);if(bricks.indexOf(ch)<0||bricks.indexOf(sw)<0||!l||l.mode!=='swing'||l.swing!==sw)swingRider.delete(sw);});
+  swingOcc.forEach((arr,sw)=>{arr.forEach((ch,i)=>{if(!ch)return;const l=lifeState.get(ch);
+    if(bricks.indexOf(ch)<0||bricks.indexOf(sw)<0||!l||l.mode!=='swing'||l.swing!==sw||l.seatIdx!==i)arr[i]=null;});});
   bricks.forEach(b=>{if(b.shape!=='personaggio')return;const ls=lifeState.get(b);if(!ls||ls.mode!=='swing'||!ls.swing)return;
     if(carry&&carry.b===b)return;
     const sw=ls.swing;if(bricks.indexOf(sw)<0)return;
-    const pv=sw.mesh.children.find(c=>c.userData.anchor);if(!pv)return;
+    const pv=swingSeats(sw)[ls.seatIdx||0];if(!pv)return;
     sw.mesh.updateMatrixWorld(true);pv.userData.anchor.getWorldPosition(_sp);
     b.mesh.position.copy(_sp);b.mesh.rotation.y=sw.mesh.rotation.y+Math.PI/2;});
 }
