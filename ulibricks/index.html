@@ -642,7 +642,6 @@ body.tetris .top,body.tetris .tray,body.tetris #empty,body.tetris #kitCard,body.
 .sheetBtns .primary,.sheetBtns button.primary{background:#FFC914;color:#1B2340;box-shadow:0 4px 12px rgba(255,201,20,.35)}
 .sheetHead h2{display:flex;align-items:center;gap:8px}
 /* ---------- 4) carte Gioca uguali con anteprima animata ---------- */
-#panelPlay .card,#panelPlay .card.hero{width:170px;min-height:132px}
 .cprev{position:relative;display:block;width:72px;height:52px;margin:0 0 8px;border-radius:12px;background:var(--tray);box-shadow:inset 0 0 0 1px var(--line);overflow:hidden}
 .cprev i{position:absolute;width:14px;height:10px;border-radius:2px;box-shadow:inset 0 -2px 0 rgba(0,0,0,.2)}
 .pv-rain i{top:-12px;animation:pvFall 1.8s ease-in infinite}
@@ -993,6 +992,33 @@ body.tetris .top,body.tetris .tray,body.tetris #empty,body.tetris #kitCard,body.
 body.navmode #toast{top:calc(env(safe-area-inset-top,0px) + 70px)}
 body.charbar #toast{top:calc(env(safe-area-inset-top,0px) + 142px)}
 @media (max-width:560px){#charBar button{min-width:54px}#charBar .cbName{display:none}}
+
+/* ---------- Kit, Gioca, Mostra: un solo stile ---------- */
+.upanel{--pc:#1E9E4A;padding:12px 14px 14px}
+.upanel[data-pc=play]{--pc:#7B4CB8}
+.upanel[data-pc=show]{--pc:#1F6FD6}
+.upanel .phead{align-items:center;gap:10px;margin-bottom:10px;flex-wrap:nowrap}
+.upanel .phead b{font-size:19px;white-space:nowrap}
+.upanel .phead>span:not(.pico){font-size:13px;font-weight:700;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.pico{flex:none;width:40px;height:40px;border-radius:13px;display:grid;place-items:center;font-size:22px;background:var(--pc);box-shadow:0 3px 0 rgba(0,0,0,.2)}
+.upanel .cards{gap:10px;padding:2px 2px 4px}
+.upanel .card{width:236px;min-height:0;height:128px;padding:10px 10px 10px;border:2px solid transparent;border-radius:18px;background:var(--chip);color:var(--ink);gap:8px;justify-content:space-between;align-items:stretch;box-shadow:0 3px 0 var(--line);transition:transform .12s,border-color .15s}
+.upanel button.card:active,.upanel label.card:active{transform:scale(.97)}
+@media (hover:hover){.upanel button.card:hover{border-color:var(--pc)}}
+.upanel .ctop{display:flex;align-items:center;gap:10px;min-width:0}
+.upanel .cico{flex:none;width:58px;height:58px;border-radius:15px;display:grid;place-items:center;overflow:hidden;position:relative;
+  background:linear-gradient(145deg,color-mix(in srgb,var(--pc) 26%,var(--tray)),color-mix(in srgb,var(--pc) 10%,var(--tray)));box-shadow:inset 0 0 0 2px color-mix(in srgb,var(--pc) 45%,transparent)}
+.upanel .cico .ce{font-size:32px;line-height:1}
+.upanel .cico .cprev{margin:0;width:100%;height:100%;border-radius:0;background:transparent;box-shadow:none}
+.upanel .ctx{display:flex;flex-direction:column;gap:2px;min-width:0}
+.upanel .ctx b{font-family:var(--display);font-weight:400;font-size:15px;line-height:1.15}
+.upanel .ctx>span{font-size:12px;font-weight:700;color:var(--muted);line-height:1.25}
+.upanel .kb{display:flex;gap:6px;margin-top:auto;width:100%}
+.upanel .kb button,.upanel .kb .go{flex:1;height:34px;border-radius:11px;border:0;display:grid;place-items:center;font-weight:800;font-size:12.5px;white-space:nowrap;padding:0 8px;background:var(--tray);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line)}
+.upanel .kb .go{background:#FFC914;color:#1B2340;box-shadow:0 3px 0 #C99A00}
+.upanel .titlecard{cursor:text}
+.upanel .titlecard .cname{height:34px;margin:0;border-radius:11px;font-size:14px}
+@media (max-width:560px){.upanel .card{width:212px}.upanel .phead>span:not(.pico){display:none}}
 </style>
 </head>
 <body>
@@ -1056,26 +1082,26 @@ body.charbar #toast{top:calc(env(safe-area-inset-top,0px) + 142px)}
 </div>
 <div id="toolRail" aria-label="Strumenti"><div class="opts" id="tools"></div></div>
 <div class="panel" id="panelChars" hidden></div>
-<div class="panel" id="panelKit" hidden>
-  <div class="phead"><b>Kit da costruire</b><span>Montali pezzo per pezzo o posali già pronti</span></div>
+<div class="panel upanel" id="panelKit" data-pc="kit" hidden>
+  <div class="phead"><span class="pico" aria-hidden="true">🧩</span><b>Kit da costruire</b><span>Montali pezzo per pezzo o posali già pronti</span></div>
   <div class="cards" id="kitCards"></div>
 </div>
-<div class="panel" id="panelPlay" hidden>
-  <div class="phead"><b>Giochi</b><span>Pezzi che piovono, terremoti ed esplosioni</span></div>
+<div class="panel upanel" id="panelPlay" data-pc="play" hidden>
+  <div class="phead"><span class="pico" aria-hidden="true">🎮</span><b>Gioca</b><span>Pezzi che piovono, terremoti ed esplosioni</span></div>
   <div class="cards">
-    <button class="card" data-play="rain"><span class="cprev pv-rain" aria-hidden="true"><i></i><i></i><i></i></span><b>Pioggia di mattoncini</b><span>Tetris 3D: fai esplodere i blocchi</span></button>
-    <button class="card" data-play="quake"><span class="cprev pv-quake" aria-hidden="true"><i></i><i></i><i></i></span><b>Terremoto</b><span>La tua costruzione resiste?</span></button>
-    <button class="card" data-play="boom"><span class="cprev pv-boom" aria-hidden="true"><i></i><i></i><i></i></span><b>Dinamite</b><span>Fino a 5 candelotti</span></button>
+    <button class="card" data-play="rain"><span class="ctop"><span class="cico"><span class="cprev pv-rain" aria-hidden="true"><i></i><i></i><i></i></span></span><span class="ctx"><b>Pioggia di mattoncini</b><span>Tetris 3D: fai esplodere i blocchi</span></span></span><span class="kb"><span class="go">Gioca</span></span></button>
+    <button class="card" data-play="quake"><span class="ctop"><span class="cico"><span class="cprev pv-quake" aria-hidden="true"><i></i><i></i><i></i></span></span><span class="ctx"><b>Terremoto</b><span>La tua costruzione resiste?</span></span></span><span class="kb"><span class="go">Gioca</span></span></button>
+    <button class="card" data-play="boom"><span class="ctop"><span class="cico"><span class="cprev pv-boom" aria-hidden="true"><i></i><i></i><i></i></span></span><span class="ctx"><b>Dinamite</b><span>Fino a 5 candelotti</span></span></span><span class="kb"><span class="go">Gioca</span></span></button>
   </div>
 </div>
-<div class="panel" id="panelShow" hidden>
-  <div class="phead"><b>Mostra</b><span>Fai vedere a tutti cosa hai costruito</span></div>
+<div class="panel upanel" id="panelShow" data-pc="show" hidden>
+  <div class="phead"><span class="pico" aria-hidden="true">🎬</span><b>Mostra</b><span>Fai vedere a tutti cosa hai costruito</span></div>
   <div class="cards">
-    <label class="card titlecard"><b>Titolo</b><input id="titleIn" class="cname" type="text" maxlength="40" placeholder="La mia costruzione" aria-label="Titolo della costruzione"><span>Compare in foto e presentazione</span></label>
-    <button class="card" data-show="shot"><span class="ce">📸</span><b>Foto</b><span>Con logo e statistiche</span></button>
-    <button class="card" data-show="share"><span class="ce">🔗</span><b>Condividi</b><span>Link e QR da inquadrare</span></button>
-    <button class="card hero2" data-show="pres"><span class="ce">🎬</span><b>Presentazione</b><span>Il video della costruzione</span></button>
-    <button class="card" data-show="book"><span class="ce">📘</span><b>Libretto</b><span>Istruzioni da costruire dal vivo</span></button>
+    <label class="card titlecard"><span class="ctop"><span class="cico"><span class="ce">✏️</span></span><span class="ctx"><b>Titolo</b><span>Compare in foto e presentazione</span></span></span><input id="titleIn" class="cname" type="text" maxlength="40" placeholder="La mia costruzione" aria-label="Titolo della costruzione"></label>
+    <button class="card" data-show="shot"><span class="ctop"><span class="cico"><span class="ce">📸</span></span><span class="ctx"><b>Foto</b><span>Con logo e statistiche</span></span></span><span class="kb"><span class="go">Scatta</span></span></button>
+    <button class="card" data-show="share"><span class="ctop"><span class="cico"><span class="ce">🔗</span></span><span class="ctx"><b>Condividi</b><span>Link e QR da inquadrare</span></span></span><span class="kb"><span class="go">Condividi</span></span></button>
+    <button class="card" data-show="pres"><span class="ctop"><span class="cico"><span class="ce">🎬</span></span><span class="ctx"><b>Presentazione</b><span>Il video della costruzione</span></span></span><span class="kb"><span class="go">Guarda</span></span></button>
+    <button class="card" data-show="book"><span class="ctop"><span class="cico"><span class="ce">📘</span></span><span class="ctx"><b>Libretto</b><span>Istruzioni da costruire dal vivo</span></span></span><span class="kb"><span class="go">Crea</span></span></button>
   </div>
 </div>
 <nav id="dock" aria-label="Modalità">
@@ -4448,14 +4474,13 @@ function kitRazzo(){const W='#F4F4F4',R='#D7263D',B='#1F4FB5',Y='#FFC914';return
   P('tegola',2,2,R,0,-1,1,0),P('tegola',2,2,R,2,-1,-3,0),P('tegola',2,2,R,1,-3,-1,0),P('tegola',2,2,R,3,1,-1,0),
   P('tondo',2,2,W,0,-1,-1,3),P('tondo',2,2,GLASS,0,-1,-1,6),P('tondo',2,2,W,0,-1,-1,9),P('tondo',2,2,B,0,-1,-1,12),
   P('cono',2,2,R,0,-1,-1,15),P('cono',1,1,Y,0,-1,-1,21)];}
-function kitMacchina(){const K='#2B2B2B',R='#D7263D',Y='#FFC914',S='#9AA0A6';return[
-  P('tondo',1,1,K,0,-2,-3,0),P('tondo',1,1,K,0,1,-3,0),P('tondo',1,1,K,0,-2,2,0),P('tondo',1,1,K,0,1,2,0),
-  P('piastra',4,6,S,0,-2,-3,3),
-  P('mattone',4,2,R,0,-2,-3,4),P('mattone',1,2,R,0,-2,-1,4),P('mattone',1,2,R,0,1,-1,4),P('mattone',4,2,R,0,-2,1,4),
-  P('tondo',1,1,Y,0,-2,-3,7),P('tondo',1,1,Y,0,1,-3,7),
-  P('parabrezza',4,2,GLASS,2,-2,-1,7),
-  P('mattone',1,1,R,0,-2,1,7),P('mattone',1,1,R,0,1,1,7),P('mattone',1,1,R,0,-2,1,10),P('mattone',1,1,R,0,1,1,10),
-  P('piastra',4,2,R,0,-2,0,13)];}
+function kitMacchina(){const R='#D7263D',Y='#FFC914',S='#5A5F66';return[
+  P('ruote',4,6,S,0,-2,-3,0),
+  P('mattone',4,2,R,0,-2,-3,3),P('mattone',1,2,R,0,-2,-1,3),P('mattone',1,2,R,0,1,-1,3),P('mattone',4,2,R,0,-2,1,3),
+  P('tondo',1,1,Y,0,-2,-3,6),P('tondo',1,1,Y,0,1,-3,6),
+  P('parabrezza',4,2,GLASS,2,-2,-1,6),
+  P('mattone',1,1,R,0,-2,1,6),P('mattone',1,1,R,0,1,1,6),P('mattone',1,1,R,0,-2,1,9),P('mattone',1,1,R,0,1,1,9),
+  P('piastra',4,2,R,0,-2,0,12)];}
 function kitCasa(){const W='#F4F4F4',R='#D7263D',S='#D9BB7B',C='#8E1B2B';return[
   P('piastra',6,6,S,0,-3,-3,0),
   P('mattone',6,1,W,0,-3,2,1),P('mattone',1,4,W,0,-3,-2,1),P('mattone',1,4,W,0,2,-2,1),P('mattone',2,1,W,0,-3,-3,1),P('mattone',2,1,W,0,1,-3,1),
@@ -6012,7 +6037,7 @@ document.querySelectorAll('#dock [data-tab]').forEach(b=>b.addEventListener('cli
 function renderKitCards(){
   const box=document.getElementById('kitCards');box.innerHTML='';
   KITS.forEach(k=>{const c=document.createElement('div');c.className='card';
-    c.innerHTML='<span class="ce">'+k.emoji+'</span><b>'+k.name+'</b><span>'+k.steps.length+' pezzi · '+k.diff+'</span><div class="kb"><button class="go">Passo passo</button><button>Pronto</button></div>';
+    c.innerHTML='<span class="ctop"><span class="cico"><span class="ce">'+k.emoji+'</span></span><span class="ctx"><b>'+k.name+'</b><span>'+k.steps.length+' pezzi · '+k.diff+'</span></span></span><div class="kb"><button class="go">Passo passo</button><button>Pronto</button></div>';
     const bt=c.querySelectorAll('.kb button');
     bt[0].addEventListener('click',()=>{setTab('build');startKit(k);});
     bt[1].addEventListener('click',()=>{setTab('build');startPronto(k,0);});box.appendChild(c);});
