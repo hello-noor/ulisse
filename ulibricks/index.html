@@ -967,7 +967,9 @@ body.tetris .top,body.tetris .tray,body.tetris #empty,body.tetris #kitCard,body.
 .cpInfo .ac{font-size:13px}.cpInfo .ac svg{width:20px;height:20px}
 /* barra azioni del personaggio scelto */
 #charBar{position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 70px);transform:translateX(-50%);z-index:14;display:flex;align-items:center;gap:4px;background:rgba(27,35,64,.94);border-radius:22px;padding:5px;box-shadow:0 8px 24px rgba(0,0,0,.28);max-width:calc(100vw - 16px)}
-#charBar .cbName{padding:0 10px 0 12px;color:#fff;font-weight:800;font-size:14px;max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#charBar .cbName{padding:0 10px 0 12px;color:#fff;display:flex;flex-direction:column;max-width:260px;line-height:1.15}
+#charBar .cbName b{font-size:14px;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#charBar .cbName small{font-size:11px;font-weight:700;opacity:.8}
 #charBar .cbHint{padding:0 10px 0 14px;color:#fff;font-weight:800;font-size:14px}
 #charBar button{min-width:64px;height:58px;border:0;border-radius:16px;background:transparent;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:0 6px;font-weight:800}
 #charBar button svg{width:26px;height:26px}
@@ -976,6 +978,16 @@ body.tetris .top,body.tetris .tray,body.tetris #empty,body.tetris #kitCard,body.
 #charBar button[aria-pressed="true"]{background:#FFC914;color:#1B2340}
 #charBar .del{color:#FF8A8A}
 #charBar .cbx{flex-direction:row;gap:6px;font-size:16px;min-width:0;padding:0 16px}
+#charBar .cbx svg{width:22px;height:22px}
+#charBar .cbx small{font-size:13px}
+.cpMode{display:flex;background:var(--chip);border-radius:24px;padding:3px;gap:2px;flex:none}
+.cpMode button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;height:48px;min-width:68px;padding:0 8px;border:0;border-radius:18px;background:transparent;color:var(--ink);font-weight:800;font-size:11.5px}
+.cpMode button svg{width:22px;height:22px}
+.cpMode button[data-k=del]:not([aria-pressed=true]){color:#D92B31}
+.cpBottom{height:56px;overflow-x:auto;scrollbar-width:none}
+.cpBottom::-webkit-scrollbar{display:none}
+@media (max-width:640px){.cpBottom .cpInfo{display:none}}
+.cpMode button[aria-pressed="true"]{background:var(--strong);color:var(--strong-ink)}
 /* Guarda: la barra sta in basso, cosi' la vista resta libera */
 #navBar{top:auto!important;bottom:calc(var(--dockH,0px) + 14px)}
 body.navmode #toast{top:calc(env(safe-area-inset-top,0px) + 70px)}
@@ -2124,7 +2136,7 @@ const gmats=new Map(),GBAD=new THREE.MeshStandardMaterial({color:'#FF2A3A',trans
 function gmat(code){if(!gmats.has(code))gmats.set(code,new THREE.MeshStandardMaterial({color:ghostHex(code),transparent:true,opacity:.5,depthWrite:false,roughness:.4}));return gmats.get(code);}
 let gplace=null;
 let placement=null,hovered=null,walkSel=null,lastPointer=null,lastPointerType='mouse';
-let charArm=false,charPrevMode='build',charPrevShape='mattone',charPrevSize=[2,4],charMark=null,charMarkBrick=null;
+let charDrag=null,charTool='go',charArm=false,charPrevMode='build',charPrevShape='mattone',charPrevSize=[2,4],charMark=null,charMarkBrick=null;
 
 /* ================= CAMERA ================= */
 const cam={theta:.75,phi:1.0,radius:44,target:new V3(0,1,0)};
@@ -2349,9 +2361,22 @@ function act(){
   if(DRIVE.on||state.mode==='nav')return;
   if(document.body.dataset.tab==='chars'&&!carry&&!carryG){
     const hb=hoverHit&&hoverHit.object.userData&&hoverHit.object.userData.brick;
-    if(hb&&hb.shape==='personaggio'){walkSel=null;charPickBrick(hb);figReact(hb);return;}
-    if(walkSel&&hoverHit){const w=walkSel;walkSel=null;walkTo(w,hoverHit.point,(hb&&hb.shape!=='personaggio')?hb:null);charBarUpdate();return;}
-    if(!charArm)return;
+    if(hb&&hb.shape==='personaggio'){
+      if(charTool==='del'&&!charArm){removeCharBrick(hb);return;}
+      if(charTool==='friend'&&!charArm&&charMarkBrick&&charMarkBrick!==hb&&bricks.indexOf(charMarkBrick)>=0){const a=charMarkBrick;charMarkBrick=null;updateCharMark();friendMeet(a,hb);renderUI();return;}
+      walkSel=null;charPickBrick(hb);figReact(hb);return;}
+    if(!charArm){
+      const sb=charMarkBrick;
+      if(sb&&bricks.indexOf(sb)>=0&&hoverHit&&lastPointer&&!hoverHit.object.userData.att){
+        if(charTool==='go'){walkTo(sb,hoverHit.point,hb&&hb.shape!=='personaggio'?hb:null);}
+        else if(charTool==='move'){
+          startCharMove(sb,true);updateHover(lastPointer.x,lastPointer.y);
+          if(carry&&placement&&placement.ok){act();}
+          else{sndNope();cancelCarry();pendingKey=null;hideHover();setMode('char');toast(LT(['Qui non c\u2019è posto: prova un altro punto','No room here: try another spot']));}
+        }
+      }
+      return;
+    }
   }
   if(hoveredAtt&&(state.mode==='erase'||state.mode==='paint'||state.mode==='block')){attAct(hoveredAtt);return;}
   if(state.mode==='build'&&placement&&placement.side){if(!placement.ok){sndNope();return;}
@@ -2585,8 +2610,10 @@ canvas.addEventListener('pointerdown',e=>{
   lastPointerType=e.pointerType;closeBase();
   try{canvas.setPointerCapture(e.pointerId);}catch(_){}
   ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  charDrag=null;
+  if(ptrs.size===1&&document.body.dataset.tab==='chars'&&!carry&&!carryG&&e.button===0&&!dyn.mode&&!KIT.on){const h=pick(e.clientX,e.clientY),hb=h&&h.object.userData&&h.object.userData.brick;if(hb&&hb.shape==='personaggio')charDrag={b:hb,started:false};}
   if(ptrs.size===1)drag={sx:e.clientX,sy:e.clientY,lx:e.clientX,ly:e.clientY,moved:false,button:e.button,multi:false};
-  else{if(drag)drag.multi=true;pinchPrev=pinchInfo();hideHover();}
+  else{charDrag=null;if(drag)drag.multi=true;pinchPrev=pinchInfo();hideHover();}
 });
 canvas.addEventListener('pointermove',e=>{
   if(TET.on){tetPointer('move',e);return;}
@@ -2598,8 +2625,10 @@ canvas.addEventListener('pointermove',e=>{
     const dx=e.clientX-drag.lx,dy=e.clientY-drag.ly;drag.lx=e.clientX;drag.ly=e.clientY;
     if(!drag.moved&&Math.hypot(e.clientX-drag.sx,e.clientY-drag.sy)>7)drag.moved=true;
     if(drag.moved){
-      if(drag.button===2||e.shiftKey)pan(dx,dy);else{cam.theta-=dx*.008;cam.phi=clamp(cam.phi-dy*.008,.18,1.5);}
-      hideHover();
+      if(charDrag){if(!charDrag.started){charDrag.started=true;startCharMove(charDrag.b,true);}updateHover(e.clientX,e.clientY);}
+      else{
+        if(drag.button===2||e.shiftKey)pan(dx,dy);else{cam.theta-=dx*.008;cam.phi=clamp(cam.phi-dy*.008,.18,1.5);}
+        hideHover();}
     }
     return;
   }
@@ -2610,6 +2639,12 @@ function endPtr(e){
   if(SEL.pts){lassoPointer(e.type==='pointerup'?'up':'cancel',e);return;}
   const had=ptrs.delete(e.pointerId);
   if(ptrs.size<2)pinchPrev=null;
+  if(charDrag&&charDrag.started&&ptrs.size===0){
+    charDrag=null;drag=null;updateHover(e.clientX,e.clientY);
+    if(e.type==='pointerup'&&carry&&placement&&placement.ok){pendingKey=null;act();}
+    else{if(e.type==='pointerup')sndNope();cancelCarry();pendingKey=null;hideHover();setMode('char');}
+    updatePlaceBar();return;}
+  if(ptrs.size===0)charDrag=null;
   if(ptrs.size===0&&drag){
     const tap=had&&e.type==='pointerup'&&!drag.moved&&!drag.multi;
     if(tap&&drag.button===0){
@@ -5284,6 +5319,8 @@ function lifeTick(dt,now){
       ls.idx++;
       if(ls.idx>=ls.path.length){
         ls.mode='pause';ls.pauseT=rnd(2.5,6);ls.chatUntil=0;
+        if(ls.cmd&&ls.friendTo){ls.cmd=false;ls.dest=null;const pf=ls.friendTo;ls.friendTo=null;if(fig)fig.userData.walking=0;
+          if(!startChat(b,ls,pf,true)&&fig)fig.userData.wave=1.4;return;}
         if(ls.cmd){ls.cmd=false;const d=ls.dest;ls.dest=null;releaseSeat(b);
           if(d&&d.seat){if(seatStillOk(b,d.seat))settleWalker(b,d.seat);else d.seat=null;}
           if(fig){fig.userData.walking=0;
@@ -5789,30 +5826,30 @@ const BEHS=[
   ['friend',['Amico','Friend'],'heart',['Va dagli altri, chiacchiera e fa amicizia','Goes to the others, chats and makes friends']]];
 function charOf(b){return b&&b.shape==='personaggio'?charById(String(b.color).slice(1)):null;}
 function behOf(b){const c=charOf(b);return(c&&c.beh)||'walk';}
+function removeCharBrick(b){
+  detach(b);scene.remove(b.mesh);const fallen=settle(false,b.mesh.position);
+  undoStack.push({t:'remove',list:[b].concat(fallen),fl:fallen});sndPop();if(fallen.length)setTimeout(sndThud,350);
+  if(charMarkBrick===b)charMarkBrick=null;walkSel=null;afterChange();renderUI();toast(LT(['Tolto · ↶ per rimetterlo','Removed · ↶ to put back']));
+}
+function startCharMove(b,drag){
+  if(charArm){charArm=false;if(state.shape==='personaggio'){state.shape=charPrevShape||'mattone';state.size=(charPrevSize||[2,4]).slice();}}
+  // teletrasporto: ferma qualsiasi camminata e parte subito dal punto nuovo
+  {const ls=lifeState.get(b);if(ls){ls.mode='pause';ls.path=null;ls.cmd=false;ls.dest=null;ls.pauseT=1.2;}const f=figOf(b);if(f){f.userData.sitting=false;f.userData.faceTo=null;}}
+  if(!drag)ringAt(new V3(b.mesh.position.x,b.mesh.position.y,b.mesh.position.z));
+  walkSel=null;charMarkBrick=b;pickUp(b,null);state.mode='move';hovered=null;hideHover();renderUI();
+  if(!drag){if(lastPointer)updateHover(lastPointer.x,lastPointer.y);armTouchPreview();
+    toast(LT(['Tocca dove vuoi metterlo','Tap where you want to put them']));}
+}
 function charBarUpdate(){
-  const bar=document.getElementById('charBar');if(!bar)return;
-  const inTab=document.body.dataset.tab==='chars';
-  if(inTab&&state.mode==='move'&&!carry&&!carryG){setMode('char');return;}
-  const b=charMarkBrick,live=!!b&&bricks.indexOf(b)>=0,carrying=!!(carry&&carry.b.shape==='personaggio');
-  const show=inTab&&(carrying||live)&&!dyn.mode&&!KIT.on&&!TET.on&&!PR.on&&!DRIVE.on&&charModal.hidden;
-  bar.hidden=!show;document.body.classList.toggle('charbar',show);if(!show)return;
-  if(carrying){bar.innerHTML='<span class="cbHint">'+LT(['Tocca dove metterlo','Tap where to put them'])+'</span><button data-a="cancel" class="cbx">✕ <small>'+LT(['Annulla','Cancel'])+'</small></button>';return;}
-  const ch=charOf(b),go=walkSel===b;
-  bar.innerHTML=(ch?'<span class="cbName">'+esc(ch.name||'')+'</span>':'')+
-    '<button data-a="move">'+icoSvg('move',2.4)+'<small>'+LT(['Sposta','Move'])+'</small></button>'+
-    '<button data-a="go" aria-pressed="'+go+'">'+icoSvg('walk',2.4)+'<small>'+LT(['Vai qui','Go there'])+'</small></button>'+
-    '<button data-a="edit">'+icoSvg('pencil',2.4)+'<small>'+LT(['Modifica','Edit'])+'</small></button>'+
-    '<button data-a="del" class="del">'+icoSvg('trash',2.4)+'<small>'+LT(['Togli','Remove'])+'</small></button>';
+  const bar=document.getElementById('charBar');if(bar)bar.hidden=true;document.body.classList.remove('charbar');
+  if(document.body.dataset.tab==='chars'&&state.mode==='move'&&!carry&&!carryG)setMode('char');
 }
 document.getElementById('charBar').addEventListener('click',e=>{
   const btn=e.target.closest('button[data-a]');if(!btn)return;const a=btn.dataset.a,b=charMarkBrick;
+  if(a==='mode'){armChar(!charArm,true);return;}
   if(a==='cancel'){cancelCarry();pendingKey=null;hideHover();setMode('char');afterChange();return;}
   if(!b||bricks.indexOf(b)<0)return;
-  if(a==='move'){
-    if(charArm){charArm=false;if(state.shape==='personaggio'){state.shape=charPrevShape||'mattone';state.size=(charPrevSize||[2,4]).slice();}}
-    walkSel=null;pickUp(b,null);state.mode='move';hovered=null;hideHover();renderUI();
-    if(lastPointer)updateHover(lastPointer.x,lastPointer.y);armTouchPreview();
-    toast(LT(['Tocca dove vuoi metterlo','Tap where you want to put them']));
+  if(a==='move'){startCharMove(b,false);
   }else if(a==='go'){
     walkSel=walkSel===b?null:b;if(walkSel){figReact(b);toast(LT(['Ora tocca dove vuoi mandarlo','Now tap where to send them']));}
     charBarUpdate();
@@ -5837,11 +5874,11 @@ function armChar(on,quiet){
   if(on){
     const ch=charById(state.charId);if(!ch){openCreator();return;}
     if(!charArm&&state.shape!=='personaggio'){charPrevShape=state.shape;charPrevSize=state.size.slice();}
-    state.shape='personaggio';state.size=[2,1];const was=charArm;charArm=true;
+    state.shape='personaggio';state.size=[2,1];const was=charArm;charArm=true;charTool='add';
     if(state.mode!=='build')setMode('build');
     if(!quiet&&!was)toast(LT(['Tocca la costruzione per mettere '+ch.name,'Tap the build to place '+ch.name]));
   }else{
-    charArm=false;
+    charArm=false;if(charTool==='add')charTool='go';
     if(state.shape==='personaggio'){state.shape=charPrevShape||'mattone';state.size=(charPrevSize||[2,4]).slice();}
     setMode('char');
   }
@@ -5877,6 +5914,24 @@ function noteChat(a,b2){
   scheduleSave();
 }
 // Amico: sceglie qualcuno (piu' vicino e non ancora amico) e ci va
+// comando Amicizia: il primo va dal secondo e chiacchierano
+function friendMeet(a,o){
+  const get=x=>{let l=lifeState.get(x);if(!l){l={mode:'pause',pauseT:1};lifeState.set(x,l);}return l;};
+  const la=get(a),lo=get(o),fa=figOf(a),fo=figOf(o);
+  lo.mode='pause';lo.path=null;lo.chatUntil=0;lo.cmd=false;lo.friendTo=null;lo.pauseT=Math.max(lo.pauseT||0,14);if(fo){fo.userData.sitting=false;fo.userData.walking=0;}
+  if(fa){fa.userData.sitting=false;fa.userData.faceTo=null;}
+  ringAt(new V3(o.mesh.position.x,o.mesh.position.y,o.mesh.position.z));
+  const d=a.mesh.position.distanceTo(o.mesh.position);
+  if(d<3.2){la.mode='pause';la.path=null;la.chatUntil=0;la.pauseT=.5;
+    if(!startChat(a,la,o,true)){sndNope();toast(LT(['Non riescono a parlare','They cannot talk']));}return;}
+  const path=planPathTo(a,Math.floor(o.mesh.position.x+G/2),Math.floor(o.mesh.position.z+G/2));
+  if(!path||path.length<2){sndNope();toast(LT(['Non riesce ad arrivare fin lì','It cannot get there']));return;}
+  while(path.length>2&&Math.hypot(path[path.length-1].x-o.mesh.position.x,path[path.length-1].z-o.mesh.position.z)<2.3)path.pop();
+  la.mode='walk';la.path=path;la.idx=1;la.t=0;la.chatUntil=0;la.cmd=true;la.dest=null;la.autoSeat=null;la.friendTo=o;releaseSeat(a);
+  const p0=path[0],p1=path[1];la.jumpSeg=Math.abs(p1.y-p0.y)>3*PH;if(la.jumpSeg&&fa)fa.userData.jump=.5;
+  la.segDur=Math.max(.25,Math.hypot(p1.x-p0.x,p1.z-p0.z,p1.y-p0.y)/1.6);
+  tone('sine',600,900,.08,.08);
+}
 function planFriendTrip(b){
   const me=charOf(b),cands=[];
   bricks.forEach(o=>{if(o===b||o.shape!=='personaggio')return;const oc=charOf(o);if(!oc||(me&&oc.id===me.id))return;
@@ -5915,10 +5970,19 @@ function renderCharPanel(){
   P.appendChild(tw);
   // in basso: Vita e l'azione del personaggio scelto
   const r=document.createElement('div');r.className='cpBottom';
+  const md=document.createElement('div');md.className='cpMode';md.setAttribute('role','group');md.setAttribute('aria-label',LT(['Cosa fa un tocco sulla base','What a tap on the base does']));
+  const tools=[['add','plus',LT(['Aggiungi','Add']),['Tocca la base per mettere '+(ch?ch.name:''),'Tap the base to place '+(ch?ch.name:'')]],
+    ['go','walk',LT(['Vai qui','Go there']),['Tocca un personaggio, poi la base: ci va a piedi','Tap a character, then the base: they walk there']],
+    ['friend','heart',LT(['Amicizia','Friends']),['Tocca un personaggio, poi un altro: vanno a parlare','Tap a character, then another: they go and talk']],
+    ['move','move',LT(['Sposta','Move']),['Tocca un personaggio, poi la base: lo sposta lì · oppure trascinalo','Tap a character, then the base: moved there · or drag it']],
+    ['del','trash',LT(['Cancella','Delete']),['Tocca un personaggio per toglierlo','Tap a character to remove it']]];
+  tools.forEach(([k,ic,lb,hint])=>{
+    const b=document.createElement('button');b.setAttribute('aria-pressed',charTool===k);b.dataset.k=k;b.innerHTML=icoSvg(ic,2.3)+'<span>'+lb+'</span>';
+    b.addEventListener('click',()=>{charTool=k;walkSel=null;if(k==='add')armChar(true,true);else{if(charArm)armChar(false,true);charTool=k;}tone('sine',620,820,.05,.06);toast(LT(hint));renderCharPanel();});md.appendChild(b);});
   const v=document.createElement('button');v.className='vitaSw';v.setAttribute('role','switch');v.setAttribute('aria-checked',!!VITA.on);
   v.innerHTML='<i class="vk"></i><span><b>'+LT(['Vita','Life'])+'</b></span>';
   v.addEventListener('click',()=>{VITA.on=!VITA.on;applyVita();try{renderSettings();}catch(e){}tone('sine',VITA.on?600:420,VITA.on?800:300,.06,.08);renderCharPanel();});
-  r.appendChild(v);
+  r.appendChild(v);r.appendChild(md);
   const bi=BEHS.find(x=>x[0]===beh)||BEHS[0],fr=((ch&&ch.friends)||[]).map(id=>charById(id)).filter(Boolean);
   const inf=document.createElement('div');inf.className='cpInfo';
   inf.innerHTML=ch?'<span class="ac">'+icoSvg(bi[2],2.5)+'<b>'+esc(ch.name)+'</b> · '+esc(LT(bi[1]))+'</span>'+(fr.length?'<span class="fr">'+icoSvg('heart',2.6)+esc(fr.map(c=>c.name).join(', '))+'</span>':''):'';
@@ -5932,9 +5996,9 @@ function setTab(t){
   document.getElementById('panelKit').hidden=t!=='kit';document.getElementById('panelPlay').hidden=t!=='play';document.getElementById('panelShow').hidden=t!=='show';
   document.getElementById('panelChars').hidden=t!=='chars';
   if(t==='show')document.getElementById('titleIn').value=document.getElementById('shotTitle').value;
-  if(t==='chars'&&prev!=='chars'){charPrevMode=(state.mode==='char'||state.mode==='nav')?'build':state.mode;charArm=false;setMode('char');
+  if(t==='chars'&&prev!=='chars'){charPrevMode=(state.mode==='char'||state.mode==='nav')?'build':state.mode;charArm=false;if(charTool==='add')charTool='go';setMode('char');
     if(!charById(state.charId)&&chars.length)state.charId=chars[0].id;
-    if(charById(state.charId))armChar(true,true);}
+    if(charById(state.charId)&&!bricks.some(b=>b.shape==='personaggio'))armChar(true,true);}
   if(prev==='chars'&&t!=='chars'){
     charArm=false;if(state.shape==='personaggio'){state.shape=charPrevShape||'mattone';state.size=(charPrevSize||[2,4]).slice();}
     setMode(charPrevMode||'build');charMarkBrick=null;updateCharMark();}
