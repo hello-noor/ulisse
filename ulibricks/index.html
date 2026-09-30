@@ -990,6 +990,14 @@ body.tetris .top,body.tetris .tray,body.tetris #empty,body.tetris #kitCard,body.
 /* Guarda: la barra sta in basso, cosi' la vista resta libera */
 #navBar{top:auto!important;bottom:calc(var(--dockH,0px) + 14px)}
 body.navmode #toast{top:calc(env(safe-area-inset-top,0px) + 70px)}
+#actMenu{position:fixed;z-index:30;display:flex;flex-direction:column;gap:4px;min-width:200px;max-width:min(92vw,280px);background:rgba(27,35,64,.96);border-radius:20px;padding:8px;box-shadow:0 12px 32px rgba(0,0,0,.4);animation:dmIn .16s ease-out}
+#actMenu[hidden]{display:none}
+#actMenu .amt{color:#fff;font-weight:800;font-size:13px;padding:2px 8px 4px;opacity:.85}
+#actMenu .amt i{font-style:normal;opacity:.6}
+#actMenu button{display:flex;align-items:center;gap:10px;height:50px;border:0;border-radius:14px;background:rgba(255,255,255,.12);color:#fff;font-weight:800;font-size:15px;padding:0 14px;text-align:left}
+#actMenu button b{font-size:22px;line-height:1}
+#actMenu .amgo{background:#FFC914;color:#1B2340}
+#actMenu button:active{transform:scale(.97)}
 body.charbar #toast{top:calc(env(safe-area-inset-top,0px) + 142px)}
 @media (max-width:560px){#charBar button{min-width:54px}#charBar .cbName{display:none}}
 
@@ -1353,6 +1361,7 @@ body.charbar #toast{top:calc(env(safe-area-inset-top,0px) + 142px)}
 </div>
 <div id="selBar" hidden></div>
 <div id="charBar" hidden></div>
+<div id="actMenu" hidden role="menu"></div>
 <div id="navBar" hidden>
   <div class="nvb">
     <button data-n="in" aria-label="Avvicina"><i data-ico="zoomin"></i><small>Vicino</small></button><button data-n="out" aria-label="Allontana"><i data-ico="zoomout"></i><small>Lontano</small></button>
@@ -2483,7 +2492,7 @@ function placeKey(){
 function act(){
   if(DRIVE.on||state.mode==='nav')return;
   if(document.body.dataset.tab==='chars'&&!carry&&!carryG){
-    const hb=hoverHit&&hoverHit.object.userData&&hoverHit.object.userData.brick;
+    let hb=null;if(hoverHit){let o=hoverHit.object;while(o&&!(o.userData&&o.userData.brick))o=o.parent;hb=o?o.userData.brick:null;}
     if(hb&&hb.shape==='personaggio'){
       if(charArm){armChar(false,true);toast(LT(['Azioni attive: tocca la base per mandarlo','Actions on: tap the base to send them']));}
       if(charTool==='del'&&!charArm){removeCharBrick(hb);return;}
@@ -2493,7 +2502,8 @@ function act(){
       const sb=(charTool==='go'||charTool==='move')?charTarget():charMarkBrick;
       if(sb&&bricks.indexOf(sb)>=0&&hoverHit&&lastPointer&&!hoverHit.object.userData.att){
         charMarkBrick=sb;
-        if(charTool==='go'){walkTo(sb,hoverHit.point,hb&&hb.shape!=='personaggio'?hb:null);}
+        if(charTool==='go'){let blk=hb&&hb.shape!=='personaggio'?hb:null;if(!blk||!ACT_DO[blk.shape]){const f=fatActBrick(hoverHit);if(f)blk=f;}
+          if(blk&&ACT_DO[blk.shape]){if(!showActMenu(sb,blk,hoverHit.point.clone()))walkTo(sb,hoverHit.point,blk);}else walkTo(sb,hoverHit.point,blk);}
         else if(charTool==='move'){
           startCharMove(sb,true);updateHover(lastPointer.x,lastPointer.y);
           if(carry&&placement&&placement.ok){act();}
@@ -5245,6 +5255,46 @@ function animFlags(now,dt){
 
 /* ---------- barra e evidenziazione dello strumento Aziona ---------- */
 const MOVABLE={elicaA:['✈️','Elica aereo','gira','propeller'],mulino:['🌬️','Mulino','gira','propeller'],radar:['📡','Radar','gira','gear'],giostra:['🎠','Giostra','gira','gear'],altalena:['🛝','Altalena','dondola','arm'],pistone:['🏗️','Pistone','sale e scende','arm'],semaforo:['🚦','Semaforo','cambia','lamp'],orologio:['🕒','Orologio','ora','gear'],sirena:['🚨','Sirena','lampeggia','bulb'],elica:['🌀','Elica','gira','propeller'],ingranaggio:['⚙️','Ingranaggio','gira','gear'],faro:['💡','Faro','luce','bulb'],lampione:['🏮','Lampione','luce','lamp'],ruote:['🚗','Ruote','guida','wheel'],braccio:['🦾','Braccio','piega','arm'],cerniera:['🚪','Cerniera','apri','door'],bandiera:['🚩','Bandiera','vento','flag'],personaggio:['🙂','Personaggi','saluta','face']};
+// tocco su un pezzo azionabile con il personaggio scelto: menu "vai e fai"
+const ACT_DO={altalena:['🛝',['Dondolati','Swing'],(b,t)=>swingGo(b,t)],ruote:['🚗',['Sali a bordo','Get in'],(b,t,pt)=>walkTo(b,pt,t)]};
+['mulino','radar','giostra','pistone','semaforo','orologio','sirena','elica','elicaA','ingranaggio'].forEach(k=>{ACT_DO[k]=[MOVABLE[k][0],['Accendi o spegni','Turn on or off'],(b,t)=>goDo(b,t)];});
+['faro','lampione'].forEach(k=>{ACT_DO[k]=[MOVABLE[k][0],['Accendi o spegni la luce','Light on or off'],(b,t)=>goDo(b,t)];});
+['braccio','cerniera'].forEach(k=>{ACT_DO[k]=[MOVABLE[k][0],['Azionalo','Operate it'],(b,t)=>goDo(b,t)];});
+function goDo(b,target){
+  endSwing(b);
+  const path=swingApproach(b,target);if(!path){sndNope();toast(LT(['Non riesce ad arrivarci','It cannot get there']));return;}
+  let ls=lifeState.get(b);if(!ls){ls={mode:'pause',pauseT:1};lifeState.set(b,ls);}
+  const fig=figOf(b);ls.mode='walk';ls.path=path;ls.idx=1;ls.t=0;ls.chatUntil=0;ls.cmd=true;ls.dest=null;ls.autoSeat=null;ls.friendTo=null;ls.swingTo=null;ls.doAt=target;
+  if(fig){fig.userData.sitting=false;fig.userData.faceTo=null;}
+  const a=path[0],c=path[1];ls.jumpSeg=Math.abs(c.y-a.y)>3*PH;if(ls.jumpSeg&&fig)fig.userData.jump=.5;
+  ls.segDur=Math.max(.25,Math.hypot(c.x-a.x,c.z-a.z,c.y-a.y)/1.6);walkSel=null;renderUI();
+}
+// i pezzi azionabili sono sottili (altalena, antenne...): per toccarli basta colpire il loro ingombro
+const _fb=new V3();
+function fatActBrick(hit){
+  let best=null,bd=1e9;
+  bricks.forEach(x=>{if(!ACT_DO[x.shape])return;const bx=new THREE.Box3().setFromObject(x.mesh).expandByScalar(.25);
+    const p=ray.ray.intersectBox(bx,_fb);if(p){const d=p.distanceTo(ray.ray.origin);if(d<bd){bd=d;best=x;}}});
+  if(!best)return null;const hd=hit?hit.distance:1e9;return bd<=hd+.5?best:null;
+}
+const actMenu=document.getElementById('actMenu');
+function hideActMenu(){actMenu.hidden=true;}
+function showActMenu(b,target,pt){
+  const A=ACT_DO[target.shape];if(!A)return false;const ch=charOf(b);
+  const nm=(MOVABLE[target.shape]&&MOVABLE[target.shape][1])||SHAPES[target.shape].label;
+  actMenu.innerHTML='<span class="amt">'+esc(ch?ch.name:'')+' <i>→</i> '+esc(nm)+'</span>'+
+    '<button class="amgo" data-a="do"><b>'+A[0]+'</b>'+esc(LT(A[1]))+'</button>'+
+    '<button data-a="near"><b>👣</b>'+esc(LT(['Solo vai lì','Just go there']))+'</button>';
+  actMenu.hidden=false;
+  const px=(lastPointer&&lastPointer.x)||innerWidth/2,py=(lastPointer&&lastPointer.y)||innerHeight/2,w=actMenu.offsetWidth,h=actMenu.offsetHeight;
+  actMenu.style.left=Math.max(8,Math.min(innerWidth-w-8,px-w/2))+'px';
+  actMenu.style.top=Math.max(70,Math.min(innerHeight-h-90,py-h-24))+'px';
+  actMenu.onclick=e=>{const bt=e.target.closest('button[data-a]');if(!bt)return;hideActMenu();
+    if(bricks.indexOf(b)<0||bricks.indexOf(target)<0)return;
+    if(bt.dataset.a==='do')A[2](b,target,pt);else walkTo(b,pt,null);};
+  return true;
+}
+document.addEventListener('pointerdown',e=>{if(!actMenu.hidden&&!e.target.closest('#actMenu'))hideActMenu();},true);
 const twistHelpers=new Map();
 function renderTwistBar(){
   const bar=document.getElementById('twistBar');
@@ -5556,7 +5606,7 @@ function walkTo(b,pt,blk){
   if(seat&&Math.hypot(seat.cx-last.x,seat.cz-last.z)>.01)path.push({x:seat.cx,z:seat.cz,y:last.y});
   let ls=lifeState.get(b);if(!ls){ls={mode:'pause',pauseT:1};lifeState.set(b,ls);}
   const fig=figOf(b);
-  ls.mode='walk';ls.path=path;ls.idx=1;ls.t=0;ls.chatUntil=0;ls.cmd=true;ls.dest={seat,sit,ride};reserveSeat(b,seat);if(fig){fig.userData.sitting=false;fig.userData.faceTo=null;}
+  ls.mode='walk';ls.path=path;ls.idx=1;ls.t=0;ls.chatUntil=0;ls.cmd=true;ls.doAt=null;ls.swingTo=null;ls.dest={seat,sit,ride};reserveSeat(b,seat);if(fig){fig.userData.sitting=false;fig.userData.faceTo=null;}
   const a=path[0],c=path[1];ls.jumpSeg=Math.abs(c.y-a.y)>3*PH;if(ls.jumpSeg&&fig)fig.userData.jump=.5;
   ls.segDur=Math.max(.25,Math.hypot(c.x-a.x,c.z-a.z,c.y-a.y)/1.6);
   const e=path[path.length-1];puff(new V3(e.x,e.y+.1,e.z),6);tone('sine',600,900,.08,.08);
@@ -5652,6 +5702,10 @@ function lifeTick(dt,now){
       ls.idx++;
       if(ls.idx>=ls.path.length){
         ls.mode='pause';ls.pauseT=rnd(2.5,6);ls.chatUntil=0;
+        if(ls.cmd&&ls.doAt){const tg=ls.doAt;ls.doAt=null;ls.cmd=false;ls.dest=null;if(fig){fig.userData.walking=0;}
+          if(bricks.indexOf(tg)>=0){const dx=tg.mesh.position.x-b.mesh.position.x,dz=tg.mesh.position.z-b.mesh.position.z;if(Math.hypot(dx,dz)>1e-3)b.mesh.rotation.y=Math.atan2(dx,dz);
+            if(fig)fig.userData.wave=1;twistAct(tg);}
+          return;}
         if(ls.cmd&&ls.swingTo){const sw=ls.swingTo;ls.swingTo=null;ls.cmd=false;ls.dest=null;if(fig)fig.userData.walking=0;startSwing(b,ls,sw);return;}
         if(!ls.cmd&&ls.swingTo){const sw=ls.swingTo;ls.swingTo=null;if(fig)fig.userData.walking=0;startSwing(b,ls,sw);return;}
         if(ls.cmd&&ls.friendTo){ls.cmd=false;ls.dest=null;const pf=ls.friendTo;ls.friendTo=null;if(fig)fig.userData.walking=0;
