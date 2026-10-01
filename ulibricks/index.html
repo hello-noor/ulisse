@@ -3219,10 +3219,15 @@ const TMENU={
       m.appendChild(g);}}
 };
 function toolBtn(id){return document.querySelector('#toolRail .tool[data-id='+id+']');}
+// evidenzia lo strumento in uso; mentre il menu Mostra e' aperto si illumina solo Mostra
+function toolHighlight(){
+  const tm=document.getElementById('toolMenu'),so=!!tm&&!tm.hidden&&tm.dataset.menu==='show';
+  document.querySelectorAll('#toolRail .tool').forEach(b=>b.setAttribute('aria-pressed',so?b.dataset.id==='show':b.dataset.id===state.mode));
+}
 function closeMenu(){
   const was=toolMenuId;toolMenu.hidden=true;toolMenuId=null;
   document.querySelectorAll('#toolRail .tool[aria-expanded]').forEach(a=>a.removeAttribute('aria-expanded'));
-  if(was==='show'){const a=toolBtn('show');if(a)a.setAttribute('aria-pressed','false');}
+  if(was==='show')toolHighlight();
 }
 function openMenu(id){
   const cfg=TMENU[id],btn=toolBtn(id);if(!cfg||!btn)return;
@@ -3243,7 +3248,7 @@ function openMenu(id){
   toolMenu.hidden=false;
   const r=btn.getBoundingClientRect(),h=toolMenu.offsetHeight;
   toolMenu.style.left='auto';toolMenu.style.right=(innerWidth-r.left+8)+'px';toolMenu.style.top=Math.max(8,Math.min(r.top,innerHeight-h-8))+'px';
-  btn.setAttribute('aria-expanded','true');if(id==='show')btn.setAttribute('aria-pressed','true');
+  btn.setAttribute('aria-expanded','true');if(id==='show')toolHighlight();
 }
 function toggleMenu(id){if(toolMenuId===id){closeMenu();return false;}openMenu(id);return true;}
 document.addEventListener('pointerdown',e=>{if(toolMenu.hidden)return;if(e.target.closest('#toolMenu')||e.target.closest('#toolRail .tool'))return;closeMenu();},true);
@@ -3285,8 +3290,7 @@ function renderUI(){
     sizesEl.appendChild(b);
   });
   colorEls.forEach(b=>b.setAttribute('aria-pressed',b.dataset.c===state.color));
-  {const tm=document.getElementById('toolMenu'),so=!!tm&&!tm.hidden&&tm.dataset.menu==='show';
-  toolsEl.querySelectorAll('.tool').forEach(b=>b.setAttribute('aria-pressed',b.dataset.id===state.mode||(b.dataset.id==='show'&&so)));}
+  toolHighlight();
   canvas.style.cursor=state.mode==='build'?'crosshair':state.mode==='erase'?'not-allowed':(state.mode==='move'||state.mode==='block')?((carry||carryG)?'grabbing':'grab'):'cell';
   pvUpdate();renderCatsUI();
   if(lastPointer&&!dyn.mode&&(lastPointerType==='mouse'||carry||carryG))updateHover(lastPointer.x,lastPointer.y);
