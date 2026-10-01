@@ -4261,11 +4261,17 @@ function buildFigure(ch){
       bootsOn(blk);
     }
     if(SS){
+      legs.forEach(l=>{l.th.visible=false;l.sh.visible=false;});
+      const sk=(k,r0,r1,h,y,z)=>{const o=add(fgeo(k,()=>new THREE.CylinderGeometry(r0,r1,h,24)),C1,0,y,z);o.scale.z=.72;return o;};
+      sk('sitl1',.66,.58,.5,1.5,0);sk('sitl2',.58,.46,.5,1.02,-.02);sk('sitl3',.46,.34,.5,.54,-.05);sk('sitl4',.34,.24,.35,.2,-.08);
+      [[1.28,.5,3],[.98,.4,3],[.7,.34,3],[.44,.27,2],[.22,.2,2]].forEach(([y,r,n],i)=>{const half=(n===3)?[-1,0,1]:[-.5,.5];
+        half.forEach(k=>add(fgeo('sisc',()=>new THREE.SphereGeometry(.09,10,8)),C2,k*r*.62,y+(Math.abs(k)>.6?.0:.07),r*.72*.78).scale.z=.35);});
       beltOn(C2);
       for(const sx of [-1,1]){
         add(fgeo('sishell',()=>new THREE.SphereGeometry(.18,12,10)),C2,sx*.2,2.72,.3).scale.z=.6;
-        const fin=add(fgeo('sifin',()=>new THREE.SphereGeometry(.5,16,10)),C2,sx*.18,-.72,.4,legs[sx<0?0:1].k);fin.scale.set(.7,.08,1.1);
+        const lobe=add(fgeo('sifl',()=>new THREE.SphereGeometry(.5,16,10)),C2,sx*.3,.2,-.08);lobe.scale.set(.55,.95,.1);lobe.rotation.z=-sx*.6;
       }
+      add(fgeo('sifc',()=>new THREE.SphereGeometry(.2,12,10)),C2,0,.14,-.08).scale.set(.8,.9,.35);
     }
     if(SZ){
       beltOn(mat('#7A4A2A'));
