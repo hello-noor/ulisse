@@ -1,4 +1,4 @@
-const CACHE='ulibricks-v34';
+const CACHE='ulibricks-v35';
 const FRESH=['./','./index.html','./manifest.webmanifest','./icons/icon-192-v2.png','./icons/icon-512-v2.png','./icons/maskable-512-v2.png','./icons/apple-touch-icon-v2.png','./icons/favicon-32-v2.png'];
 const HEAVY=['./three.min.js','./jspdf.umd.min.js'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>Promise.all(FRESH.concat(HEAVY).map(u=>c.add(u).catch(()=>null)))));self.skipWaiting();});
