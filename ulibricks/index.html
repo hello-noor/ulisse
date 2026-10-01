@@ -97,7 +97,7 @@ button:focus-visible{outline:3px solid var(--sel);outline-offset:2px}
 #dynMenu[hidden]{display:none}
 #selMenu{position:fixed;z-index:40;background:var(--tray);border-radius:16px;padding:6px;box-shadow:0 14px 36px rgba(0,0,0,.25);display:flex;flex-direction:column;gap:4px;width:104px;transform-origin:top right;animation:dmIn .18s ease-out}
 #selMenu[hidden]{display:none}
-#showMenu{position:fixed;z-index:40;background:var(--tray);border-radius:16px;padding:6px;box-shadow:0 14px 36px rgba(0,0,0,.25);display:flex;flex-direction:column;gap:4px;width:124px;transform-origin:top right;animation:dmIn .18s ease-out}
+#showMenu{position:fixed;z-index:40;background:var(--sheet-solid,var(--tray));backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-radius:16px;padding:6px;box-shadow:0 14px 36px rgba(0,0,0,.25);display:flex;flex-direction:column;gap:4px;width:124px;transform-origin:top right;animation:dmIn .18s ease-out}
 #showMenu[hidden]{display:none}
 #showMenu .dm-item{min-height:62px;justify-content:center;gap:4px}
 #showMenu .dm-ico svg{width:30px;height:30px}
@@ -106,8 +106,15 @@ button:focus-visible{outline:3px solid var(--sel);outline-offset:2px}
 #toolRail .tool[data-id=show]{--tc:#0E8F8F}
 :root[data-theme=dark] #toolRail .tool[data-id=show]{--tc:#4FD6D6}
 @media (prefers-color-scheme:dark){:root:not([data-theme=light]) #toolRail .tool[data-id=show]{--tc:#4FD6D6}}
-#showBtn{width:auto;border-radius:23px;padding:0 14px 0 12px;display:flex;gap:6px;align-items:center;font-weight:800;font-size:14px}
-@media (max-width:430px){#showBtn span{display:none}#showBtn{padding:0;width:36px;justify-content:center}}
+#showMenu .dm-item{--ic:#7B4CB8;border:2px solid transparent;background:color-mix(in srgb,var(--ic) 14%,transparent)}
+#showMenu .dm-item[data-k=pres]{--ic:#7B4CB8}
+#showMenu .dm-item[data-k=shot]{--ic:#D92B31}
+#showMenu .dm-item[data-k=book]{--ic:#1F6FD6}
+#showMenu .dm-item[data-k=share]{--ic:#1E9E4A}
+#showMenu .dm-item .dm-ico svg,#showMenu .dm-item .dm-t b{color:var(--ic)}
+#showMenu .dm-item:hover,#showMenu .dm-item:focus-visible{border-color:var(--ic)}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) #showMenu .dm-item[data-k=pres]{--ic:#B993FF}:root:not([data-theme=light]) #showMenu .dm-item[data-k=shot]{--ic:#FF7A7F}:root:not([data-theme=light]) #showMenu .dm-item[data-k=book]{--ic:#6FA8FF}:root:not([data-theme=light]) #showMenu .dm-item[data-k=share]{--ic:#4CD37A}}
+:root[data-theme=dark] #showMenu .dm-item[data-k=pres]{--ic:#B993FF}:root[data-theme=dark] #showMenu .dm-item[data-k=shot]{--ic:#FF7A7F}:root[data-theme=dark] #showMenu .dm-item[data-k=book]{--ic:#6FA8FF}:root[data-theme=dark] #showMenu .dm-item[data-k=share]{--ic:#4CD37A}
 #selMenu .dm-item{min-height:62px;justify-content:center;gap:4px}
 #selMenu .dm-ico svg{width:30px;height:30px}
 #selMenu .dm-item.on{border-color:#E0760E;background:var(--hl)}
@@ -445,7 +452,7 @@ body.kit #toast{top:calc(env(safe-area-inset-top,0px) + 200px)}
 #flash{position:fixed;inset:0;background:#fff;opacity:0;pointer-events:none}
 #flash.on{animation:flash .5s ease-out}
 @keyframes flash{0%{opacity:.85}100%{opacity:0}}
-.actions>button:not(#undoBtn):not(#menuBtn):not(#boomBtn):not(#showBtn){display:none!important}
+.actions>button:not(#undoBtn):not(#menuBtn):not(#boomBtn){display:none!important}
 :root{--dockH:calc(50px + env(safe-area-inset-bottom,0px))}
 body.kit,body.presenting,body.tetris{--dockH:0px}
 body.kit .tray{padding-bottom:calc(10px + env(safe-area-inset-bottom,0px))}
@@ -1055,7 +1062,6 @@ body.charbar #toast{top:calc(env(safe-area-inset-top,0px) + 142px)}
     <button class="round" id="shotBtn" title="Scatta una foto (F)" aria-label="Scatta una foto della costruzione"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></button>
     <button class="round" id="installBtn" title="Installa l'app" aria-label="Installa o scarica ULIBRICKS"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></svg></button>
     <button class="round" id="infoBtn" title="Istruzioni (I)" aria-label="Istruzioni e scorciatoie"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v6"/><circle cx="12" cy="7.5" r=".6" fill="currentColor"/></svg></button>
-    <button class="round" id="showBtn" title="Mostra: presentazione, foto, libretto, condividi" aria-label="Mostra: presentazione, foto, libretto, condividi" aria-expanded="false" aria-haspopup="menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M10 9.2v5.6l4.8-2.8z" fill="currentColor"/></svg><span>Mostra</span></button>
     <button class="round" id="menuBtn" title="Impostazioni" aria-label="Impostazioni"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
     <button class="round" id="boomBtn" title="Dinamite" aria-label="Dinamite" aria-pressed="false">
       <svg viewBox="0 0 40 40"><g transform="rotate(-18 20 22)"><rect x="9" y="14" width="7" height="20" rx="2" fill="#fff"/><rect x="17" y="12" width="7" height="22" rx="2" fill="#FFE0DE"/><rect x="25" y="14" width="7" height="20" rx="2" fill="#fff"/><rect x="8" y="22" width="25" height="4" fill="#2B2B2B"/><path d="M20.5 12c0-4 3-6 6-6" stroke="#2B2B2B" stroke-width="2" fill="none"/></g><circle cx="29" cy="6" r="4" fill="#FFC914"/><circle cx="29" cy="6" r="2" fill="#fff"/></svg>
@@ -3061,25 +3067,23 @@ const SHOW_ITEMS=[
   ['shot','Foto','<path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.4"/>'],
   ['book','Libretto','<path d="M5 4.5h10.5a2.5 2.5 0 0 1 2.5 2.5v13H7.5A2.5 2.5 0 0 1 5 17.5z"/><path d="M5 17.5A2.5 2.5 0 0 1 7.5 15H18"/><path d="M9 8.5h6"/>'],
   ['share','Condividi QR','<rect x="3.5" y="3.5" width="7" height="7" rx="1"/><rect x="13.5" y="3.5" width="7" height="7" rx="1"/><rect x="3.5" y="13.5" width="7" height="7" rx="1"/><path d="M14 14h2.5v2.5H14zM18.5 14H21M14 19h2.5M18.5 18.5V21M21 17.5v.1"/>']];
-function showMenuAnchors(){return [document.querySelector('#toolRail .tool[data-id=show]'),document.getElementById('showBtn')];}
+function showMenuAnchors(){return [document.querySelector('#toolRail .tool[data-id=show]')];}
 function closeShowMenu(){showMenu.hidden=true;showMenuAnchors().forEach(a=>{if(a)a.removeAttribute('aria-expanded');});}
 function openShowMenu(btn){
   closeSelMenu();
   showMenu.innerHTML='';
-  SHOW_ITEMS.forEach(([id,label,ico])=>{const b=document.createElement('button');b.className='dm-item';b.setAttribute('role','menuitem');
+  SHOW_ITEMS.forEach(([id,label,ico])=>{const b=document.createElement('button');b.className='dm-item';b.dataset.k=id;b.setAttribute('role','menuitem');
     b.innerHTML='<span class="dm-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+ico+'</svg></span><span class="dm-t"><b>'+label+'</b></span>';
     b.addEventListener('click',()=>{closeShowMenu();ensureAudio();tone('sine',520,760,.06,.08);
       if(id==='shot')openShot();else if(id==='book')makeBooklet();else if(id==='share')openShare();else startPresent();});
     showMenu.appendChild(b);});
   showMenu.hidden=false;
   const r=btn.getBoundingClientRect(),h=showMenu.offsetHeight;
-  if(btn.closest('#toolRail')){showMenu.style.left='auto';showMenu.style.right=(innerWidth-r.left+8)+'px';showMenu.style.top=Math.max(8,Math.min(r.top,innerHeight-h-8))+'px';}
-  else{showMenu.style.left='auto';showMenu.style.right=Math.max(8,innerWidth-r.right)+'px';showMenu.style.top=Math.min(r.bottom+8,innerHeight-h-8)+'px';}
+  showMenu.style.left='auto';showMenu.style.right=(innerWidth-r.left+8)+'px';showMenu.style.top=Math.max(8,Math.min(r.top,innerHeight-h-8))+'px';
   btn.setAttribute('aria-expanded','true');
 }
 function toggleShowMenu(btn){if(!showMenu.hidden){closeShowMenu();return;}openShowMenu(btn);}
-document.addEventListener('pointerdown',e=>{if(!showMenu.hidden&&!e.target.closest('#showMenu')&&!e.target.closest('#toolRail .tool[data-id=show]')&&!e.target.closest('#showBtn'))closeShowMenu();},true);
-document.getElementById('showBtn').addEventListener('click',e=>{e.stopPropagation();toggleShowMenu(e.currentTarget);});
+document.addEventListener('pointerdown',e=>{if(!showMenu.hidden&&!e.target.closest('#showMenu')&&!e.target.closest('#toolRail .tool[data-id=show]'))closeShowMenu();},true);
 TOOLS.forEach(t=>{
   const b=document.createElement('button');b.className='tool';b.dataset.id=t.id;
   b.innerHTML=svgIcon(t.icon,2.2)+'<span>'+t.label+'</span>';
