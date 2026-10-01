@@ -1159,6 +1159,35 @@ body.charbar #toast{top:calc(env(safe-area-inset-top,0px) + 142px)}
 .pNew b{font-size:38px;line-height:1;color:var(--ink)}
 .pRen{margin:6px 8px 0;height:34px;border:2px solid #FFC914;border-radius:10px;background:var(--tray);color:var(--ink);font:inherit;font-weight:800;font-size:14px;padding:0 8px;width:calc(100% - 16px)}
 .projNote{margin:8px 2px 0;font-size:12px;font-weight:700;color:var(--muted)}
+
+/* ---------- barra di selezione (Sposta): scheda in basso in stile menu ---------- */
+#selBar{top:auto;bottom:calc(var(--dockH,50px) + 50px);left:50%;transform:translateX(-50%);max-width:calc(100vw - 20px);width:min(540px,calc(100vw - 20px));align-items:stretch}
+@media (max-width:560px){#selBar{left:50%;max-width:calc(100vw - 20px);transform:translateX(-50%)}}
+body.selbar #toast,body.selbar.placing #toast{top:calc(env(safe-area-inset-top,0px) + 70px)}
+.sbCard{background:var(--sheet-solid,var(--tray));backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:20px;padding:8px;box-shadow:0 14px 36px rgba(0,0,0,.28);display:flex;flex-direction:column;gap:8px;animation:dmIn .18s ease-out}
+.sbHead{display:flex;align-items:center;gap:8px}
+.sbClr{flex:none;width:40px;height:40px;border-radius:50%;border:0;background:var(--chip);color:var(--ink);display:grid;place-items:center}
+.sbClr svg{width:18px;height:18px}
+.sbCnt{flex:none;min-width:34px;height:34px;border-radius:17px;background:#E0760E;color:#fff;display:grid;place-items:center;font-weight:800;font-size:16px;padding:0 9px}
+.sbTxt{flex:1;min-width:0;font-weight:800;font-size:14px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sbGo{flex:none;height:44px;border:0;border-radius:14px;padding:0 16px;display:flex;align-items:center;gap:7px;background:#E0760E;color:#fff;font-weight:800;font-size:15px;box-shadow:0 4px 0 rgba(0,0,0,.2)}
+.sbGo svg{width:22px;height:22px}
+.sbGo:active{transform:translateY(2px);box-shadow:none}
+.sbTiles{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:6px}
+.sbTile{--ic:var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:58px;border:2px solid transparent;border-radius:13px;background:var(--chip);padding:5px 2px 4px;color:var(--ink)}
+.sbTile svg{width:26px;height:26px;color:var(--ic)}
+.sbTile span{font-size:11.5px;font-weight:800;color:var(--ic);line-height:1.1;text-align:center}
+.sbTile:active{transform:scale(.95);border-color:var(--ic)}
+.sbTile:focus-visible,.sbGo:focus-visible,.sbClr:focus-visible{outline:3px solid #E0760E;outline-offset:2px}
+.sbTile.t-pick{--ic:#1F6FD6}.sbTile.t-link{--ic:#0E8F8F}.sbTile.t-dup{--ic:#7B4CB8}.sbTile.t-paint{--ic:#C4007A}.sbTile.t-del{--ic:#D92B31}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .sbTile.t-pick{--ic:#6FA8FF}:root:not([data-theme=light]) .sbTile.t-link{--ic:#4FD6D6}:root:not([data-theme=light]) .sbTile.t-dup{--ic:#B993FF}:root:not([data-theme=light]) .sbTile.t-paint{--ic:#FF5DB8}:root:not([data-theme=light]) .sbTile.t-del{--ic:#FF7A7F}}
+:root[data-theme=dark] .sbTile.t-pick{--ic:#6FA8FF}:root[data-theme=dark] .sbTile.t-link{--ic:#4FD6D6}:root[data-theme=dark] .sbTile.t-dup{--ic:#B993FF}:root[data-theme=dark] .sbTile.t-paint{--ic:#FF5DB8}:root[data-theme=dark] .sbTile.t-del{--ic:#FF7A7F}
+#selBar .sbHintPill{display:flex;align-items:center;gap:9px;align-self:center;max-width:100%;background:var(--sheet-solid,var(--tray));backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:999px;padding:6px 8px 6px 10px;box-shadow:0 8px 24px rgba(0,0,0,.25);font-size:13px;font-weight:800;color:var(--ink);text-shadow:none;text-align:left}
+#selBar .sbHintPill .sbHI{flex:none;width:30px;height:30px;border-radius:50%;background:#E0760E;color:#fff;display:grid;place-items:center}
+#selBar .sbHintPill .sbHI svg{width:18px;height:18px}
+#selBar .sbHintPill u{flex:none;pointer-events:auto;text-decoration:none;background:#E0760E;color:#fff;border-radius:999px;padding:6px 12px;margin:0;font-size:12.5px}
+@media (max-width:380px){.sbTxt{font-size:13px}.sbGo{padding:0 12px}.sbTile span{font-size:10.5px}}
+@media (prefers-reduced-motion:reduce){.sbCard{animation:none}}
 </style>
 </head>
 <body>
@@ -7357,14 +7386,22 @@ function renderSelBar(){
   const show=state.mode==='block'&&!carryG&&!dyn.mode&&!KIT.on&&!TET.on&&!PR.on&&!(typeof DRIVE!=='undefined'&&DRIVE.on)&&document.body.dataset.tab==='build';
   bar.hidden=!show;document.body.classList.toggle('selbar',show);if(!show)return;
   const n=SEL.set.size;let h='';
-  if(n){h+='<div class="acts"><button data-a="clear" class="cl" title="Svuota la selezione" aria-label="Svuota">'+icoSvg('xmark')+'</button><span class="cnt">'+n+'</span>'+
-    (n===1?'<button data-a="pick" title="Prendi forma, misura e colore di questo pezzo per costruirne altri uguali" aria-label="Prendi">'+icoSvg('pick')+'<small>Prendi</small></button>':'')+
-    '<button data-a="attach" title="Aggiungi i pezzi attaccati a quelli scelti" aria-label="Aggiungi collegati">'+icoSvg('link')+'<small>Aggiungi</small></button>'+
-    '<button data-a="dup" title="Duplica" aria-label="Duplica">'+icoSvg('dup')+'<small>Duplica</small></button>'+
-    '<button data-a="paint" title="Colora con il colore scelto" aria-label="Colora">'+icoSvg('drop')+'<small>Colora</small></button>'+
-    '<button data-a="del" class="del" title="Elimina" aria-label="Elimina">'+icoSvg('trash')+'<small>Elimina</small></button>'+
-    '<button data-a="take" class="go" title="Sposta" aria-label="Sposta">'+icoSvg('move')+'Sposta</button></div>';}
-  else h+='<div class="ctxHint'+hintState('block')+'" data-h="block">'+({touch:'Tocca i pezzi da scegliere',lasso:'Disegna un giro intorno ai pezzi o toccali',rect:'Trascina un rettangolo sui pezzi o toccali'}[SEL.method]||'')+' · <u data-a="all" style="cursor:pointer">scegli tutto</u></div>';
+  const tile=(a,cls,ico,label,title)=>'<button data-a="'+a+'" class="sbTile '+cls+'" title="'+title+'" aria-label="'+label+'">'+icoSvg(ico,2.2)+'<span>'+label+'</span></button>';
+  if(n){
+    h+='<div class="sbCard">'+
+      '<div class="sbHead"><button data-a="clear" class="sbClr" title="Svuota la selezione" aria-label="Svuota la selezione">'+icoSvg('xmark',2.6)+'</button>'+
+      '<span class="sbCnt">'+n+'</span><span class="sbTxt">'+LT([(n===1?'pezzo scelto':'pezzi scelti'),(n===1?'piece selected':'pieces selected')])+'</span>'+
+      '<button data-a="take" class="sbGo" title="Sposta" aria-label="Sposta">'+icoSvg('move',2.4)+'<span>Sposta</span></button></div>'+
+      '<div class="sbTiles">'+
+      (n===1?tile('pick','t-pick','pick','Prendi','Prendi forma, misura e colore di questo pezzo per costruirne altri uguali'):'')+
+      tile('attach','t-link','link','Aggiungi','Aggiungi i pezzi attaccati a quelli scelti')+
+      tile('dup','t-dup','dup','Duplica','Duplica')+
+      tile('paint','t-paint','drop','Colora','Colora con il colore scelto')+
+      tile('del','t-del','trash','Elimina','Elimina')+
+      '</div></div>';}
+  else{const mth=SEL_METHODS.find(x=>x[0]===SEL.method)||SEL_METHODS[0];
+    const ht={touch:LT(['Tocca i pezzi da scegliere','Tap the pieces to choose']),lasso:LT(['Disegna un giro intorno ai pezzi o toccali','Draw a loop around the pieces or tap them']),rect:LT(['Trascina un rettangolo sui pezzi o toccali','Drag a rectangle over the pieces or tap them'])}[SEL.method]||'';
+    h+='<div class="ctxHint sbHintPill'+hintState('block')+'" data-h="block"><span class="sbHI" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">'+mth[2]+'</svg></span><span>'+ht+'</span><u data-a="all" style="cursor:pointer">'+LT(['scegli tutto','select all'])+'</u></div>';}
   bar.innerHTML=h;
   bar.querySelectorAll('[data-a]').forEach(x=>x.addEventListener('click',()=>{const a=x.dataset.a;
     if(a==='all'){bricks.forEach(b=>SEL.set.add(b));tone('triangle',600,900,.1,.1);selRefresh();}
