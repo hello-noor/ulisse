@@ -4481,7 +4481,7 @@ const FACES=[['sorriso','Sorriso'],['felice','Felice'],['occhiolino','Occhiolino
 const ACCS=[['niente','Niente'],['spada','Spada'],['spadalaser','Spada laser'],['bacchetta','Bacchetta'],['scudo','Scudo'],['torcia','Torcia'],['martello','Martello'],['fiore','Fiore'],['palloncino','Palloncino'],['gelato','Gelato'],['libro','Libro'],['ombrello','Ombrello'],['bandierina','Bandierina'],['pallone','Pallone'],['mela','Mela'],['tridente','Tridente'],['fulmine','Fulmine']];
 const PATS=[['liscia','Tinta unita'],['righe','Righe'],['zebra','Zebra'],['leopardo','Leopardo'],['tigre','Tigre'],['giraffa','Giraffa'],['mucca','Mucca'],['macchie','Macchie'],['stella','Stella'],['cuore','Cuore'],['fulmine','Fulmine'],['bottoni','Bottoni']];
 const EARS=[['nessuna','Niente'],['gatto','Gatto'],['cane','Cane'],['orso','Orso'],['topo','Topo'],['volpe','Volpe'],['coniglio','Coniglio'],['unicorno','Unicorno'],['diavoletto','Diavoletto'],['elefante','Elefante']];
-const MUSI=[['nessuna','Niente'],['proboscide','Proboscide'],['zanne','Zanne'],['elefante','Elefante']];
+const MUSI=[['nessuna','Niente'],['proboscide','Proboscide'],['zanne','Zanne'],['elefante','Elefante'],['maiale','Maiale']];
 const TAILS=[['nessuna','Niente'],['gatto','Gatto'],['cane','Cane'],['volpe','Volpe'],['coniglio','Coniglio'],['leone','Leone'],['topo','Topo'],['drago','Drago'],['diavoletto','Diavoletto'],['cavallo','Cavallo'],['scoiattolo','Scoiattolo'],['maiale','Maiale']];
 const FUR_DEFAULT={elefante:'#9AA0A6',gatto:'#9AA0A6',cane:'#B07A4B',orso:'#7A4A2A',topo:'#9AA0A6',volpe:'#F46036',coniglio:'#F4F4F4',unicorno:'#F4F4F4',diavoletto:'#D7263D',leone:'#E3B86B',drago:'#2E9E4F',cavallo:'#7A4A2A',scoiattolo:'#C0672B'};
 const FURS=['#B07A4B','#7A4A2A','#E3B86B','#F46036','#9AA0A6','#F4F4F4','#2B2B2B','#FFC914','#F28DB2','#7B4CB8','#2E9E4F','#3AB0E0','#D7263D','M#D4AF37'];
@@ -4691,6 +4691,10 @@ function buildFigure(ch){
         const sp=new THREE.Mesh(fgeo('trks',()=>sg),furM);sp.scale.setScalar(r);sp.position.copy(B);sp.castShadow=true;g.add(sp);}
       const tip=add(fgeo('trkt',()=>new THREE.SphereGeometry(.1,10,8)),mat('#E8A0A8'),0,2.36,1.06);tip.scale.set(1,.9,1);
     }
+    if(mz==='maiale'){const pk=mat('#F4A6B8'),dk=mat('#C9677F');
+      const sn=add(fgeo('pigsn',()=>new THREE.CylinderGeometry(.21,.21,.2,20)),pk,0,3.46,.52);sn.rotation.x=Math.PI/2;
+      const rim=add(fgeo('pigrim',()=>new THREE.TorusGeometry(.21,.025,6,20)),pk,0,3.46,.62);
+      for(const sx of [-1,1]){const n=add(fgeo('pignos',()=>new THREE.SphereGeometry(.045,8,6)),dk,sx*.08,3.46,.625);n.scale.set(.8,1.5,.5);}}
     if(mz==='zanne'||mz==='elefante')for(const sx of [-1,1]){
       const iv=mat('#F5EEDC'),P=[[.2,3.4,.42],[.3,3.2,.6],[.42,3.0,.84],[.52,2.9,1.12],[.56,2.94,1.4],[.54,3.1,1.64],[.5,3.32,1.8]];
       const R=[.095,.088,.078,.066,.052,.036,.016];
