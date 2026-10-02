@@ -1251,6 +1251,8 @@ body.trayshut #twistBar,body.trayshut #navBar{bottom:calc(var(--dockH,50px) + 50
 @media (max-width:560px){#panelPlay .card{width:226px}}
 #dynMenu[data-menu=play] .dm-item{min-height:62px;flex-direction:column;justify-content:center;gap:4px}
 #dynMenu[data-menu=play] .dm-ico svg{width:30px;height:30px}
+#dynMenu{right:10px!important;z-index:45}
+@media (max-width:640px){#dynMenu{right:6px!important}}
 </style>
 </head>
 <body>
@@ -1270,9 +1272,9 @@ body.trayshut #twistBar,body.trayshut #navBar{bottom:calc(var(--dockH,50px) + 50
     <button class="round" id="installBtn" title="Installa l'app" aria-label="Installa o scarica ULIBRICKS"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></svg></button>
     <button class="round" id="infoBtn" title="Istruzioni (I)" aria-label="Istruzioni e scorciatoie"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v6"/><circle cx="12" cy="7.5" r=".6" fill="currentColor"/></svg></button>
     <button class="round" id="menuBtn" title="Impostazioni" aria-label="Impostazioni"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
-    <button class="round" id="boomBtn" title="Gioca" aria-label="Gioca" aria-haspopup="menu" aria-pressed="false">
-      <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="15" fill="#fff"/><path d="M16 12.5v15l12-7.5z" fill="#D7263D" stroke="#D7263D" stroke-width="3" stroke-linejoin="round"/></svg>
-      <span class="txt">Gioca</span><span id="dynCount" class="dynCount" hidden>0</span>
+    <button class="round" id="boomBtn" title="Dinamite e giochi" aria-label="Dinamite e giochi" aria-haspopup="menu" aria-pressed="false">
+      <svg viewBox="0 0 40 40"><g transform="rotate(-18 20 22)"><rect x="9" y="14" width="7" height="20" rx="2" fill="#fff"/><rect x="17" y="12" width="7" height="22" rx="2" fill="#FFE0DE"/><rect x="25" y="14" width="7" height="20" rx="2" fill="#fff"/><rect x="8" y="22" width="25" height="4" fill="#2B2B2B"/><path d="M20.5 12c0-4 3-6 6-6" stroke="#2B2B2B" stroke-width="2" fill="none"/></g><circle cx="29" cy="6" r="4" fill="#FFC914"/><circle cx="29" cy="6" r="2" fill="#fff"/></svg>
+      <span class="txt">Dinamite</span><span id="dynCount" class="dynCount" hidden>0</span>
     </button>
     <div id="basePanel" hidden>
       <span class="lbl">Forma della base</span><div class="opts" id="baseShapes"></div>
