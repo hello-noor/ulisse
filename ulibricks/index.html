@@ -1212,6 +1212,30 @@ body.placing #toast{top:calc(env(safe-area-inset-top,0px) + 70px)}
 @media (max-width:430px){#placeBar .go{font-size:14px;gap:5px;padding:0 6px}#placeBar .go svg{width:20px;height:20px}}
 @media (max-width:380px){#placeBar{grid-template-columns:repeat(4,minmax(0,46px)) minmax(0,1fr);gap:4px;padding:6px}#placeBar .go{font-size:14px;gap:4px;padding:0 6px}#placeBar .go svg{width:20px;height:20px}#placeBar .pbT span:last-child{font-size:9.5px}}
 @media (prefers-reduced-motion:reduce){#placeBar{animation:none}}
+/* ---------- barre Aziona / Guarda: scheda in basso con icone colorate ---------- */
+:root{--k1:#1F6FD6;--k2:#0E8F8F;--k3:#7B4CB8;--k4:#C4007A;--k5:#E0760E;--k6:#1E9E4A;--k7:#D92B31}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--k1:#6FA8FF;--k2:#4FD6D6;--k3:#B993FF;--k4:#FF5DB8;--k5:#FFAA4D;--k6:#4CD37A;--k7:#FF7A7F}}
+:root[data-theme=dark]{--k1:#6FA8FF;--k2:#4FD6D6;--k3:#B993FF;--k4:#FF5DB8;--k5:#FFAA4D;--k6:#4CD37A;--k7:#FF7A7F}
+#twistBar,#navBar{top:auto!important;bottom:calc(var(--dockH,50px) + var(--tray-h,0px) + 50px)!important;left:50%!important;transform:translateX(-50%)!important;max-width:calc(100vw - 20px)!important;width:min(540px,calc(100vw - 20px))!important;flex-direction:column-reverse;align-items:stretch;gap:8px}
+body.trayshut #twistBar,body.trayshut #navBar{bottom:calc(var(--dockH,50px) + 50px)!important}
+#twistBar .twp,#navBar .nvb{background:var(--sheet-solid,var(--tray));backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:20px;padding:8px;gap:6px;box-shadow:0 14px 36px rgba(0,0,0,.28);animation:dmIn .18s ease-out;max-width:none}
+#navBar .nvb{display:grid;grid-auto-flow:column;grid-auto-columns:1fr}
+#twistBar .twp{overflow-x:auto}
+#twistBar .twp button,#navBar .nvb button{--ic:var(--k1);flex-direction:column;justify-content:center;gap:3px;min-height:58px;min-width:62px;height:auto;border:2px solid transparent;border-radius:13px;background:var(--chip);color:var(--ink);padding:5px 6px 4px;font-size:11.5px;font-weight:800;line-height:1.1}
+#navBar .nvb button{min-width:0;width:auto}
+#twistBar .twp button svg,#navBar .nvb button svg{width:26px;height:26px;color:var(--ic)}
+#navBar .nvb button i{color:var(--ic)}
+#navBar .nvb button small,#twistBar .twp button small{font-size:11.5px;font-weight:800;opacity:1;color:var(--ic)}
+#twistBar .twp button:active,#navBar .nvb button:active{background:var(--chip);transform:scale(.95);border-color:var(--ic)}
+#navBar .nvb button[aria-pressed="true"]{background:var(--hl);border-color:var(--ic);color:var(--ink)}
+#twistBar .twp button:nth-child(7n+1){--ic:var(--k1)}#twistBar .twp button:nth-child(7n+2){--ic:var(--k3)}#twistBar .twp button:nth-child(7n+3){--ic:var(--k2)}#twistBar .twp button:nth-child(7n+4){--ic:var(--k4)}#twistBar .twp button:nth-child(7n+5){--ic:var(--k5)}#twistBar .twp button:nth-child(7n+6){--ic:var(--k7)}#twistBar .twp button:nth-child(7n){--ic:var(--k6)}
+#navBar .nvb [data-n=in]{--ic:var(--k1)}#navBar .nvb [data-n=out]{--ic:var(--k3)}#navBar .nvb [data-n=spin]{--ic:var(--k4)}#navBar .nvb [data-n=top]{--ic:var(--k5)}#navBar .nvb [data-n=fit]{--ic:var(--k2)}#navBar .nvb [data-n=home]{--ic:var(--k6)}
+#twistBar .twp button.go{background:#1E9E4A;color:#fff;--ic:#fff;flex-direction:row;gap:6px;font-size:14px;min-height:58px;padding:0 14px}
+#twistBar .twp button.go svg{color:#fff;width:24px;height:24px}
+#twistBar .ctxHint,#navBar .ctxHint{align-self:center;text-align:center;background:var(--sheet-solid,var(--tray));border:1px solid var(--line);border-radius:14px;padding:6px 12px;box-shadow:0 6px 18px rgba(0,0,0,.18);color:var(--ink);text-shadow:none}
+#navBar .nvh{text-shadow:none}
+@media (max-width:380px){#twistBar .twp button,#navBar .nvb button{min-width:0;font-size:10.5px}#navBar .nvb button small{font-size:10.5px}}
+@media (prefers-reduced-motion:reduce){#twistBar .twp,#navBar .nvb{animation:none}}
 </style>
 </head>
 <body>
@@ -3303,7 +3327,7 @@ function openMenu(id){
   }
   toolMenu.hidden=false;
   const r=btn.getBoundingClientRect(),h=toolMenu.offsetHeight;
-  toolMenu.style.left='auto';toolMenu.style.right=(innerWidth-r.left+8)+'px';toolMenu.style.top=Math.max(8,Math.min(r.top,innerHeight-h-8))+'px';
+  toolMenu.style.left='auto';toolMenu.style.right=(innerWidth-r.left+8)+'px';toolMenu.style.top=Math.max(72,Math.min(r.bottom-h-Math.round(r.height*.2),innerHeight-h-8))+'px';
   btn.setAttribute('aria-expanded','true');if(id==='show')toolHighlight();
 }
 function toggleMenu(id){if(toolMenuId===id){closeMenu();return false;}openMenu(id);return true;}
@@ -6023,7 +6047,7 @@ function renderTwistBar(){
   if(!show)return;
   const cnt={};mov.forEach(b=>{cnt[b.shape]=(cnt[b.shape]||0)+1;});
   if(!mov.length){const ak=state.actKind||'tutti',chr=ak==='personaggi';
-    bar.innerHTML='<div class="twp"><button class="go" id="twGo">'+icoSvg('plus')+(chr?'Crea un personaggio':'Prendi pezzi dalla Meccanica')+'</button></div><div class="ctxHint'+hintState('twist')+'" data-h="twist">'+({personaggi:'Nella costruzione non ci sono personaggi',veicoli:'Nella costruzione non ci sono veicoli con le ruote',oggetti:'Nella costruzione non ci sono oggetti che si muovono'}[ak]||'Nella costruzione non ci sono pezzi che si muovono')+'</div>';
+    bar.innerHTML='<div class="twp"><button class="go" id="twGo">'+icoSvg('plus')+(chr?LT(['Crea un personaggio','Create a character']):LT(['Prendi pezzi dalla Meccanica','Get pieces from Mechanics']))+'</button></div><div class="ctxHint'+hintState('twist')+'" data-h="twist">'+({personaggi:'Nella costruzione non ci sono personaggi',veicoli:'Nella costruzione non ci sono veicoli con le ruote',oggetti:'Nella costruzione non ci sono oggetti che si muovono'}[ak]||'Nella costruzione non ci sono pezzi che si muovono')+'</div>';
     document.getElementById('twGo').addEventListener('click',()=>{if(chr){setTab('chars');return;}state.shape='ruote';state.size=[2,4];setMode('build');});return;}
   const wf=walkSel&&figOf(walkSel),sitting=!!(wf&&wf.userData.sitting);
   bar.innerHTML='<div class="twp">'+
