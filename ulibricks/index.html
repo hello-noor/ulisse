@@ -4339,7 +4339,7 @@ function lineGrow(l,a,b,e){const p=l.geometry.attributes.position;p.setXYZ(1,a.x
 
 function buildScenes(D){
   const all=boxOf(bricks),N=D.order.length,sc=[];
-  sc.push({name:'Titolo',dur:2300,
+  sc.push({name:'Titolo',dur:4200,
     enter(){fitTo(all,1.25);cam.phi=1.05;PR.th=cam.theta;pel('ptitle','<h1>'+esc(curTitle())+'</h1>'+tilesHTML());
       if(!(document.getElementById('shotTitle').value||'').trim())pel('phint','Tocca ✎ per dare un titolo alla costruzione');},
     update(k){cam.theta=PR.th+.9*(1-easeIO(k));},exit(){clearPel();}});
