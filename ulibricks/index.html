@@ -4387,11 +4387,20 @@ function buildScenes(D){
       const shp=D.shpList.slice(0,4).map(([s,n])=>'<li><b>'+n+'</b>'+esc(SHAPES[s].label)+'</li>').join('');
       pel('pleft pcard','<div class="pbig">'+D.cols+'<i> </i>'+(D.cols===1?'colore':'colori')+'</div><div class="pcols">'+cols+'</div><ul class="plist">'+shp+'</ul>');},
     update(k){cam.theta=PR.th+k*.8;},exit(){clearPel();}});
-  if(D.figs.length)sc.push({name:'Personaggi',dur:4800,
-    enter(){const b=boxOf(D.figs);b.expandByScalar(1.5);fitTo(b,1.1);cam.phi=1.12;PR.th=cam.theta;
-      const names=D.figs.map(f=>charById(String(f.color).slice(1))).filter(Boolean).map(c=>esc(c.name));
-      pel('pleft pcard','<div class="pbig">'+D.figs.length+'<i> </i>'+(D.figs.length===1?'personaggio':'personaggi')+'</div><ul class="plist">'+names.slice(0,8).map(n=>'<li>\u{1F642} '+n+'</li>').join('')+'</ul>');},
-    update(k){cam.theta=PR.th+k*1.1;},exit(){clearPel();}});
+  if(D.figs.length){
+    const lst=D.figs.slice(0,10);
+    lst.forEach((f,idx)=>{const ch=charById(String(f.color).slice(1)),nm=ch?ch.name:LT(['Personaggio','Character']),su=ch&&ch.suit&&ch.suit!=='niente'?(SUITS.find(x=>x[0]===ch.suit)||[0,''])[1]:'';
+      sc.push({name:nm,dur:4200,
+        enter(){const b=boxOf([f]),z=b.getSize(new V3());b.getCenter(cam.target);
+          cam.radius=clamp(Math.max(z.y*3.3,Math.max(z.x,z.z)*3.6,9),9,80)*(camera.aspect<1?1.25:1);cam.phi=1.3;PR.th=cam.theta;D.figs.forEach(o=>{o.mesh.visible=(o===f);});
+          pel('pleft pcard','<div class="pbig" style="font-size:44px">'+esc(nm)+'</div><ul class="plist">'+(su?'<li>\u{1F3AD} '+esc(su)+'</li>':'')+'<li>\u{1F642} '+(idx+1)+' / '+D.figs.length+'</li></ul>');
+          const u=figOf(f);if(u){u.userData.jump=.6;u.userData.wave=1.8;sndVoice(u.userData.voice);}bubble(f,LT(['Ciao, sono ','Hi, I am '])+nm+'!',2400);},
+        update(k){cam.theta=PR.th+easeIO(k)*Math.PI*2;},exit(){clearPel();D.figs.forEach(o=>{o.mesh.visible=true;});}});});
+    if(D.figs.length>lst.length)sc.push({name:'Personaggi',dur:4800,
+      enter(){const b=boxOf(D.figs);b.expandByScalar(1.5);fitTo(b,1.1);cam.phi=1.12;PR.th=cam.theta;
+        pel('pleft pcard','<div class="pbig">'+D.figs.length+'<i> </i>personaggi</div>');},
+      update(k){cam.theta=PR.th+k*1.1;},exit(){clearPel();}});
+  }
   sc.push({name:'Riepilogo',dur:1e9,
     enter(){fitTo(all,1.45);cam.phi=1.02;
       pel('ptitle','<h1>'+esc(curTitle())+'</h1>'+tilesHTML());
