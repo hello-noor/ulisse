@@ -18,18 +18,18 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="ULIBRICKS">
 <meta property="og:locale" content="it_IT">
-<meta property="og:title" content="ULIBRICKS – Costruisci con i mattoncini in 3D">
-<meta property="og:description" content="Costruisci, anima e gioca con i mattoncini in 3D: personaggi, dinamite, Tetris, foto e libretti delle istruzioni.">
+<meta property="og:title" content="ULIBRICKS – Costruisci, anima e gioca con i mattoncini 3D">
+<meta property="og:description" content="Costruisci in 3D, crea personaggi con 22 costumi, fai esplodere la dinamite e sfida Tetris, Terremoto e la corsa Scappa! Poi condividi foto, showreel e libretto con un QR.">
 <meta property="og:url" content="https://hello-noor.github.io/ulisse/ulibricks/">
-<meta property="og:image" content="https://hello-noor.github.io/ulisse/ulibricks/og-image-v2.jpg">
+<meta property="og:image" content="https://hello-noor.github.io/ulisse/ulibricks/og-image-v3.jpg">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Il logo ULIBRICKS con mattoncini colorati, un astronauta, un mago e un pompiere: costruisci con i mattoncini in 3D">
+<meta property="og:image:alt" content="ULIBRICKS: costruisci, anima e gioca. 22 costumi, 4 giochi, costruzione in 3D, foto, showreel, libretto e QR da condividere">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="ULIBRICKS – Costruisci con i mattoncini in 3D">
-<meta name="twitter:description" content="Costruisci, anima e gioca con i mattoncini in 3D.">
-<meta name="twitter:image" content="https://hello-noor.github.io/ulisse/ulibricks/og-image-v2.jpg">
+<meta name="twitter:title" content="ULIBRICKS – Costruisci, anima e gioca con i mattoncini 3D">
+<meta name="twitter:description" content="22 costumi, dinamite, 4 giochi, foto, showreel e libretto: costruisci in 3D e condividi con un QR.">
+<meta name="twitter:image" content="https://hello-noor.github.io/ulisse/ulibricks/og-image-v3.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
@@ -1338,6 +1338,10 @@ body.trayshut #twistBar,body.trayshut #navBar{bottom:calc(var(--dockH,50px) + 50
 .rnInfo{display:grid;gap:6px;margin:0 0 10px;text-align:left}
 .rnPerk{background:var(--chip);border-radius:12px;padding:7px 10px;display:flex;flex-direction:column;gap:1px}
 .rnPerk b{font-size:13.5px}.rnPerk span{font-size:12px;font-weight:700;color:var(--muted);line-height:1.3}
+/* switch delle impostazioni: una sola pallina (la regola .sw delle foto aggiungeva la seconda) */
+button.sw{width:52px;height:30px;border-radius:15px}
+button.sw::after{content:none!important}
+button.sw i{pointer-events:none}
 </style>
 </head>
 <body>
