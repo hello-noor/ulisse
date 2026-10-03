@@ -4,7 +4,7 @@
   "description": "Costruisci in 3D con i mattoncini, crea personaggi e fai saltare tutto con la dinamite.",
   "lang": "it",
   "start_url": "./",
-  "scope": "./",
+  "scope": "../",
   "display": "standalone",
   "orientation": "any",
   "background_color": "#FFC914",
