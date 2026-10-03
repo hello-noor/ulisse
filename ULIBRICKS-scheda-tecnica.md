@@ -1,7 +1,7 @@
 # ULIBRICKS — scheda tecnica e descrizione completa
 
 > Nota sul nome: il progetto si chiama **ULIBRICKS** (non "Uliblocks"). Logo a due righe, "ULI" e "BRICKS", con le lettere su mattoncini colorati.
-> Indirizzo: https://hello-noor.github.io/ulisse/ulibricks/ · Versione descritta: build `v100` del service worker (ottobre 2026).
+> Indirizzo: https://hello-noor.github.io/ulisse/ulibricks/ · Versione descritta: build `v105` del service worker (ottobre 2026).
 
 ---
 
@@ -96,7 +96,7 @@ In ogni scheda c'è una linguetta **Nascondi** sopra il pannello: abbassa il pan
 **Progetti** (cartella), **Annulla**, **Impostazioni** e la **dinamite**, che apre la tendina dei giochi.
 
 ### Il vassoio dei pezzi
-Si sceglie la categoria, la forma, la **misura** e il **colore**. Una grande anteprima 3D mostra il pezzo, con tasti per ruotarlo. Su telefono, il pezzo in mano si posa con una barra in basso: **Presa**, **Gira** a sinistra e a destra, **Annulla** e **Posa qui**.
+Si sceglie la categoria, la forma, la **misura** e il **colore**. Una grande anteprima 3D mostra il pezzo, con tasti per ruotarlo. Su telefono il primo tocco mostra il **pezzo fantasma** (più luminoso, anche se giri la scena) e una barra in basso: **Presa**, **Gira** a sinistra e a destra, **Annulla** e **Posa qui**; si posa toccando di nuovo lo stesso punto o premendo Posa qui.
 
 ### Altre schermate
 - **Impostazioni:** musica (due brani jazz e bossa leggeri, si alternano), effetti sonori, vita dei personaggi, tema (auto, chiaro, scuro), lingua (italiano e inglese), salva e carica progetto, base, istruzioni, installa l'app.
@@ -189,7 +189,7 @@ Con lo strumento **Aziona** si animano **18 tipi** di elementi: personaggi, ruot
 4. **Corri!** Corsa in 3D a **3 corsie** con il proprio personaggio: si scorre per cambiare corsia o saltare, si evitano gli ostacoli e si raccolgono le monete. Gli **ostacoli sono i blocchi della tua costruzione** (circa il 70% del percorso). Ogni costume dà un **bonus**:
    - 🛡️ **Scudo** (sopravvivi a un urto): Cavaliere, Centurione, Pompiere, Poliziotto.
    - 🚀 **Salto alto:** Astronauta, Supereroe, Ballerina, Fata.
-   - 🥷 **Doppio salto:** Ninja, Strega, Mago, Sirena.
+   - 🥷 **Doppio salto** (il secondo salto è più forte e scavalca anche gli ostacoli alti): Ninja, Strega, Mago, Sirena.
    - 🧲 **Calamita per le monete:** Pirata, Regina, Principessa, Babbo Natale.
    - 🪙 **Monete ×2:** Cuoco, Dottore, Infermiera, Medico della peste, Cowboy, Sub.
    Se nella scena ci sono animali, nella schermata di avvio compare **"Corri in sella a un animale"**: si sceglie uno degli animali presenti e si corre cavalcandolo, con le zampe dell'animale che galoppano.
