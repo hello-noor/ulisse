@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Le app di Ulisse</title>
-<meta name="description" content="Le app scritte da Ulisse, 6 anni, con l'aiuto di papà. Giochi e strumenti che funzionano anche senza rete.">
+<meta name="description" content="Le app scritte da Ulisse, 6 anni, con l'aiuto di papà: costruzioni in 3D, giochi, matematica e il diario del colesterolo di Nonna Rosella. Funzionano anche senza rete e si installano sul telefono.">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#141B4D">
 <meta name="color-scheme" content="dark">
@@ -18,7 +18,7 @@
 
 <meta property="og:type" content="website">
 <meta property="og:title" content="Le app di Ulisse">
-<meta property="og:description" content="Le app scritte da Ulisse, 6 anni, con l'aiuto di papà.">
+<meta property="og:description" content="Costruzioni in 3D, giochi, matematica e un diario per Nonna Rosella: le app scritte da Ulisse, 6 anni, con l'aiuto di papà.">
 <meta property="og:image" content="icon-512.png">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -27,8 +27,8 @@
 
 <style>
   :root{
-    --navy:#141B4D; --navy-2:#0B2B39; --ink:#FFFFFF; --dim:#A8C6D6;
-    --gold:#FFC93C; --gold-2:#FFAE1F; --coral:#FF6B4A; --teal:#2D96A3; --cream:#FFF6E0;
+    --navy:#141B4D; --navy-2:#0B2B39; --ink:#FFFFFF; --dim:#B4CCDA;
+    --gold:#FFC93C; --gold-2:#FFAE1F; --coral:#FF6B4A; --cream:#FFF6E0;
     --card:rgba(255,255,255,.07); --card-line:rgba(255,255,255,.16);
     --display:'Baloo 2',ui-rounded,'SF Pro Rounded','Trebuchet MS',Avenir,sans-serif;
     --body:'Nunito',ui-rounded,'SF Pro Rounded','Trebuchet MS',Avenir,sans-serif;
@@ -40,93 +40,104 @@
     background-color:var(--navy);
     background-image:
       radial-gradient(rgba(255,255,255,.05) 1px, transparent 1.6px),
-      radial-gradient(1000px 620px at 6% -10%, rgba(255,201,60,.16) 0%, transparent 60%),
-      radial-gradient(900px 540px at 100% 6%, rgba(255,107,74,.14) 0%, transparent 55%),
+      radial-gradient(1000px 620px at 6% -10%, rgba(255,201,60,.18) 0%, transparent 60%),
+      radial-gradient(900px 540px at 100% 6%, rgba(255,107,74,.15) 0%, transparent 55%),
+      radial-gradient(800px 500px at 50% 110%, rgba(61,169,252,.14) 0%, transparent 60%),
       linear-gradient(180deg,var(--navy),var(--navy-2));
-    background-size:26px 26px, auto, auto, auto;
+    background-size:26px 26px, auto, auto, auto, auto;
     background-attachment:fixed;
   }
   .wrap{
-    max-width:900px;margin:0 auto;
-    padding:calc(28px + env(safe-area-inset-top)) calc(20px + env(safe-area-inset-right))
-            calc(48px + env(safe-area-inset-bottom)) calc(20px + env(safe-area-inset-left));
+    max-width:1000px;margin:0 auto;
+    padding:calc(26px + env(safe-area-inset-top)) calc(18px + env(safe-area-inset-right))
+            calc(48px + env(safe-area-inset-bottom)) calc(18px + env(safe-area-inset-left));
   }
-  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 
   /* ---------- testata ---------- */
-  header{text-align:center;margin:8px 0 34px}
-  .boat{width:96px;height:96px;border-radius:24px;display:block;margin:0 auto 14px;
-    box-shadow:0 12px 30px rgba(0,0,0,.35);animation:bob 5s ease-in-out infinite}
+  header{text-align:center;margin:6px 0 26px;position:relative}
+  .logoBox{position:relative;width:112px;height:112px;margin:0 auto 14px}
+  .boat{width:112px;height:112px;border-radius:28px;display:block;
+    box-shadow:0 14px 34px rgba(0,0,0,.4),0 0 0 4px rgba(255,255,255,.1);animation:bob 5s ease-in-out infinite}
   @keyframes bob{0%,100%{transform:translateY(0) rotate(-1.5deg)}50%{transform:translateY(-8px) rotate(1.5deg)}}
+  /* tre mattoncini che fluttuano attorno alla barca */
+  .brk{position:absolute;width:26px;height:18px;border-radius:4px;box-shadow:inset 0 -4px 0 rgba(0,0,0,.22),0 4px 10px rgba(0,0,0,.3);animation:float 6s ease-in-out infinite}
+  .brk::before,.brk::after{content:"";position:absolute;top:-6px;width:9px;height:7px;border-radius:3px 3px 0 0;background:inherit}
+  .brk::before{left:3px}.brk::after{right:3px}
+  .b1{background:#E3000B;left:-34px;top:8px;--r:-14deg;animation-delay:-1s}
+  .b2{background:#3DA9FC;right:-38px;top:30px;--r:12deg;animation-delay:-3s}
+  .b3{background:#2EB84B;right:-18px;bottom:-8px;--r:-8deg;animation-delay:-2s;width:20px;height:14px}
+  @keyframes float{0%,100%{transform:translateY(0) rotate(var(--r))}50%{transform:translateY(-9px) rotate(calc(var(--r) * -1))}}
   h1{font-family:var(--display);font-weight:800;text-transform:uppercase;letter-spacing:-.02em;
-    line-height:.9;margin:0;font-size:clamp(34px,9vw,64px);text-shadow:0 4px 0 rgba(0,0,0,.25)}
+    line-height:.9;margin:0;font-size:clamp(34px,9vw,66px);text-shadow:0 4px 0 rgba(0,0,0,.25)}
   h1 .hl{position:relative;isolation:isolate;color:#2A1B04;display:inline-block;
     padding:.04em .22em .08em;transform:rotate(-2deg)}
   h1 .hl::before{content:"";position:absolute;inset:-.14em -.05em .1em -.05em;z-index:-1;border-radius:.22em;
     background:linear-gradient(103deg,#FFD766,var(--gold) 45%,var(--gold-2));box-shadow:0 4px 0 rgba(0,0,0,.22)}
-  /* text-wrap:balance divide le righe in parti uguali: niente parole solitarie a fine frase. */
-  .claim{color:var(--dim);font-size:clamp(15px,3.6vw,19px);margin:16px auto 0;max-width:38ch;
-    line-height:1.5;text-wrap:balance}
-  .claim + .claim{margin-top:6px}
+  .claim{color:var(--dim);font-size:clamp(15.5px,3.6vw,19px);margin:18px auto 0;max-width:46ch;
+    line-height:1.55;text-wrap:balance}
   .claim b{color:var(--cream)}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:18px 0 0}
+  .chip{display:inline-flex;align-items:center;gap:6px;padding:7px 13px;border-radius:99px;font-size:13.5px;font-weight:800;
+    background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:var(--cream)}
 
-  /* ---------- griglia di bottoni ---------- */
-  .grid{display:grid;gap:18px;grid-template-columns:1fr;justify-items:center}
-  @media (min-width:370px){.grid{grid-template-columns:1fr 1fr}}
-  @media (min-width:780px){.grid{grid-template-columns:repeat(3,1fr)}}
+  /* ---------- schede delle app ---------- */
+  .grid{display:grid;gap:18px;grid-template-columns:1fr}
+  @media (min-width:720px){.grid{grid-template-columns:1fr 1fr}.app.big{grid-column:1/-1}}
 
   .app{
-    width:100%;max-width:300px;display:flex;flex-direction:column;align-items:center;
-    text-align:center;text-decoration:none;color:inherit;gap:12px;
+    position:relative;display:flex;flex-direction:column;text-decoration:none;color:inherit;overflow:hidden;
+    border-radius:26px;background:linear-gradient(180deg,rgba(255,255,255,.1),rgba(255,255,255,.045));
+    border:2px solid color-mix(in srgb,var(--accent) 55%,transparent);
+    box-shadow:0 8px 0 var(--accent-dark),0 18px 34px rgba(0,0,0,.35);
+    transition:transform .14s ease, box-shadow .14s ease, border-color .14s;
   }
-  /* il bottone vero e proprio: grande, tondo, con la faccia dell'app */
-  .btn{
-    position:relative;width:min(168px,40vw);aspect-ratio:1;border-radius:34px;
-    display:grid;place-items:center;
-    background:linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255,255,.05));
-    border:3px solid var(--accent,var(--gold));
-    box-shadow:0 10px 0 var(--accent-dark,rgba(0,0,0,.45)), 0 18px 34px rgba(0,0,0,.35);
-    transition:transform .12s ease, box-shadow .12s ease;
+  .app::before{ /* alone colorato in alto */
+    content:"";position:absolute;inset:0 0 auto 0;height:130px;z-index:0;pointer-events:none;
+    background:radial-gradient(120% 140% at 15% 0%, color-mix(in srgb,var(--accent) 38%,transparent), transparent 70%);
   }
-  .btn::before{
-    content:"";position:absolute;inset:-26px;border-radius:50%;z-index:-1;
-    background:radial-gradient(closest-side, var(--accent-glow,rgba(255,201,60,.3)), transparent 75%);
-  }
-  .btn img{width:76%;height:76%;border-radius:24px;object-fit:cover;display:block;
-    box-shadow:0 6px 16px rgba(0,0,0,.4)}
-  .btn .emoji{font-size:clamp(44px,11vw,58px);line-height:1}
+  .app:hover,.app:focus-visible{transform:translateY(-4px);box-shadow:0 12px 0 var(--accent-dark),0 24px 40px rgba(0,0,0,.4);border-color:var(--accent)}
+  .app:active{transform:translateY(5px);box-shadow:0 3px 0 var(--accent-dark),0 8px 18px rgba(0,0,0,.35)}
+  .app:focus-visible{outline:4px solid var(--cream);outline-offset:4px}
 
-  .app:hover .btn,.app:focus-visible .btn{
-    transform:translateY(-4px);
-    box-shadow:0 14px 0 var(--accent-dark,rgba(0,0,0,.45)), 0 22px 40px rgba(0,0,0,.4);
-  }
-  .app:active .btn{
-    transform:translateY(6px);
-    box-shadow:0 4px 0 var(--accent-dark,rgba(0,0,0,.45)), 0 8px 18px rgba(0,0,0,.35);
-  }
-  .app:focus-visible{outline:none}
-  .app:focus-visible .btn{outline:4px solid var(--cream);outline-offset:6px}
+  .top{position:relative;z-index:1;display:flex;align-items:center;gap:16px;padding:20px 20px 6px}
+  .ico{flex:none;width:92px;height:92px;border-radius:24px;background:rgba(255,255,255,.12);
+    border:3px solid var(--accent);display:grid;place-items:center;box-shadow:0 8px 18px rgba(0,0,0,.35)}
+  .ico img{width:76%;height:76%;border-radius:18px;object-fit:cover;display:block}
+  .app.big .ico{width:112px;height:112px}
+  .heads{min-width:0;display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+  .tag{display:inline-block;padding:3px 11px;border-radius:99px;font-size:12px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;
+    color:#1B1B2B;background:var(--accent)}
+  .name{font-family:var(--display);font-weight:800;font-size:clamp(24px,6.4vw,32px);line-height:1.05;margin:0;color:var(--ink);text-wrap:balance}
+  .body{position:relative;z-index:1;padding:8px 20px 20px;display:flex;flex-direction:column;gap:12px;flex:1}
+  .desc{margin:0;color:#E4EEF4;font-size:16px;line-height:1.5;font-weight:600;text-wrap:pretty}
+  .feat{list-style:none;margin:0;padding:0;display:grid;gap:7px}
+  .feat li{display:flex;gap:9px;align-items:flex-start;font-size:14.5px;line-height:1.4;color:var(--dim)}
+  .feat li::before{content:"";flex:none;width:9px;height:9px;margin-top:6px;border-radius:3px;background:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 28%,transparent)}
+  .note{margin:0;font-size:13px;line-height:1.4;color:#97B3C3;border-top:1px dashed rgba(255,255,255,.18);padding-top:10px}
+  .go{margin-top:auto;display:inline-flex;align-items:center;justify-content:center;gap:8px;align-self:stretch;
+    padding:13px 18px;border-radius:16px;font-family:var(--display);font-weight:800;font-size:20px;
+    color:#1B1B2B;background:var(--accent);box-shadow:0 5px 0 var(--accent-dark)}
+  .go span{transition:transform .14s}
+  .app:hover .go span{transform:translateX(5px)}
 
-  .name{font-family:var(--display);font-weight:800;font-size:clamp(20px,5.4vw,24px);
-    line-height:1.1;margin:0;color:var(--ink);text-wrap:balance}
-  .desc{margin:0;color:var(--dim);font-size:14.5px;line-height:1.45;max-width:24ch;
-    text-wrap:balance;hyphens:none}
-
-  /* il bottone dell'app che non c'e' ancora */
-  .app.soon{cursor:default}
-  .app.soon .btn{border-style:dashed;border-color:rgba(255,255,255,.28);
-    background:rgba(255,255,255,.04);box-shadow:none}
-  .app.soon:hover .btn,.app.soon:active .btn{transform:none;box-shadow:none}
-  .app.soon .btn::before{display:none}
+  /* l'app che non c'e' ancora */
+  .app.soon{cursor:default;border-style:dashed;border-color:rgba(255,255,255,.26);background:rgba(255,255,255,.035);box-shadow:none}
+  .app.soon::before{display:none}
+  .app.soon:hover,.app.soon:active{transform:none;box-shadow:none}
+  .app.soon .ico{border-style:dashed;border-color:rgba(255,255,255,.3);background:rgba(255,255,255,.04);font-size:42px;box-shadow:none}
   .app.soon .name{color:var(--dim)}
+  .app.soon .go{background:transparent;color:var(--dim);box-shadow:none;border:2px dashed rgba(255,255,255,.22);font-size:17px}
 
   /* ---------- piede ---------- */
-  footer{margin-top:34px;text-align:center;color:var(--dim);font-size:14.5px;line-height:1.6;
-    text-wrap:balance}
-  footer .hint{display:inline-block;margin-top:12px;padding:10px 16px;border-radius:16px;
-    background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);max-width:44ch}
-  footer a{color:var(--cream)}
+  footer{margin-top:34px;text-align:center;color:var(--dim);font-size:14.5px;line-height:1.6;text-wrap:balance}
+  footer .hint{display:inline-block;margin-top:12px;padding:12px 18px;border-radius:16px;
+    background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);max-width:50ch}
+  footer .sig{margin-top:18px;font-size:13px;opacity:.8}
 
+  @media (max-width:420px){
+    .top{gap:13px;padding:16px 16px 4px}.body{padding:8px 16px 18px}
+    .ico{width:78px;height:78px;border-radius:21px}.app.big .ico{width:90px;height:90px}
+  }
   @media (prefers-reduced-motion:reduce){
     *{animation:none!important;transition:none!important}
   }
@@ -136,24 +147,34 @@
 <div class="wrap">
 
   <header>
-    <img class="boat" src="icon-512.png" width="96" height="96" alt="" aria-hidden="true">
+    <div class="logoBox">
+      <img class="boat" src="icon-512.png" width="112" height="112" alt="" aria-hidden="true">
+      <i class="brk b1" aria-hidden="true"></i><i class="brk b2" aria-hidden="true"></i><i class="brk b3" aria-hidden="true"></i>
+    </div>
     <h1>Le app di <span class="hl">Ulisse</span></h1>
-    <p class="claim">Ulisse ha <b>6&nbsp;anni</b> e scrive app con l'aiuto di&nbsp;papà.</p>
-    <p class="claim">Scegli quella che vuoi aprire.</p>
+    <p class="claim">Giochi e strumenti scritti da <b>Ulisse, 6&nbsp;anni</b>, con l'aiuto di&nbsp;papà. Scegli quello che vuoi aprire.</p>
+    <div class="chips" aria-label="Cosa devi sapere">
+      <span class="chip">📶 Anche senza rete</span>
+      <span class="chip">📲 Si installano sul telefono</span>
+      <span class="chip">🆓 Gratis, senza account</span>
+    </div>
   </header>
 
   <main class="grid" id="grid">
     <noscript>
-      <a class="app" href="nomi-cose-citta/"><p class="name">Nomi Cose Città</p></a>
-      <a class="app" href="linea-del-20/"><p class="name">Linea del 20</p></a>
-      <a class="app" href="ulibricks/"><p class="name">ULIBRICKS</p></a>
+      <a class="app" href="ulibricks/"><div class="top"><p class="name">ULIBRICKS</p></div></a>
+      <a class="app" href="nomi-cose-citta/"><div class="top"><p class="name">Nomi Cose Città</p></div></a>
+      <a class="app" href="linea-del-20/"><div class="top"><p class="name">Linea del 20</p></div></a>
+      <a class="app" href="Calcolo%20LDL%20nonna/"><div class="top"><p class="name">Diario LDL di Nonna Rosella</p></div></a>
     </noscript>
   </main>
 
   <footer>
-    Funzionano anche <b>senza&nbsp;rete</b> e si possono installare sul telefono.
+    Si aprono subito e continuano a funzionare <b>senza&nbsp;internet</b>.
     <br>
-    <span class="hint">Su iPhone: apri l'app, tocca <b>Condividi</b> e poi <b>Aggiungi&nbsp;a&nbsp;Home</b>.</span>
+    <span class="hint">Per averle sul telefono: apri l'app che ti piace e tocca <b>Installa</b>.
+      Su iPhone: <b>Condividi</b>, poi <b>Aggiungi&nbsp;a&nbsp;Home</b>.</span>
+    <div class="sig">Fatto con amore da Ulisse e papà</div>
   </footer>
 
 </div>
@@ -163,68 +184,109 @@
    L'ELENCO DELLE APP
    Per aggiungerne una nuova in futuro:
    1. copia la cartella dell'app qui dentro (es. "memory-degli-animali/")
-   2. aggiungi qui sotto una riga come le altre
-   3. salva e carica su GitHub. Fine.
+   2. aggiungi qui sotto un blocco come gli altri
+   3. aggiungi l'icona dell'app anche in sw.js, così la home si apre senza rete
+   4. salva e carica su GitHub. Fine.
    ========================================================= */
 const APPS = [
   {
+    nome: "ULIBRICKS",
+    tipo: "Costruzioni 3D · Giochi",
+    testo: "Il gioco di costruzioni a mattoncini in 3D: costruisci quello che vuoi, crea personaggi e animali, poi falli muovere e gioca.",
+    punti: [
+      "Oltre 100 tipi di pezzo, 31 colori e 12 kit da montare passo passo",
+      "Personaggi con 24 costumi e 20 animali da accarezzare e cavalcare",
+      "Giochi: dinamite, Tetris, terremoto e corsa. Foto, filmato e libretto delle istruzioni da condividere"
+    ],
+    cartella: "ulibricks/",
+    icona: "ulibricks/icons/icon-192-v2.png",
+    colore: "#3DA9FC",
+    grande: true
+  },
+  {
     nome: "Nomi Cose Città",
-    testo: "Il gioco di sempre, ma i punti li tiene l'app.",
+    tipo: "Gioco di parole",
+    testo: "Il classico gioco di carta e penna, ma a voce: niente fogli, il telefono tiene i punti.",
+    punti: [
+      "Scegli i giocatori e la lettera (anche col dado)",
+      "Tocca chi ha detto la parola giusta e il punteggio si aggiorna",
+      "Perfetto in auto o in viaggio, con il timer"
+    ],
     cartella: "nomi-cose-citta/",
     icona: "nomi-cose-citta/icon-192.png",
     colore: "#FFC93C"
   },
   {
     nome: "Linea del 20",
-    testo: "Linea del 20, del 100 e casa del 1000.",
+    tipo: "Matematica",
+    testo: "Per imparare a contare e a fare i calcoli con la linea del 20, la linea del 100 e la casa del 1000.",
+    punti: [
+      "Strumenti da muovere con il dito, ispirati al metodo analogico di Camillo Bortolato",
+      "Giochi di calcolo a livelli, anche con gli euro",
+      "I progressi restano sul tuo dispositivo"
+    ],
     cartella: "linea-del-20/",
     icona: "linea-del-20/icon-192.png",
     colore: "#FF6B4A"
   },
   {
-    nome: "ULIBRICKS",
-    testo: "Costruisci coi mattoncini in 3D. E poi… dinamite!",
-    cartella: "ulibricks/",
-    icona: "ulibricks/icons/icon-192.png",
-    colore: "#3DA9FC"
+    nome: "Diario LDL di Nonna Rosella",
+    tipo: "Salute · Per la famiglia",
+    testo: "Per tenere d'occhio il colesterolo LDL di Nonna Rosella: inserisci i valori del referto e l'app fa il calcolo.",
+    punti: [
+      "Colesterolo totale, HDL e trigliceridi: l'LDL si calcola con la formula di Friedewald",
+      "Una barra a colori mostra se il valore è ottimale, buono, al limite o alto",
+      "Salva lo storico con un grafico e invia il referto su WhatsApp"
+    ],
+    nota: "È un aiuto per tenere i conti: non sostituisce il parere del medico.",
+    cartella: "Calcolo%20LDL%20nonna/",
+    icona: "Calcolo%20LDL%20nonna/icon-192.png",
+    colore: "#B58CFF"
   }
 ];
 
-/* Da un colore #RRGGBB ricaviamo l'alone morbido e l'ombra "spessa" del bottone. */
-function tinte(hex){
+/* Da un colore #RRGGBB ricaviamo l'ombra "spessa" della scheda. */
+function ombra(hex){
   const n = parseInt(hex.slice(1), 16);
   const r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255;
-  return {
-    glow: `rgba(${r},${g},${b},.30)`,
-    dark: `rgb(${Math.round(r * .45)},${Math.round(g * .45)},${Math.round(b * .45)})`
-  };
+  return `rgb(${Math.round(r * .42)},${Math.round(g * .42)},${Math.round(b * .42)})`;
 }
 
 const grid = document.getElementById("grid");
 grid.innerHTML = "";
 
 for (const app of APPS){
-  const t = tinte(app.colore);
   const a = document.createElement("a");
-  a.className = "app";
+  a.className = "app" + (app.grande ? " big" : "");
   a.href = app.cartella;
   a.style.setProperty("--accent", app.colore);
-  a.style.setProperty("--accent-glow", t.glow);
-  a.style.setProperty("--accent-dark", t.dark);
+  a.style.setProperty("--accent-dark", ombra(app.colore));
   a.innerHTML = `
-    <span class="btn"><img src="${app.icona}" width="128" height="128" alt="" loading="lazy"></span>
-    <p class="name">${app.nome}</p>
-    <p class="desc">${app.testo}</p>`;
+    <div class="top">
+      <span class="ico"><img src="${app.icona}" width="128" height="128" alt="" loading="lazy"></span>
+      <div class="heads"><span class="tag">${app.tipo}</span><h2 class="name">${app.nome}</h2></div>
+    </div>
+    <div class="body">
+      <p class="desc">${app.testo}</p>
+      <ul class="feat">${app.punti.map(p => `<li>${p}</li>`).join("")}</ul>
+      ${app.nota ? `<p class="note">${app.nota}</p>` : ""}
+      <span class="go">Apri <span aria-hidden="true">→</span></span>
+    </div>`;
   grid.append(a);
 }
 
-/* L'ultimo bottone è sempre quello dell'app che Ulisse deve ancora inventare. */
+/* L'ultima scheda è sempre quella dell'app che Ulisse deve ancora inventare. */
 const soon = document.createElement("div");
 soon.className = "app soon";
 soon.innerHTML = `
-  <span class="btn"><span class="emoji" aria-hidden="true">🚧</span></span>
-  <p class="name">La prossima app</p>
-  <p class="desc">Ulisse la sta ancora inventando.</p>`;
+  <div class="top">
+    <span class="ico" aria-hidden="true">🚧</span>
+    <div class="heads"><span class="tag" style="background:rgba(255,255,255,.2);color:var(--dim)">Presto</span><h2 class="name">La prossima app</h2></div>
+  </div>
+  <div class="body">
+    <p class="desc">Ulisse la sta ancora inventando. Tornate a trovarci!</p>
+    <span class="go">In arrivo</span>
+  </div>`;
 grid.append(soon);
 
 /* La pagina si ricorda di sé: così l'elenco si apre anche senza rete. */
