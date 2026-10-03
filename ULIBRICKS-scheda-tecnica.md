@@ -1,7 +1,7 @@
 # ULIBRICKS — scheda tecnica e descrizione completa
 
 > Nota sul nome: il progetto si chiama **ULIBRICKS** (non "Uliblocks"). Logo a due righe, "ULI" e "BRICKS", con le lettere su mattoncini colorati.
-> Indirizzo: https://hello-noor.github.io/ulisse/ulibricks/ · Versione descritta: build `v92` del service worker (ottobre 2026).
+> Indirizzo: https://hello-noor.github.io/ulisse/ulibricks/ · Versione descritta: build `v93` del service worker (ottobre 2026).
 
 ---
 
@@ -34,7 +34,7 @@ Slogan dell'app: **Costruisci · Anima · Gioca**.
 | Colori della pelle | **11** |
 | Colori dei capelli | **17** |
 | Giochi | **4** (Dinamite, Tetris, Terremoto, Corri!) |
-| Animali (pezzi con vita propria) | **17** (5 di fattoria, 5 esotici, 7 selvaggi e mitologici) |
+| Animali (pezzi con vita propria) | **18** (5 di fattoria, 10 selvaggi, 3 mitologici) |
 | Kit guidati di costruzione | **12** (da 13 a 110 passi) |
 | Oggetti animabili | **18 tipi** (17 oggetti + i personaggi) |
 | Basi: ambienti | **4** (Prato, Acqua, Luna, Neve) + modalità Auto |
@@ -45,7 +45,7 @@ Slogan dell'app: **Costruisci · Anima · Gioca**.
 
 ### Quanti personaggi diversi si possono creare?
 
-Moltiplicando le scelte strutturali (capelli 19 × facce 16 × oggetti 17 × fantasia maglia 12 × fantasia pantaloni 12 × costumi 25 × orecchie 10 × code 12 × corna 5 × mani/zampe 5 × musi 5) si ottengono circa **279 miliardi** di combinazioni (senza contare i 17 animali, che sono personaggi a parte). Aggiungendo i colori (11 pelli, 17 colori capelli, 28 colori per maglia, braccia e pantaloni, più due colori personalizzabili sui costumi) si supera **un miliardo di miliardi (10^18)** come limite teorico. Il numero è un massimo teorico: alcune combinazioni si sovrappongono, per esempio un costume sostituisce maglia e pantaloni.
+Moltiplicando le scelte strutturali (capelli 19 × facce 16 × oggetti 17 × fantasia maglia 12 × fantasia pantaloni 12 × costumi 25 × orecchie 10 × code 12 × corna 5 × mani/zampe 5 × musi 5) si ottengono circa **279 miliardi** di combinazioni (senza contare i 18 animali, che sono personaggi a parte). Aggiungendo i colori (11 pelli, 17 colori capelli, 28 colori per maglia, braccia e pantaloni, più due colori personalizzabili sui costumi) si supera **un miliardo di miliardi (10^18)** come limite teorico. Il numero è un massimo teorico: alcune combinazioni si sovrappongono, per esempio un costume sostituisce maglia e pantaloni.
 
 ---
 
@@ -156,20 +156,20 @@ Nella barra laterale della scheda Personaggi (**Aggiungi, Vai qui, Interagisci, 
 
 ## 6b. Gli animali
 
-La scheda **Animali** (accanto a Personaggi) aggiunge **17 animali procedurali**, costruiti a mattoncini e animati come i personaggi: camminano, scodinzolano, parlano con fumetti e **fanno il loro verso** (suoni sintetizzati nel browser).
+La scheda **Animali** (accanto a Personaggi) aggiunge **18 animali procedurali**, costruiti a mattoncini e animati come i personaggi: camminano, scodinzolano, parlano con fumetti e **fanno il loro verso** (suoni sintetizzati nel browser).
 
 | Gruppo | Animali |
 |---|---|
 | **Fattoria (5)** | Cane da guardia, Gatto, Mucca, Maiale, Pecora |
-| **Esotici (5)** | Drago, Aragosta gigante, Polpo, Leone, Elefante |
-| **Selvaggi e miti (7)** | Ghepardo (macchie e righe lacrimali), Pantera nera (occhi gialli), Tigre (a strisce), Drago di Komodo (lingua biforcuta che saetta), Diavolo della Tasmania (orecchie rosa, petto bianco), **Grifo di Perugia** (corpo di leone, testa e ali d'aquila: il simbolo della città), Cavalluccio marino (coda arrotolata) |
+| **Selvaggi (10)** | Aragosta gigante, Polpo, Leone, Elefante, Ghepardo, Pantera nera, Tigre, Drago di Komodo, Diavolo della Tasmania, Cavalluccio marino (rosso granata) |
+| **Mitologici (3)** | Drago, **Grifo di Perugia** (corpo di leone, testa e ali d'aquila: il simbolo della città), **Chimera** (leone con testa di capra sulla schiena e coda di serpente) |
 
 **Interagire con un animale:** si sceglie un personaggio, si usa lo strumento **Interagisci** e si tocca l'animale. Compare un menu con le azioni:
 - 🔊 **Verso** · il personaggio fa parlare l'animale;
 - 🍎 **Mangiare** · il personaggio tira fuori un cibo adatto (osso al cane, pesce a gatto, aragosta, polpo e cavalluccio, fieno alla mucca, mela al maiale, carota alla pecora, banana all'elefante, carne a tutti i carnivori e ai draghi), lo porge alla bocca dell'animale, che dà due morsi e mastica;
 - ❤️ **Coccole** · carezze con cuoricini;
 - 🦮 **Guinzaglio** · l'animale segue il personaggio tenuto al guinzaglio (tasto **Libera** per lasciarlo);
-- 🐴 **Cavalca** · il personaggio sale in sella e l'animale lo porta in giro (solo mucca, drago, leone, elefante, tigre, drago di Komodo e grifo; **Scendi** per scendere).
+- 🐴 **Cavalca** · il personaggio sale in sella e l'animale lo porta in giro (solo mucca, drago, leone, elefante, tigre, drago di Komodo, grifo e chimera; **Scendi** per scendere).
 
 ---
 
@@ -244,7 +244,7 @@ Tutto è raccolto nel menu **Mostra** (e nella scheda omonima):
 
 - "78 tipi di pezzo, 341 misure, 31 colori: circa 10.500 pezzi diversi da usare."
 - "24 costumi, 19 pettinature, 16 facce, e orecchie, code, corna, chele e proboscidi da mescolare: i personaggi possibili sono più di un miliardo di miliardi, in teoria. E puoi essere un minotauro o un centauro."
-- "Diciassette animali a mattoncini, dal cane da guardia al grifo di Perugia: li accarezzi, li sfami, li porti al guinzaglio e ci cavalchi."
+- "Diciotto animali a mattoncini, dal cane da guardia al grifo di Perugia: li accarezzi, li sfami, li porti al guinzaglio e ci cavalchi."
 - "Non c'è un account, non c'è un server: la costruzione vive nel telefono e si condivide con un QR."
 - "Il personaggio che crei diventa il protagonista di una corsa, e i blocchi che hai costruito diventano gli ostacoli."
 - "Il gioco costruisce da solo il filmato e il libretto delle istruzioni della tua opera."
