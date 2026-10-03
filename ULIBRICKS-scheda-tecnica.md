@@ -1,7 +1,7 @@
 # ULIBRICKS — scheda tecnica e descrizione completa
 
 > Nota sul nome: il progetto si chiama **ULIBRICKS** (non "Uliblocks"). Logo a due righe, "ULI" e "BRICKS", con le lettere su mattoncini colorati.
-> Indirizzo: https://hello-noor.github.io/ulisse/ulibricks/ · Versione descritta: build `v95` del service worker (ottobre 2026).
+> Indirizzo: https://hello-noor.github.io/ulisse/ulibricks/ · Versione descritta: build `v96` del service worker (ottobre 2026).
 
 ---
 
@@ -162,7 +162,7 @@ La scheda **Animali** (accanto a Personaggi) aggiunge **20 animali procedurali**
 |---|---|
 | **Fattoria (5)** | Cane da guardia, Gatto, Mucca, Maiale, Pecora |
 | **Selvaggi (10)** | Aragosta gigante, Polpo, Leone, Elefante, Ghepardo, Pantera nera, Tigre, Drago di Komodo, Diavolo della Tasmania, Cavalluccio marino (rosso granata) |
-| **Mito e Dino (5)** | **T-rex** (braccia minuscole, morso enorme), **Triceratopo** (tre corna e gorgiera rossa), Drago, **Grifo di Perugia** (corpo di leone, testa e ali d'aquila: il simbolo della città), **Chimera** (leone con testa di capra sulla schiena e coda di serpente) |
+| **Mito e Dino (5)** | **T-rex** (braccia minuscole, morso enorme), **Triceratopo** (tre corna e gorgiera rossa), Drago, **Grifo di Perugia** (rosso, con becco e artigli dorati: il simbolo della città), **Chimera** (leone con testa di capra sulla schiena e coda di serpente) |
 
 **Interagire con un animale:** si sceglie un personaggio, si usa lo strumento **Interagisci** e si tocca l'animale. Compare un menu con le azioni:
 - 🔊 **Verso** · il personaggio fa parlare l'animale;
@@ -192,6 +192,7 @@ Con lo strumento **Aziona** si animano **18 tipi** di elementi: personaggi, ruot
    - 🥷 **Doppio salto:** Ninja, Strega, Mago, Sirena.
    - 🧲 **Calamita per le monete:** Pirata, Regina, Principessa, Babbo Natale.
    - 🪙 **Monete ×2:** Cuoco, Dottore, Infermiera, Medico della peste, Cowboy, Sub.
+   Se nella scena ci sono animali, nella schermata di avvio compare **"Corri in sella a un animale"**: si sceglie uno degli animali presenti e si corre cavalcandolo, con le zampe dell'animale che galoppano.
    Il record si salva nel dispositivo.
 
 ---

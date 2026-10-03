@@ -1329,6 +1329,8 @@ body.trayshut #twistBar,body.trayshut #navBar{bottom:calc(var(--dockH,50px) + 50
 .rnChars button{flex:none;width:64px;height:78px;border:3px solid transparent;border-radius:14px;background:var(--chip);padding:0;display:grid;place-items:center;overflow:hidden}
 .rnChars button[aria-pressed=true]{border-color:#1ED760;background:var(--hl)}
 .rnChars img{width:100%;height:100%;object-fit:contain;display:block}
+.rnMountT{font-weight:800;font-size:12.5px;color:var(--muted);text-align:left;padding:0 4px}
+.rnMounts button{width:58px;height:62px;font-size:26px}.rnMounts button[data-none]{font-size:12px;font-weight:800;color:var(--ink);padding:2px}
 .rnBig b{font-family:var(--display);font-weight:400;font-size:62px;line-height:1;color:#E0760E}.rnBig span{display:block;font-weight:800;color:var(--muted);font-size:13px}
 .rnBtns{display:flex;gap:8px;margin-top:4px}.rnBtns button{flex:1;height:48px;border:0;border-radius:14px;font-weight:800;font-size:16px}
 .rnBtns .primary{background:#1ED760;color:#0B2E17;box-shadow:0 4px 0 #13993F}.rnBtns .sec{background:var(--chip);color:var(--ink)}
@@ -1715,7 +1717,7 @@ body.kit #panelToggle,body.presenting #panelToggle,body.tetris #panelToggle,body
   <div class="rnTop"><button class="rnX" id="rnX" aria-label="Esci">✕</button><div class="rnScore"><b id="rnS">0</b><small id="rnB"></small></div><div class="rnCoins"><i></i><b id="rnC">0</b></div></div>
   <div class="rnBonus" id="rnBonus" hidden></div>
   <div class="rnHint" id="rnHint">⬅ ➡ cambia corsia · ⬆ salta</div>
-  <div class="rnPanel" id="rnStart"><div class="rnCard"><h3>Corri!</h3><p>Corri con il tuo personaggio: scorri a destra e sinistra per cambiare corsia, in alto per saltare.</p><div class="rnChars" id="rnChars"></div><div class="rnInfo" id="rnInfo"></div><p class="rnNote" id="rnNote" hidden></p><div class="rnBtns"><button id="rnGo" class="primary">▶ Via!</button></div></div></div>
+  <div class="rnPanel" id="rnStart"><div class="rnCard"><h3>Corri!</h3><p>Corri con il tuo personaggio: scorri a destra e sinistra per cambiare corsia, in alto per saltare.</p><div class="rnChars" id="rnChars"></div><div class="rnMountT" id="rnMountT" hidden></div><div class="rnChars rnMounts" id="rnMounts" hidden></div><div class="rnInfo" id="rnInfo"></div><p class="rnNote" id="rnNote" hidden></p><div class="rnBtns"><button id="rnGo" class="primary">▶ Via!</button></div></div></div>
   <div class="rnPanel" id="rnOver" hidden><div class="rnCard"><h3>Preso!</h3><div class="rnBig"><b id="rnOs">0</b><span>metri</span></div><p id="rnOb"></p><div class="rnBtns"><button id="rnAgain" class="primary">Ancora</button><button id="rnExit" class="sec">Esci</button></div></div></div>
 </div>
 <div class="modal" id="tetStart" hidden><div class="sheet tetSheet">
@@ -3584,7 +3586,7 @@ function applySound(){
 }
 soundBtn.addEventListener('click',()=>{ensureAudio();soundState={all:'sfx',sfx:'off',off:'all'}[soundState];try{localStorage.setItem('ulibricks-sound',soundState);}catch(e){}applySound();toast({all:'Musica e suoni',sfx:'Solo suoni',off:'Silenzio'}[soundState]);});
 /* ---------- gioco Corri!: corsa a corsie con il tuo personaggio ---------- */
-const RUN={on:false,play:false,raf:0,t0:0,r:null,sc:null,cam:null,fig:null,fs:null,objs:[],parts:[],lane:0,px:0,py:0,vy:0,v:0,dist:0,coins:0,spawn:0,over:false,charId:null,clock:0,dead:0,swipe:null,bonus:null,shield:0,inv:0,jumps:0,pieces:[]};
+const RUN={on:false,play:false,raf:0,t0:0,r:null,sc:null,cam:null,fig:null,fs:null,objs:[],parts:[],lane:0,px:0,py:0,vy:0,v:0,dist:0,coins:0,spawn:0,over:false,charId:null,clock:0,dead:0,swipe:null,bonus:null,shield:0,inv:0,jumps:0,pieces:[],mount:null,mf:null};
 const RN_LANE=2.6,RN_COLS=['#E3000B','#F58220','#FFC914','#2EB84B','#0057B8','#7B4CB8','#E0368A','#16A6B6'];
 function rnBest(){try{return +localStorage.getItem('ulibricks-run')||0;}catch(e){return 0;}}
 const rnGeo=(k,f)=>fgeo('rn'+k,f);
@@ -3640,6 +3642,14 @@ function rnSize(){const r=RUN.r,W=innerWidth,H=innerHeight;r.setPixelRatio(Math.
 function rnChar(){const id=RUN.charId;return charById(id)||chars[0]||newChar();}
 function rnMakeFig(){
   if(RUN.fig)RUN.sc.remove(RUN.fig);
+  const mt=RUN.mount&&ANIMALS.find(a=>a.id===RUN.mount);
+  if(mt){ // in sella a un animale della scena
+    const W=new THREE.Group(),af=buildFigure(ANIMAL_CHARS['an_'+mt.id]),rf=buildFigure(rnChar());
+    W.add(af);rf.position.set(0,(RIDE_Y[mt.id]||2)-1.43,0);W.add(rf);W.scale.setScalar(.5);W.rotation.y=Math.PI;
+    const u=rf.userData;u.legs.forEach(l=>{l.h.position.y=1.71;l.h.rotation.x=-Math.PI/2;l.k.rotation.x=0;});u.arms.forEach((a,q)=>{a.rotation.x=-.95;a.rotation.z=(q?1:-1)*.1;});
+    RUN.fig=W;RUN.sc.add(W);RUN.fs=u;RUN.mf={af:af.userData,rf:u};return;
+  }
+  RUN.mf=null;
   const f=buildFigure(rnChar());f.scale.setScalar(.5);f.rotation.y=Math.PI;RUN.fig=f;RUN.sc.add(f);RUN.fs=f.userData;
 }
 function rnClear(){RUN.objs.forEach(o=>RUN.sc.remove(o.m));RUN.objs=[];RUN.parts.forEach(o=>RUN.sc.remove(o.m));RUN.parts=[];}
@@ -3705,9 +3715,12 @@ function rnFrame(now){
   if(f&&f.visible){
     f.visible=true;const run=RUN.play&&!RUN.over,t=RUN.clock*(run?13:3),air=RUN.py>.05;
     f.position.set(RUN.px,RUN.py,0);f.rotation.z=-(RUN.lane*RN_LANE-RUN.px)*.08;
-    u.legs.forEach((l,q)=>{const s=(q?-1:1)*Math.sin(t)*(run&&!air?.95:.1);l.h.rotation.x=air?(q?.9:-.5):s;l.k.rotation.x=air?(q?.2:1.0):Math.max(0,-s)*1.1;});
+    if(RUN.mf){const A=RUN.mf.af,tt=t*.75;(A.legsA||[]).forEach((P,i)=>{P.rotation.x=air?((i%2)?.7:-.7):(run?Math.sin(tt+(i%2?Math.PI:0)+((i>>1)?Math.PI*.5:0))*.7:0);});
+      if(A.tailG)A.tailG.rotation.y=Math.sin(t*.6)*.35;if(A.anim)try{A.anim(RUN.clock,run);}catch(e){}
+      f.position.y+=run&&!air?Math.abs(Math.sin(tt))*.07:0;}
+    else{u.legs.forEach((l,q)=>{const s=(q?-1:1)*Math.sin(t)*(run&&!air?.95:.1);l.h.rotation.x=air?(q?.9:-.5):s;l.k.rotation.x=air?(q?.2:1.0):Math.max(0,-s)*1.1;});
     u.arms.forEach((a,q)=>{a.rotation.x=air?-2.6:((q?1:-1)*Math.sin(t)*(run?.9:.1)-.2);a.rotation.z=(q?1:-1)*(air?.5:.12);});
-    f.traverse(x=>{});u.head.rotation.y=0;f.position.y+=run&&!air?Math.abs(Math.sin(t))*.08:0;
+    f.traverse(x=>{});u.head.rotation.y=0;f.position.y+=run&&!air?Math.abs(Math.sin(t))*.08:0;}
   }
   if(f&&!RUN.over)f.visible=!(RUN.inv>0&&Math.floor(RUN.clock*14)%2);
   const cm=RUN.cam;cm.position.set(RUN.px*.45,4.9,7.6);cm.lookAt(RUN.px*.25,1.7,-5.5);
@@ -3715,7 +3728,19 @@ function rnFrame(now){
 }
 function rnInfo(){const el=document.getElementById('rnInfo');if(!el)return;const B=RUN.bonus&&RN_BONUS[RUN.bonus],n=RUN.pieces.length;
   el.innerHTML='<div class="rnPerk">'+(B?'<b>'+B.ico+' '+LT(B.n)+'</b><span>'+LT(B.d)+'</span>':'<b>✨ '+LT(['Nessun bonus','No bonus'])+'</b><span>'+LT(['Dagli un costume per averne uno','Give them a costume to get one'])+'</span>')+'</div><div class="rnPerk">'+(n?'<b>🧱 '+LT(['I tuoi pezzi','Your pieces'])+'</b><span>'+LT([n+' blocchi della tua costruzione sono ostacoli',n+' blocks of your build are obstacles']):'<b>🧱 '+LT(['Ostacoli base','Basic obstacles'])+'</b><span>'+LT(['Metti dei pezzi in scena: diventeranno ostacoli','Place pieces in the scene: they become obstacles']))+'</span></div>';}
+function rnMountList(){const seen=new Set(),out=[];bricks.forEach(b=>{if(b.shape==='personaggio'&&String(b.color).indexOf('@an_')===0){const id=String(b.color).slice(4);if(!seen.has(id)&&ANIMALS.find(a=>a.id===id)){seen.add(id);out.push(id);}}});return out;}
+function rnMounts(){
+  const box=document.getElementById('rnMounts'),ti=document.getElementById('rnMountT'),L=rnMountList();box.innerHTML='';
+  if(RUN.mount&&L.indexOf(RUN.mount)<0){RUN.mount=null;rnMakeFig();}
+  box.hidden=ti.hidden=!L.length;if(!L.length)return;
+  ti.textContent='🐾 '+LT(['Corri in sella a un animale della tua scena','Ride an animal from your scene']);
+  const mk=(id,label)=>{const b=document.createElement('button');b.setAttribute('aria-pressed',(RUN.mount||null)===id);
+    if(!id){b.dataset.none='1';b.textContent=label;}else{const c=ANIMAL_CHARS['an_'+id],im=document.createElement('img');im.alt='';let u=null;try{u=figThumb(c,'full');}catch(e){}if(u)im.src=u;b.appendChild(im);b.setAttribute('aria-label',label);}
+    b.addEventListener('click',()=>{RUN.mount=id;box.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b));rnMakeFig();tone('sine',620,760,.05,.07);});box.appendChild(b);};
+  mk(null,LT(['A piedi','On foot']));L.forEach(id=>mk(id,LT(ANIMALS.find(a=>a.id===id).n)));
+}
 function rnChooser(){
+  rnMounts();
   const box=document.getElementById('rnChars'),note=document.getElementById('rnNote');box.innerHTML='';
   if(!chars.length){note.hidden=false;note.textContent=LT(['Crea un personaggio in "Personaggi" per correre con lui!','Create a character in "Characters" to run with them!']);rnInfo();return;}
   note.hidden=true;if(!charById(RUN.charId))RUN.charId=charById(state.charId)?state.charId:chars[0].id;
@@ -4826,7 +4851,7 @@ function buildAnimal(id){
     tailG.position.set(0,.75,-.55);tube([[0,0,0],[0,-.05,-.3],[0,-.15,-.55]],.12,.07,M(bk),tailG);
     anim=(t,wk)=>{headG.rotation.y=Math.sin(t*(wk?6:2.5))*.1;};tailAmp=.5;
   } else if(id==='grifo'){
-    const go='#D9A441',lt='#EBC77A',wh='#F4EEDC',bkG='#F2B705';
+    const go='#A81C27',lt='#D8443F',wh='#E24A45',bkG='#F2B705';
     add(BX(.9,.85,1.7),M(go),0,1.45,-.05);add(BX(.7,.3,1.3),M(lt),0,1.1,0);
     [[-.3,-.65],[.3,-.65]].forEach(([x,z])=>{const P=leg(x,z,1.05,1.05,.19,go,false);add(BX(.38,.14,.46),M(lt),0,-1.0,.1,P);});
     [[-.3,.65],[.3,.65]].forEach(([x,z])=>{const P=leg(x,z,1.05,1.05,.11,'#E3B23C',false);add(SP(.25),M(wh),0,-.1,0,P).scale.set(1,1.3,1);[-.1,0,.1].forEach(cx=>add(CO(.05,.22,5),M('#3A2A22'),cx,-1.0,.25,P).rotation.x=Math.PI/2);});
@@ -4834,7 +4859,7 @@ function buildAnimal(id){
     headG.position.set(0,2.45,1.0);add(SP(.35),M(wh),0,0,.05,headG).scale.set(.95,1,1.1);
     add(CO(.17,.5,8),M(bkG),0,-.06,.55,headG).rotation.x=Math.PI/2;add(CO(.07,.2,6),M(bkG),0,-.2,.8,headG).rotation.x=Math.PI;
     for(const sx of [-1,1]){add(SP(.09),M('#FFD23F'),sx*.2,.1,.28,headG);add(SP(.045),M('#111'),sx*.22,.1,.36,headG);add(BX(.2,.05,.14),M(go),sx*.2,.22,.3,headG).rotation.z=sx*-.25;add(CO(.08,.34,5),M(go),sx*.18,.42,-.05,headG).rotation.z=-sx*.35;}
-    tailG.position.set(0,1.7,-.92);tube([[0,0,0],[0,-.25,-.35],[0,-.7,-.5],[0,-1.05,-.5]],.05,.045,M(go),tailG);add(SP(.17),M('#C1272D'),0,-1.2,-.5,tailG).scale.set(.9,1.6,.9);
+    tailG.position.set(0,1.7,-.92);tube([[0,0,0],[0,-.25,-.35],[0,-.7,-.5],[0,-1.05,-.5]],.05,.045,M(go),tailG);add(SP(.17),M('#F2B705'),0,-1.2,-.5,tailG).scale.set(.9,1.6,.9);
     const wingG=sx=>{const W=new THREE.Group();W.position.set(sx*.5,2.0,0);g.add(W);
       for(let i=0;i<7;i++){const F=new THREE.Group();F.rotation.y=sx*(-.55+i*.2);W.add(F);const len=1.9-.1*Math.abs(i-2);
         add(BX(len,.06,.3),M(i<3?wh:go),sx*len/2,0,0,F);add(BX(len*.55,.07,.3),M(wh),sx*len*.28,.05,.01,F);}
