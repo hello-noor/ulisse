@@ -1370,14 +1370,12 @@ body.kit #charRail,body.presenting #charRail,body.tetris #charRail,body.driving 
 #charRail .tool:active{transform:scale(.93)}
 #charRail .tool[aria-pressed="true"]{box-shadow:0 4px 0 rgba(0,0,0,.22),0 6px 14px rgba(0,0,0,.18);transform:translateX(-4px)}
 #charRail .tool[aria-pressed="true"]::before{content:"";position:absolute;right:-6px;top:50%;width:4px;height:22px;margin-top:-11px;border-radius:2px;background:var(--tc)}
-#charRail .tool.vita{margin-top:4px;border-top:1px solid var(--line);border-radius:0 0 14px 14px}
-#charRail .tool.vita .vdot{position:static;display:block;font-style:normal;font-size:9.5px;font-weight:900;letter-spacing:.04em;line-height:1;padding:3px 6px;border-radius:8px;background:#9AA3BD;color:#fff;margin-top:1px}
-#charRail .tool.vita[aria-pressed="false"]{background:var(--chip);color:var(--muted);border-color:var(--line)}
-#charRail .tool.vita[aria-pressed="false"] svg{opacity:.45}
-#charRail .tool.vita[aria-pressed="true"]{background:#1E9E4A;color:#fff;border-color:#0F7A34}
-#charRail .tool.vita[aria-pressed="true"] svg,#charRail .tool.vita[aria-pressed="true"] span{color:#fff;stroke:#fff}
-#charRail .tool.vita[aria-pressed="true"] .vdot{background:#fff;color:#0F7A34;box-shadow:none}
-#charRail .tool.vita[aria-pressed="false"] .vdot{background:#6B7390;color:#fff}
+#charRail .tool.vita .vdot{position:absolute;right:3px;top:3px;font-style:normal;font-size:8px;font-weight:900;letter-spacing:.03em;line-height:1;padding:2px 4px;border-radius:7px;background:#8A92AB;color:#fff}
+#charRail .tool.vita[aria-pressed="true"] .vdot{background:#1E9E4A}
+#charRail .tool.vita[aria-pressed="true"]{background:#C4F1D3;border-color:#1E9E4A;color:#0B5A27}
+:root[data-theme=dark] #charRail .tool.vita[aria-pressed="true"]{background:#1C5A36;color:#fff}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) #charRail .tool.vita[aria-pressed="true"]{background:#1C5A36;color:#fff}}
+#charRail .tool.vita[aria-pressed="false"] svg{opacity:.5}
 .cpBottom.cpSolo{display:block}
 @media (max-width:640px){#charRail{right:6px}#charRail .tool{width:58px;height:50px;font-size:10px}#charRail .tool svg{width:25px;height:25px}}
 @media (max-height:700px){#charRail .tool{height:44px;width:56px}#charRail .tool span{font-size:9.5px}#charRail .tool svg{width:22px;height:22px}}
