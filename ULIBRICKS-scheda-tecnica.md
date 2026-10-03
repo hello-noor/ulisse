@@ -1,7 +1,7 @@
 # ULIBRICKS — scheda tecnica e descrizione completa
 
 > Nota sul nome: il progetto si chiama **ULIBRICKS** (non "Uliblocks"). Logo a due righe, "ULI" e "BRICKS", con le lettere su mattoncini colorati.
-> Indirizzo: https://hello-noor.github.io/ulisse/ulibricks/ · Versione descritta: build `v105` del service worker (ottobre 2026).
+> Indirizzo: https://hello-noor.github.io/ulisse/ulibricks/ · Versione descritta: build `v106` del service worker (ottobre 2026).
 
 ---
 
@@ -99,6 +99,7 @@ In ogni scheda c'è una linguetta **Nascondi** sopra il pannello: abbassa il pan
 Si sceglie la categoria, la forma, la **misura** e il **colore**. Una grande anteprima 3D mostra il pezzo, con tasti per ruotarlo. Su telefono il primo tocco mostra il **pezzo fantasma** (più luminoso, anche se giri la scena) e una barra in basso: **Presa**, **Gira** a sinistra e a destra, **Annulla** e **Posa qui**; si posa toccando di nuovo lo stesso punto o premendo Posa qui.
 
 ### Altre schermate
+- **Risparmio energia** (in Impostazioni): per consumare meno batteria limita il disegno a 30 fotogrammi al secondo, abbassa la risoluzione a 1×, toglie le ombre e le sfocature, ferma le animazioni dell'interfaccia, dimezza le particelle, ferma l'acqua animata, spegne la Vita dei personaggi e la musica; spegnendolo si ripristina tutto com'era.
 - **Impostazioni:** musica (due brani jazz e bossa leggeri, si alternano), effetti sonori, vita dei personaggi, tema (auto, chiaro, scuro), lingua (italiano e inglese), salva e carica progetto, base, istruzioni, installa l'app.
 - **Progetti:** fino a 24 progetti con miniatura, rinominabili, duplicabili ed eliminabili.
 - **Tour guidato** alla prima apertura, in 6 passi.
