@@ -7,18 +7,18 @@ const W = 1080, H = 1920, TOTAL = 60;
 // ── Montaggio: ogni riga = un pezzo di ripresa del gioco vero (assets/v/<src>.mp4)
 // at = quando parte nel video, dur = durata nel video, from = punto di partenza nella ripresa, rate = velocità
 const SEGS = [
-  { id: "intro", src: "scene", at: 0, dur: 4, from: 1.0, rate: 1 },
-  { id: "tray", src: "tray", at: 4, dur: 6, from: 0.4, rate: 1 },
-  { id: "kit", src: "kit", at: 10, dur: 10, from: 1.0, rate: 1.1 },
-  { id: "creator", src: "creator", at: 20, dur: 7, from: 0.4, rate: 1.3 },
-  { id: "scene", src: "scene", at: 27, dur: 5, from: 2.0, rate: 1 },
-  { id: "dyn", src: "dyn", at: 32, dur: 4, from: 3.0, rate: 1 },
+  { id: "intro", src: "scene", at: 0, dur: 4, from: 0.3, rate: 1 },
+  { id: "tray", src: "tray", at: 4, dur: 6, from: 0.5, rate: 1 },
+  { id: "kit", src: "kit", at: 10, dur: 10, from: 0.8, rate: 1 },
+  { id: "creator", src: "creator", at: 20, dur: 7, from: 0.2, rate: 1.15 },
+  { id: "scene", src: "scene", at: 27, dur: 5, from: 1.5, rate: 1 },
+  { id: "dyn", src: "dyn", at: 32, dur: 4, from: 3.6, rate: 1 },
   { id: "tetris", src: "tetris", at: 36, dur: 4, from: 4.0, rate: 1 },
-  { id: "quake", src: "quake", at: 40, dur: 4, from: 3.0, rate: 1 },
+  { id: "quake", src: "quake", at: 40, dur: 4, from: 1.0, rate: 1 },
   { id: "run", src: "run", at: 44, dur: 4, from: 2.0, rate: 1 },
-  { id: "reel", src: "reel", at: 48, dur: 5, from: 1.0, rate: 1 },
+  { id: "reelA", src: "reel", at: 48, dur: 2.5, from: 5.5, rate: 1 },
+  { id: "reelB", src: "reel", at: 50.5, dur: 2.5, from: 11.0, rate: 1 },
   { id: "share", src: "share", at: 53, dur: 3, from: 0.6, rate: 1 },
-  { id: "end", src: "scene", at: 56, dur: 4, from: 3.0, rate: 1 },
 ];
 const CUTS = { big: [4, 20, 32, 48, 56], fast: [10, 27, 36, 40, 44, 53] };
 
