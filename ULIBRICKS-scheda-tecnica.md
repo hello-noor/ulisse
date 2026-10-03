@@ -1,7 +1,7 @@
 # ULIBRICKS — scheda tecnica e descrizione completa
 
 > Nota sul nome: il progetto si chiama **ULIBRICKS** (non "Uliblocks"). Logo a due righe, "ULI" e "BRICKS", con le lettere su mattoncini colorati.
-> Indirizzo: https://hello-noor.github.io/ulisse/ulibricks/ · Versione descritta: build `v96` del service worker (ottobre 2026).
+> Indirizzo: https://hello-noor.github.io/ulisse/ulibricks/ · Versione descritta: build `v98` del service worker (ottobre 2026).
 
 ---
 
@@ -37,7 +37,7 @@ Slogan dell'app: **Costruisci · Anima · Gioca**.
 | Animali (pezzi con vita propria) | **20** (5 di fattoria, 10 selvaggi, 5 tra mito e dinosauri) |
 | Kit guidati di costruzione | **12** (da 13 a 110 passi) |
 | Oggetti animabili | **18 tipi** (17 oggetti + i personaggi) |
-| Basi: ambienti | **4** (Prato, Acqua, Luna, Neve) + modalità Auto |
+| Basi: ambienti | **9** (Prato, Acqua, Luna, Neve, Sabbia, Lava, Asfalto, Parquet, Scacchi) + modalità Auto |
 | Colori della base | **18** |
 | Progetti salvabili | fino a **24** |
 | Annulla (undo) | fino a **300** passi |
@@ -110,7 +110,7 @@ Si sceglie la categoria, la forma, la **misura** e il **colore**. Una grande ant
 
 La base è fatta di una o più **piastre** che si possono **disegnare, spostare, allargare, togliere, ruotare, duplicare**, quadrate o tonde, fino a una griglia di **48 × 48 bottoncini**.
 
-- **Ambienti:** Prato, Acqua, Luna, Neve, oppure **Auto** (segue la piastra più grande). Cambiano cielo, luce e il fondo del mondo.
+- **Ambienti:** Prato, Acqua, Luna, Neve e le nuove superfici con disegno **Sabbia** (dune e sassolini), **Lava** (roccia nera con crepe incandescenti che brillano), **Asfalto** (con le strisce tratteggiate), **Parquet** (listelli di legno sfalsati) e **Scacchi**, oppure **Auto** (segue la piastra più grande). Cambiano cielo, luce e il fondo del mondo. Si possono mescolare piastre di superfici diverse nella stessa base.
 - **Colori della base:** 18.
 
 ---
