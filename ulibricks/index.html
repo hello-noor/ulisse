@@ -4774,7 +4774,7 @@ const TAILS=[['nessuna','Niente'],['gatto','Gatto'],['cane','Cane'],['volpe','Vo
 const FUR_DEFAULT={elefante:'#9AA0A6',gatto:'#9AA0A6',cane:'#B07A4B',orso:'#7A4A2A',topo:'#9AA0A6',volpe:'#F46036',coniglio:'#F4F4F4',unicorno:'#F4F4F4',diavoletto:'#D7263D',leone:'#E3B86B',drago:'#2E9E4F',cavallo:'#7A4A2A',scoiattolo:'#C0672B'};
 const FURS=['#B07A4B','#7A4A2A','#E3B86B','#F46036','#9AA0A6','#F4F4F4','#2B2B2B','#FFC914','#F28DB2','#7B4CB8','#2E9E4F','#3AB0E0','#D7263D','M#D4AF37'];
 const SUITS=[['niente','Niente'],['astronauta','Astronauta'],['principessa','Principessa'],['sub','Sub'],['pompiere','Pompiere'],['fata','Fata'],['dottore','Dottore'],['ninja','Ninja'],['babbonatale','Babbo Natale'],['ballerina','Ballerina'],['supereroe','Supereroe'],['cavaliere','Cavaliere'],['strega','Strega'],['cuoco','Cuoco'],['pirata','Pirata'],['sirena','Sirena'],['cowboy','Cowboy'],['regina','Regina'],['mago','Mago'],['poliziotto','Poliziotto'],['infermiera','Infermiera'],['peste','Medico peste'],['centurione','Centurione'],['minotauro','Minotauro'],['centauro','Centauro']];
-const SUIT_DEF={astronauta:['#F4F4F4','#1F4FB5'],sub:['#1B2340','#FFC914'],pompiere:['#D7263D','#FFC914'],dottore:['#F4F4F4','#D7263D'],ninja:['#2B2B2B','#D7263D'],supereroe:['#1F4FB5','#D7263D'],cavaliere:['M#C0C4C8','#D7263D'],cuoco:['#F4F4F4','#1F4FB5'],pirata:['#F4F4F4','#D7263D'],cowboy:['#E3B86B','#7A4A2A'],mago:['#2B3A8F','#E8E8E8'],poliziotto:['#1B2340','#FFC914'],peste:['#2B2B2B','#D9C7A3'],principessa:['#F28DB2','#FFC914'],fata:['#7FD36B','#9FD8FF'],ballerina:['#F28DB2','#FDDDE9'],strega:['#2B2B2B','#7B4CB8'],sirena:['#1FB5A8','#F28DB2'],centurione:['#C1272D','M#C0C4C8'],centauro:['#8A5A34','#2B1A10'],babbonatale:['#D7263D','#F4F4F4'],regina:['#7B4CB8','#FFC914'],infermiera:['#F4F4F4','#D7263D']};
+const SUIT_DEF={astronauta:['#F4F4F4','#1F4FB5'],sub:['#1B2340','#FFC914'],pompiere:['#D7263D','#FFC914'],dottore:['#F4F4F4','#D7263D'],ninja:['#2B2B2B','#D7263D'],supereroe:['#1F4FB5','#D7263D'],cavaliere:['M#C0C4C8','#D7263D'],cuoco:['#F4F4F4','#1F4FB5'],pirata:['#F4F4F4','#D7263D'],cowboy:['#E3B86B','#7A4A2A'],mago:['#2B3A8F','#E8E8E8'],poliziotto:['#1B2340','#FFC914'],peste:['#2B2B2B','#D9C7A3'],principessa:['#F28DB2','#FFC914'],fata:['#7FD36B','#9FD8FF'],ballerina:['#F28DB2','#FDDDE9'],strega:['#2B2B2B','#7B4CB8'],sirena:['#1FB5A8','#F28DB2'],centurione:['#C1272D','M#C0C4C8'],babbonatale:['#D7263D','#F4F4F4'],regina:['#7B4CB8','#FFC914'],infermiera:['#F4F4F4','#D7263D']};
 const LASER_COLS=['#3AB0E0','#2E9E4F','#D7263D','#7B4CB8','#FFC914','#F4F4F4'],LASER_DEFAULT='#3AB0E0';
 const HORNS=[['nessuna','Niente'],['diavolo','Diavolo'],['toro','Toro'],['cervo','Cervo'],['ariete','Ariete']];
 const HORN_DEFAULT={diavolo:'#D7263D',toro:'#E8DCC0',cervo:'#7A4A2A',ariete:'#C9B994'};
@@ -5177,19 +5177,6 @@ function buildFigure(ch){
       const pt=add(fgeo('mgbp',()=>new THREE.ConeGeometry(.33,1.3,18)),wht,0,2.85,.34);pt.rotation.x=Math.PI;pt.scale.z=.6;
       bootsOn(blk);
     }
-    if(SCT){
-      legs.forEach(l=>{l.th.visible=false;l.sh.visible=false;});
-      const hoof=mat('#2B1A10');
-      const br=add(fgeo('ctbar',()=>new THREE.SphereGeometry(1,20,14)),C1,0,1.38,-.78);br.scale.set(.72,.72,1.2);
-      const ch2=add(fgeo('ctchest',()=>new THREE.SphereGeometry(1,16,12)),C1,0,1.5,-.05);ch2.scale.set(.62,.62,.62);
-      legs.forEach(l=>{
-        [[.2,'f'],[-1.3,'b']].forEach(([z,k])=>{
-          add(fgeo('ctleg',()=>new THREE.CylinderGeometry(.17,.12,1.38,10)),C1,0,-.68,z,l.h);
-          add(fgeo('cthoof',()=>new THREE.BoxGeometry(.3,.16,.34)),hoof,0,-1.36,z+.02,l.h);});});
-      add(fgeo('ctmane',()=>new THREE.SphereGeometry(.2,10,8)),C2,0,2.1,-.3).scale.set(.6,1.2,.6);
-      if(!tailG){const tg=new THREE.Group();tg.userData.tail=1;g.add(tg);tailG=tg;
-        [[0,1.75,-1.85,.15],[0,1.5,-2.05,.14],[0,1.15,-2.15,.13],[0,.8,-2.15,.11],[0,.5,-2.1,.08]].forEach(p=>{const o=new THREE.Mesh(fgeo('cttl',()=>new THREE.SphereGeometry(1,10,8)),C2);o.scale.set(p[3],p[3]*1.6,p[3]);o.position.set(p[0],p[1],p[2]);o.castShadow=true;tg.add(o);});}
-    }
     if(SL){
       beltOn(blk);
       add(fgeo('plbuck',()=>new THREE.BoxGeometry(.2,.14,.04)),C2,0,1.76,.34);
@@ -5335,6 +5322,20 @@ function buildFigure(ch){
     for(const sx of [-1,1]){add(fgeo('mneye',()=>new THREE.SphereGeometry(.085,12,10)),wht,sx*.16,3.74,.42).scale.set(1,1.1,.5);
       add(fgeo('mnpup',()=>new THREE.SphereGeometry(.04,10,8)),blk,sx*.16,3.74,.455);}
   }
+  if(SCT){ // busto umano, corpo da cavallo (colore = pelo)
+  const C1=furM,C2=mat('#2B1A10');
+    legs.forEach(l=>{l.th.visible=false;l.sh.visible=false;});
+    const hoof=mat('#2B1A10');
+    const br=add(fgeo('ctbar',()=>new THREE.SphereGeometry(1,20,14)),C1,0,1.38,-.78);br.scale.set(.72,.72,1.2);
+    const ch2=add(fgeo('ctchest',()=>new THREE.SphereGeometry(1,16,12)),C1,0,1.5,-.05);ch2.scale.set(.62,.62,.62);
+    legs.forEach(l=>{
+      [[.2,'f'],[-1.3,'b']].forEach(([z,k])=>{
+        add(fgeo('ctleg',()=>new THREE.CylinderGeometry(.17,.12,1.38,10)),C1,0,-.68,z,l.h);
+        add(fgeo('cthoof',()=>new THREE.BoxGeometry(.3,.16,.34)),hoof,0,-1.36,z+.02,l.h);});});
+    add(fgeo('ctmane',()=>new THREE.SphereGeometry(.2,10,8)),C2,0,2.1,-.3).scale.set(.6,1.2,.6);
+    if(!tailG){const tg=new THREE.Group();tg.userData.tail=1;g.add(tg);tailG=tg;
+      [[0,1.75,-1.85,.15],[0,1.5,-2.05,.14],[0,1.15,-2.15,.13],[0,.8,-2.15,.11],[0,.5,-2.1,.08]].forEach(p=>{const o=new THREE.Mesh(fgeo('cttl',()=>new THREE.SphereGeometry(1,10,8)),C2);o.scale.set(p[3],p[3]*1.6,p[3]);o.position.set(p[0],p[1],p[2]);o.castShadow=true;tg.add(o);});}
+  }
   const R=hands[1],Lh=hands[0],accFrom=g.children.length;
   if(ch.acc==='spada'){add(fgeo('blade',()=>new THREE.BoxGeometry(.09,1.3,.22)),mat('M#C0C4C8'),R.x,R.y+.82,R.z);add(fgeo('hilt',()=>new THREE.BoxGeometry(.42,.08,.14)),mat('#2B2B2B'),R.x,R.y+.16,R.z);}
   if(ch.acc==='tridente'){const gd=mat('#E6B422');
@@ -5455,6 +5456,7 @@ function renderCharOpts(){
     curLock=null;
   }else if(cTab==='vestiti'){
     curLock=LOCK.clothes;lockNote(curLock);
+    if(cEdit.suit==='centauro')lockNote(LT(['Il Centauro ha il corpo da cavallo: i pantaloni non si vedono. Il colore del cavallo si cambia in Orecchie (Colore).','The Centaur has a horse body: pants stay hidden. Change the horse color in Ears (Color).']));
     rowHead('shirt','',[{key:'shirt',list:CHAR_COLS,label:'Maglia',dico:'shirt'},{key:'legs',list:CHAR_COLS,label:'Pantaloni',dico:'pants'}]);
     const w=document.createElement('div');w.className='chead'+(curLock?' locked':'');w.innerHTML='<span class="lbl"><span class="ic">'+icoSvg('stripes')+'</span>Disegno</span>';
     const seg=document.createElement('div');seg.className='ctarget';
