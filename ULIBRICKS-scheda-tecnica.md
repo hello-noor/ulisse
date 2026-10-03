@@ -1,7 +1,7 @@
 # ULIBRICKS — scheda tecnica e descrizione completa
 
 > Nota sul nome: il progetto si chiama **ULIBRICKS** (non "Uliblocks"). Logo a due righe, "ULI" e "BRICKS", con le lettere su mattoncini colorati.
-> Indirizzo: https://hello-noor.github.io/ulisse/ulibricks/ · Versione descritta: build `v86` del service worker (ottobre 2026).
+> Indirizzo: https://hello-noor.github.io/ulisse/ulibricks/ · Versione descritta: build `v90` del service worker (ottobre 2026).
 
 ---
 
@@ -35,7 +35,7 @@ Slogan dell'app: **Costruisci · Anima · Gioca**.
 | Colori dei capelli | **17** |
 | Giochi | **4** (Dinamite, Tetris, Terremoto, Corri!) |
 | Animali (pezzi con vita propria) | **10** (5 di fattoria, 5 esotici) |
-| Kit guidati di costruzione | **11** (da 13 a 79 passi) |
+| Kit guidati di costruzione | **12** (da 13 a 110 passi) |
 | Oggetti animabili | **18 tipi** (17 oggetti + i personaggi) |
 | Basi: ambienti | **4** (Prato, Acqua, Luna, Neve) + modalità Auto |
 | Colori della base | **18** |
@@ -195,7 +195,7 @@ Con lo strumento **Aziona** si animano **18 tipi** di elementi: personaggi, ruot
 
 ## 9. Costruire guidati: i Kit
 
-**11 kit** passo per passo, ognuno con la sua difficoltà. Si piazzano i pezzi uno dopo l'altro seguendo le istruzioni.
+**12 kit** passo per passo, ognuno con la sua difficoltà. Si piazzano i pezzi uno dopo l'altro seguendo le istruzioni.
 
 | Kit | Difficoltà | Passi |
 |---|---|---|
@@ -210,6 +210,7 @@ Con lo strumento **Aziona** si animano **18 tipi** di elementi: personaggi, ruot
 | Torre del castello | Medio | 34 |
 | Palazzo | Difficile | 70 |
 | Castello | Difficile | 79 |
+| **Pagoda cinese** (5 piani rossi e oro, ciliegi in fiore) | Difficile | **110** |
 
 ---
 
