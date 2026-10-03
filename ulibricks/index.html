@@ -4863,7 +4863,7 @@ function buildFigure(ch){
   const su=ch.suit||'niente',SA=su==='astronauta',SD=su==='sub',SF=su==='pompiere',SR=su==='dottore',SN=su==='ninja',SH=su==='supereroe',SK=su==='cavaliere',SC=su==='cuoco',SP=su==='pirata',SW=su==='cowboy',SM=su==='mago',SL=su==='poliziotto',SV=su==='peste',SI=su==='principessa',SG=su==='fata',SB=su==='ballerina',SX=su==='strega',SS=su==='sirena',SZ=su==='centurione',SMN=su==='minotauro',SCT=su==='centauro',SQ=su==='regina',SJ=su==='infermiera',SY=su==='babbonatale',SU=su!=='niente'&&!!SUIT_DEF[su],HID=SA||SD||SF||SN||SK||SC||SP||SW||SM||SL||SV||SX||SZ||SY||SMN;
   const sC=SU?(ch.suitColor||SUIT_DEF[su][0]):'',dC=SU?(ch.suitColor2||SUIT_DEF[su][1]):'';
   const gl=(c,o)=>{const k='glass'+c+o;if(!matD.has(k))matD.set(k,new THREE.MeshStandardMaterial({color:c,transparent:true,opacity:o,roughness:.08,metalness:.1,side:THREE.DoubleSide,depthWrite:false}));return matD.get(k);};
-  const legM=mat(SU?(SZ?ch.skin:(SUIT_LEG[su]||sC)):ch.legs),shirtM=mat(SU?((SS||SCT)?ch.skin:sC):ch.shirt),armM=mat(SU?((SS||SCT)?ch.skin:sC):ch.arms),skinM=mat(ch.skin),bullM=mat('#7A4A2A'),hairM=mat(ch.hairColor),handM=(SA||SN||SK)?mat(sC):(SD||SF||SV)?mat('#2B2B2B'):SH?mat(dC):SI?mat('#F4F4F4'):skinM;
+  const legM=mat(SU?(SZ?ch.skin:(SUIT_LEG[su]||sC)):ch.legs),shirtM=mat(SU?((SS||SCT)?ch.skin:sC):ch.shirt),armM=mat(SU?((SS||SCT)?ch.skin:sC):ch.arms),skinM=mat(ch.skin),bullM=skinM,hairM=mat(ch.hairColor),handM=(SA||SN||SK)?mat(sC):(SD||SF||SV)?mat('#2B2B2B'):SH?mat(dC):SI?mat('#F4F4F4'):skinM;
   let tailG=null;
   const legs=[];
   for(const sx of [-1,1]){
@@ -4914,7 +4914,7 @@ function buildFigure(ch){
     hands.push(new V3(sx*.64+sx*1.1*Math.sin(.12),2.88-1.1*Math.cos(.3)*Math.cos(.12),1.1*Math.sin(.3)));
   }
   add(fgeo('neck',()=>new THREE.CylinderGeometry(.2,.2,.12,14)),skinM,0,3.09,0);
-  const head=new THREE.Mesh(fgeo('head',()=>new THREE.CylinderGeometry(.42,.42,.92,32,1,false,Math.PI,Math.PI*2)),[faceMat(ch.face,SMN?'#7A4A2A':ch.skin),SMN?bullM:skinM,SMN?bullM:skinM]);
+  const head=new THREE.Mesh(fgeo('head',()=>new THREE.CylinderGeometry(.42,.42,.92,32,1,false,Math.PI,Math.PI*2)),[faceMat(ch.face,ch.skin),SMN?bullM:skinM,SMN?bullM:skinM]);
   head.position.set(0,3.61,0);head.castShadow=true;g.add(head);
   add(fgeo('hstud',()=>new THREE.CylinderGeometry(.24,.24,.18,16)),SMN?bullM:skinM,0,4.16,0);
   const cap=()=>{const o=add(fgeo('cap',()=>new THREE.SphereGeometry(.47,24,12,0,Math.PI*2,0,Math.PI*.5)),hairM,0,3.98,0);o.scale.y=.75;return o;};
@@ -5417,9 +5417,9 @@ function renderCharOpts(){
   const LOCK={
     hair:hid?LT(['Il costume '+sNm+' copre i capelli: scegli "Niente" nel costume per cambiarli.','The '+sNm+' costume covers the hair: pick "Nothing" in Costume to change it.']):null,
     clothes:hasSuit?LT(['Il costume '+sNm+' sostituisce maglia, pantaloni e disegni: cambia i colori dalla scheda Costume.','The '+sNm+' costume replaces shirt, pants and patterns: change the colors in the Costume tab.']):null,
-    face:(cEdit.suit==='peste'||cEdit.suit==='ninja'||cEdit.suit==='minotauro')?LT(['Il costume '+sNm+' ha il suo volto: la faccia non si cambia.','The '+sNm+' costume has its own face: it can\'t be changed.']):null,
+    face:(cEdit.suit==='peste'||cEdit.suit==='ninja'||cEdit.suit==='minotauro')?LT(['Il costume '+sNm+' copre il volto: l\'espressione non si cambia, ma il colore della pelle sì.','The '+sNm+' costume covers the face: the expression can\'t change, but the skin color can.']):null,
     head:hid?LT(['Il costume '+sNm+' copre la testa: orecchie e muso non si vedono.','The '+sNm+' costume covers the head: ears and snout stay hidden.']):null};
-  document.querySelectorAll('#charTabs button').forEach(b=>{const k={capelli:LOCK.hair,vestiti:LOCK.clothes,faccia:LOCK.face}[b.dataset.t];b.classList.toggle('locked',!!k);if(k)b.title=k;else b.removeAttribute('title');});
+  document.querySelectorAll('#charTabs button').forEach(b=>{const k={capelli:LOCK.hair,vestiti:LOCK.clothes}[b.dataset.t];b.classList.toggle('locked',!!k);if(k)b.title=k;else b.removeAttribute('title');});
   let curLock=null;
   const lockNote=msg=>{if(!msg)return;const n=document.createElement('div');n.className='lockNote';n.setAttribute('role','note');n.innerHTML='<span class="ic">'+icoSvg('lock',2.4)+'</span><span>'+esc(msg)+'</span>';el.appendChild(n);};
   const lockHit=()=>{sndNope();const n=el.querySelector('.lockNote');if(n){n.classList.remove('shake');void n.offsetWidth;n.classList.add('shake');}};
@@ -5450,8 +5450,9 @@ function renderCharOpts(){
     grid(HAIRS,'head',v=>Object.assign({},cEdit,NEUT,{suit:'niente',face:'sorriso',ears:'nessuna',hair:v}),v=>cEdit.hair===v,v=>{cEdit.hair=v;if(HAIR_DEFAULT[v])cEdit.hairColor=HAIR_DEFAULT[v];});
     curLock=null;
   }else if(cTab==='faccia'){
-    curLock=LOCK.face;lockNote(curLock);
+    lockNote(LOCK.face);
     rowHead('face','Faccia',[{key:'skin',list:SKINS,label:'Pelle',dico:'hand'}]);
+    curLock=LOCK.face;
     grid(FACES,'head',v=>Object.assign({},cEdit,NEUT,{suit:'niente',hair:'calvo',ears:'nessuna',face:v}),v=>cEdit.face===v,v=>{cEdit.face=v;});
     curLock=null;
   }else if(cTab==='vestiti'){
@@ -5470,7 +5471,7 @@ function renderCharOpts(){
     const on=SUIT_DEF[cEdit.suit||'niente'];
     if(on){cEdit.suitColor=cEdit.suitColor||on[0];cEdit.suitColor2=cEdit.suitColor2||on[1];}
     rowHead('suit','Costume',on?[{key:'suitColor',list:CHAR_COLS,label:'Colore',dico:'shirt'},{key:'suitColor2',list:CHAR_COLS,label:'Dettagli',dico:'palette'}]:[]);
-    grid(SUITS,'full',v=>Object.assign({},cEdit,NEUT,{suit:v,suitColor:(SUIT_DEF[v]||[])[0],suitColor2:(SUIT_DEF[v]||[])[1],hair:SUIT_HAIR[v]||cEdit.hair}),v=>(cEdit.suit||'niente')===v,v=>{cEdit.suit=v;const sh=SUIT_HAIR[v];if(sh){cEdit.hair=sh;if(HAIR_DEFAULT[sh])cEdit.hairColor=HAIR_DEFAULT[sh];}const d=SUIT_DEF[v];cEdit.suitColor=d?d[0]:undefined;cEdit.suitColor2=d?d[1]:undefined;});
+    grid(SUITS,'full',v=>Object.assign({},cEdit,NEUT,{suit:v,suitColor:(SUIT_DEF[v]||[])[0],suitColor2:(SUIT_DEF[v]||[])[1],hair:SUIT_HAIR[v]||cEdit.hair},v==='minotauro'?{skin:'#7A4A2A'}:{}),v=>(cEdit.suit||'niente')===v,v=>{cEdit.suit=v;const sh=SUIT_HAIR[v];if(sh){cEdit.hair=sh;if(HAIR_DEFAULT[sh])cEdit.hairColor=HAIR_DEFAULT[sh];}const d=SUIT_DEF[v];cEdit.suitColor=d?d[0]:undefined;cEdit.suitColor2=d?d[1]:undefined;if(v==='minotauro')cEdit.skin='#7A4A2A';});
   }else if(cTab==='orecchie'){
     curLock=LOCK.head;lockNote(curLock);
     rowHead('paw','Orecchie',[{key:'fur',list:FURS,label:'Colore',dico:'palette'}]);
