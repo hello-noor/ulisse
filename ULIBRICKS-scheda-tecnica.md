@@ -1,7 +1,7 @@
 # ULIBRICKS — scheda tecnica e descrizione completa
 
 > Nota sul nome: il progetto si chiama **ULIBRICKS** (non "Uliblocks"). Logo a due righe, "ULI" e "BRICKS", con le lettere su mattoncini colorati.
-> Indirizzo: https://hello-noor.github.io/ulisse/ulibricks/ · Versione descritta: build `v98` del service worker (ottobre 2026).
+> Indirizzo: https://hello-noor.github.io/ulisse/ulibricks/ · Versione descritta: build `v99` del service worker (ottobre 2026).
 
 ---
 
@@ -203,7 +203,7 @@ Con lo strumento **Aziona** si animano **18 tipi** di elementi: personaggi, ruot
 
 | Kit | Difficoltà | Passi |
 |---|---|---|
-| Albero | Facilissimo | 17 |
+| Albero (chioma a strati con le mele, panchina e giardino) | Facilissimo | 30 |
 | Giardino | Facilissimo | 17 |
 | Ponte sul fiume | Facile | 21 |
 | Razzo | Facile | 21 |
