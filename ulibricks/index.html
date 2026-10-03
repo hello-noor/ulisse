@@ -1371,8 +1371,13 @@ body.kit #charRail,body.presenting #charRail,body.tetris #charRail,body.driving 
 #charRail .tool[aria-pressed="true"]{box-shadow:0 4px 0 rgba(0,0,0,.22),0 6px 14px rgba(0,0,0,.18);transform:translateX(-4px)}
 #charRail .tool[aria-pressed="true"]::before{content:"";position:absolute;right:-6px;top:50%;width:4px;height:22px;margin-top:-11px;border-radius:2px;background:var(--tc)}
 #charRail .tool.vita{margin-top:4px;border-top:1px solid var(--line);border-radius:0 0 14px 14px}
-#charRail .tool.vita .vdot{position:absolute;right:8px;top:6px;width:9px;height:9px;border-radius:50%;background:#9AA3BD}
-#charRail .tool.vita[aria-pressed="true"] .vdot{background:#1ED760;box-shadow:0 0 0 2px #1ED76055}
+#charRail .tool.vita .vdot{position:static;display:block;font-style:normal;font-size:9.5px;font-weight:900;letter-spacing:.04em;line-height:1;padding:3px 6px;border-radius:8px;background:#9AA3BD;color:#fff;margin-top:1px}
+#charRail .tool.vita[aria-pressed="false"]{background:var(--chip);color:var(--muted);border-color:var(--line)}
+#charRail .tool.vita[aria-pressed="false"] svg{opacity:.45}
+#charRail .tool.vita[aria-pressed="true"]{background:#1E9E4A;color:#fff;border-color:#0F7A34}
+#charRail .tool.vita[aria-pressed="true"] svg,#charRail .tool.vita[aria-pressed="true"] span{color:#fff;stroke:#fff}
+#charRail .tool.vita[aria-pressed="true"] .vdot{background:#fff;color:#0F7A34;box-shadow:none}
+#charRail .tool.vita[aria-pressed="false"] .vdot{background:#6B7390;color:#fff}
 .cpBottom.cpSolo{display:block}
 @media (max-width:640px){#charRail{right:6px}#charRail .tool{width:58px;height:50px;font-size:10px}#charRail .tool svg{width:25px;height:25px}}
 @media (max-height:700px){#charRail .tool{height:44px;width:56px}#charRail .tool span{font-size:9.5px}#charRail .tool svg{width:22px;height:22px}}
@@ -7166,7 +7171,7 @@ function walkTo(b,pt,blk){
   endSwing(b);
   if(blk&&blk.shape==='altalena'){ringAt(pt);swingGo(b,blk);return;}
   ringAt(pt);
-  let ti=Math.floor(pt.x+G/2),tj=Math.floor(pt.z+G/2),sit=false,ride=false,forceRot=null;
+  let ti=Math.floor(pt.x+G/2),tj=Math.floor(pt.z+G/2),sit=false,ride=false,forceRot=null,carSeat=null;
   if(blk&&blk.cells&&blk.cells.length){
     const top=Math.max(...blk.cells.map(c=>c.y1)),cs=blk.cells.filter(c=>c.y1===top);
     let best=cs[0],bd=1e9;cs.forEach(c=>{const d=Math.hypot(c.i-ti,c.j-tj);if(d<bd){bd=d;best=c;}});
@@ -7175,12 +7180,13 @@ function walkTo(b,pt,blk){
       const cmp=componentOf(blk);let sx=0,sz=0,n=0;cmp.forEach(bk=>bk.cells.forEach(c=>{sx+=c.i;sz+=c.j;n++;}));sx/=n;sz/=n;
       let bs=null,bsc=1e9;
       for(const bk of cmp){if(bk.shape==='ruote')continue;for(const c of bk.cells){const top=c.y1;if(occ.get(key(c.i,c.j,top)))continue;
-        const st=seatFor(b,c.i,c.j,top,forceRot,true);if(!st)continue;const sc=Math.hypot(c.i-sx,c.j-sz)-top*.02-(st.kind===3?.3:0);if(sc<bsc){bsc=sc;bs={i:c.i,j:c.j};}}}
-      if(bs){ti=bs.i;tj=bs.j;}
+        const st=seatFor(b,c.i,c.j,top,forceRot,true);if(!st)continue;const sc=Math.hypot(c.i-sx,c.j-sz)-top*.02-(st.kind===3?.3:0);if(sc<bsc){bsc=sc;bs={i:c.i,j:c.j,top};}}}
+      if(bs){ti=bs.i;tj=bs.j;carSeat=bs;}
     }
   }
   const path=planPathTo(b,ti,tj);
   if(!path||path.length<2){sndNope();toast('Non riesce ad arrivare fin lì');return;}
+  if(carSeat&&Math.abs(path[path.length-1].y/PH-carSeat.top)>0.5)path.push({x:carSeat.i-G/2+.5,z:carSeat.j-G/2+.5,y:carSeat.top*PH}); // mezzo alto: salta a bordo
   const last=path[path.length-1],seat=seatFor(b,Math.round(last.x+G/2-.5),Math.round(last.z+G/2-.5),Math.round(last.y/PH),forceRot,sit);
   if(seat&&Math.hypot(seat.cx-last.x,seat.cz-last.z)>.01)path.push({x:seat.cx,z:seat.cz,y:last.y});
   let ls=lifeState.get(b);if(!ls){ls={mode:'pause',pauseT:1};lifeState.set(b,ls);}
@@ -7942,7 +7948,7 @@ function renderCharRail(){
     b.addEventListener('click',()=>{charTool=k;walkSel=null;closeAnimMenu();if(k==='add')armChar(true,true);else{if(charArm)armChar(false,true);charTool=k;}tone('sine',620,820,.05,.06);toast(LT(hints[k]));renderCharPanel();});
     box.appendChild(b);});
   const v=document.createElement('button');v.className='tool vita';v.style.setProperty('--tc','#0E8F8F');v.setAttribute('role','switch');v.setAttribute('aria-checked',!!VITA.on);v.setAttribute('aria-pressed',!!VITA.on);
-  v.innerHTML=icoSvg('face',2.2)+'<span>'+LT(['Vita','Life'])+'</span><i class="vdot" aria-hidden="true"></i>';
+  v.innerHTML=icoSvg('face',2.2)+'<span>'+LT(['Vita','Life'])+'</span><i class="vdot" aria-hidden="true">'+(VITA.on?'ON':'OFF')+'</i>';
   v.addEventListener('click',()=>{VITA.on=!VITA.on;applyVita();try{renderSettings();}catch(e){}tone('sine',VITA.on?600:420,VITA.on?800:300,.06,.08);renderCharPanel();});
   box.appendChild(v);
 }
