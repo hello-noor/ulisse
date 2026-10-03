@@ -1,7 +1,7 @@
 # ULIBRICKS — scheda tecnica e descrizione completa
 
 > Nota sul nome: il progetto si chiama **ULIBRICKS** (non "Uliblocks"). Logo a due righe, "ULI" e "BRICKS", con le lettere su mattoncini colorati.
-> Indirizzo: https://hello-noor.github.io/ulisse/ulibricks/ · Versione descritta: build `v93` del service worker (ottobre 2026).
+> Indirizzo: https://hello-noor.github.io/ulisse/ulibricks/ · Versione descritta: build `v94` del service worker (ottobre 2026).
 
 ---
 
@@ -134,7 +134,7 @@ Due costumi sono **creature miste** e lasciano il resto del personaggio libero:
 - **Facce (16):** Sorriso, Felice, Occhiolino, Linguaccia, Sorpreso, Arrabbiato, Triste, Cuori, Occhiali, Sole, Barba, Baffi, Lentiggini, Dorme, Benda, Robot.
 - **Modelli di maglia (10 + semplice):** Felpa con cappuccio, Camicia, Giacca, Smoking con papillon, Canotta, Dolcevita, Gilet, Maglione, Bomber, Poncho. Non sono costumi: si combinano con colore e fantasie e con tutto il resto.
 - **Modelli di pantaloni (9 + lunghi):** Pantaloncini, Bermuda, Pinocchietto, Salopette, Gonna, Kilt (con calzettoni e sporran), A zampa, Cargo, Tuta con bande.
-- **Fantasie (11):** Righe, Zebra, Leopardo, Tigre, Giraffa, Mucca, Macchie, Stella, Cuore, Fulmine, Bottoni. Si applicano a maglia, pantaloni o entrambi.
+- **Fantasie (17):** Righe, Zebra, Leopardo, Tigre, Giraffa, Mucca, Macchie, Stella, Cuore, Fulmine, Bottoni, **Pois, Scozzese, Rombi, Mimetica, Gessato, Fiori**. Disegnate in alta risoluzione; con gonne e kilt la fantasia va sulla gonna, e non compare sulle gambe scoperte di pantaloncini, bermuda e pinocchietto. Si applicano a maglia, pantaloni o entrambi.
 
 ### Tratti da animale e da creatura
 - **Orecchie (9):** Gatto, Cane, Orso, Topo, Volpe, Coniglio, Unicorno (con il corno), Diavoletto, **Elefante**.
