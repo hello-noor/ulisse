@@ -1,7 +1,7 @@
 # ULIBRICKS — scheda tecnica e descrizione completa
 
 > Nota sul nome: il progetto si chiama **ULIBRICKS** (non "Uliblocks"). Logo a due righe, "ULI" e "BRICKS", con le lettere su mattoncini colorati.
-> Indirizzo: https://hello-noor.github.io/ulisse/ulibricks/ · Versione descritta: build `v99` del service worker (ottobre 2026).
+> Indirizzo: https://hello-noor.github.io/ulisse/ulibricks/ · Versione descritta: build `v100` del service worker (ottobre 2026).
 
 ---
 
@@ -15,10 +15,10 @@ Slogan dell'app: **Costruisci · Anima · Gioca**.
 
 | Cosa | Quantità |
 |---|---|
-| Tipi di pezzo nel catalogo | **78** (più il personaggio, che è un "pezzo" speciale) |
-| Combinazioni forma × misura | **341** varianti di dimensione |
+| Tipi di pezzo nel catalogo | **103** (più il personaggio, che è un "pezzo" speciale) |
+| Combinazioni forma × misura | **424** varianti di dimensione |
 | Colori dei pezzi | **31** (26 pieni + 1 vetro trasparente + 4 metallici: oro, argento, rame, acciaio) |
-| Varianti di pezzo teoriche (misura × colore) | circa **10.500** (341 × 31), senza contare le rotazioni |
+| Varianti di pezzo teoriche (misura × colore) | oltre **13.000** (424 × 31), senza contare le rotazioni |
 | Base di costruzione | griglia fino a **48 × 48 bottoncini** |
 | Altezza massima | **150 piastre**, cioè 50 mattoni impilati (circa **48 cm** nel mondo reale, 1 piastra = 3,2 mm) |
 | Costumi per i personaggi | **24** (+ "Niente") |
@@ -57,16 +57,16 @@ Moltiplicando le scelte strutturali (capelli 19 × facce 16 × oggetti 17 × fan
 - Non ci sono punteggi per costruire: il gioco è **creativo e libero**. I punteggi esistono solo nei mini-giochi (Tetris e Corri!).
 - Il gioco **salva da solo** nel dispositivo e funziona anche senza account.
 
-### Il catalogo dei pezzi (78 tipi in 6 categorie)
+### Il catalogo dei pezzi (103 tipi in 6 categorie)
 
 | Categoria | N. tipi | Esempi |
 |---|---|---|
-| **Mattoni** | 9 | Mattone, Basso, Alto, Pilastro, Liscio, Angolo, Scala, SNOT |
-| **Piastre** | 9 | Piastra (31 misure), Liscia (12), Piastra a L, Jumper, Cunei, Clip |
-| **Forme** | 14 | Tondo, Colonna, Tubo, Disco, Cono, Cupola, Finestra, Porta, Vetrata, Oblò, Recinto, Parabrezza |
+| **Mattoni** | 15 | Mattone, Basso, Alto, Pilastro, Liscio, Angolo, Scala, SNOT e i prismi: Triangolo, Esagono, Croce alta, Mezzo tondo alto, Cuore alto, Stella alta |
+| **Piastre** | 22 | Piastra (31 misure), Liscia (12), Piastra a L, Jumper, Cunei, Clip e le forme: Trapezio, Triangolo, Esagono, Ottagono, Croce, Piastra a T, Semicerchio, Ovale, Cuore, Stella, Rombo, Mezzaluna, Saetta |
+| **Forme** | 17 | Tondo, Colonna, Tubo, Disco, Cono, Cono rovescio, Sfera, Ciambella, Cupola, Finestra, Porta, Vetrata, Oblò, Recinto, Parabrezza |
 | **Tetti e archi** | 12 | Tegole, Curva, Colmo, Spicchio, Piramide, Merli, Camino, tre tipi di Arco |
 | **Meccanica** | 16 | Ruote, Braccio, Cerniera, Elica, Ingranaggio, Mulino, Radar, Giostra, Altalena, Pistone, Semaforo, Orologio, Sirena, Faro, Antenna |
-| **Decorazioni** | 18 | Albero, Palma, Cespuglio, Fiore, Roccia, Fungo, Cactus, Panchina, Fontana, Tavolo, Sedia, Letto, Barile, Cannone, Insegna, Cartello, Bandiera |
+| **Decorazioni** | 21 | Baule, Ombrellone, Nuvola, Albero, Palma, Cespuglio, Fiore, Roccia, Fungo, Cactus, Panchina, Fontana, Tavolo, Sedia, Letto, Barile, Cannone, Insegna, Cartello, Bandiera |
 
 Il pezzo che ha più misure è la **Piastra** (31), poi il **Mattone** (16) e la **Liscia** (12). Alcune insegne permettono di scrivere un testo.
 
@@ -243,7 +243,7 @@ Tutto è raccolto nel menu **Mostra** (e nella scheda omonima):
 
 ## 12. Frasi pronte per l'articolo
 
-- "78 tipi di pezzo, 341 misure, 31 colori: circa 10.500 pezzi diversi da usare."
+- "Oltre 100 tipi di pezzo, 424 misure, 31 colori: più di 13.000 pezzi diversi da usare."
 - "24 costumi, 19 pettinature, 16 facce, e orecchie, code, corna, chele e proboscidi da mescolare: i personaggi possibili sono più di un miliardo di miliardi, in teoria. E puoi essere un minotauro o un centauro."
 - "Venti animali a mattoncini, dal cane da guardia al grifo di Perugia: li accarezzi, li sfami, li porti al guinzaglio e ci cavalchi."
 - "Non c'è un account, non c'è un server: la costruzione vive nel telefono e si condivide con un QR."
