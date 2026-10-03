@@ -1,0 +1,17 @@
+{
+  "name": "51ª Sagra della Porchetta di Costano",
+  "short_name": "Sagra Costano",
+  "description": "Menù, bar, porchetta d'asporto e dolci della Sagra della Porchetta di Costano, 51ª edizione. Ordina, calcola il conto e gioca a PorcoSnake.",
+  "start_url": "./index.html",
+  "scope": "../",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#16100C",
+  "theme_color": "#16100C",
+  "lang": "it",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
