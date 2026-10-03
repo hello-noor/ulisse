@@ -33,7 +33,7 @@ Slogan dell'app: **Costruisci · Anima · Gioca**.
 | Musi (proboscide, zanne, naso da maiale…) | **4** (+ "Niente") |
 | Colori della pelle | **11** |
 | Colori dei capelli | **17** |
-| Giochi | **4** (Dinamite, Tetris, Terremoto, Scappa!) |
+| Giochi | **4** (Dinamite, Tetris, Terremoto, Corri!) |
 | Animali (pezzi con vita propria) | **10** (5 di fattoria, 5 esotici) |
 | Kit guidati di costruzione | **11** (da 13 a 79 passi) |
 | Oggetti animabili | **18 tipi** (17 oggetti + i personaggi) |
@@ -54,7 +54,7 @@ Moltiplicando le scelte strutturali (capelli 19 × facce 16 × oggetti 17 × fan
 - Si parte da una **base verde** (una piastra 32 × 32 modificabile) e si piazzano i pezzi sui bottoncini, come con i veri mattoncini: i pezzi si **incastrano** e si possono impilare, collegare di lato (pezzi SNOT, jumper, clip) e girare.
 - I pezzi sono **mattoni**, **piastre**, **forme**, **tetti e archi**, **meccanica** e **decorazioni**. Ci sono anche pezzi che si muovono (ruote, eliche, ingranaggi, pistoni, giostre, mulini, radar) e pezzi da scena come semaforo, sirena, faro e lampione.
 - La costruzione è **fisica**: i pezzi hanno un'altezza in piastre, si incastrano solo dove possono e il Terremoto può far crollare le parti poco collegate.
-- Non ci sono punteggi per costruire: il gioco è **creativo e libero**. I punteggi esistono solo nei mini-giochi (Tetris e Scappa!).
+- Non ci sono punteggi per costruire: il gioco è **creativo e libero**. I punteggi esistono solo nei mini-giochi (Tetris e Corri!).
 - Il gioco **salva da solo** nel dispositivo e funziona anche senza account.
 
 ### Il catalogo dei pezzi (78 tipi in 6 categorie)
@@ -183,7 +183,7 @@ Con lo strumento **Aziona** si animano **18 tipi** di elementi: personaggi, ruot
 1. **Dinamite.** Si piazzano fino a **5 candelotti** sulla costruzione, in tre raggi di esplosione: **Piccola** (pochi pezzi vicini), **Media** (una zona intera), **Maxi** (tutta la costruzione). Si accende la miccia toccandoli e la costruzione esplode in pezzi.
 2. **Tetris** (nome interno "Pioggia di mattoncini"). Tetris in 3D: si fanno cadere pezzi, si formano blocchi uniti e li si fa **esplodere** quando raggiungono una certa dimensione. Si trascina per spostare, si tocca per girare, si preme giù per far cadere. Ci sono più modalità e livelli.
 3. **Terremoto.** Scuote la costruzione: i pezzi collegati poco rischiano di cadere e i personaggi si spaventano. Si vede quanto resiste.
-4. **Scappa!** Corsa in 3D a **3 corsie** con il proprio personaggio: si scorre per cambiare corsia o saltare, si evitano gli ostacoli e si raccolgono le monete. Gli **ostacoli sono i blocchi della tua costruzione** (circa il 70% del percorso). Ogni costume dà un **bonus**:
+4. **Corri!** Corsa in 3D a **3 corsie** con il proprio personaggio: si scorre per cambiare corsia o saltare, si evitano gli ostacoli e si raccolgono le monete. Gli **ostacoli sono i blocchi della tua costruzione** (circa il 70% del percorso). Ogni costume dà un **bonus**:
    - 🛡️ **Scudo** (sopravvivi a un urto): Cavaliere, Centurione, Pompiere, Poliziotto.
    - 🚀 **Salto alto:** Astronauta, Supereroe, Ballerina, Fata.
    - 🥷 **Doppio salto:** Ninja, Strega, Mago, Sirena.
