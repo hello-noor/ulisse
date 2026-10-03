@@ -15,7 +15,7 @@ const SEGS = [
   { id: "dyn", src: "dyn", at: 32, dur: 4, from: 3.6, rate: 1 },
   { id: "tetris", src: "tetris", at: 36, dur: 4, from: 4.0, rate: 1 },
   { id: "quake", src: "quake", at: 40, dur: 4, from: 1.0, rate: 1 },
-  { id: "run", src: "run", at: 44, dur: 4, from: 2.0, rate: 1 },
+  { id: "run", src: "run", at: 44, dur: 4, from: 6.8, rate: 1 },
   { id: "reelA", src: "reel", at: 48, dur: 2.5, from: 5.5, rate: 1 },
   { id: "reelB", src: "reel", at: 50.5, dur: 2.5, from: 11.0, rate: 1 },
   { id: "share", src: "share", at: 53, dur: 3, from: 0.6, rate: 1 },
@@ -30,11 +30,11 @@ const OVER = [
   { k: "chip", t: 5.2, d: 4.4, n: "103", l: "tipi di pezzo", i: 0 },
   { k: "chip", t: 5.9, d: 3.7, n: "31", l: "colori", i: 1 },
   { k: "chip", t: 6.6, d: 3.0, n: "424", l: "misure", i: 2 },
-  { k: "tag", t: 10.4, d: 9, txt: "12 KIT GUIDATI", c: "blue" },
-  { k: "chip", t: 11.2, d: 8, n: "13→110", l: "passi, pezzo per pezzo", i: 0 },
-  { k: "tag", t: 20.4, d: 6.4, txt: "ANIMA", c: "yellow" },
-  { k: "chip", t: 21.4, d: 5.4, n: "24", l: "costumi", i: 0 },
-  { k: "chip", t: 22.4, d: 4.4, n: "19", l: "pettinature", i: 1 },
+  { k: "tag", t: 10.4, d: 9, txt: "12 KIT GUIDATI", c: "blue", y: 560 },
+  { k: "chip", t: 11.2, d: 8, n: "13→110", l: "passi, pezzo per pezzo", i: 0, by: 710 },
+  { k: "tag", t: 20.4, d: 6.4, txt: "ANIMA", c: "yellow", y: 250 },
+  { k: "chip", t: 21.4, d: 5.4, n: "24", l: "costumi", i: 0, by: 390 },
+  { k: "chip", t: 22.4, d: 4.4, n: "19", l: "pettinature", i: 1, by: 390 },
   { k: "tag", t: 27.3, d: 4.5, txt: "20 ANIMALI", c: "green" },
   { k: "chip", t: 28.2, d: 3.6, n: "10<sup>18</sup>", l: "personaggi possibili", i: 0 },
   { k: "tag", t: 32.3, d: 3.4, txt: "DINAMITE", c: "red" },
@@ -140,11 +140,11 @@ ${audios}
       OVER.forEach((o) => {
         if (o.k === "tag") {
           const fs = 56, w = Math.round(o.txt.length * fs * 0.78 + 90);
-          const b = brick(over, { x:40, y:170, w, h:104, c:P[o.c], n:Math.max(2, Math.round(w/70)), txt:o.txt, fs, tc:TXT[o.c] });
+          const b = brick(over, { x:40, y:o.y||170, w, h:104, c:P[o.c], n:Math.max(2, Math.round(w/70)), txt:o.txt, fs, tc:TXT[o.c] });
           tl.fromTo(b, { x:-900, rotation:-4, opacity:0 }, { x:0, rotation:0, opacity:1, duration:0.5, ease:"back.out(1.7)" }, o.t);
           tl.to(b, { x:-900, opacity:0, duration:0.35, ease:"power2.in" }, o.t + o.d - 0.35);
         } else {
-          const c = el("div", "chip", { top:(330 + o.i*124)+"px" }, over, '<span class="n">'+o.n+'</span><span class="t">'+o.l+'</span>');
+          const c = el("div", "chip", { top:((o.by||330) + o.i*124)+"px" }, over, '<span class="n">'+o.n+'</span><span class="t">'+o.l+'</span>');
           tl.fromTo(c, { x:-900, opacity:0 }, { x:0, opacity:1, duration:0.45, ease:"back.out(1.6)" }, o.t);
           tl.to(c, { x:-900, opacity:0, duration:0.35, ease:"power2.in" }, o.t + o.d - 0.35);
         }
@@ -161,7 +161,7 @@ ${audios}
         const icon = el("img", "abs", { left:"350px", top:"620px", width:"380px", borderRadius:"84px", boxShadow:"0 18px 0 rgba(0,0,0,.2)" }, card); icon.src = "assets/icon-512.png";
         const tag = el("div", "txt", { top:"1070px", fontFamily:'"Archivo Black"', fontWeight:400, fontSize:"60px", color:P.ink }, card, "COSTRUISCI · ANIMA · GIOCA");
         const url = el("div", "abs", { left:"90px", top:"1220px", width:"900px", height:"110px", background:P.ink, color:"#fff", borderRadius:"55px", display:"flex", alignItems:"center", justifyContent:"center", fontWeight:800, fontSize:"38px", boxShadow:"0 10px 0 rgba(0,0,0,.25)" }, card, "hello-noor.github.io/ulisse/ulibricks");
-        const note = el("div", "txt", { top:"1400px", fontSize:"44px", fontWeight:800 }, card, "nel browser · senza account · si installa sul telefono");
+        const note = el("div", "txt", { top:"1400px", fontSize:"44px", fontWeight:800 }, card, "nel browser · senza account");
         tl.fromTo(logo, { scale:0.3, opacity:0, rotation:-6 }, { scale:1, opacity:1, rotation:0, duration:0.6, ease:"back.out(2)" }, T+0.5);
         tl.fromTo(icon, { scale:0.2, opacity:0, rotation:10 }, { scale:1, opacity:1, rotation:0, duration:0.6, ease:"back.out(2)" }, T+0.9);
         tl.fromTo(tag, { y:40, opacity:0 }, { y:0, opacity:1, duration:0.5, ease:"power3.out" }, T+1.4);
