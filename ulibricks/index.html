@@ -4774,7 +4774,7 @@ const TAILS=[['nessuna','Niente'],['gatto','Gatto'],['cane','Cane'],['volpe','Vo
 const FUR_DEFAULT={elefante:'#9AA0A6',gatto:'#9AA0A6',cane:'#B07A4B',orso:'#7A4A2A',topo:'#9AA0A6',volpe:'#F46036',coniglio:'#F4F4F4',unicorno:'#F4F4F4',diavoletto:'#D7263D',leone:'#E3B86B',drago:'#2E9E4F',cavallo:'#7A4A2A',scoiattolo:'#C0672B'};
 const FURS=['#B07A4B','#7A4A2A','#E3B86B','#F46036','#9AA0A6','#F4F4F4','#2B2B2B','#FFC914','#F28DB2','#7B4CB8','#2E9E4F','#3AB0E0','#D7263D','M#D4AF37'];
 const SUITS=[['niente','Niente'],['astronauta','Astronauta'],['principessa','Principessa'],['sub','Sub'],['pompiere','Pompiere'],['fata','Fata'],['dottore','Dottore'],['ninja','Ninja'],['babbonatale','Babbo Natale'],['ballerina','Ballerina'],['supereroe','Supereroe'],['cavaliere','Cavaliere'],['strega','Strega'],['cuoco','Cuoco'],['pirata','Pirata'],['sirena','Sirena'],['cowboy','Cowboy'],['regina','Regina'],['mago','Mago'],['poliziotto','Poliziotto'],['infermiera','Infermiera'],['peste','Medico peste'],['centurione','Centurione'],['minotauro','Minotauro'],['centauro','Centauro']];
-const SUIT_DEF={astronauta:['#F4F4F4','#1F4FB5'],sub:['#1B2340','#FFC914'],pompiere:['#D7263D','#FFC914'],dottore:['#F4F4F4','#D7263D'],ninja:['#2B2B2B','#D7263D'],supereroe:['#1F4FB5','#D7263D'],cavaliere:['M#C0C4C8','#D7263D'],cuoco:['#F4F4F4','#1F4FB5'],pirata:['#F4F4F4','#D7263D'],cowboy:['#E3B86B','#7A4A2A'],mago:['#2B3A8F','#E8E8E8'],poliziotto:['#1B2340','#FFC914'],peste:['#2B2B2B','#D9C7A3'],principessa:['#F28DB2','#FFC914'],fata:['#7FD36B','#9FD8FF'],ballerina:['#F28DB2','#FDDDE9'],strega:['#2B2B2B','#7B4CB8'],sirena:['#1FB5A8','#F28DB2'],centurione:['#C1272D','M#C0C4C8'],minotauro:['#7A4A2A','#E8DCC0'],centauro:['#8A5A34','#2B1A10'],babbonatale:['#D7263D','#F4F4F4'],regina:['#7B4CB8','#FFC914'],infermiera:['#F4F4F4','#D7263D']};
+const SUIT_DEF={astronauta:['#F4F4F4','#1F4FB5'],sub:['#1B2340','#FFC914'],pompiere:['#D7263D','#FFC914'],dottore:['#F4F4F4','#D7263D'],ninja:['#2B2B2B','#D7263D'],supereroe:['#1F4FB5','#D7263D'],cavaliere:['M#C0C4C8','#D7263D'],cuoco:['#F4F4F4','#1F4FB5'],pirata:['#F4F4F4','#D7263D'],cowboy:['#E3B86B','#7A4A2A'],mago:['#2B3A8F','#E8E8E8'],poliziotto:['#1B2340','#FFC914'],peste:['#2B2B2B','#D9C7A3'],principessa:['#F28DB2','#FFC914'],fata:['#7FD36B','#9FD8FF'],ballerina:['#F28DB2','#FDDDE9'],strega:['#2B2B2B','#7B4CB8'],sirena:['#1FB5A8','#F28DB2'],centurione:['#C1272D','M#C0C4C8'],centauro:['#8A5A34','#2B1A10'],babbonatale:['#D7263D','#F4F4F4'],regina:['#7B4CB8','#FFC914'],infermiera:['#F4F4F4','#D7263D']};
 const LASER_COLS=['#3AB0E0','#2E9E4F','#D7263D','#7B4CB8','#FFC914','#F4F4F4'],LASER_DEFAULT='#3AB0E0';
 const HORNS=[['nessuna','Niente'],['diavolo','Diavolo'],['toro','Toro'],['cervo','Cervo'],['ariete','Ariete']];
 const HORN_DEFAULT={diavolo:'#D7263D',toro:'#E8DCC0',cervo:'#7A4A2A',ariete:'#C9B994'};
@@ -4863,7 +4863,7 @@ function buildFigure(ch){
   const su=ch.suit||'niente',SA=su==='astronauta',SD=su==='sub',SF=su==='pompiere',SR=su==='dottore',SN=su==='ninja',SH=su==='supereroe',SK=su==='cavaliere',SC=su==='cuoco',SP=su==='pirata',SW=su==='cowboy',SM=su==='mago',SL=su==='poliziotto',SV=su==='peste',SI=su==='principessa',SG=su==='fata',SB=su==='ballerina',SX=su==='strega',SS=su==='sirena',SZ=su==='centurione',SMN=su==='minotauro',SCT=su==='centauro',SQ=su==='regina',SJ=su==='infermiera',SY=su==='babbonatale',SU=su!=='niente'&&!!SUIT_DEF[su],HID=SA||SD||SF||SN||SK||SC||SP||SW||SM||SL||SV||SX||SZ||SY||SMN;
   const sC=SU?(ch.suitColor||SUIT_DEF[su][0]):'',dC=SU?(ch.suitColor2||SUIT_DEF[su][1]):'';
   const gl=(c,o)=>{const k='glass'+c+o;if(!matD.has(k))matD.set(k,new THREE.MeshStandardMaterial({color:c,transparent:true,opacity:o,roughness:.08,metalness:.1,side:THREE.DoubleSide,depthWrite:false}));return matD.get(k);};
-  const legM=mat(SU?(SZ?ch.skin:(SUIT_LEG[su]||sC)):ch.legs),shirtM=mat(SU?((SS||SCT)?ch.skin:sC):ch.shirt),armM=mat(SU?((SS||SCT)?ch.skin:sC):ch.arms),skinM=mat(SMN?sC:ch.skin),hairM=mat(ch.hairColor),handM=(SA||SN||SK)?mat(sC):(SD||SF||SV)?mat('#2B2B2B'):SH?mat(dC):SI?mat('#F4F4F4'):skinM;
+  const legM=mat(SU?(SZ?ch.skin:(SUIT_LEG[su]||sC)):ch.legs),shirtM=mat(SU?((SS||SCT)?ch.skin:sC):ch.shirt),armM=mat(SU?((SS||SCT)?ch.skin:sC):ch.arms),skinM=mat(ch.skin),bullM=mat('#7A4A2A'),hairM=mat(ch.hairColor),handM=(SA||SN||SK)?mat(sC):(SD||SF||SV)?mat('#2B2B2B'):SH?mat(dC):SI?mat('#F4F4F4'):skinM;
   let tailG=null;
   const legs=[];
   for(const sx of [-1,1]){
@@ -4914,9 +4914,9 @@ function buildFigure(ch){
     hands.push(new V3(sx*.64+sx*1.1*Math.sin(.12),2.88-1.1*Math.cos(.3)*Math.cos(.12),1.1*Math.sin(.3)));
   }
   add(fgeo('neck',()=>new THREE.CylinderGeometry(.2,.2,.12,14)),skinM,0,3.09,0);
-  const head=new THREE.Mesh(fgeo('head',()=>new THREE.CylinderGeometry(.42,.42,.92,32,1,false,Math.PI,Math.PI*2)),[faceMat(ch.face,SMN?sC:ch.skin),skinM,skinM]);
+  const head=new THREE.Mesh(fgeo('head',()=>new THREE.CylinderGeometry(.42,.42,.92,32,1,false,Math.PI,Math.PI*2)),[faceMat(ch.face,SMN?'#7A4A2A':ch.skin),SMN?bullM:skinM,SMN?bullM:skinM]);
   head.position.set(0,3.61,0);head.castShadow=true;g.add(head);
-  add(fgeo('hstud',()=>new THREE.CylinderGeometry(.24,.24,.18,16)),skinM,0,4.16,0);
+  add(fgeo('hstud',()=>new THREE.CylinderGeometry(.24,.24,.18,16)),SMN?bullM:skinM,0,4.16,0);
   const cap=()=>{const o=add(fgeo('cap',()=>new THREE.SphereGeometry(.47,24,12,0,Math.PI*2,0,Math.PI*.5)),hairM,0,3.98,0);o.scale.y=.75;return o;};
   const hc=HID?'calvo':ch.hair;
   if(hc==='corti'||hc==='lunghi'||hc==='coda'||hc==='ricci'){cap();add(fgeo('band',()=>new THREE.CylinderGeometry(.475,.475,.26,24,1,true,Math.PI/2,Math.PI)),dmat(ch.hairColor),0,3.88,0);}
@@ -4960,7 +4960,7 @@ function buildFigure(ch){
     const lgB=fgeo('decalLB',()=>{const pg=new THREE.PlaneGeometry(.44,.72),uv=pg.attributes.uv;for(let i=0;i<uv.count;i++)uv.setY(i,uv.getY(i)*.5);return pg;});
     legs.forEach(l=>{[[l.th,lgT],[l.sh,lgB]].forEach(([m,geo])=>{const d=new THREE.Mesh(geo,pm);d.position.set(0,0,.283);m.add(d);const d2=new THREE.Mesh(geo,pm);d2.position.set(0,0,-.283);d2.rotation.y=Math.PI;m.add(d2);});});}}
   // ---- orecchie animali ----
-  const furM=mat(SMN?sC:(ch.fur||'#B07A4B')),ear=HID?'nessuna':(ch.ears||'nessuna');
+  const furM=mat(ch.fur||'#B07A4B'),ear=HID?'nessuna':(ch.ears||'nessuna');
   if(ear==='gatto'||ear==='volpe'){const fox=ear==='volpe',inner=mat(fox?'#F4F4F4':'#F28DB2');
     for(const sx of [-1,1]){const e=add(fgeo(fox?'efox':'ecat',()=>new THREE.ConeGeometry(.17,fox?.6:.44,4)),furM,sx*.27,fox?4.42:4.32,-.02);e.rotation.z=-sx*.26;e.rotation.y=Math.PI/4;
       const q=add(fgeo(fox?'efoxp':'ecatp',()=>new THREE.ConeGeometry(.1,fox?.42:.3,4)),inner,sx*.27-sx*.014,fox?4.36:4.27,.055);q.rotation.z=-sx*.26;q.rotation.y=Math.PI/4;}}
@@ -5009,7 +5009,7 @@ function buildFigure(ch){
     [[.352,4.641],[.413,4.81]].forEach(([x,y],i)=>{const d=add(fgeo('hdt',()=>new THREE.CylinderGeometry(.035,.045,.4,8)),hm,sx*(x+.157),y+.124,0);d.rotation.z=-sx*.9;});}
   if(hn==='ariete')for(const sx of [-1,1]){const t=add(fgeo('hra',()=>new THREE.TorusGeometry(.26,.09,8,18,Math.PI*1.5)),hm,sx*.46,4.05,-.05);t.rotation.y=sx*Math.PI/2;}
   // ---- code animali (gruppo separato: non segue la testa) ----
-  const tl=SMN?'leone':(SCT?'nessuna':(ch.tail||'nessuna'));
+  const tl=SCT?'nessuna':(ch.tail||'nessuna');
   if(tl!=='nessuna'){
     const tg=new THREE.Group();tg.userData.tail=1;g.add(tg);tailG=tg;
     const tadd=(geo,m,x,y,z)=>{const o=new THREE.Mesh(geo,m);o.position.set(x,y,z);o.castShadow=true;tg.add(o);return o;};
@@ -5177,25 +5177,6 @@ function buildFigure(ch){
       const pt=add(fgeo('mgbp',()=>new THREE.ConeGeometry(.33,1.3,18)),wht,0,2.85,.34);pt.rotation.x=Math.PI;pt.scale.z=.6;
       bootsOn(blk);
     }
-    if(SMN){
-      const tan=mat('#D9B38C'),gold=mat('M#D4AF37');
-      beltOn(mat('#3B2412'));
-      add(fgeo('mnloin',()=>new THREE.BoxGeometry(.9,.6,.06)),mat('#C8372D'),0,1.45,.34);
-      add(fgeo('mnloin',()=>new THREE.BoxGeometry(.9,.6,.06)),mat('#C8372D'),0,1.45,-.34);
-      [[2.05,1.17],[2.4,1.08]].forEach(([y,w])=>add(fgeo('mnstr'+w,()=>new THREE.BoxGeometry(w,.1,.66)),mat('#3B2412'),0,y,0));
-      arms.forEach(a=>add(fgeo('mnband',()=>new THREE.CylinderGeometry(.225,.225,.14,14)),gold,0,-.62,0,a));
-      const mz=add(fgeo('mnmuz',()=>new THREE.SphereGeometry(.26,16,12)),tan,0,3.42,.5);mz.scale.set(1.15,.85,1.2);
-      for(const sx of [-1,1]){
-        add(fgeo('mnnos',()=>new THREE.SphereGeometry(.045,8,6)),mat('#2B1A10'),sx*.1,3.47,.78).scale.set(.8,1.3,.6);
-        const b=add(fgeo('mnhb',()=>new THREE.CylinderGeometry(.09,.12,.5,12)),C2,sx*.58,3.98,0);b.rotation.z=Math.PI/2;
-        const t=add(fgeo('mnht',()=>new THREE.ConeGeometry(.1,.85,12)),C2,sx*.92,4.3,0);t.rotation.z=sx*.55;
-        const e=add(fgeo('mnear',()=>new THREE.SphereGeometry(.2,12,10)),C1,sx*.5,3.78,-.06);e.scale.set(1.3,.55,.8);e.rotation.z=-sx*.25;
-        add(fgeo('mnbrow',()=>new THREE.BoxGeometry(.3,.07,.1)),C1,sx*.17,3.84,.44).rotation.z=sx*-.18;
-      }
-      for(const sx of [-1,1]){add(fgeo('mneye',()=>new THREE.SphereGeometry(.085,12,10)),wht,sx*.16,3.74,.42).scale.set(1,1.1,.5);
-        add(fgeo('mnpup',()=>new THREE.SphereGeometry(.04,10,8)),blk,sx*.16,3.74,.455);}
-      bootsOn(mat('#3B2412'));
-    }
     if(SCT){
       legs.forEach(l=>{l.th.visible=false;l.sh.visible=false;});
       const hoof=mat('#2B1A10');
@@ -5341,6 +5322,19 @@ function buildFigure(ch){
       }
     }
   }
+  if(SMN){ // solo la testa e' di toro: il corpo resta umano e vestibile
+    const C1=bullM,C2=mat(ch.hornColor||'#E8DCC0'),tan=mat('#D9B38C'),wht=mat('#F4F4F4'),blk=mat('#2B2B2B');
+    const mz=add(fgeo('mnmuz',()=>new THREE.SphereGeometry(.26,16,12)),tan,0,3.42,.5);mz.scale.set(1.15,.85,1.2);
+    for(const sx of [-1,1]){
+      add(fgeo('mnnos',()=>new THREE.SphereGeometry(.045,8,6)),mat('#2B1A10'),sx*.1,3.47,.78).scale.set(.8,1.3,.6);
+      const b=add(fgeo('mnhb',()=>new THREE.CylinderGeometry(.09,.12,.5,12)),C2,sx*.58,3.98,0);b.rotation.z=Math.PI/2;
+      const t=add(fgeo('mnht',()=>new THREE.ConeGeometry(.1,.85,12)),C2,sx*.92,4.3,0);t.rotation.z=sx*.55;
+      const e=add(fgeo('mnear',()=>new THREE.SphereGeometry(.2,12,10)),C1,sx*.5,3.78,-.06);e.scale.set(1.3,.55,.8);e.rotation.z=-sx*.25;
+      add(fgeo('mnbrow',()=>new THREE.BoxGeometry(.3,.07,.1)),C1,sx*.17,3.84,.44).rotation.z=sx*-.18;
+    }
+    for(const sx of [-1,1]){add(fgeo('mneye',()=>new THREE.SphereGeometry(.085,12,10)),wht,sx*.16,3.74,.42).scale.set(1,1.1,.5);
+      add(fgeo('mnpup',()=>new THREE.SphereGeometry(.04,10,8)),blk,sx*.16,3.74,.455);}
+  }
   const R=hands[1],Lh=hands[0],accFrom=g.children.length;
   if(ch.acc==='spada'){add(fgeo('blade',()=>new THREE.BoxGeometry(.09,1.3,.22)),mat('M#C0C4C8'),R.x,R.y+.82,R.z);add(fgeo('hilt',()=>new THREE.BoxGeometry(.42,.08,.14)),mat('#2B2B2B'),R.x,R.y+.16,R.z);}
   if(ch.acc==='tridente'){const gd=mat('#E6B422');
@@ -5422,7 +5416,7 @@ function renderCharOpts(){
   const LOCK={
     hair:hid?LT(['Il costume '+sNm+' copre i capelli: scegli "Niente" nel costume per cambiarli.','The '+sNm+' costume covers the hair: pick "Nothing" in Costume to change it.']):null,
     clothes:hasSuit?LT(['Il costume '+sNm+' sostituisce maglia, pantaloni e disegni: cambia i colori dalla scheda Costume.','The '+sNm+' costume replaces shirt, pants and patterns: change the colors in the Costume tab.']):null,
-    face:(cEdit.suit==='peste'||cEdit.suit==='ninja')?LT(['La maschera del costume '+sNm+' copre la faccia.','The '+sNm+' mask covers the face.']):null,
+    face:(cEdit.suit==='peste'||cEdit.suit==='ninja'||cEdit.suit==='minotauro')?LT(['Il costume '+sNm+' ha il suo volto: la faccia non si cambia.','The '+sNm+' costume has its own face: it can\'t be changed.']):null,
     head:hid?LT(['Il costume '+sNm+' copre la testa: orecchie e muso non si vedono.','The '+sNm+' costume covers the head: ears and snout stay hidden.']):null};
   document.querySelectorAll('#charTabs button').forEach(b=>{const k={capelli:LOCK.hair,vestiti:LOCK.clothes,faccia:LOCK.face}[b.dataset.t];b.classList.toggle('locked',!!k);if(k)b.title=k;else b.removeAttribute('title');});
   let curLock=null;
