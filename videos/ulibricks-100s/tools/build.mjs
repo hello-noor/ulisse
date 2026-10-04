@@ -20,21 +20,21 @@ const SEGS = [
   { id: "vita", src: "vita", at: 38, dur: 6, from: 1.0, rate: 1 },
   // 03 ANIMALI 44–66
   { id: "atab", src: "animals_tab", at: 44, dur: 3.5, from: 0.7, rate: 1.5 },
-  { id: "zoo", src: "zoo", at: 47.5, dur: 18.5, from: 0.8, rate: 1.35 },
+  { id: "zoo", src: "zoo", at: 47.5, dur: 18.5, from: 0.8, rate: 1.8 },
   // 04 VEICOLI 66–78
   { id: "car", src: "car", at: 66, dur: 6, from: 1.0, rate: 1, steer: "car.steer.json" },
   { id: "truck", src: "truck", at: 72, dur: 6, from: 1.0, rate: 1, steer: "truck.steer.json" },
   // 05 GIOCA 78–88
-  { id: "dyn", src: "dyn", at: 78, dur: 3, from: 3.0, rate: 1 },
-  { id: "tetris", src: "tetris", at: 81, dur: 2, from: 4.5, rate: 1 },
-  { id: "quake", src: "quake", at: 83, dur: 1.5, from: 1.0, rate: 1 },
-  { id: "run", src: "run", at: 84.5, dur: 3.5, from: 6.5, rate: 1 },
+  { id: "dyn", src: "dyn", at: 78, dur: 4, from: 3.6, rate: 1 },
+  { id: "tetris", src: "tetris", at: 82, dur: 1.8, from: 4.6, rate: 1 },
+  { id: "quake", src: "quake", at: 83.8, dur: 1.5, from: 1.0, rate: 1 },
+  { id: "run", src: "run", at: 85.3, dur: 2.7, from: 6.5, rate: 1 },
   // 06 MOSTRA 88–92
   { id: "reel", src: "reel", at: 88, dur: 2, from: 11, rate: 1 },
   { id: "share", src: "share", at: 90, dur: 2, from: 1.0, rate: 1 },
 ];
 // finestre in cui il telefono si ingrandisce a tutto schermo (momenti d'azione)
-const PUSH = [[79.2, 81.0], [84.6, 88.0]];
+const PUSH = [[80.4, 82.0], [85.3, 88.0]];
 
 const CHAPTERS = [
   { t: 6, e: 26, accent: "#3b7bff", title: "COSTRUISCI", fs: 124 },
@@ -57,17 +57,18 @@ const HEAD = [
   { t: 34.2, d: 3.7, txt: "24 COSTUMI" },
   { t: 38.2, d: 5.7, txt: "VIVONO DA SOLI" },
   { t: 44.2, d: 3.2, txt: "20 ANIMALI" },
-  { t: 47.7, d: 3.2, txt: "TOCCA UN ANIMALE" },
-  { t: 51.0, d: 3.8, txt: "DRAGO AL GUINZAGLIO!" },
-  { t: 54.9, d: 3.6, txt: "ANCHE IL GRIFO!" },
-  { t: 58.6, d: 3.6, txt: "CAVALCA LA CHIMERA" },
-  { t: 62.3, d: 3.6, txt: "T-REX AFFAMATO, POLPO COCCOLONE" },
+  { t: 47.6, d: 2.3, txt: "TOCCA UN ANIMALE" },
+  { t: 49.9, d: 2.8, txt: "DRAGO AL GUINZAGLIO!" },
+  { t: 52.7, d: 3.0, txt: "ANCHE IL GRIFO!" },
+  { t: 55.7, d: 3.6, txt: "CAVALCA LA CHIMERA" },
+  { t: 59.3, d: 3.4, txt: "T-REX AFFAMATO" },
+  { t: 62.7, d: 3.3, txt: "POLPO COCCOLONE" },
   { t: 66.2, d: 5.6, txt: "GUIDALO COL TELEFONO" },
   { t: 72.2, d: 5.6, txt: "CAMION CON DRAGO E T-REX" },
-  { t: 78.2, d: 2.7, txt: "DINAMITE!" },
-  { t: 81.2, d: 1.7, txt: "TETRIS 3D" },
-  { t: 83.2, d: 1.2, txt: "TERREMOTO" },
-  { t: 84.7, d: 3.2, txt: "CORRI!" },
+  { t: 78.2, d: 2.1, txt: "DINAMITE!" },
+  { t: 82.1, d: 1.6, txt: "TETRIS 3D" },
+  { t: 83.9, d: 1.3, txt: "TERREMOTO" },
+  { t: 85.4, d: 2.5, txt: "CORRI!" },
   { t: 88.2, d: 1.7, txt: "SHOWREEL" },
   { t: 90.2, d: 1.7, txt: "CONDIVIDI" },
 ];
@@ -84,16 +85,17 @@ const CAPS = [
   [34.2, 3.7, "Dalla principessa al Minotauro e al Centauro."],
   [38.2, 5.7, "Camminano, parlano, si siedono e fanno amicizia tra loro."],
   [44.2, 3.2, "Fattoria, selvaggi, mito e dinosauri."],
-  [47.7, 3.2, "Scegli un personaggio e tocca un animale."],
-  [51.0, 3.8, "Il drago? Si porta a spasso al guinzaglio."],
-  [54.9, 3.6, "Anche il grifo di Perugia. Sì, davvero."],
-  [58.6, 3.6, "Salta in sella: la chimera ti porta in giro."],
-  [62.3, 3.6, "Cibo al T-rex, coccole al polpo, ognuno fa il suo verso."],
+  [47.6, 2.3, "Scegli un personaggio e tocca un animale."],
+  [49.9, 2.8, "Il drago? Si porta a spasso al guinzaglio."],
+  [52.7, 3.0, "Anche il grifo di Perugia. Sì, davvero."],
+  [55.7, 3.6, "Salta in sella: la chimera ti porta in giro."],
+  [59.3, 3.4, "Cibo al T-rex: gnam, gnam."],
+  [62.7, 3.3, "Coccole al polpo: ognuno ha il suo verso."],
   [66.2, 5.6, "Inclina il telefono: avanti accelera, di lato sterza."],
   [72.2, 5.6, "Se ha le ruote lo guidi: anche un camion pieno di animali."],
-  [78.2, 2.7, "Fai esplodere la tua città con la dinamite."],
-  [81.2, 1.7, "Tetris in 3D: i blocchi esplodono."],
-  [84.7, 3.2, "Corri! Gli ostacoli sono i tuoi blocchi."],
+  [78.2, 2.1, "Fai esplodere la tua città con la dinamite."],
+  [82.1, 1.6, "Tetris in 3D: i blocchi esplodono."],
+  [85.4, 2.5, "Corri! Gli ostacoli sono i tuoi blocchi."],
   [88.2, 3.7, "Showreel, foto, libretto e QR della tua costruzione."],
 ];
 
@@ -134,6 +136,7 @@ SEGS.filter((s) => s.steer).forEach((s) => {
   });
 });
 
+fs.writeFileSync(new URL("../assets/segs.json", import.meta.url), JSON.stringify({ SEGS, PUSH, C0, TOTAL }));
 const videos = SEGS.map((s) => `        <video id="v-${s.id}" class="clip vid" src="assets/v/${s.src}.mp4" muted playsinline data-start="${s.at}" data-duration="${s.dur}" data-media-start="${s.from}" data-playback-rate="${s.rate}" data-track-index="1"></video>`).join("\n");
 const audios = SFX.map(([f, t, v], i) => `      <audio id="x${String(i).padStart(2, "0")}" src="assets/sfx/${f}.mp3" data-start="${t.toFixed(2)}" data-duration="${Math.min(SD[f], TOTAL - t).toFixed(2)}" data-track-index="${12 + (i % 5)}" data-volume="${v}"></audio>`).join("\n");
 
@@ -192,6 +195,7 @@ ${videos}
       <div id="hud" class="clip" data-start="0" data-duration="${TOTAL}" data-track-index="3" style="position:absolute; inset:0"></div>
       <div id="cta" class="clip" data-start="${C0 - 0.3}" data-duration="${TOTAL - C0 + 0.3}" data-track-index="4" style="position:absolute; inset:0"></div>
       <div id="wipe"></div>
+      <audio id="gsfx" src="assets/gamesfx.mp3" data-start="0" data-duration="${TOTAL}" data-track-index="9" data-volume="1"></audio>
       <audio id="music" src="assets/music.mp3" data-start="0" data-duration="${TOTAL}" data-track-index="10" data-volume="0.85"></audio>
 ${audios}
     </div>
@@ -208,6 +212,7 @@ ${audios}
         if (css) for (const k in css) { if (k.startsWith("--")) e.style.setProperty(k, css[k]); else e.style[k] = css[k]; }
         if (html != null) e.innerHTML = html; if (parent) parent.appendChild(e); return e;
       }
+      const endT = (t, d) => { const pu = PUSH.find(([a]) => t < a - 0.05 && t + d > a); return pu ? pu[0] - 0.05 : t + d; };
       const chapterOf = (t) => CHAPTERS.find((c) => t >= c.t - 0.01 && t < c.e) || CHAPTERS[0];
       const tl = gsap.timeline({ paused: true });
       const bg = document.getElementById("bg"), phone = document.getElementById("phone"), screen = document.getElementById("screen"), hud = document.getElementById("hud"), cta = document.getElementById("cta"), wipe = document.getElementById("wipe");
@@ -268,7 +273,7 @@ ${audios}
         const m = h.txt.match(/^(\\d+)(.*)$/);
         if (m) { e.innerHTML = '<span style="color:' + ch.accent + '" class="cnt">0</span>' + m[2]; } else { e.innerHTML = h.txt.replace(/(\\S+)$/, '<span style="color:' + ch.accent + '">$1</span>'); }
         const maxw = 1040; const len = h.txt.length; e.style.fontSize = (len > 24 ? 54 : len > 18 ? 62 : 70) + "px";
-        const pu = PUSH.find(([a, b]) => h.t < b && h.t + h.d > a); const tend = pu ? Math.min(h.t + h.d, pu[0] - 0.05) : h.t + h.d;
+        const tend = endT(h.t, h.d);
         tl.fromTo(e, { y: 60, opacity: 0, scale: 0.9 }, { y: 0, opacity: 1, scale: 1, duration: 0.5, ease: "back.out(1.7)" }, h.t);
         tl.to(e, { y: -24, opacity: 0, duration: 0.3, ease: "power2.in" }, tend - 0.3);
         if (m) { const nEl = e.querySelector(".cnt"), o = { v: 0 }, to = +m[1]; tl.to(o, { v: to, duration: 0.9, ease: "power2.out", onUpdate() { nEl.textContent = Math.round(o.v); } }, h.t + 0.1); }
@@ -277,7 +282,7 @@ ${audios}
       /* ── didascalie in basso ── */
       CAPS.forEach(([t, d, txt]) => {
         const p = el("div", "capp", { opacity: 0, top: "1700px" }, hud, txt);
-        const pu = PUSH.find(([a, b]) => t < b && t + d > a); const tend = pu ? Math.min(t + d, pu[0] - 0.05) : t + d;
+        const tend = endT(t, d);
         tl.fromTo(p, { y: 50, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: "power3.out" }, t);
         tl.to(p, { y: -20, opacity: 0, duration: 0.3, ease: "power2.in" }, tend - 0.3);
       });
@@ -287,7 +292,7 @@ ${audios}
       STICK.forEach((s) => {
         const e = el("div", "stk", { "--c": CC[s.ci], "--tc": TC[s.ci], opacity: 0 }, hud);
         e.innerHTML = '<div class="n' + (s.txt || s.html ? " w" : "") + '">' + (s.html || s.txt || "0") + '</div><div class="l">' + s.l + "</div>";
-        const pu = PUSH.find(([a, b]) => s.t < b && s.t + s.d > a); const tend = pu ? Math.min(s.t + s.d, pu[0] - 0.05) : s.t + s.d;
+        const tend = endT(s.t, s.d);
         tl.fromTo(e, { scale: 0.1, opacity: 0, rotation: -40 }, { scale: 1, opacity: 1, rotation: 9, duration: 0.6, ease: "back.out(2.2)" }, s.t);
         tl.to(e, { rotation: 4, duration: 1.0, ease: "sine.inOut", yoyo: true, repeat: 1 }, s.t + 0.6);
         tl.to(e, { scale: 0.1, opacity: 0, rotation: 40, duration: 0.35, ease: "power2.in" }, tend - 0.35);
