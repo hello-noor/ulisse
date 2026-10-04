@@ -9,8 +9,9 @@ const read = (f) => { try { return JSON.parse(fs.readFileSync(new URL("../assets
 const mt = read("tetris2.marks.json"), mr = read("run2.marks.json");
 const mk = (m, k, d) => { const e = m && m.marks.find(([n]) => n === k); return e ? e[1] : d; };
 const tStart = mk(mt, "start", 4.4), tBoom = mk(mt, "boom", 14.5);
-const tBfrom = tStart + 0.5, tBrate = 1.7, tBdur = +((tBoom + 2.6 - tBfrom) / tBrate).toFixed(2);
-const boomV = 83.6 + (tBoom - tBfrom) / tBrate;
+const tBoom2 = (mt && mt.marks.filter(([n]) => n === "boom").pop() || [0, tBoom])[1];
+const tBfrom = tStart + 0.5, tBrate = 1.3, tBdur = +((tBoom2 + 2.0 - tBfrom) / tBrate).toFixed(2);
+const boomV = 83.6 + (tBoom - tBfrom) / tBrate, boomV2 = 83.6 + (tBoom2 - tBfrom) / tBrate;
 const rOpen = mk(mr, "open", 1.0), rMount = mk(mr, "mount", 7.25), rGo = mk(mr, "go", 8.25);
 const rAdur = 4.6, rArate = (rMount + 1.0 - (rOpen - 0.2)) / rAdur;
 // linea del tempo del capitolo GIOCA (dipende dalla durata delle riprese)
@@ -47,7 +48,7 @@ const SEGS = [
   { id: "share", src: "share", at: +(MA + 2).toFixed(2), dur: 2, from: 1.0, rate: 1 },
 ];
 // finestre in cui il telefono si ingrandisce a tutto schermo (momenti d'azione)
-const PUSH = [[80.4, 82.0], [+(boomV - 0.7).toFixed(2), +(boomV + 1.5).toFixed(2)], [+(RA + 0.2).toFixed(2), +(MA - 0.05).toFixed(2)]];
+const PUSH = [[80.4, 82.0], [+(boomV - 0.6).toFixed(2), +(boomV + 1.4).toFixed(2)], [+(boomV2 - 0.6).toFixed(2), +(boomV2 + 1.5).toFixed(2)], [+(RA + 0.2).toFixed(2), +(MA - 0.05).toFixed(2)]];
 
 const CHAPTERS = [
   { t: 6, e: 26, accent: "#3b7bff", title: "COSTRUISCI", fs: 124 },
@@ -81,7 +82,8 @@ const HEAD = [
   { t: 78.2, d: 2.1, txt: "DINAMITE!" },
   { t: 82.05, d: 1.5, txt: "PIOGGIA FITTA" },
   { t: 83.7, d: +(boomV - 0.8 - 83.7).toFixed(2), txt: "PIÙ PEZZI INSIEME" },
-  { t: +(boomV - 0.7).toFixed(2), d: 2.2, txt: "BLOCCO UNITO: BOOM!" },
+  { t: +(boomV - 0.6).toFixed(2), d: 2.0, txt: "BLOCCO UNITO: BOOM!" },
+  ...(boomV2 - boomV > 2.6 ? [{ t: +(boomV2 - 0.6).toFixed(2), d: 2.1, txt: "E ANCORA BOOM!" }] : []),
   { t: +(QA + 0.1).toFixed(2), d: 1.3, txt: "TERREMOTO" },
   { t: +(RA + 0.1).toFixed(2), d: 2.3, txt: "SCEGLI IL PERSONAGGIO" },
   { t: +(RA + 2.5).toFixed(2), d: 2.0, txt: "OGNUNO HA UN BONUS" },
@@ -233,7 +235,7 @@ ${audios}
         if (css) for (const k in css) { if (k.startsWith("--")) e.style.setProperty(k, css[k]); else e.style[k] = css[k]; }
         if (html != null) e.innerHTML = html; if (parent) parent.appendChild(e); return e;
       }
-      const endT = (t, d) => { const pu = PUSH.find(([a]) => t < a - 0.05 && t + d > a); return pu ? pu[0] - 0.05 : t + d; };
+      const endT = (t, d) => { const pu = PUSH.find(([a]) => a - t > 0.9 && t + d > a); return pu ? pu[0] - 0.05 : t + d; };
       const chapterOf = (t) => CHAPTERS.find((c) => t >= c.t - 0.01 && t < c.e) || CHAPTERS[0];
       const tl = gsap.timeline({ paused: true });
       const bg = document.getElementById("bg"), phone = document.getElementById("phone"), screen = document.getElementById("screen"), hud = document.getElementById("hud"), cta = document.getElementById("cta"), wipe = document.getElementById("wipe");
@@ -287,6 +289,7 @@ ${audios}
         const e = el("div", "hl", { color: "#fff" }, hud);
         const m = h.txt.match(/^(\\d+)(.*)$/);
         if (m) { e.innerHTML = '<span style="color:' + ch.accent + '" class="cnt">0</span>' + m[2]; } else { e.innerHTML = h.txt.replace(/(\\S+)$/, '<span style="color:' + ch.accent + '">$1</span>'); }
+        if (PUSH.some(([a, b]) => a <= h.t + 0.3 && b > h.t)) e.style.top = "300px";
         const maxw = 1040; const len = h.txt.length; e.style.fontSize = (len > 24 ? 54 : len > 18 ? 62 : 70) + "px";
         const tend = endT(h.t, h.d);
         tl.fromTo(e, { y: 60, opacity: 0, scale: 0.9 }, { y: 0, opacity: 1, scale: 1, duration: 0.5, ease: "back.out(1.7)" }, h.t);
