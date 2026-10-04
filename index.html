@@ -132,11 +132,6 @@
   footer{margin-top:34px;text-align:center;color:var(--dim);font-size:14.5px;line-height:1.6;text-wrap:balance}
   footer .hint{display:inline-block;margin-top:12px;padding:12px 18px;border-radius:16px;
     background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);max-width:50ch}
-  footer .song{display:inline-flex;align-items:center;gap:10px;margin-top:22px;padding:12px 20px;border-radius:99px;
-    background:#1DB954;color:#10131A;font-family:var(--display);font-weight:800;font-size:16px;text-decoration:none;
-    box-shadow:0 4px 0 #148a3c;transition:transform .14s}
-  footer .song:hover{transform:translateY(-2px)}
-  footer .song:focus-visible{outline:4px solid var(--cream);outline-offset:4px}
   footer .sig{margin-top:18px;font-size:13px;opacity:.8}
 
   @media (max-width:420px){
@@ -172,6 +167,7 @@
       <a class="app" href="linea-del-20/"><div class="top"><p class="name">Linea del 20</p></div></a>
       <a class="app" href="Calcolo%20LDL%20nonna/"><div class="top"><p class="name">Diario LDL di Nonna Rosella</p></div></a>
       <a class="app" href="porchetta-costano/"><div class="top"><p class="name">Sagra della Porchetta di Costano</p></div></a>
+      <a class="app" href="https://open.spotify.com/intl-it/track/4C6T5A5QwD4WxJORa96lUd?si=bfba116bb7574968"><div class="top"><p class="name">Ulisse Polytropos (Spotify)</p></div></a>
     </noscript>
   </main>
 
@@ -180,7 +176,6 @@
     <br>
     <span class="hint">Per averle sul telefono: apri l'app che ti piace e tocca <b>Installa</b>.
       Su iPhone: <b>Condividi</b>, poi <b>Aggiungi&nbsp;a&nbsp;Home</b>.</span>
-    <div><a class="song" href="https://open.spotify.com/intl-it/track/4C6T5A5QwD4WxJORa96lUd?si=bfba116bb7574968" target="_blank" rel="noopener">🎵 Ascolta la canzone di Ulisse su Spotify: «Ulisse Polytropos»</a></div>
     <div class="sig">Fatto con amore da Ulisse e papà</div>
   </footer>
 
@@ -262,6 +257,19 @@ const APPS = [
     cartella: "porchetta-costano/",
     icona: "porchetta-costano/icon-192.png",
     colore: "#F07A1E"
+  },
+  {
+    nome: "Ulisse Polytropos",
+    tipo: "Musica · Spotify",
+    testo: "La canzone di Ulisse: ascoltala su Spotify.",
+    punti: [
+      "Si apre in Spotify, serve la connessione a internet"
+    ],
+    cartella: "https://open.spotify.com/intl-it/track/4C6T5A5QwD4WxJORa96lUd?si=bfba116bb7574968",
+    emoji: "🎵",
+    bottone: "Ascolta su Spotify",
+    esterno: true,
+    colore: "#1DB954"
   }
 ];
 
@@ -279,18 +287,19 @@ for (const app of APPS){
   const a = document.createElement("a");
   a.className = "app" + (app.grande ? " big" : "");
   a.href = app.cartella;
+  if (app.esterno){ a.target = "_blank"; a.rel = "noopener"; }
   a.style.setProperty("--accent", app.colore);
   a.style.setProperty("--accent-dark", ombra(app.colore));
   a.innerHTML = `
     <div class="top">
-      <span class="ico"><img src="${app.icona}" width="128" height="128" alt="" loading="lazy"></span>
+      <span class="ico">${app.emoji ? `<span style="font-size:44px" aria-hidden="true">${app.emoji}</span>` : `<img src="${app.icona}" width="128" height="128" alt="" loading="lazy">`}</span>
       <div class="heads"><span class="tag">${app.tipo}</span><h2 class="name">${app.nome}</h2></div>
     </div>
     <div class="body">
       <p class="desc">${app.testo}</p>
       <ul class="feat">${app.punti.map(p => `<li>${p}</li>`).join("")}</ul>
       ${app.nota ? `<p class="note">${app.nota}</p>` : ""}
-      <span class="go">Apri <span aria-hidden="true">→</span></span>
+      <span class="go">${app.bottone || "Apri"} <span aria-hidden="true">→</span></span>
     </div>`;
   grid.append(a);
 }
