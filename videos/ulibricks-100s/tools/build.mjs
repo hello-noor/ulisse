@@ -192,7 +192,7 @@ ${videos}
       <div id="hud" class="clip" data-start="0" data-duration="${TOTAL}" data-track-index="3" style="position:absolute; inset:0"></div>
       <div id="cta" class="clip" data-start="${C0 - 0.3}" data-duration="${TOTAL - C0 + 0.3}" data-track-index="4" style="position:absolute; inset:0"></div>
       <div id="wipe"></div>
-      <audio id="music" src="assets/music.mp3" data-start="0" data-duration="${TOTAL}" data-track-index="10" data-volume="0.5"></audio>
+      <audio id="music" src="assets/music.mp3" data-start="0" data-duration="${TOTAL}" data-track-index="10" data-volume="0.85"></audio>
 ${audios}
     </div>
     <script>
