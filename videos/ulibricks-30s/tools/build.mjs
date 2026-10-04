@@ -10,8 +10,8 @@ const read = (f) => JSON.parse(fs.readFileSync(new URL("../assets/" + f, import.
 // ── riprese: at = quando parte, dur = durata, from = punto nella ripresa, rate = velocità
 // cam = movimento di camera sulla ripresa [scala inizio, scala fine, origine]
 const SEGS = [
-  { id: "hero", src: "hero", at: 0, dur: 1.8, from: 2.2, rate: 1.3, cam: [1.3, 1.5, "50% 45%"] },
-  { id: "reel", src: "reel", at: 1.8, dur: 3.8, from: 10.0, rate: 2.0, cam: [1.12, 1.24, "50% 58%"] },
+  { id: "hero", src: "hero", at: 0, dur: 2.4, from: 1.6, rate: 1.2, cam: [1.3, 1.55, "50% 45%"] },
+  { id: "reel", src: "reel", at: 2.4, dur: 3.2, from: 10.0, rate: 2.4, cam: [1.12, 1.24, "50% 58%"] },
   { id: "creator", src: "creator2", at: 5.6, dur: 3.2, from: 0.4, rate: 2.6, cam: [1.0, 1.32, "50% 16%"] },
   { id: "drago", src: "zoo", at: 8.8, dur: 1.5, from: 2.2, rate: 1.5, cam: [1.25, 1.38, "42% 58%"] },
   { id: "chimera", src: "zoo", at: 10.3, dur: 2.3, from: 19.6, rate: 1.7, cam: [1.3, 1.42, "50% 56%"] },
@@ -32,14 +32,14 @@ const TBOOM = 18.0 + (8.23 - 7.0); // esplosione del Tetris
 
 // ── parole: n = numero capitolo, w = parola gigante, s = riga, c = colore
 const WORDS = [
-  { t: 1.8, e: 5.6, n: "01", w: "COSTRUISCI", s: "Città intere, un mattoncino alla volta.", c: "#4aa3ff", g: "linear-gradient(100deg,#7cc4ff,#2f6bff 60%,#8a5cff)" },
-  { t: 5.6, e: 8.8, n: "02", w: "CREA", s: "Miliardi di miliardi di personaggi.", c: "#ff5cb8", g: "linear-gradient(100deg,#ff9ad5,#ee45a8 55%,#9b5cff)" },
-  { t: 8.8, e: 10.3, n: "03", w: "DRAGHI", s: "Sì, anche al guinzaglio.", c: "#3dff9e", g: "linear-gradient(100deg,#a6ffcf,#22d38a 55%,#19b6c9)" },
-  { t: 10.3, e: 12.6, n: "03", w: "CAVALCA", s: "Una chimera? Salta in sella.", c: "#3dff9e", g: "linear-gradient(100deg,#a6ffcf,#22d38a 55%,#19b6c9)" },
-  { t: 12.6, e: 15.6, n: "04", w: "GUIDA", s: "Inclina il telefono per sterzare.", c: "#4fd8ff", g: "linear-gradient(100deg,#b0f1ff,#22c4f0 55%,#2f6bff)" },
-  { t: 15.6, e: 18.0, n: "05", w: "BOOM!", s: "Poi fai saltare tutto.", c: "#ff7a3d", g: "linear-gradient(100deg,#ffe066,#ff6a3d 50%,#ff2d55)", at: BOOM },
-  { t: 18.0, e: 19.7, n: "06", w: "GIOCA", s: "Pioggia di mattoncini.", c: "#ffc72c", g: "linear-gradient(100deg,#fff38a,#ffc72c 50%,#ff8a3d)" },
-  { t: 19.7, e: 21.6, n: "06", w: "CORRI", s: "Con i personaggi che hai creato.", c: "#ffc72c", g: "linear-gradient(100deg,#fff38a,#ffc72c 50%,#ff8a3d)" },
+  { t: 2.4, e: 5.6, n: "01", fx: "drop", d: "#13307e", w: "COSTRUISCI", s: "Città intere, un mattoncino alla volta.", c: "#4aa3ff", g: "linear-gradient(100deg,#7cc4ff,#2f6bff 60%,#8a5cff)" },
+  { t: 5.6, e: 8.8, n: "02", fx: "slam", d: "#7a1450", w: "CREA", s: "Miliardi di miliardi di personaggi.", c: "#ff5cb8", g: "linear-gradient(100deg,#ff9ad5,#ee45a8 55%,#9b5cff)" },
+  { t: 8.8, e: 10.3, n: "03", fx: "snap", d: "#0b5e42", w: "DRAGHI", s: "Sì, anche al guinzaglio.", c: "#3dff9e", g: "linear-gradient(100deg,#a6ffcf,#22d38a 55%,#19b6c9)" },
+  { t: 10.3, e: 12.6, n: "03", fx: "rise", d: "#0b5e42", w: "CAVALCA", s: "Una chimera? Salta in sella.", c: "#3dff9e", g: "linear-gradient(100deg,#a6ffcf,#22d38a 55%,#19b6c9)" },
+  { t: 12.6, e: 15.6, n: "04", fx: "swerve", d: "#0b4a7a", w: "GUIDA", s: "Inclina il telefono per sterzare.", c: "#4fd8ff", g: "linear-gradient(100deg,#b0f1ff,#22c4f0 55%,#2f6bff)" },
+  { t: 15.6, e: 18.0, n: "05", fx: "boom", d: "#7a1d06", w: "BOOM!", s: "Poi fai saltare tutto.", c: "#ff7a3d", g: "linear-gradient(100deg,#ffe066,#ff6a3d 50%,#ff2d55)", at: BOOM },
+  { t: 18.0, e: 19.7, n: "06", fx: "tetris", d: "#7a4300", w: "GIOCA", s: "Pioggia di mattoncini.", c: "#ffc72c", g: "linear-gradient(100deg,#fff38a,#ffc72c 50%,#ff8a3d)" },
+  { t: 19.7, e: 21.6, n: "06", fx: "streak", d: "#7a4300", w: "CORRI", s: "Con i personaggi che hai creato.", c: "#ffc72c", g: "linear-gradient(100deg,#fff38a,#ffc72c 50%,#ff8a3d)" },
 ];
 const FLASHW = ["COSTRUISCI", "CREA", "CAVALCA", "GUIDA", "DISTRUGGI", "GIOCA", "CORRI"];
 
@@ -87,8 +87,14 @@ const html = `<!doctype html>
       .line { color:transparent; -webkit-text-stroke:3px rgba(255,255,255,.55); }
       .idx { position:absolute; left:64px; top:140px; font-family:"Unbounded", sans-serif; font-weight:700; font-size:36px; letter-spacing:.06em; text-shadow:0 3px 12px rgba(0,0,0,.8); }
       .bar { position:absolute; left:64px; top:196px; height:6px; width:120px; border-radius:3px; }
-      .sub { position:absolute; left:48px; top:226px; max-width:984px; padding:18px 28px 22px; border-radius:26px; background:rgba(7,10,32,.78); box-shadow:0 12px 40px rgba(0,0,0,.35); font-weight:800; font-size:62px; line-height:1.12; letter-spacing:-.02em; }
+      .sub { position:absolute; left:48px; top:226px; max-width:984px; padding:18px 28px 22px 30px; border-radius:26px; border-left:12px solid var(--ac); background:rgba(7,10,32,.78); box-shadow:0 12px 40px rgba(0,0,0,.35); font-weight:800; font-size:62px; line-height:1.12; letter-spacing:-.02em; }
       .abs { position:absolute; }
+      .w3 { filter:drop-shadow(0 0 34px rgba(0,0,0,.6)); }
+      .c3 { display:inline-block; position:relative; }
+      .c3 .bk { position:absolute; left:0; top:0; }
+      .c3 .fr { position:relative; display:inline-block; }
+      .lb { position:absolute; background-image:url(assets/logo.png); background-repeat:no-repeat; }
+      .shine { position:absolute; top:-40px; width:160px; height:300px; background:linear-gradient(90deg, transparent, rgba(255,255,255,.75), transparent); mix-blend-mode:overlay; }
       #bricks, #bands, #fx { position:absolute; inset:0; pointer-events:none; overflow:hidden; }
       .brk { position:absolute; width:184px; height:176px; border-radius:16px; transform-origin:50% 50%;
         background-image:radial-gradient(circle at 30% 30%, rgba(255,255,255,.35) 0 22px, transparent 24px), radial-gradient(circle at 70% 30%, rgba(255,255,255,.35) 0 22px, transparent 24px),
@@ -144,6 +150,48 @@ ${videos}
         const x0 = cs[0].parentNode.offsetLeft, ww = cs[cs.length - 1].parentNode.offsetLeft + cs[cs.length - 1].parentNode.offsetWidth - x0;
         cs.forEach((c) => { c.style.backgroundImage = g; c.style.backgroundSize = ww + "px 100%"; c.style.backgroundPosition = -(c.parentNode.offsetLeft - x0) + "px 0"; c.style.webkitBackgroundClip = "text"; c.style.backgroundClip = "text"; c.style.color = "transparent"; });
       }
+      // parola in 3D estruso: ogni lettera porta con sé i suoi strati (si anima lettera per lettera)
+      function word3d(parent, text, o) {
+        const w = el("div", "big w3", { top: o.top + "px", fontSize: o.fs + "px" }, parent);
+        const L = o.layers || 6, dx = o.fs * 0.011, dy = o.fs * 0.019;
+        const chars = [...text].map((ch) => {
+          const t = ch === " " ? "\u00a0" : ch, c = el("span", "c3", null, w);
+          for (let i = L; i >= 1; i--) el("span", "bk", { color: i === L ? "rgba(0,0,0,.5)" : o.d, transform: "translate(" + i * dx + "px," + i * dy + "px)" }, c, t);
+          el("span", "fr", { color: o.color || "#fff" }, c, t);
+          return c;
+        });
+        if (o.g) {
+          const x0 = chars[0].offsetLeft, last = chars[chars.length - 1], ww = last.offsetLeft + last.offsetWidth - x0;
+          chars.forEach((c) => { const f = c.lastChild; f.style.backgroundImage = o.g; f.style.backgroundSize = ww + "px 100%"; f.style.backgroundPosition = -(c.offsetLeft - x0) + "px 0"; f.style.webkitBackgroundClip = "text"; f.style.backgroundClip = "text"; f.style.color = "transparent"; });
+        }
+        return { w, chars };
+      }
+      function fitText(text, maxW, maxFs) { const t = el("div", "big", { top: "-9999px" }, $("hud"), text); const fs = fit(t, maxW, maxFs); t.remove(); return fs; }
+      const hash = (n) => { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+      // entrate e uscite: una diversa per ogni parola
+      function enter(tl, cs, fx, t, fs) {
+        const n = cs.length;
+        const F = {
+          drop:   [{ y: -1700, rotation: (k) => (k % 2 ? -18 : 18), opacity: 1 }, { y: 0, rotation: 0, duration: 0.62, ease: "bounce.out", stagger: 0.05 }],
+          slam:   [{ scale: 3.2, opacity: 0, filter: "blur(22px)" }, { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.5, ease: "power4.out", stagger: 0.06 }],
+          snap:   [{ x: 1200, skewX: -35, opacity: 1 }, { x: 0, skewX: 0, duration: 0.55, ease: "expo.out", stagger: 0.035 }],
+          rise:   [{ yPercent: 150, rotation: -45, opacity: 1, transformOrigin: "0% 100%" }, { yPercent: 0, rotation: 0, duration: 0.6, ease: "back.out(2.2)", stagger: 0.045 }],
+          swerve: [{ x: -1250, y: (k) => (k % 2 ? -90 : 90), rotation: (k) => (k % 2 ? -28 : 28), opacity: 1 }, { x: 0, y: 0, rotation: 0, duration: 0.6, ease: "expo.out", stagger: 0.05 }],
+          boom:   [{ scale: 0.1, rotation: (k) => (hash(k + 3) - 0.5) * 120, opacity: 0, x: (k) => (k - n / 2) * -60 }, { scale: 1, rotation: 0, opacity: 1, x: 0, duration: 0.5, ease: "back.out(3)", stagger: 0.035 }],
+          tetris: [{ y: -1700, rotation: (k) => [90, -90, 180, 0, 90][k % 5], opacity: 1 }, { y: 0, rotation: 0, duration: 0.42, ease: "steps(7)", stagger: { each: 0.07, from: "random" } }],
+          streak: [{ x: -1400, skewX: 45, scaleX: 1.8, opacity: 1 }, { x: 0, skewX: 0, scaleX: 1, duration: 0.5, ease: "expo.out", stagger: { each: 0.035, from: "end" } }],
+        }[fx];
+        tl.fromTo(cs, F[0], F[1], t);
+      }
+      function leave(tl, cs, fx, t) {
+        const X = {
+          drop: { y: 600, rotation: (k) => (k % 2 ? 30 : -30), opacity: 0, ease: "power2.in" }, tetris: { y: 600, opacity: 0, ease: "power2.in" },
+          slam: { scale: 1.8, opacity: 0, filter: "blur(16px)", ease: "power2.in" }, boom: { scale: 2.2, opacity: 0, rotation: (k) => (hash(k) - 0.5) * 90, ease: "power2.in" },
+          snap: { x: -1200, skewX: 30, ease: "power3.in" }, streak: { x: 1400, skewX: -40, ease: "power3.in" }, swerve: { x: 1250, rotation: 20, ease: "power3.in" },
+          rise: { yPercent: -160, rotation: 30, opacity: 0, ease: "power3.in" },
+        }[fx];
+        tl.to(cs, { ...X, duration: 0.24, stagger: 0.012 }, t);
+      }
       // adatta la dimensione del testo alla larghezza
       function fit(e, maxW, maxFs) { e.style.fontSize = "100px"; const ow = e.style.width; e.style.width = "auto"; const w = e.offsetWidth; e.style.width = ow; const fs = Math.min(maxFs, Math.floor(100 * maxW / w)); e.style.fontSize = fs + "px"; return fs; }
 
@@ -176,43 +224,48 @@ ${videos}
         }
         tl.set(shade, { opacity: 1 }, 0); tl.set(shade, { opacity: 0 }, 23.0);
 
-        /* ── 0: gancio — cos'è, detto subito ── */
+        /* ── 0: logo che si costruisce mattoncino per mattoncino + gancio ── */
         {
-          tl.set("#dim", { opacity: 1 }, 0); tl.to("#dim", { opacity: 0, duration: 0.2 }, 1.7);
-          const pill = el("div", "abs", { left: "0px", top: "780px", width: "1080px", textAlign: "center" }, hud);
-          const pi = el("span", null, { display: "inline-block", padding: "16px 34px", borderRadius: "60px", background: "#ffc72c", color: "#0a0f2e", fontFamily: "Unbounded", fontWeight: 700, fontSize: "34px", letterSpacing: ".04em" }, pill, "IL GIOCO DI MATTONCINI 3D");
-          const l1 = el("div", "big", { top: "0px", color: "#fff", filter: "drop-shadow(0 7px 0 rgba(0,0,0,.6)) drop-shadow(0 0 28px rgba(0,0,0,.6))" }, hud, "MATTONCINI"); const fs = fit(l1, 980, 200);
-          const l2 = el("div", "big fillg", {}, hud, "INFINITI."); l2.style.fontSize = fs * 1.12 + "px";
-          l1.style.top = "900px"; l2.style.top = 900 + fs * 1.02 + "px";
-          const c1 = split(l1, "MATTONCINI"), c2 = split(l2, "INFINITI."); paint(l2, "linear-gradient(100deg,#fff38a,#ffc72c 45%,#ff6a3d)");
-          const sl = el("div", "big", { top: 900 + fs * 2.3 + "px", fontFamily: "Inter", fontWeight: 800, fontSize: "50px", letterSpacing: "-.01em", textTransform: "none", textShadow: "0 3px 14px rgba(0,0,0,.9)" }, hud);
-          const c3 = split(sl, "Gratis, sul telefono e nel browser.");
-          tl.fromTo(pi, { scale: 0.6, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.35, ease: "back.out(2)" }, 0.02);
-          tl.fromTo(c1, { yPercent: 118, rotation: 6 }, { yPercent: 0, rotation: 0, duration: 0.45, ease: "expo.out", stagger: 0.025 }, 0.1);
-          tl.fromTo(c2, { yPercent: 118, rotation: 6 }, { yPercent: 0, rotation: 0, duration: 0.45, ease: "expo.out", stagger: 0.03 }, 0.3);
-          tl.fromTo(c3, { yPercent: 115 }, { yPercent: 0, duration: 0.4, ease: "expo.out", stagger: 0.006 }, 0.6);
-          tl.to([l1, l2], { scale: 1.06, duration: 1.2, ease: "none", transformOrigin: "50% 50%" }, 0.5);
-          tl.to([pill, l1, l2, sl], { opacity: 0, duration: 0.12 }, 1.66);
-          tl.set([pill, l1, l2, sl], { opacity: 0 }, 1.8);
+          tl.set("#dim", { opacity: 1 }, 0); tl.to("#dim", { opacity: 0, duration: 0.2 }, 2.25);
+          $("v-hero").style.filter = "contrast(1.06) saturate(1.12) blur(3px)";
+          const LOGO = [[74, 408], [412, 743], [746, 1080], [1084, 1415], [1418, 1744], [1744, 2071], [2074, 2408], [2412, 2743], [2746, 3080]];
+          const sc = 980 / 3144, LX = 50, LY = 560, LH = 656 * sc;
+          const halo = el("div", "abs", { left: "40px", top: LY - 260 + "px", width: "1000px", height: "720px", borderRadius: "50%", opacity: 0, background: "radial-gradient(closest-side, rgba(255,199,44,.5), rgba(238,69,168,.3) 50%, transparent 100%)", filter: "blur(30px)" }, hud);
+          const lb = LOGO.map(([x0, x1], k) => el("div", "lb", { left: LX + x0 * sc + "px", top: LY + "px", width: (x1 - x0) * sc + 1 + "px", height: LH + "px", backgroundSize: 3144 * sc + "px " + LH + "px", backgroundPosition: -x0 * sc + "px 0", filter: "drop-shadow(0 14px 18px rgba(0,0,0,.55))" }, hud));
+          tl.fromTo(lb, { y: -1500, rotation: (k) => (k % 2 ? -22 : 22), opacity: 1 }, { y: 0, rotation: 0, duration: 0.5, ease: "bounce.out", stagger: 0.055 }, 0.02);
+          tl.fromTo(halo, { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.8, ease: "power2.out" }, 0.55);
+          // riflesso che attraversa il logo
+          const sh = el("div", "abs", { left: LX + "px", top: LY + "px", width: 3144 * sc + "px", height: LH + "px", overflow: "hidden" }, hud);
+          const bar = el("div", "shine", { left: "-200px" }, sh); gsap.set(bar, { rotation: 18 });
+          tl.fromTo(bar, { x: 0 }, { x: 1300, duration: 0.5, ease: "power2.inOut" }, 0.95);
+          // MATTONCINI / INFINITI. in 3D estruso
+          const fs1 = fitText("MATTONCINI", 980, 150);
+          const A = word3d(hud, "MATTONCINI", { top: LY + LH + 70, fs: fs1, d: "#1b2468" });
+          const B = word3d(hud, "INFINITI.", { top: LY + LH + 70 + fs1 * 1.12, fs: fs1 * 1.18, d: "#8a3600", g: "linear-gradient(100deg,#fff38a,#ffc72c 45%,#ff6a3d)" });
+          enter(tl, A.chars, "slam", 0.85);
+          enter(tl, B.chars, "snap", 1.1);
+          const tg = el("div", "big", { top: LY + LH + 90 + fs1 * 2.5 + "px", fontFamily: "Inter", fontWeight: 800, fontSize: "48px", letterSpacing: "-.01em", textTransform: "none", textShadow: "0 3px 14px rgba(0,0,0,.9)" }, hud);
+          const tc = split(tg, "Il gioco gratis, sul telefono e nel browser.");
+          tl.fromTo(tc, { yPercent: 115 }, { yPercent: 0, duration: 0.4, ease: "expo.out", stagger: 0.006 }, 1.45);
+          // tutto esplode via, poi zoom dentro il gioco
+          tl.to(lb, { x: (k) => (k - 4) * 260, y: (k) => -500 - hash(k) * 500, rotation: (k) => (k - 4) * 25, opacity: 0, duration: 0.32, ease: "power3.in", stagger: 0.01 }, 2.06);
+          tl.to([halo, tg], { opacity: 0, duration: 0.2 }, 2.1);
+          leave(tl, A.chars, "slam", 2.12); leave(tl, B.chars, "streak", 2.12);
+          tl.set([A.w, B.w, tg, sh], { opacity: 0 }, 2.4);
         }
-        punch(1.8);
+        punch(2.4);
 
         /* ── parole dei capitoli ── */
         WORDS.forEach((W, i) => {
           const t0 = W.at || W.t, end = W.e;
           const sameCh = i > 0 && WORDS[i - 1].n === W.n;
-          const w = el("div", "big fillg", { "--g": W.g }, hud, W.w); const fs = fit(w, 960, 250);
-          const top = 1920 - 170 - fs; w.style.top = top + "px";
-          const cs = split(w, W.w); paint(w, W.g);
+          const fs = fitText(W.w, 940, 240), top = 1920 - 200 - fs;
+          const { w, chars: cs } = word3d(hud, W.w, { top, fs, d: W.d, g: W.g });
           tl.set(w, { opacity: 0 }, 0); tl.set(w, { opacity: 1 }, t0); tl.set(w, { opacity: 0 }, end);
-          const boom = W.w === "BOOM!";
-          if (boom) {
-            tl.fromTo(cs, { yPercent: 0, scale: 0.2, rotation: () => (rnd() - 0.5) * 70, opacity: 0 }, { scale: 1, rotation: 0, opacity: 1, duration: 0.5, ease: "back.out(3)", stagger: 0.04 }, t0);
-            tl.to(w, { scale: 1.06, duration: end - t0 - 0.3, ease: "none", transformOrigin: "50% 50%" }, t0 + 0.5);
-          } else {
-            tl.fromTo(cs, { yPercent: 118, rotation: 6 }, { yPercent: 0, rotation: 0, duration: 0.6, ease: "expo.out", stagger: 0.04 }, t0 + 0.05);
-          }
-          tl.to(cs, { yPercent: -118, duration: 0.22, ease: "power3.in", stagger: 0.015 }, end - 0.24);
+          enter(tl, cs, W.fx, t0 + 0.03, fs);
+          tl.fromTo(w, { scale: 1 }, { scale: 1.05, duration: end - t0, ease: "none", transformOrigin: "50% 100%", immediateRender: false }, t0);
+          if (W.fx === "boom") [0, 1, 2, 3, 4, 5, 6, 7].forEach((k) => tl.set(w, { x: k === 7 ? 0 : (hash(k * 13) - 0.5) * 60, y: k === 7 ? 0 : (hash(k * 7) - 0.5) * 30 }, t0 + 0.5 + k * 0.04));
+          leave(tl, cs, W.fx, end - 0.25);
           // indice, barra e riga
           if (!sameCh) {
             const nEnd = (WORDS[i + 1] && WORDS[i + 1].n === W.n) ? WORDS[i + 1].e : end;
@@ -222,10 +275,10 @@ ${videos}
             tl.fromTo(br, { opacity: 0, scaleX: 0 }, { opacity: 1, scaleX: 1, transformOrigin: "0% 50%", duration: 0.45, ease: "expo.out" }, W.t + 0.15);
             tl.to([ix, br], { opacity: 0, duration: 0.15 }, nEnd - 0.2);
           }
-          const sb = el("div", "sub", { opacity: 0 }, hud);
+          const sb = el("div", "sub", { opacity: 0, "--ac": W.c }, hud);
           const words = W.s.split(" ").map((x) => { const m = el("span", "m", null, sb); const c = el("span", "c", null, m, x); sb.appendChild(document.createTextNode(" ")); return c; });
           tl.fromTo(words, { yPercent: 110 }, { yPercent: 0, duration: 0.5, ease: "expo.out", stagger: 0.03 }, W.t + 0.22);
-          tl.set(sb, { opacity: 1 }, W.t + 0.22); tl.to(sb, { opacity: 0, duration: 0.12 }, end - 0.14);
+          tl.set(sb, { opacity: 1 }, W.t + 0.18); tl.fromTo(sb, { clipPath: "inset(0% 100% 0% 0% round 26px)" }, { clipPath: "inset(0% 0% 0% 0% round 26px)", duration: 0.45, ease: "expo.out" }, W.t + 0.18); tl.to(sb, { opacity: 0, duration: 0.12 }, end - 0.14);
           tl.to(words, { yPercent: -110, duration: 0.2, ease: "power2.in", stagger: 0.01 }, end - 0.22);
         });
 
@@ -233,7 +286,7 @@ ${videos}
         // T2: muro di mattoncini (5.6)
         {
           const cols = ["#e53935", "#1e88e5", "#43a047", "#fdd835", "#ee45a8", "#ff7a1a", "#7a5cff"]; const B = [];
-          for (let r = 0; r < 11; r++) for (let c = 0; c < 6; c++) B.push(el("div", "brk", { left: c * 180 - 2 + "px", top: r * 175 - 2 + "px", background: cols[(r * 3 + c * 2) % cols.length] }, $("bricks")));
+          for (let r = 0; r < 11; r++) for (let c = 0; c < 6; c++) B.push(el("div", "brk", { left: c * 180 - 2 + "px", top: r * 175 - 2 + "px", backgroundColor: cols[(r * 3 + c * 2) % cols.length] }, $("bricks")));
           tl.fromTo(B, { scale: 0, rotation: -25 }, { scale: 1.02, rotation: 0, duration: 0.24, ease: "back.out(1.6)", stagger: { grid: [11, 6], from: "end", amount: 0.22 } }, 5.12);
           tl.to(B, { scale: 0, rotation: 25, duration: 0.22, ease: "power2.in", stagger: { grid: [11, 6], from: "start", amount: 0.22 } }, 5.62);
         }
@@ -284,10 +337,10 @@ ${videos}
         /* ── raffica: tagli da 0,2 s con parole a tutto schermo ── */
         FLASHW.forEach((txt, i) => {
           const T = 21.6 + i * 0.2;
-          const w = el("div", "big", { color: i % 2 ? "#ffc72c" : "#fff", filter: "drop-shadow(0 8px 0 rgba(0,0,0,.65)) drop-shadow(0 0 30px rgba(0,0,0,.6))" }, hud); w.textContent = txt; const fs = fit(w, 1000, 300);
-          w.style.top = (960 - fs * 0.5) + "px";
+          const fs = fitText(txt, 1000, 280);
+          const { w } = word3d(hud, txt, { top: 960 - fs * 0.55, fs, d: i % 2 ? "#8a3600" : "#1b2468", color: i % 2 ? "#ffc72c" : "#fff" });
           tl.set(w, { opacity: 0 }, 0);
-          tl.fromTo(w, { opacity: 1, scale: 1.25 }, { scale: 1, duration: 0.2, ease: "power2.out", immediateRender: false }, T);
+          tl.fromTo(w, { opacity: 1, scale: 1.4, rotation: i % 2 ? -6 : 6 }, { scale: 1, rotation: i % 2 ? -2 : 2, duration: 0.2, ease: "power2.out", immediateRender: false }, T);
           tl.set(w, { opacity: 0 }, T + 0.2);
           tl.fromTo(vwrap, { filter: "brightness(1.7)" }, { filter: "brightness(1)", duration: 0.1, ease: "none", immediateRender: false }, T);
         });
@@ -311,14 +364,15 @@ ${videos}
 
         /* ── chiusura ── */
         {
-          const g = el("div", "big fillg", { "--g": "linear-gradient(100deg,#fff38a,#ffc72c 45%,#ff6a3d)" }, hud, "GIOCA ORA"); const fs = fit(g, 960, 200); g.style.top = "640px";
-          const gc = split(g, "GIOCA ORA"); paint(g, "linear-gradient(100deg,#fff38a,#ffc72c 45%,#ff6a3d)");
-          tl.fromTo(gc, { yPercent: 118, rotation: 6 }, { yPercent: 0, rotation: 0, duration: 0.7, ease: "expo.out", stagger: 0.05 }, 26.3);
+          const fs = fitText("GIOCA ORA", 940, 190);
+          const { w: g, chars: gc } = word3d(hud, "GIOCA ORA", { top: 620, fs, d: "#8a3600", g: "linear-gradient(100deg,#fff38a,#ffc72c 45%,#ff6a3d)" });
+          enter(tl, gc, "drop", 26.25);
+          tl.fromTo(g, { scale: 1 }, { scale: 1.04, duration: 3.0, ease: "sine.inOut", transformOrigin: "50% 50%", immediateRender: false }, 27.0);
           const s1 = el("div", "big", { top: 640 + fs * 1.35 + "px", fontFamily: "Inter", fontWeight: 800, fontSize: "56px", letterSpacing: "-.02em", textTransform: "none" }, hud);
           const s1c = split(s1, "Gratis nel browser. Senza account.");
           const s2 = el("div", "big", { top: 640 + fs * 1.35 + 74 + "px", fontFamily: "Inter", fontWeight: 700, fontSize: "50px", letterSpacing: "-.01em", textTransform: "none", color: "rgba(255,255,255,.88)" }, hud);
           const s2c = split(s2, "Oppure installalo sul telefono.");
-          tl.set([g, s1, s2], { opacity: 0 }, 0); tl.set(g, { opacity: 1 }, 26.3); tl.set(s1, { opacity: 1 }, 26.85); tl.set(s2, { opacity: 1 }, 27.1);
+          tl.set([g, s1, s2], { opacity: 0 }, 0); tl.set(g, { opacity: 1 }, 26.25); tl.set(s1, { opacity: 1 }, 26.85); tl.set(s2, { opacity: 1 }, 27.1);
           tl.fromTo(s1c, { yPercent: 110 }, { yPercent: 0, duration: 0.45, ease: "expo.out", stagger: 0.008 }, 26.85);
           tl.fromTo(s2c, { yPercent: 110 }, { yPercent: 0, duration: 0.45, ease: "expo.out", stagger: 0.008 }, 27.1);
           const card = el("div", "abs", { left: "60px", top: "1420px", width: "960px", height: "250px", borderRadius: "40px", background: "rgba(255,255,255,.1)", border: "2px solid rgba(255,255,255,.25)", opacity: 0 }, hud);

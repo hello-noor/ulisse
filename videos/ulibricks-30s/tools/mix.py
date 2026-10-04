@@ -31,10 +31,11 @@ put(fade(seg(60.0, 60.0 + 5.6), 1.2, 1.8), 24.4, 0.7)
 
 S = lambda n: load(A(f"sfx/{n}.mp3"))
 GS = lambda n: load(A(f"gamesfx/{n}.mp3"))
-# apertura: lettere che arrivano, poi lo zoom dentro la parola
-put(S("sfx_003"), 0.02, 0.8)
-put(S("sfx_001"), 0.3, 0.4)
-put(S("sfx_002"), 1.55, 0.55); put(S("sfx_001"), 1.8, 0.5)
+# apertura: il logo si costruisce, poi esplode e si entra nel gioco
+for k in range(9): put(GS("clack" if k % 2 else "pop"), 0.3 + k * 0.055, 0.45)   # mattoncini del logo che atterrano
+put(S("sfx_003"), 0.75, 0.75)                                                       # logo completo
+put(S("sfx_001"), 0.85, 0.45); put(S("sfx_005"), 1.1, 0.45)                         # MATTONCINI / INFINITI
+put(GS("whoosh"), 2.05, 0.6); put(S("sfx_002"), 2.2, 0.5); put(S("sfx_001"), 2.4, 0.5)
 # transizioni
 for k in range(10): put(GS("clack" if k % 2 else "pop"), 5.12 + k * 0.045, 0.35)  # muro di mattoncini
 put(S("sfx_002"), 8.6, 0.55); put(S("sfx_001"), 8.8, 0.5)                          # zoom-blur
@@ -44,7 +45,7 @@ put(S("sfx_002"), 15.3, 0.6); put(S("sfx_005"), 15.6, 0.5)                      
 put(S("sfx_002"), 19.5, 0.55); put(S("sfx_001"), 19.7, 0.5)                         # zoom-blur
 for w in tl["WORDS"]: put(S("sfx_005"), (w.get("at") or w["t"]) + 0.05, 0.3)       # parole
 # Costruisci: incastri
-for k, t in enumerate(np.arange(2.2, 5.5, 0.32)):
+for k, t in enumerate(np.arange(2.8, 5.5, 0.32)):
     put(GS("clack" if k % 2 == 0 else "pop"), t, 0.32)
 # Crea: scelte che cambiano
 for t in (6.0, 6.6, 7.2, 7.8, 8.3):
