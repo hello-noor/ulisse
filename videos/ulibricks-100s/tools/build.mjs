@@ -110,7 +110,7 @@ const STICK = [
   { t: 44.5, d: 2.8, n: 20, l: "ANIMALI", ci: 2 },
   { t: 66.6, d: 3.6, txt: "TILT", l: "TELEFONO", ci: 3 },
   { t: 72.6, d: 3.4, txt: "3×", l: "ANIMALI A BORDO", ci: 3 },
-  { t: 55.2, d: 3.6, txt: "6 ANNI", l: "IDEATO DA ULISSE (6 ANNI)", ci: 2 },
+  { t: 55.2, d: 3.6, txt: "6 ANNI", l: "IDEATO DA ULISSE", ci: 2 },
 ];
 
 // ── effetti sonori
@@ -168,12 +168,12 @@ const html = `<!doctype html>
       .capp { position:absolute; left:40px; width:1000px; top:0; text-align:center; padding:22px 30px 24px; border-radius:44px; background:rgba(8,13,34,.86); border:2px solid rgba(255,255,255,.22);
         font-weight:800; font-size:50px; line-height:1.14; box-shadow:0 18px 40px rgba(0,0,0,.4); }
       .hl { position:absolute; left:20px; width:1040px; top:228px; text-align:center; font-weight:900; font-size:66px; line-height:1.02; text-transform:uppercase; letter-spacing:-.01em; text-shadow:0 6px 0 rgba(0,0,0,.35); }
-      .stk { position:absolute; left:690px; top:300px; width:340px; height:340px; border-radius:50%; background:var(--c); color:var(--tc,#fff); display:flex; flex-direction:column; align-items:center; justify-content:center;
+      .stk { position:absolute; left:690px; top:392px; width:340px; height:340px; border-radius:50%; background:var(--c); color:var(--tc,#fff); display:flex; flex-direction:column; align-items:center; justify-content:center;
         border:10px solid #fff; box-shadow:0 22px 0 rgba(0,0,0,.35), 0 0 70px var(--c); }
       .stk .n { font-weight:900; font-size:132px; line-height:.95; letter-spacing:-.03em; }
       .stk .n.w { font-size:84px; }
       .stk .n sup { font-size:.5em; vertical-align:top; position:relative; top:-.05em; }
-      .stk .l { margin-top:6px; font-weight:900; font-size:36px; letter-spacing:.02em; text-align:center; line-height:1.02; max-width:290px; }
+      .stk .l { margin-top:6px; font-weight:900; font-size:30px; letter-spacing:0; text-align:center; line-height:1.02; max-width:250px; }
       #wipe { position:absolute; inset:0; z-index:60; opacity:0; clip-path:circle(0px at 540px 1000px); background:var(--wc,#2f6bff); }
       .abs { position:absolute; }
       .pill { position:absolute; border-radius:60px; background:rgba(255,255,255,.1); border:2px solid rgba(255,255,255,.28); font-weight:800; text-align:center; }
@@ -237,16 +237,16 @@ ${audios}
         tl.fromTo(tag, { y: 70, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: "power3.out" }, 1.3);
         const sub = el("div", "ttl big", { top: "980px", fontSize: "62px", color: "var(--accent)" }, hud, "Costruisci · Anima · Gioca");
         tl.fromTo(sub, { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, ease: "power3.out" }, 2.0);
-        const idea1 = el("div", "ttl big", { top: "740px", fontSize: "76px", color: "#fff" }, hud, "Ideato da");
-        const idea2 = el("div", "ttl big", { top: "820px", fontSize: "210px", color: "#ffc72c", textShadow: "0 12px 0 rgba(0,0,0,.4)" }, hud, "ULISSE");
+        const idea1 = el("div", "ttl big", { top: "690px", fontSize: "76px", color: "#fff" }, hud, "Ideato da");
+        const idea2 = el("div", "ttl big", { top: "800px", fontSize: "210px", color: "#ffc72c", textShadow: "0 12px 0 rgba(0,0,0,.4)" }, hud, "ULISSE");
         const age = el("div", "stk", { left: "330px", top: "1090px", width: "420px", height: "420px", "--c": "#ee45a8", "--tc": "#fff", opacity: 0 }, hud);
         age.innerHTML = '<div class="n" style="font-size:200px">6</div><div class="l" style="font-size:58px;max-width:360px">ANNI</div>';
         const kid = el("div", "ttl big", { top: "1570px", fontSize: "60px", lineHeight: 1.05, whiteSpace: "normal" }, hud, "Un bambino di sei anni<br>ha inventato tutto questo");
-        tl.fromTo(idea1, { y: 50, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: "power3.out" }, 3.3);
-        tl.fromTo(idea2, { scale: 0.3, opacity: 0, rotation: -6 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.7, ease: "back.out(2)", transformOrigin: "50% 50%" }, 3.4);
+        tl.fromTo(idea1, { y: 50, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: "power3.out" }, 3.45);
+        tl.fromTo(idea2, { scale: 0.3, opacity: 0, rotation: -6 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.7, ease: "back.out(2)", transformOrigin: "50% 50%" }, 3.55);
         tl.fromTo(age, { scale: 0.1, opacity: 0, rotation: -50 }, { scale: 1, opacity: 1, rotation: -8, duration: 0.7, ease: "back.out(2.2)" }, 3.8);
         tl.fromTo(kid, { y: 60, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: "power3.out" }, 4.3);
-        [tag, sub].forEach((e) => tl.to(e, { opacity: 0, y: -50, duration: 0.35, ease: "power2.in" }, 3.2));
+        [tag, sub].forEach((e) => tl.to(e, { opacity: 0, y: -50, duration: 0.3, ease: "power2.in" }, 2.95));
         [logo, idea1, idea2, age, kid].forEach((e) => tl.to(e, { opacity: 0, y: -60, duration: 0.35, ease: "power2.in" }, 5.45));
         tl.set(phone, { y: 2300, rotationX: 28, opacity: 0 }, 0);
         tl.set(phone, { opacity: 1 }, 5.0);
