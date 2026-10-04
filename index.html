@@ -103,6 +103,8 @@
   .ico{flex:none;width:92px;height:92px;border-radius:24px;background:rgba(255,255,255,.12);
     border:3px solid var(--accent);display:grid;place-items:center;box-shadow:0 8px 18px rgba(0,0,0,.35)}
   .ico img{width:76%;height:76%;border-radius:18px;object-fit:cover;display:block}
+  .cover{position:relative;z-index:1;display:block;width:min(calc(100% - 40px),480px);height:auto;aspect-ratio:1;margin:20px auto 0;
+    border-radius:20px;border:3px solid var(--accent);box-shadow:0 8px 18px rgba(0,0,0,.35)}
   .app.big .ico{width:112px;height:112px}
   .heads{min-width:0;display:flex;flex-direction:column;gap:6px;align-items:flex-start}
   .tag{display:inline-block;padding:3px 11px;border-radius:99px;font-size:12px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;
@@ -260,12 +262,16 @@ const APPS = [
   },
   {
     nome: "Ulisse Polytropos",
-    tipo: "Musica · Spotify",
-    testo: "La canzone di Ulisse: ascoltala su Spotify.",
+    tipo: "Musica · Canzone",
+    testo: "La canzone che racconta le avventure di Ulisse, l'eroe dal «multiforme ingegno» (in greco, polytropos): vince con la mente, non con la forza.",
     punti: [
-      "Si apre in Spotify, serve la connessione a internet"
+      "Dal cavallo di Troia al Ciclope Polifemo, che Ulisse inganna dicendo di chiamarsi «Nessuno»",
+      "Circe che trasforma i compagni in maiali, le Sirene da ascoltare legato all'albero, Calipso, Poseidone e Nausicaa",
+      "Il ritorno a Itaca: Telemaco, Penelope che tesse e disfa la tela, il letto d'ulivo e la gara dell'arco"
     ],
+    nota: "Il ritornello lo canta anche un coro di bambini: «Anche tu sei polytropos!»",
     cartella: "https://open.spotify.com/intl-it/track/4C6T5A5QwD4WxJORa96lUd?si=bfba116bb7574968",
+    copertina: "ulisse-polytropos/copertina.jpg",
     emoji: "🎵",
     bottone: "Ascolta su Spotify",
     esterno: true,
@@ -291,6 +297,7 @@ for (const app of APPS){
   a.style.setProperty("--accent", app.colore);
   a.style.setProperty("--accent-dark", ombra(app.colore));
   a.innerHTML = `
+    ${app.copertina ? `<img class="cover" src="${app.copertina}" width="960" height="960" alt="Copertina della canzone Ulisse Polytropos: Ulisse e le sue avventure" loading="lazy">` : ""}
     <div class="top">
       <span class="ico">${app.emoji ? `<span style="font-size:44px" aria-hidden="true">${app.emoji}</span>` : `<img src="${app.icona}" width="128" height="128" alt="" loading="lazy">`}</span>
       <div class="heads"><span class="tag">${app.tipo}</span><h2 class="name">${app.nome}</h2></div>
