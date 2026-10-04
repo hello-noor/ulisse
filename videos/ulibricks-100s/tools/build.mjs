@@ -108,7 +108,7 @@ const STICK = [
   { t: 44.5, d: 2.8, n: 20, l: "ANIMALI", ci: 2 },
   { t: 66.6, d: 3.6, txt: "TILT", l: "TELEFONO", ci: 3 },
   { t: 72.6, d: 3.4, txt: "3×", l: "ANIMALI A BORDO", ci: 3 },
-  { t: 55.2, d: 3.6, txt: "6 ANNI", l: "IDEATO DA ULISSE", ci: 2 },
+  { t: 55.2, d: 3.6, txt: "6 ANNI", l: "IDEATO DA ULISSE (6 ANNI)", ci: 2 },
 ];
 
 // ── effetti sonori
@@ -389,7 +389,7 @@ ${audios}
         const ic = el("img", "abs", { left: "70px", top: "430px", width: "240px", height: "240px", borderRadius: "54px", boxShadow: "0 24px 60px rgba(0,0,0,.55)" }, s3); ic.src = "assets/icon-512.png";
         const u3 = el("div", "abs", { left: "60px", top: "1260px", width: "960px", padding: "30px 0", borderRadius: "64px", background: "#ffc72c", color: "#0b1230", textAlign: "center", fontWeight: 900, fontSize: "42px" }, s3, "hello-noor.github.io/ulisse/ulibricks");
         const t3 = el("div", "ttl big", { top: "1390px", fontSize: "84px", lineHeight: 1.0, whiteSpace: "normal" }, s3, "Nel browser<br>o sul telefono");
-        const u4 = el("div", "abs", { left: "40px", top: "1640px", width: "1000px", padding: "26px 0", borderRadius: "64px", background: "#ee45a8", color: "#fff", textAlign: "center", fontWeight: 900, fontSize: "50px", boxShadow: "0 10px 0 rgba(0,0,0,.3)" }, s3, "Ideato da Ulisse, 6 anni");
+        const u4 = el("div", "abs", { left: "40px", top: "1640px", width: "1000px", padding: "26px 0", borderRadius: "64px", background: "#ee45a8", color: "#fff", textAlign: "center", fontWeight: 900, fontSize: "50px", boxShadow: "0 10px 0 rgba(0,0,0,.3)" }, s3, "Ideato da Ulisse (6 anni)");
         tl.fromTo(s3, { opacity: 0 }, { opacity: 1, duration: 0.3 }, S3 - 0.1);
         tl.fromTo(lg, { scale: 0.3, opacity: 0, rotation: -8 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.7, ease: "back.out(2)", transformOrigin: "50% 50%" }, S3);
         tl.fromTo(qrc, { scale: 0.4, opacity: 0, rotation: 6 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.6, ease: "back.out(1.8)" }, S3 + 0.3);
