@@ -8,7 +8,7 @@
 
    Per pubblicare una versione nuova basta cambiare CACHE (v2, v3...). */
 
-const CACHE = 'home-v7';
+const CACHE = 'home-v8';
 /* Ripuliamo solo le nostre cache: quelle delle app hanno un altro prefisso. */
 const CACHE_PREFIX = 'home-';
 
