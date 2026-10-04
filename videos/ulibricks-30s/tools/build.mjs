@@ -32,14 +32,14 @@ const TBOOM = 18.0 + (8.23 - 7.0); // esplosione del Tetris
 
 // ── parole: n = numero capitolo, w = parola gigante, s = riga, c = colore
 const WORDS = [
-  { t: 2.4, e: 5.6, n: "01", fx: "drop", d: "#13307e", w: "COSTRUISCI", s: "Città intere, un mattoncino alla volta.", c: "#4aa3ff", g: "linear-gradient(100deg,#7cc4ff,#2f6bff 60%,#8a5cff)" },
-  { t: 5.6, e: 8.8, n: "02", fx: "slam", d: "#7a1450", w: "CREA", s: "Miliardi di miliardi di personaggi.", c: "#ff5cb8", g: "linear-gradient(100deg,#ff9ad5,#ee45a8 55%,#9b5cff)" },
-  { t: 8.8, e: 10.3, n: "03", fx: "snap", d: "#0b5e42", w: "DRAGHI", s: "Sì, anche al guinzaglio.", c: "#3dff9e", g: "linear-gradient(100deg,#a6ffcf,#22d38a 55%,#19b6c9)" },
-  { t: 10.3, e: 12.6, n: "03", fx: "rise", d: "#0b5e42", w: "CAVALCA", s: "Una chimera? Salta in sella.", c: "#3dff9e", g: "linear-gradient(100deg,#a6ffcf,#22d38a 55%,#19b6c9)" },
-  { t: 12.6, e: 15.6, n: "04", fx: "swerve", d: "#0b4a7a", w: "GUIDA", s: "Inclina il telefono per sterzare.", c: "#4fd8ff", g: "linear-gradient(100deg,#b0f1ff,#22c4f0 55%,#2f6bff)" },
-  { t: 15.6, e: 18.0, n: "05", fx: "boom", d: "#7a1d06", w: "BOOM!", s: "Poi fai saltare tutto.", c: "#ff7a3d", g: "linear-gradient(100deg,#ffe066,#ff6a3d 50%,#ff2d55)", at: BOOM },
-  { t: 18.0, e: 19.7, n: "06", fx: "tetris", d: "#7a4300", w: "GIOCA", s: "Pioggia di mattoncini.", c: "#ffc72c", g: "linear-gradient(100deg,#fff38a,#ffc72c 50%,#ff8a3d)" },
-  { t: 19.7, e: 21.6, n: "06", fx: "streak", d: "#7a4300", w: "CORRI", s: "Con i personaggi che hai creato.", c: "#ffc72c", g: "linear-gradient(100deg,#fff38a,#ffc72c 50%,#ff8a3d)" },
+  { t: 2.4, e: 5.6, n: "01", bc: "#3d8bff", fx: "drop", d: "#13307e", w: "COSTRUISCI", s: "Città intere, un mattoncino alla volta.", c: "#4aa3ff", g: "linear-gradient(100deg,#7cc4ff,#2f6bff 60%,#8a5cff)" },
+  { t: 5.6, e: 8.8, n: "02", bc: "#ff5cb8", fx: "slam", d: "#7a1450", w: "CREA", s: "Miliardi di miliardi di personaggi.", c: "#ff5cb8", g: "linear-gradient(100deg,#ff9ad5,#ee45a8 55%,#9b5cff)" },
+  { t: 8.8, e: 10.3, n: "03", bc: "#2fd480", fx: "snap", d: "#0b5e42", w: "DRAGHI", s: "Sì, anche al guinzaglio.", c: "#3dff9e", g: "linear-gradient(100deg,#a6ffcf,#22d38a 55%,#19b6c9)" },
+  { t: 10.3, e: 12.6, n: "03", bc: "#2fd480", fx: "rise", d: "#0b5e42", w: "CAVALCA", s: "Una chimera? Salta in sella.", c: "#3dff9e", g: "linear-gradient(100deg,#a6ffcf,#22d38a 55%,#19b6c9)" },
+  { t: 12.6, e: 15.6, n: "04", bc: "#3fd0f5", fx: "swerve", d: "#0b4a7a", w: "GUIDA", s: "Inclina il telefono per sterzare.", c: "#4fd8ff", g: "linear-gradient(100deg,#b0f1ff,#22c4f0 55%,#2f6bff)" },
+  { t: 15.6, e: 18.0, n: "05", bc: "#ff6a2b", fx: "boom", d: "#7a1d06", w: "BOOM!", s: "Poi fai saltare tutto.", c: "#ff7a3d", g: "linear-gradient(100deg,#ffe066,#ff6a3d 50%,#ff2d55)", at: BOOM },
+  { t: 18.0, e: 19.7, n: "06", bc: "#ffc72c", fx: "tetris", d: "#7a4300", w: "GIOCA", s: "Pioggia di mattoncini.", c: "#ffc72c", g: "linear-gradient(100deg,#fff38a,#ffc72c 50%,#ff8a3d)" },
+  { t: 19.7, e: 21.6, n: "06", bc: "#ffc72c", fx: "streak", d: "#7a4300", w: "CORRI", s: "Con i personaggi che hai creato.", c: "#ffc72c", g: "linear-gradient(100deg,#fff38a,#ffc72c 50%,#ff8a3d)" },
 ];
 const FLASHW = ["COSTRUISCI", "CREA", "CAVALCA", "GUIDA", "DISTRUGGI", "GIOCA", "CORRI"];
 
@@ -57,7 +57,7 @@ fs.writeFileSync(new URL("../assets/timeline.json", import.meta.url), JSON.strin
 
 const videos = SEGS.map((s) => `        <video id="v-${s.id}" class="clip vid" src="assets/v/${s.src}.mp4" muted playsinline data-start="${s.at}" data-duration="${s.dur}" data-media-start="${s.from}" data-playback-rate="${s.rate}" data-track-index="1"></video>`).join("\n");
 const ff = (fam, file, w) => `@font-face { font-family:"${fam}"; font-weight:${w}; font-style:normal; src:url("assets/fonts/${file}-latin-${w}-normal.woff2") format("woff2"); }`;
-const fonts = [...[500, 600, 700, 800].map((w) => ff("Inter", "inter", w)), ...[400, 700, 900].map((w) => ff("Unbounded", "unbounded", w))].join("\n      ");
+const fonts = [...[500, 600, 700, 800].map((w) => ff("Inter", "inter", w)), ...[400, 700, 900].map((w) => ff("Unbounded", "unbounded", w)), ...[500, 700, 800].map((w) => ff("JetBrains Mono", "jetbrains-mono", w))].join("\n      ");
 
 const html = `<!doctype html>
 <html lang="it" data-resolution="portrait">
@@ -89,6 +89,11 @@ const html = `<!doctype html>
       .bar { position:absolute; left:64px; top:196px; height:6px; width:120px; border-radius:3px; }
       .sub { position:absolute; left:48px; top:226px; max-width:984px; padding:18px 28px 22px 30px; border-radius:26px; border-left:12px solid var(--ac); background:rgba(7,10,32,.78); box-shadow:0 12px 40px rgba(0,0,0,.35); font-weight:800; font-size:62px; line-height:1.12; letter-spacing:-.02em; }
       .abs { position:absolute; }
+      .slab { position:absolute; display:inline-block; white-space:nowrap; }
+      .sfill { position:absolute; inset:0; transform-origin:0% 50%; box-shadow:inset 0 -10px 0 rgba(0,0,0,.2), 0 22px 44px rgba(0,0,0,.45); }
+      .stud { position:absolute; border-radius:50%; box-shadow:inset 0 -5px 0 rgba(0,0,0,.18), inset 0 4px 0 rgba(255,255,255,.35); }
+      .smask { position:relative; display:block; overflow:hidden; }
+      .stext { display:block; line-height:1.0; }
       .w3 { filter:drop-shadow(0 0 34px rgba(0,0,0,.6)); }
       .c3 { display:inline-block; position:relative; }
       .c3 .bk { position:absolute; left:0; top:0; }
@@ -192,6 +197,33 @@ ${videos}
         }[fx];
         tl.to(cs, { ...X, duration: 0.24, stagger: 0.012 }, t);
       }
+      // ── "ogni parola è un mattoncino": lastre colorate con i bottoncini sopra ──
+      function measure(text, font, weight, ls) { const t = el("span", null, { position: "absolute", top: "-9999px", whiteSpace: "nowrap", fontFamily: font, fontWeight: weight, fontSize: "100px", letterSpacing: ls || "0" }, $("hud"), text); const w = t.offsetWidth; t.remove(); return w / 100; }
+      function slab(parent, o) {
+        const box = el("div", "slab", { left: "0px", top: o.y + "px", opacity: 0 }, parent);
+        const fill = el("div", "sfill", { background: o.bg, borderRadius: (o.r || 16) + "px" }, box);
+        const m = el("span", "smask", null, box);
+        el("span", "stext", { fontFamily: o.font, fontWeight: o.weight, fontSize: o.size + "px", color: o.ink, letterSpacing: o.ls || "0", padding: o.pad }, m, o.text);
+        const w = box.offsetWidth, h = box.offsetHeight;
+        const x = o.x === "c" ? (1080 - w) / 2 : o.x; box.style.left = x + "px";
+        if (o.studs) { const d = Math.max(18, o.size * 0.2), n = Math.max(2, Math.floor((w - d) / (d * 2.1))), gap = (w - n * d) / (n + 1);
+          for (let k = 0; k < n; k++) el("div", "stud", { left: gap + k * (d + gap) + "px", top: -d * 0.42 + "px", width: d + "px", height: d * 0.62 + "px", borderRadius: d * 0.2 + "px", background: o.bg }, fill); }
+        gsap.set(box, { rotation: o.rot || 0, transformOrigin: "0% 50%" });
+        return { box, fill, text: m.firstChild, w, h, x };
+      }
+      function slabIn(tl, s, t, kind) {
+        tl.set(s.box, { opacity: 1 }, t);
+        if (kind === "wipe") { tl.fromTo(s.fill, { scaleX: 0 }, { scaleX: 1, duration: 0.42, ease: "expo.out" }, t); tl.fromTo(s.text, { yPercent: 110 }, { yPercent: 0, duration: 0.45, ease: "expo.out" }, t + 0.08); }
+        else if (kind === "rise") { gsap.set(s.fill, { transformOrigin: "50% 100%" }); tl.fromTo(s.fill, { scaleY: 0 }, { scaleY: 1, duration: 0.4, ease: "back.out(1.7)" }, t); tl.fromTo(s.text, { yPercent: 110 }, { yPercent: 0, duration: 0.45, ease: "expo.out" }, t + 0.1); }
+        else if (kind === "drop") tl.fromTo(s.box, { y: -1500 }, { y: 0, duration: 0.6, ease: "bounce.out" }, t);
+        else if (kind === "pop") tl.fromTo(s.box, { scale: 0, transformOrigin: "50% 50%" }, { scale: 1, duration: 0.38, ease: "back.out(2.6)" }, t);
+        else if (kind === "slide") tl.fromTo(s.box, { x: -1300, skewX: 25 }, { x: 0, skewX: 0, duration: 0.5, ease: "expo.out" }, t);
+      }
+      function slabOut(tl, s, t, kind) {
+        if (kind === "fall") tl.to(s.box, { y: 1000, rotation: "+=14", duration: 0.32, ease: "power2.in" }, t);
+        else tl.to(s.box, { x: kind === "right" ? 1300 : -1300, rotation: kind === "right" ? 10 : -10, duration: 0.28, ease: "power3.in" }, t);
+        tl.set(s.box, { opacity: 0 }, t + 0.34);
+      }
       // adatta la dimensione del testo alla larghezza
       function fit(e, maxW, maxFs) { e.style.fontSize = "100px"; const ow = e.style.width; e.style.width = "auto"; const w = e.offsetWidth; e.style.width = ow; const fs = Math.min(maxFs, Math.floor(100 * maxW / w)); e.style.fontSize = fs + "px"; return fs; }
 
@@ -238,48 +270,46 @@ ${videos}
           const sh = el("div", "abs", { left: LX + "px", top: LY + "px", width: 3144 * sc + "px", height: LH + "px", overflow: "hidden" }, hud);
           const bar = el("div", "shine", { left: "-200px" }, sh); gsap.set(bar, { rotation: 18 });
           tl.fromTo(bar, { x: 0 }, { x: 1300, duration: 0.5, ease: "power2.inOut" }, 0.95);
-          // MATTONCINI / INFINITI. in 3D estruso
-          const fs1 = fitText("MATTONCINI", 980, 150);
-          const A = word3d(hud, "MATTONCINI", { top: LY + LH + 70, fs: fs1, d: "#1b2468" });
-          const B = word3d(hud, "INFINITI.", { top: LY + LH + 70 + fs1 * 1.12, fs: fs1 * 1.18, d: "#8a3600", g: "linear-gradient(100deg,#fff38a,#ffc72c 45%,#ff6a3d)" });
-          enter(tl, A.chars, "slam", 0.85);
-          enter(tl, B.chars, "snap", 1.1);
-          const tg = el("div", "big", { top: LY + LH + 90 + fs1 * 2.5 + "px", fontFamily: "Inter", fontWeight: 800, fontSize: "48px", letterSpacing: "-.01em", textTransform: "none", textShadow: "0 3px 14px rgba(0,0,0,.9)" }, hud);
-          const tc = split(tg, "Il gioco gratis, sul telefono e nel browser.");
-          tl.fromTo(tc, { yPercent: 115 }, { yPercent: 0, duration: 0.4, ease: "expo.out", stagger: 0.006 }, 1.45);
+          // MATTONCINI / INFINITI. su mattoncini
+          const hf = Math.floor(820 / measure("MATTONCINI", "Unbounded", 900, "-.03em"));
+          const A = slab(hud, { x: "c", y: LY + LH + 70, text: "MATTONCINI", font: "Unbounded", weight: 900, size: hf, ls: "-.03em", bg: "#f4f6ff", ink: "#0a0f2e", pad: hf * 0.16 + "px " + hf * 0.2 + "px " + hf * 0.12 + "px", studs: true, r: 18, rot: -2.5 });
+          const B = slab(hud, { x: "c", y: LY + LH + 70 + A.h + 8, text: "INFINITI.", font: "Unbounded", weight: 900, size: hf * 1.12, ls: "-.03em", bg: "#ffc72c", ink: "#0a0f2e", pad: hf * 0.16 + "px " + hf * 0.2 + "px " + hf * 0.12 + "px", studs: true, r: 18, rot: 2 });
+          const T = slab(hud, { x: "c", y: LY + LH + 70 + A.h + B.h + 34, text: "GRATIS · SUL TELEFONO E NEL BROWSER", font: "JetBrains Mono", weight: 800, size: 34, ls: ".02em", bg: "#0a0f2e", ink: "#ffc72c", pad: "14px 24px", r: 10, rot: -1 });
+          slabIn(tl, A, 0.85, "pop"); slabIn(tl, B, 1.05, "rise"); slabIn(tl, T, 1.35, "wipe");
+          const tg = T.box;
           // tutto esplode via, poi zoom dentro il gioco
           tl.to(lb, { x: (k) => (k - 4) * 260, y: (k) => -500 - hash(k) * 500, rotation: (k) => (k - 4) * 25, opacity: 0, duration: 0.32, ease: "power3.in", stagger: 0.01 }, 2.06);
-          tl.to([halo, tg], { opacity: 0, duration: 0.2 }, 2.1);
-          leave(tl, A.chars, "slam", 2.12); leave(tl, B.chars, "streak", 2.12);
-          tl.set([A.w, B.w, tg, sh], { opacity: 0 }, 2.4);
+          tl.to(halo, { opacity: 0, duration: 0.2 }, 2.1);
+          slabOut(tl, A, 2.1, "left"); slabOut(tl, B, 2.14, "right"); slabOut(tl, T, 2.12, "left");
+          tl.set(sh, { opacity: 0 }, 2.4);
         }
         punch(2.4);
 
         /* ── parole dei capitoli ── */
+        const KIND = { drop: ["drop", "fall"], slam: ["pop", "left"], snap: ["slide", "right"], rise: ["rise", "left"], swerve: ["slide", "right"], boom: ["pop", "fall"], tetris: ["drop", "fall"], streak: ["slide", "right"] };
+        const labels = {};
         WORDS.forEach((W, i) => {
-          const t0 = W.at || W.t, end = W.e;
-          const sameCh = i > 0 && WORDS[i - 1].n === W.n;
-          const fs = fitText(W.w, 940, 240), top = 1920 - 200 - fs;
-          const { w, chars: cs } = word3d(hud, W.w, { top, fs, d: W.d, g: W.g });
-          tl.set(w, { opacity: 0 }, 0); tl.set(w, { opacity: 1 }, t0); tl.set(w, { opacity: 0 }, end);
-          enter(tl, cs, W.fx, t0 + 0.03, fs);
-          tl.fromTo(w, { scale: 1 }, { scale: 1.05, duration: end - t0, ease: "none", transformOrigin: "50% 100%", immediateRender: false }, t0);
-          if (W.fx === "boom") [0, 1, 2, 3, 4, 5, 6, 7].forEach((k) => tl.set(w, { x: k === 7 ? 0 : (hash(k * 13) - 0.5) * 60, y: k === 7 ? 0 : (hash(k * 7) - 0.5) * 30 }, t0 + 0.5 + k * 0.04));
-          leave(tl, cs, W.fx, end - 0.25);
-          // indice, barra e riga
-          if (!sameCh) {
+          const t0 = W.at || W.t, end = W.e, sign = i % 2 ? 1 : -1;
+          const [kin, kout] = KIND[W.fx];
+          // mattoncino grande con la parola
+          const fs = Math.min(200, Math.floor(860 / measure(W.w, "Unbounded", 900, "-.03em")));
+          // riga sotto, in monospazio su lastra chiara
+          const ss = Math.min(44, Math.floor(900 / (measure(W.s, "JetBrains Mono", 700) + 0.5)));
+          const sub = slab(hud, { x: 56, y: 0, text: W.s, font: "JetBrains Mono", weight: 700, size: ss, bg: "#f4f6ff", ink: "#0a0f2e", pad: "16px 26px 18px", r: 12, rot: sign * 1.0 });
+          const tile = slab(hud, { x: 56, y: 0, text: W.w, font: "Unbounded", weight: 900, size: fs, ls: "-.03em", bg: W.bc, ink: "#0a0f2e", pad: fs * 0.16 + "px " + fs * 0.2 + "px " + fs * 0.12 + "px", studs: true, r: 18, rot: sign * 1.6 });
+          const subY = 1770 - sub.h, tileY = subY - tile.h - 22;
+          sub.box.style.top = subY + "px"; tile.box.style.top = tileY + "px";
+          slabIn(tl, tile, t0 + 0.04, kin);
+          slabIn(tl, sub, W.t + 0.3, "wipe");
+          tl.fromTo(tile.box, { y: 0 }, { y: -10, duration: Math.max(0.3, (end - t0 - 1.1) / 2), ease: "sine.inOut", yoyo: true, repeat: 1, immediateRender: false }, t0 + 0.72);
+          if (W.fx === "boom") [0, 1, 2, 3, 4, 5, 6, 7].forEach((k) => tl.set(tile.box, { x: k === 7 ? 0 : (hash(k * 13) - 0.5) * 50, rotation: k === 7 ? sign * 1.6 : sign * 1.6 + (hash(k * 7) - 0.5) * 8 }, t0 + 0.42 + k * 0.04));
+          slabOut(tl, tile, end - 0.3, kout); slabOut(tl, sub, end - 0.26, kout === "fall" ? "left" : kout);
+          // etichetta capitolo (una per capitolo)
+          if (!labels[W.n]) {
             const nEnd = (WORDS[i + 1] && WORDS[i + 1].n === W.n) ? WORDS[i + 1].e : end;
-            const ix = el("div", "idx", { color: W.c, opacity: 0 }, hud, W.n + " / 06");
-            const br = el("div", "bar", { background: W.c, opacity: 0 }, hud);
-            tl.fromTo(ix, { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.4, ease: "power3.out" }, W.t + 0.1);
-            tl.fromTo(br, { opacity: 0, scaleX: 0 }, { opacity: 1, scaleX: 1, transformOrigin: "0% 50%", duration: 0.45, ease: "expo.out" }, W.t + 0.15);
-            tl.to([ix, br], { opacity: 0, duration: 0.15 }, nEnd - 0.2);
+            const lab = slab(hud, { x: 56, y: tileY - 92, text: W.n + " / 06", font: "JetBrains Mono", weight: 800, size: 32, ls: ".08em", bg: "#0a0f2e", ink: W.bc, pad: "12px 20px", r: 10 });
+            slabIn(tl, lab, W.t + 0.02, "wipe"); slabOut(tl, lab, nEnd - 0.28, "left"); labels[W.n] = lab;
           }
-          const sb = el("div", "sub", { opacity: 0, "--ac": W.c }, hud);
-          const words = W.s.split(" ").map((x) => { const m = el("span", "m", null, sb); const c = el("span", "c", null, m, x); sb.appendChild(document.createTextNode(" ")); return c; });
-          tl.fromTo(words, { yPercent: 110 }, { yPercent: 0, duration: 0.5, ease: "expo.out", stagger: 0.03 }, W.t + 0.22);
-          tl.set(sb, { opacity: 1 }, W.t + 0.18); tl.fromTo(sb, { clipPath: "inset(0% 100% 0% 0% round 26px)" }, { clipPath: "inset(0% 0% 0% 0% round 26px)", duration: 0.45, ease: "expo.out" }, W.t + 0.18); tl.to(sb, { opacity: 0, duration: 0.12 }, end - 0.14);
-          tl.to(words, { yPercent: -110, duration: 0.2, ease: "power2.in", stagger: 0.01 }, end - 0.22);
         });
 
         /* ── TRANSIZIONI ── */
@@ -337,10 +367,12 @@ ${videos}
         /* ── raffica: tagli da 0,2 s con parole a tutto schermo ── */
         FLASHW.forEach((txt, i) => {
           const T = 21.6 + i * 0.2;
-          const fs = fitText(txt, 1000, 280);
-          const { w } = word3d(hud, txt, { top: 960 - fs * 0.55, fs, d: i % 2 ? "#8a3600" : "#1b2468", color: i % 2 ? "#ffc72c" : "#fff" });
+          const fs = Math.min(230, Math.floor(880 / measure(txt, "Unbounded", 900, "-.03em")));
+          const cols = ["#3d8bff", "#ff5cb8", "#2fd480", "#3fd0f5", "#ff6a2b", "#ffc72c", "#f4f6ff"];
+          const sl = slab(hud, { x: "c", y: 0, text: txt, font: "Unbounded", weight: 900, size: fs, ls: "-.03em", bg: cols[i % cols.length], ink: "#0a0f2e", pad: fs * 0.16 + "px " + fs * 0.2 + "px " + fs * 0.12 + "px", studs: true, r: 18, rot: i % 2 ? -4 : 4 });
+          sl.box.style.top = 960 - sl.h / 2 + "px"; const w = sl.box;
           tl.set(w, { opacity: 0 }, 0);
-          tl.fromTo(w, { opacity: 1, scale: 1.4, rotation: i % 2 ? -6 : 6 }, { scale: 1, rotation: i % 2 ? -2 : 2, duration: 0.2, ease: "power2.out", immediateRender: false }, T);
+          tl.fromTo(w, { opacity: 1, scale: 1.45 }, { scale: 1, duration: 0.2, ease: "power2.out", immediateRender: false }, T);
           tl.set(w, { opacity: 0 }, T + 0.2);
           tl.fromTo(vwrap, { filter: "brightness(1.7)" }, { filter: "brightness(1)", duration: 0.1, ease: "none", immediateRender: false }, T);
         });
@@ -364,17 +396,12 @@ ${videos}
 
         /* ── chiusura ── */
         {
-          const fs = fitText("GIOCA ORA", 940, 190);
-          const { w: g, chars: gc } = word3d(hud, "GIOCA ORA", { top: 620, fs, d: "#8a3600", g: "linear-gradient(100deg,#fff38a,#ffc72c 45%,#ff6a3d)" });
-          enter(tl, gc, "drop", 26.25);
-          tl.fromTo(g, { scale: 1 }, { scale: 1.04, duration: 3.0, ease: "sine.inOut", transformOrigin: "50% 50%", immediateRender: false }, 27.0);
-          const s1 = el("div", "big", { top: 640 + fs * 1.35 + "px", fontFamily: "Inter", fontWeight: 800, fontSize: "56px", letterSpacing: "-.02em", textTransform: "none" }, hud);
-          const s1c = split(s1, "Gratis nel browser. Senza account.");
-          const s2 = el("div", "big", { top: 640 + fs * 1.35 + 74 + "px", fontFamily: "Inter", fontWeight: 700, fontSize: "50px", letterSpacing: "-.01em", textTransform: "none", color: "rgba(255,255,255,.88)" }, hud);
-          const s2c = split(s2, "Oppure installalo sul telefono.");
-          tl.set([g, s1, s2], { opacity: 0 }, 0); tl.set(g, { opacity: 1 }, 26.25); tl.set(s1, { opacity: 1 }, 26.85); tl.set(s2, { opacity: 1 }, 27.1);
-          tl.fromTo(s1c, { yPercent: 110 }, { yPercent: 0, duration: 0.45, ease: "expo.out", stagger: 0.008 }, 26.85);
-          tl.fromTo(s2c, { yPercent: 110 }, { yPercent: 0, duration: 0.45, ease: "expo.out", stagger: 0.008 }, 27.1);
+          const gf = Math.floor(860 / measure("GIOCA ORA", "Unbounded", 900, "-.03em"));
+          const G = slab(hud, { x: "c", y: 600, text: "GIOCA ORA", font: "Unbounded", weight: 900, size: gf, ls: "-.03em", bg: "#ffc72c", ink: "#0a0f2e", pad: gf * 0.16 + "px " + gf * 0.2 + "px " + gf * 0.12 + "px", studs: true, r: 20, rot: -2 });
+          const S1 = slab(hud, { x: "c", y: 600 + G.h + 40, text: "GRATIS NEL BROWSER · SENZA ACCOUNT", font: "JetBrains Mono", weight: 800, size: 38, bg: "#f4f6ff", ink: "#0a0f2e", pad: "16px 26px", r: 12, rot: 1.2 });
+          const S2 = slab(hud, { x: "c", y: 600 + G.h + 40 + S1.h + 18, text: "OPPURE INSTALLALO SUL TELEFONO", font: "JetBrains Mono", weight: 800, size: 38, bg: "#0a0f2e", ink: "#ffc72c", pad: "16px 26px", r: 12, rot: -1 });
+          slabIn(tl, G, 26.25, "drop"); slabIn(tl, S1, 26.85, "wipe"); slabIn(tl, S2, 27.1, "wipe");
+          tl.fromTo(G.box, { scale: 1 }, { scale: 1.04, transformOrigin: "50% 50%", duration: 2.6, ease: "sine.inOut", immediateRender: false }, 27.2);
           const card = el("div", "abs", { left: "60px", top: "1420px", width: "960px", height: "250px", borderRadius: "40px", background: "rgba(255,255,255,.1)", border: "2px solid rgba(255,255,255,.25)", opacity: 0 }, hud);
           const qrb = el("div", "abs", { left: "24px", top: "24px", width: "202px", height: "202px", borderRadius: "22px", background: "#fff" }, card);
           const cv = el("canvas", "abs", { left: "11px", top: "11px", width: "180px", height: "180px" }, qrb); cv.width = cv.height = 360;
@@ -393,7 +420,7 @@ ${videos}
         window.__timelines["main"] = tl;
         tl.seek(0);
       }
-      document.fonts.load('900 100px "Unbounded"').then(() => Promise.all([document.fonts.load('700 40px "Unbounded"'), document.fonts.load('800 40px "Inter"'), document.fonts.load('600 40px "Inter"'), document.fonts.load('700 40px "Inter"')])).then(build);
+      document.fonts.load('900 100px "Unbounded"').then(() => Promise.all([document.fonts.load('700 40px "Unbounded"'), document.fonts.load('800 40px "Inter"'), document.fonts.load('600 40px "Inter"'), document.fonts.load('700 40px "Inter"'), document.fonts.load('700 40px "JetBrains Mono"'), document.fonts.load('800 40px "JetBrains Mono"')])).then(build);
     </script>
   </body>
 </html>
