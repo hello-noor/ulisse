@@ -1,7 +1,7 @@
 # ULIBRICKS — scheda tecnica e descrizione completa
 
 > Nota sul nome: il progetto si chiama **ULIBRICKS** (non "Uliblocks"). Logo a due righe, "ULI" e "BRICKS", con le lettere su mattoncini colorati.
-> Indirizzo: https://hello-noor.github.io/ulisse/ulibricks/ · Versione descritta: build `v105` del service worker (ottobre 2026).
+> Indirizzo: https://hello-noor.github.io/ulisse/ulibricks/ · Versione descritta: build `v106` del service worker (ottobre 2026).
 
 ---
 
@@ -45,7 +45,7 @@ Slogan dell'app: **Costruisci · Anima · Gioca**.
 
 ### Quanti personaggi diversi si possono creare?
 
-Moltiplicando le scelte strutturali (capelli 19 × facce 16 × oggetti 17 × fantasia maglia 12 × fantasia pantaloni 12 × costumi 25 × orecchie 10 × code 12 × corna 5 × mani/zampe 5 × musi 5) si ottengono circa **279 miliardi** di combinazioni (senza contare i 20 animali, che sono personaggi a parte). Aggiungendo i colori (11 pelli, 17 colori capelli, 28 colori per maglia, braccia e pantaloni, più due colori personalizzabili sui costumi) si supera **un miliardo di miliardi (10^18)** come limite teorico. Il numero è un massimo teorico: alcune combinazioni si sovrappongono, per esempio un costume sostituisce maglia e pantaloni.
+Moltiplicando le scelte strutturali (capelli 19 × facce 16 × oggetti 17 × fantasia maglia 12 × fantasia pantaloni 12 × costumi 25 × orecchie 10 × code 12 × corna 5 × mani/zampe 5 × musi 5) si ottengono circa **279 miliardi** di combinazioni (senza contare i 21 animali, che sono personaggi a parte). Aggiungendo i colori (11 pelli, 17 colori capelli, 28 colori per maglia, braccia e pantaloni, più due colori personalizzabili sui costumi) si supera **un miliardo di miliardi (10^18)** come limite teorico. Il numero è un massimo teorico: alcune combinazioni si sovrappongono, per esempio un costume sostituisce maglia e pantaloni.
 
 ---
 
@@ -99,6 +99,7 @@ In ogni scheda c'è una linguetta **Nascondi** sopra il pannello: abbassa il pan
 Si sceglie la categoria, la forma, la **misura** e il **colore**. Una grande anteprima 3D mostra il pezzo, con tasti per ruotarlo. Su telefono il primo tocco mostra il **pezzo fantasma** (più luminoso, anche se giri la scena) e una barra in basso: **Presa**, **Gira** a sinistra e a destra, **Annulla** e **Posa qui**; si posa toccando di nuovo lo stesso punto o premendo Posa qui.
 
 ### Altre schermate
+- **Risparmio energia** (in Impostazioni): per consumare meno batteria limita il disegno a 30 fotogrammi al secondo, abbassa la risoluzione a 1×, toglie le ombre e le sfocature, ferma le animazioni dell'interfaccia, dimezza le particelle, ferma l'acqua animata, spegne la Vita dei personaggi e la musica; spegnendolo si ripristina tutto com'era.
 - **Impostazioni:** musica (due brani jazz e bossa leggeri, si alternano), effetti sonori, vita dei personaggi, tema (auto, chiaro, scuro), lingua (italiano e inglese), salva e carica progetto, base, istruzioni, installa l'app.
 - **Progetti:** fino a 24 progetti con miniatura, rinominabili, duplicabili ed eliminabili.
 - **Tour guidato** alla prima apertura, in 6 passi.
@@ -156,12 +157,12 @@ Nella barra laterale della scheda Personaggi (**Aggiungi, Vai qui, Interagisci, 
 
 ## 6b. Gli animali
 
-La scheda **Animali** (accanto a Personaggi) aggiunge **20 animali procedurali**, costruiti a mattoncini e animati come i personaggi: camminano, scodinzolano, parlano con fumetti e **fanno il loro verso** (suoni sintetizzati nel browser).
+La scheda **Animali** (accanto a Personaggi) aggiunge **21 animali procedurali**, costruiti a mattoncini e animati come i personaggi: camminano, scodinzolano, parlano con fumetti e **fanno il loro verso** (suoni sintetizzati nel browser).
 
 | Gruppo | Animali |
 |---|---|
 | **Fattoria (5)** | Cane da guardia, Gatto, Mucca, Maiale, Pecora |
-| **Selvaggi (10)** | Aragosta gigante, Polpo, Leone, Elefante, Ghepardo, Pantera nera, Tigre, Drago di Komodo, Diavolo della Tasmania, Cavalluccio marino (rosso granata) |
+| **Selvaggi (11)** | Aragosta gigante, Polpo, Leone, Elefante, Ghepardo, Pantera nera, Tigre, Drago di Komodo, Diavolo della Tasmania, Cavalluccio marino (rosso granata), Pipistrello |
 | **Mito e Dino (5)** | **T-rex** (braccia minuscole, morso enorme), **Triceratopo** (tre corna e gorgiera rossa), Drago, **Grifo di Perugia** (rosso, con becco e artigli dorati: il simbolo della città), **Chimera** (leone con testa di capra sulla schiena e coda di serpente) |
 
 **Interagire con un animale:** si sceglie un personaggio, si usa lo strumento **Interagisci** e si tocca l'animale. Compare un menu con le azioni:

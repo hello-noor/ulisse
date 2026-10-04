@@ -8,7 +8,7 @@
 
    Per pubblicare una versione nuova basta cambiare CACHE (v2, v3...). */
 
-const CACHE = 'home-v1';
+const CACHE = 'home-v9';
 /* Ripuliamo solo le nostre cache: quelle delle app hanno un altro prefisso. */
 const CACHE_PREFIX = 'home-';
 
@@ -23,7 +23,11 @@ const ASSETS = [
   './favicon-32.png',
   /* le facce dei bottoni: senza queste l'elenco offline sarebbe muto */
   './nomi-cose-citta/icon-192.png',
-  './linea-del-20/icon-192.png'
+  './linea-del-20/icon-192.png',
+  './ulibricks/icons/icon-192-v2.png',
+  './Calcolo%20LDL%20nonna/icon-192.png',
+  './porchetta-costano/icon-192.png',
+  './ulisse-polytropos/copertina.jpg'
 ];
 
 self.addEventListener('install', e => {

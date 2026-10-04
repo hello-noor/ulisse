@@ -11,6 +11,9 @@ Questa è la sua casa: una pagina da cui si scelgono tutte le app.
 | --- | --- | --- |
 | **Nomi Cose Città** | Segnapunti per giocare a voce, in auto o in viaggio. | [`nomi-cose-citta/`](nomi-cose-citta/) |
 | **Linea del 20** | Linea del 20, linea del 100 e casa del 1000 (metodo analogico). | [`linea-del-20/`](linea-del-20/) |
+| **ULIBRICKS** | Costruzioni a mattoncini in 3D, personaggi, animali e giochi. | [`ulibricks/`](ulibricks/) |
+| **Diario LDL di Nonna Rosella** | Calcola e salva il colesterolo LDL (formula di Friedewald), con storico e invio su WhatsApp. | [`Calcolo LDL nonna/`](Calcolo%20LDL%20nonna/) |
+| **Sagra della Porchetta di Costano** | Menù, bar, porchetta e dolci con il conto automatico, programma delle serate e gioco PorcoSnake. | [`porchetta-costano/`](porchetta-costano/) |
 
 Tutte le app:
 
