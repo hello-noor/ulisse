@@ -1,0 +1,245 @@
+// Genera index.html: ULIBRICKS, spot da 30 secondi in stile "keynote".
+// Nero assoluto, tipografia Inter enorme, un telefono che fluttua, tagli secchi sulla musica del gioco.
+// Uso: node tools/build.mjs  (poi: python3 tools/mix.py per l'audio)
+import fs from "node:fs";
+
+const W = 1080, H = 1920, TOTAL = 30;
+const read = (f) => JSON.parse(fs.readFileSync(new URL("../assets/" + f, import.meta.url)));
+
+// ── riprese del gioco vero: at = quando parte, dur = durata, from = punto nella ripresa, rate = velocità
+const SEGS = [
+  { id: "reel", src: "reel", at: 1.8, dur: 3.8, from: 10.0, rate: 2.0 },
+  { id: "creator", src: "creator2", at: 5.6, dur: 3.2, from: 0.4, rate: 2.6 },
+  { id: "drago", src: "zoo", at: 8.8, dur: 1.5, from: 2.2, rate: 1.5 },
+  { id: "chimera", src: "zoo", at: 10.3, dur: 2.3, from: 19.6, rate: 1.7 },
+  { id: "car", src: "car", at: 12.6, dur: 3.0, from: 1.6, rate: 1.2, steer: "car.steer.json" },
+  { id: "dyn", src: "dyn", at: 15.6, dur: 2.4, from: 5.6, rate: 1 },
+  { id: "tetris", src: "tetris2", at: 18.0, dur: 1.7, from: 7.0, rate: 1 },
+  { id: "run", src: "run2", at: 19.7, dur: 1.9, from: 12.4, rate: 1.1 },
+  // raffica finale
+  { id: "m1", src: "quake", at: 21.6, dur: 0.2, from: 3.0, rate: 1 },
+  { id: "m2", src: "vita", at: 21.8, dur: 0.2, from: 3.0, rate: 1 },
+  { id: "m3", src: "lineup", at: 22.0, dur: 0.2, from: 2.0, rate: 1 },
+  { id: "m4", src: "kit", at: 22.2, dur: 0.2, from: 7.0, rate: 1 },
+  { id: "m5", src: "hero", at: 22.4, dur: 0.2, from: 5.0, rate: 1 },
+  { id: "m6", src: "tetris2", at: 22.6, dur: 0.2, from: 12.45, rate: 1 },
+  { id: "m7", src: "reel", at: 22.8, dur: 0.2, from: 16.5, rate: 1 },
+];
+const BOOM = 15.6 + (6.9 - 5.6); // esplosione della dinamite nel video
+
+// ── capitoli: parola enorme + riga grigia
+const G = {
+  blue: "linear-gradient(100deg,#4aa3ff 0%,#2f6bff 45%,#7a5cff 100%)",
+  pink: "linear-gradient(100deg,#ff7ac8 0%,#ee45a8 45%,#9b5cff 100%)",
+  green: "linear-gradient(100deg,#6dffb0 0%,#22d38a 45%,#19b6c9 100%)",
+  cyan: "linear-gradient(100deg,#7ae8ff 0%,#22c4f0 45%,#2f6bff 100%)",
+  fire: "linear-gradient(100deg,#ffd23f 0%,#ff6a3d 45%,#ff2d55 100%)",
+  sun: "linear-gradient(100deg,#fff176 0%,#ffc72c 40%,#ff8a3d 100%)",
+};
+const CH = [
+  { t: 1.8, e: 5.6, w: "Costruisci.", g: G.blue, subs: [[1.8, "Città intere, un mattoncino alla volta."]] },
+  { t: 5.6, e: 8.8, w: "Crea.", g: G.pink, subs: [[5.6, "Miliardi di miliardi di personaggi."]] },
+  { t: 8.8, e: 12.6, w: "Addomestica.", g: G.green, subs: [[8.8, "Sì, anche un drago."], [10.3, "E poi salta in sella."]] },
+  { t: 12.6, e: 15.6, w: "Guida.", g: G.cyan, subs: [[12.6, "Inclina il telefono per sterzare."]] },
+  { t: 15.6, e: 18.0, w: "Distruggi.", g: G.fire, subs: [[15.6, "Poi fai saltare tutto."]] },
+  { t: 18.0, e: 21.6, w: "Gioca.", g: G.sun, subs: [[18.0, "Pioggia di mattoncini."], [19.7, "Corri con i tuoi personaggi."]] },
+];
+
+// ── inclinazione del telefono sincronizzata con la guida registrata
+const TILT = [];
+SEGS.filter((s) => s.steer).forEach((s) => {
+  const j = read(s.steer);
+  j.log.filter((_, i) => i % 2 === 0).forEach(([f, st, ac]) => {
+    const t = s.at + (f / j.fps - s.from) / s.rate;
+    if (t >= s.at && t <= s.at + s.dur) TILT.push([+t.toFixed(2), +(-st * 14).toFixed(2), +(ac * 10).toFixed(2)]);
+  });
+});
+
+fs.writeFileSync(new URL("../assets/timeline.json", import.meta.url), JSON.stringify({ SEGS, CH, BOOM, TOTAL }, null, 1));
+
+const videos = SEGS.map((s) => `          <video id="v-${s.id}" class="clip vid" src="assets/v/${s.src}.mp4" muted playsinline data-start="${s.at}" data-duration="${s.dur}" data-media-start="${s.from}" data-playback-rate="${s.rate}" data-track-index="1"></video>`).join("\n");
+const font = (w) => `@font-face { font-family:"Inter"; font-weight:${w}; font-style:normal; src:url("assets/fonts/inter-latin-${w}-normal.woff2") format("woff2"); }`;
+
+const html = `<!doctype html>
+<html lang="it" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=${W}, height=${H}" />
+    <title>ULIBRICKS · 30 secondi</title>
+    <script src="assets/gsap.min.js"></script>
+    <script src="assets/qrlib.js"></script>
+    <style>
+      ${[500, 600, 700, 800].map(font).join("\n      ")}
+      * { margin:0; padding:0; box-sizing:border-box; }
+      html, body { width:${W}px; height:${H}px; overflow:hidden; background:#000; }
+      #root { position:relative; width:100%; height:100%; overflow:hidden; background:#000; color:#f5f5f7; font-family:"Inter", sans-serif; }
+      #glow { position:absolute; left:-260px; top:560px; width:1600px; height:1500px; border-radius:50%; opacity:0;
+        background:radial-gradient(closest-side, var(--gc,#2f6bff) 0%, transparent 72%); filter:blur(30px); }
+      #stage { position:absolute; inset:0; perspective:2200px; }
+      #phone { position:absolute; left:160px; top:520px; width:760px; height:1352px; border-radius:116px; padding:12px;
+        background:linear-gradient(145deg,#5b5b60 0%,#1d1d20 22%,#0d0d0f 50%,#1d1d20 78%,#6a6a70 100%);
+        box-shadow:0 0 0 2px #2c2c30, 0 90px 180px -40px rgba(0,0,0,.9); }
+      #screen { position:absolute; left:12px; top:12px; width:736px; height:1328px; border-radius:104px; overflow:hidden; background:#000; }
+      #island { position:absolute; left:278px; top:30px; width:180px; height:52px; border-radius:26px; background:#000; z-index:5; }
+      #sheen { position:absolute; inset:0; z-index:6; pointer-events:none; background:linear-gradient(115deg, transparent 30%, rgba(255,255,255,.10) 45%, transparent 60%); }
+      .vid { position:absolute; left:0; top:0; width:736px; height:1328px; object-fit:cover; }
+      .word { position:absolute; left:0; width:${W}px; text-align:center; font-weight:800; letter-spacing:-.05em; line-height:1.0; white-space:nowrap; }
+      .grad { background:var(--g); -webkit-background-clip:text; background-clip:text; color:transparent; padding:0 20px 14px; }
+      .sub { position:absolute; left:60px; width:960px; text-align:center; font-weight:600; font-size:46px; letter-spacing:-.015em; color:#a1a1a6; line-height:1.2; }
+      .abs { position:absolute; }
+      #flash { position:absolute; inset:0; background:#fff; opacity:0; z-index:50; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="${TOTAL}" data-width="${W}" data-height="${H}">
+      <div id="glow"></div>
+      <div id="stage">
+        <div id="phone" data-layout-allow-overflow>
+          <div id="screen">
+${videos}
+            <div id="island"></div>
+            <div id="sheen" data-layout-allow-overflow></div>
+          </div>
+        </div>
+      </div>
+      <div id="hud" class="clip" data-start="0" data-duration="${TOTAL}" data-track-index="3" style="position:absolute; inset:0"></div>
+      <div id="flash"></div>
+      <audio id="mix" src="assets/mix.mp3" data-start="0" data-duration="${TOTAL}" data-track-index="10" data-volume="1"></audio>
+    </div>
+    <script>
+      const SEGS = ${JSON.stringify(SEGS)};
+      const CH = ${JSON.stringify(CH)};
+      const TILT = ${JSON.stringify(TILT)};
+      const BOOM = ${BOOM};
+      function el(tag, cls, css, parent, txt) {
+        const e = document.createElement(tag); if (cls) e.className = cls;
+        if (css) for (const k in css) { if (k.startsWith("--")) e.style.setProperty(k, css[k]); else e.style[k] = css[k]; }
+        if (txt != null) e.textContent = txt; if (parent) parent.appendChild(e); return e;
+      }
+      const tl = gsap.timeline({ paused: true });
+      const phone = document.getElementById("phone"), screen = document.getElementById("screen"), hud = document.getElementById("hud");
+      const glow = document.getElementById("glow"), flash = document.getElementById("flash"), sheen = document.getElementById("sheen");
+      gsap.set(phone, { transformOrigin: "50% 40%" });
+
+      // entrata "Apple": sfocato → nitido, sale piano
+      const reveal = (e, t, d = 0.7, y = 40) => tl.fromTo(e, { opacity: 0, y, filter: "blur(18px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: d, ease: "power3.out" }, t);
+      const hide = (e, t, d = 0.25) => tl.to(e, { opacity: 0, filter: "blur(10px)", duration: d, ease: "power2.in" }, t);
+
+      /* ── 0: Immagina. ── */
+      {
+        const w = el("div", "word", { top: "860px", fontSize: "170px", opacity: 0 }, hud, "Immagina.");
+        tl.fromTo(w, { opacity: 0, scale: 1.12, filter: "blur(24px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 1.0, ease: "power3.out" }, 0.15);
+        tl.to(w, { scale: 0.96, duration: 0.6, ease: "none" }, 1.15);
+        tl.to(w, { opacity: 0, duration: 0.12 }, 1.68);
+      }
+
+      /* ── capitoli: parola enorme sfumata + riga grigia ── */
+      CH.forEach((c, i) => {
+        const fs = c.w.length > 10 ? 138 : 176;
+        const w = el("div", "word grad", { top: "150px", fontSize: fs + "px", "--g": c.g, opacity: 0 }, hud, c.w);
+        tl.fromTo(w, { opacity: 0, y: 60, scale: 0.94, filter: "blur(20px)" }, { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.55, ease: "power4.out" }, c.t + 0.04);
+        tl.to(w, { scale: 1.03, duration: c.e - c.t - 0.6, ease: "none" }, c.t + 0.6);
+        tl.to(w, { opacity: 0, duration: 0.1 }, c.e - 0.1);
+        c.subs.forEach(([t, s], j) => {
+          const end = j + 1 < c.subs.length ? c.subs[j + 1][0] : c.e;
+          const e = el("div", "sub", { top: "360px", opacity: 0 }, hud, s);
+          reveal(e, t + 0.3, 0.6, 24);
+          hide(e, end - 0.22, 0.18);
+        });
+        tl.to(glow, { "--gc": c.g.match(/#[0-9a-f]{6}/gi)[1], duration: 0.3 }, c.t - 0.05);
+      });
+
+      /* ── telefono: ogni capitolo ha un movimento di camera diverso ── */
+      tl.set(phone, { y: 1500, rotationX: 50, opacity: 0 }, 0);
+      tl.set(phone, { opacity: 1 }, 1.7);
+      // Costruisci: si alza dal buio e si raddrizza
+      tl.to(phone, { y: 0, rotationX: 0, duration: 1.1, ease: "expo.out" }, 1.75);
+      tl.fromTo(glow, { opacity: 0 }, { opacity: 0.55, duration: 1.2 }, 1.8);
+      tl.to(phone, { scale: 1.05, duration: 2.7, ease: "none" }, 2.85);
+      // Crea: ruota lento di tre quarti
+      tl.set(phone, { scale: 1, rotationY: -22, rotationX: 6, x: 30 }, 5.6);
+      tl.to(phone, { rotationY: -6, rotationX: 0, x: 0, duration: 3.2, ease: "sine.out" }, 5.6);
+      // Addomestica: macro dentro lo schermo
+      tl.set(phone, { rotationY: 0, scale: 1.55, y: 380 }, 8.8);
+      tl.to(phone, { scale: 1.68, y: 430, duration: 1.5, ease: "none" }, 8.8);
+      tl.set(phone, { scale: 1.45, y: 300, x: -40 }, 10.3);
+      tl.to(phone, { scale: 1.55, x: 30, duration: 2.3, ease: "none" }, 10.3);
+      // Guida: il telefono è il volante
+      tl.set(phone, { scale: 1, x: 0, y: 0, rotationZ: 0, rotationX: 0 }, 12.6);
+      for (let i = 1; i < TILT.length; i++) {
+        const [t0] = TILT[i - 1], [t1, rz, rx] = TILT[i];
+        if (t1 <= t0) continue;
+        tl.to(phone, { rotationZ: rz, rotationX: rx, duration: t1 - t0, ease: "none" }, t0);
+      }
+      // Distruggi: avvicinamento, poi BOOM
+      tl.set(phone, { rotationZ: 0, rotationX: 0, scale: 1.0, y: 0 }, 15.6);
+      tl.to(phone, { scale: 1.3, y: 200, duration: BOOM - 15.6, ease: "power2.in" }, 15.6);
+      tl.set(flash, { opacity: 0.85 }, BOOM);
+      tl.to(flash, { opacity: 0, duration: 0.35, ease: "power2.out" }, BOOM + 0.03);
+      [[-26, 14], [22, -12], [-14, 8], [10, -6], [-5, 3], [0, 0]].forEach(([x, r], i) => tl.to(phone, { x, rotationZ: r * 0.25, duration: 0.05, ease: "none" }, BOOM + i * 0.05));
+      tl.to(phone, { scale: 1.42, duration: 0.8, ease: "power2.out" }, BOOM);
+      tl.to(glow, { opacity: 0.95, duration: 0.1 }, BOOM);
+      tl.to(glow, { opacity: 0.55, duration: 0.8 }, BOOM + 0.1);
+      // Gioca: dritto, poi deriva laterale
+      tl.set(phone, { scale: 1, y: 0, x: 0, rotationZ: 0, rotationY: 14 }, 18.0);
+      tl.to(phone, { rotationY: -4, duration: 1.7, ease: "sine.out" }, 18.0);
+      tl.set(phone, { rotationY: -14 }, 19.7);
+      tl.to(phone, { rotationY: 4, duration: 1.9, ease: "sine.out" }, 19.7);
+      // raffica: lo schermo invade l'inquadratura
+      tl.set(phone, { rotationY: 0 }, 21.6);
+      tl.to(phone, { scale: 1.55, y: -60, duration: 0.6, ease: "power3.out" }, 21.6);
+      tl.to(phone, { scale: 1.75, duration: 0.8, ease: "none" }, 22.2);
+      tl.to([phone, screen], { borderRadius: 0, duration: 0.6, ease: "power3.out" }, 21.6);
+      for (let i = 0; i < 7; i++) tl.fromTo(screen, { filter: "brightness(1.8)" }, { filter: "brightness(1)", duration: 0.12, ease: "none" }, 21.6 + i * 0.2);
+      tl.set(flash, { opacity: 1 }, 23.0);
+      tl.set(phone, { opacity: 0 }, 23.0);
+      tl.set(glow, { opacity: 0 }, 23.0);
+      tl.to(flash, { opacity: 0, duration: 0.5, ease: "power2.out" }, 23.02);
+      tl.fromTo(sheen, { xPercent: -60 }, { xPercent: 60, duration: 21, ease: "none" }, 1.8);
+
+      /* ── logo ── */
+      {
+        const halo = el("div", "abs", { left: "40px", top: "520px", width: "1000px", height: "700px", borderRadius: "50%", opacity: 0,
+          background: "radial-gradient(closest-side, rgba(255,199,44,.55), rgba(238,69,168,.35) 45%, rgba(47,107,255,.25) 70%, transparent 100%)", filter: "blur(40px)" }, hud);
+        const logo = el("img", "abs", { left: "90px", top: "700px", width: "900px", opacity: 0 }, hud); logo.src = "assets/logo.png";
+        const tag = el("div", "word", { top: "1010px", fontSize: "64px", fontWeight: 700, letterSpacing: "-.03em", opacity: 0 }, hud, "Il gioco di mattoncini 3D.");
+        tl.fromTo(logo, { opacity: 0, scale: 0.86, filter: "blur(30px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 1.1, ease: "expo.out", transformOrigin: "50% 50%" }, 23.05);
+        tl.fromTo(halo, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 1.6, ease: "power2.out" }, 23.05);
+        tl.to(logo, { scale: 1.04, duration: 1.8, ease: "none" }, 24.15);
+        reveal(tag, 23.9, 0.8, 30);
+        // salgono in alto per lasciare spazio alla chiamata all'azione
+        tl.to(logo, { y: -480, scale: 0.72, duration: 0.9, ease: "power3.inOut" }, 26.0);
+        tl.to(halo, { y: -480, scale: 0.7, opacity: 0.6, duration: 0.9, ease: "power3.inOut" }, 26.0);
+        hide(tag, 25.85, 0.2);
+      }
+
+      /* ── chiusura ── */
+      {
+        const g = el("div", "word grad", { top: "620px", fontSize: "190px", "--g": G_SUN, opacity: 0 }, hud, "Gioca ora.");
+        const s1 = el("div", "sub", { top: "860px", fontSize: "52px", color: "#f5f5f7", opacity: 0 }, hud, "Gratis, nel browser. Senza account.");
+        const s2 = el("div", "sub", { top: "935px", fontSize: "52px", opacity: 0 }, hud, "Oppure installalo sul telefono.");
+        const card = el("div", "abs", { left: "390px", top: "1110px", width: "300px", height: "300px", borderRadius: "40px", background: "#fff", opacity: 0 }, hud);
+        const cv = el("canvas", "abs", { left: "25px", top: "25px", width: "250px", height: "250px" }, card); cv.width = 500; cv.height = 500;
+        try {
+          const q = QRLIB(0, "M"); q.addData("https://hello-noor.github.io/ulisse/ulibricks/", "Byte"); q.make();
+          const n = q.getModuleCount(), cs = 500 / n, x = cv.getContext("2d"); x.fillStyle = "#fff"; x.fillRect(0, 0, 500, 500); x.fillStyle = "#000";
+          for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) if (q.isDark(r, c)) x.fillRect(Math.floor(c * cs), Math.floor(r * cs), Math.ceil(cs), Math.ceil(cs));
+        } catch (e) { console.error(e); }
+        const url = el("div", "word", { top: "1460px", fontSize: "44px", fontWeight: 600, letterSpacing: "-.01em", color: "#f5f5f7", opacity: 0 }, hud, "hello-noor.github.io/ulisse/ulibricks");
+        const by = el("div", "word", { top: "1730px", fontSize: "36px", fontWeight: 500, letterSpacing: "0", color: "#86868b", opacity: 0 }, hud, "Ideato da Ulisse (6 anni)");
+        tl.fromTo(g, { opacity: 0, y: 70, scale: 0.94, filter: "blur(22px)" }, { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.8, ease: "power4.out" }, 26.35);
+        reveal(s1, 26.8, 0.6, 24);
+        reveal(s2, 27.05, 0.6, 24);
+        tl.fromTo(card, { opacity: 0, scale: 0.9, y: 30 }, { opacity: 1, scale: 1, y: 0, duration: 0.7, ease: "expo.out" }, 27.4);
+        reveal(url, 27.65, 0.6, 20);
+        reveal(by, 28.1, 0.8, 16);
+      }
+
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>
+`.replace("G_SUN", JSON.stringify(G.sun));
+fs.writeFileSync(new URL("../index.html", import.meta.url), html);
+console.log("index.html scritto:", SEGS.length, "riprese,", TILT.length, "punti tilt, boom a", BOOM.toFixed(2));

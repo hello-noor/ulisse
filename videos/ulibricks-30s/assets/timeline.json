@@ -1,0 +1,209 @@
+{
+ "SEGS": [
+  {
+   "id": "reel",
+   "src": "reel",
+   "at": 1.8,
+   "dur": 3.8,
+   "from": 10,
+   "rate": 2
+  },
+  {
+   "id": "creator",
+   "src": "creator2",
+   "at": 5.6,
+   "dur": 3.2,
+   "from": 0.4,
+   "rate": 2.6
+  },
+  {
+   "id": "drago",
+   "src": "zoo",
+   "at": 8.8,
+   "dur": 1.5,
+   "from": 2.2,
+   "rate": 1.5
+  },
+  {
+   "id": "chimera",
+   "src": "zoo",
+   "at": 10.3,
+   "dur": 2.3,
+   "from": 19.6,
+   "rate": 1.7
+  },
+  {
+   "id": "car",
+   "src": "car",
+   "at": 12.6,
+   "dur": 3,
+   "from": 1.6,
+   "rate": 1.2,
+   "steer": "car.steer.json"
+  },
+  {
+   "id": "dyn",
+   "src": "dyn",
+   "at": 15.6,
+   "dur": 2.4,
+   "from": 5.6,
+   "rate": 1
+  },
+  {
+   "id": "tetris",
+   "src": "tetris2",
+   "at": 18,
+   "dur": 1.7,
+   "from": 7,
+   "rate": 1
+  },
+  {
+   "id": "run",
+   "src": "run2",
+   "at": 19.7,
+   "dur": 1.9,
+   "from": 12.4,
+   "rate": 1.1
+  },
+  {
+   "id": "m1",
+   "src": "quake",
+   "at": 21.6,
+   "dur": 0.2,
+   "from": 3,
+   "rate": 1
+  },
+  {
+   "id": "m2",
+   "src": "vita",
+   "at": 21.8,
+   "dur": 0.2,
+   "from": 3,
+   "rate": 1
+  },
+  {
+   "id": "m3",
+   "src": "lineup",
+   "at": 22,
+   "dur": 0.2,
+   "from": 2,
+   "rate": 1
+  },
+  {
+   "id": "m4",
+   "src": "kit",
+   "at": 22.2,
+   "dur": 0.2,
+   "from": 7,
+   "rate": 1
+  },
+  {
+   "id": "m5",
+   "src": "hero",
+   "at": 22.4,
+   "dur": 0.2,
+   "from": 5,
+   "rate": 1
+  },
+  {
+   "id": "m6",
+   "src": "tetris2",
+   "at": 22.6,
+   "dur": 0.2,
+   "from": 12.45,
+   "rate": 1
+  },
+  {
+   "id": "m7",
+   "src": "reel",
+   "at": 22.8,
+   "dur": 0.2,
+   "from": 16.5,
+   "rate": 1
+  }
+ ],
+ "CH": [
+  {
+   "t": 1.8,
+   "e": 5.6,
+   "w": "Costruisci.",
+   "g": "linear-gradient(100deg,#4aa3ff 0%,#2f6bff 45%,#7a5cff 100%)",
+   "subs": [
+    [
+     1.8,
+     "Città intere, un mattoncino alla volta."
+    ]
+   ]
+  },
+  {
+   "t": 5.6,
+   "e": 8.8,
+   "w": "Crea.",
+   "g": "linear-gradient(100deg,#ff7ac8 0%,#ee45a8 45%,#9b5cff 100%)",
+   "subs": [
+    [
+     5.6,
+     "Miliardi di miliardi di personaggi."
+    ]
+   ]
+  },
+  {
+   "t": 8.8,
+   "e": 12.6,
+   "w": "Addomestica.",
+   "g": "linear-gradient(100deg,#6dffb0 0%,#22d38a 45%,#19b6c9 100%)",
+   "subs": [
+    [
+     8.8,
+     "Sì, anche un drago."
+    ],
+    [
+     10.3,
+     "E poi salta in sella."
+    ]
+   ]
+  },
+  {
+   "t": 12.6,
+   "e": 15.6,
+   "w": "Guida.",
+   "g": "linear-gradient(100deg,#7ae8ff 0%,#22c4f0 45%,#2f6bff 100%)",
+   "subs": [
+    [
+     12.6,
+     "Inclina il telefono per sterzare."
+    ]
+   ]
+  },
+  {
+   "t": 15.6,
+   "e": 18,
+   "w": "Distruggi.",
+   "g": "linear-gradient(100deg,#ffd23f 0%,#ff6a3d 45%,#ff2d55 100%)",
+   "subs": [
+    [
+     15.6,
+     "Poi fai saltare tutto."
+    ]
+   ]
+  },
+  {
+   "t": 18,
+   "e": 21.6,
+   "w": "Gioca.",
+   "g": "linear-gradient(100deg,#fff176 0%,#ffc72c 40%,#ff8a3d 100%)",
+   "subs": [
+    [
+     18,
+     "Pioggia di mattoncini."
+    ],
+    [
+     19.7,
+     "Corri con i tuoi personaggi."
+    ]
+   ]
+  }
+ ],
+ "BOOM": 16.9,
+ "TOTAL": 30
+}
