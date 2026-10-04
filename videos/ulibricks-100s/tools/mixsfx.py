@@ -68,8 +68,29 @@ at('dyn', ign, 'beep3', 0.8); at('dyn', ign + 1.0, 'beep3', 0.8); at('dyn', ign 
 at('dyn', 6.87, 'boom_big', 1.0)
 # terremoto
 at('quake', 1.1, 'rumble', 0.9, maxlen=2.4)
-# tetris: blocchi che cadono
-for k in range(4): at('tetris', 5.0 + k * 0.8, 'thud', 0.5)
+# tetris "pioggia fitta": pezzi che si posano, pezzi extra che compaiono, flash e BOOM del gruppo unito
+def atany(segs, src_t, name, g=1.0, **kw):
+    for sg in segs:
+        t = vt(sg, src_t)
+        if t is not None: put(t, name, g, **kw); return
+tm = json.load(open(f'{D}/tetris2.marks.json'))['marks']; last = 0
+for k, t in tm:
+    if k.startswith('lock:'):
+        n = int(k.split(':')[1])
+        if n > last: atany(['tetB'], t, 'tet_lock', 0.8)
+        last = n
+    elif k.startswith('rain:'): atany(['tetB'], t, 'tet_rain', 0.9)
+    elif k == 'flash': atany(['tetB'], t, 'tet_flash', 0.9)
+    elif k == 'boom': atany(['tetB'], t, 'tet_boom', 1.0)
+    elif k == 'start': atany(['tetA'], t - 0.2, 'rn_go', 0.8)
+# corri: scelta dei personaggi della citta' e corsa
+rm = dict((k, t) for k, t in json.load(open(f'{D}/run2.marks.json'))['marks'])
+for k, t in json.load(open(f'{D}/run2.marks.json'))['marks']:
+    if k.startswith('pick:') or k == 'mount': atany(['runA'], t, 'rn_pick', 0.9)
+go = rm.get('go', 8.25)
+atany(['runA', 'runB'], go, 'rn_go', 0.9)
+plan = [(.6,'L'),(1.2,'U'),(1.8,'R'),(2.4,'R'),(3.0,'U'),(3.6,'L'),(4.2,'L'),(4.8,'U'),(5.4,'R'),(6.0,'U'),(6.6,'L'),(7.2,'R'),(7.8,'U'),(8.4,'L')]
+for at_, key in plan: atany(['runB'], go + 0.3 + at_, 'rn_jump' if key == 'U' else 'rn_lane', 0.8)
 
 # fade finale e normalizzazione dolce
 peak = np.abs(buf).max(); print('picco', round(float(peak), 2))

@@ -2,9 +2,20 @@
 // Uso: node tools/build.mjs
 import fs from "node:fs";
 
-const W = 1080, H = 1920, TOTAL = 100, C0 = 92; // C0 = inizio della chiusura (browser, smartphone, QR)
+const W = 1080, H = 1920;
 const read = (f) => { try { return JSON.parse(fs.readFileSync(new URL("../assets/" + f, import.meta.url))); } catch { return null; } };
 
+// ── tempi del Tetris e di Corri, ricavati dalle riprese (marks)
+const mt = read("tetris2.marks.json"), mr = read("run2.marks.json");
+const mk = (m, k, d) => { const e = m && m.marks.find(([n]) => n === k); return e ? e[1] : d; };
+const tStart = mk(mt, "start", 4.4), tBoom = mk(mt, "boom", 14.5);
+const tBfrom = tStart + 0.5, tBrate = 1.7, tBdur = +((tBoom + 2.6 - tBfrom) / tBrate).toFixed(2);
+const boomV = 83.6 + (tBoom - tBfrom) / tBrate;
+const rOpen = mk(mr, "open", 1.0), rMount = mk(mr, "mount", 7.25), rGo = mk(mr, "go", 8.25);
+const rAdur = 4.6, rArate = (rMount + 1.0 - (rOpen - 0.2)) / rAdur;
+// linea del tempo del capitolo GIOCA (dipende dalla durata delle riprese)
+const QA = +(83.6 + tBdur).toFixed(2), RA = +(QA + 1.5).toFixed(2), RB = +(RA + rAdur).toFixed(2), MA = +(RB + 3.3).toFixed(2);
+const C0 = +(MA + 4).toFixed(2), TOTAL = Math.ceil(C0 + 8); // C0 = inizio della chiusura (browser, smartphone, QR)
 // ── Riprese del gioco vero (assets/v/<src>.mp4). at = quando parte nel video, dur = durata, from = punto nella ripresa, rate = velocità
 const SEGS = [
   { id: "hero", src: "hero", at: 0, dur: 6.2, from: 0.3, rate: 1 },
@@ -26,23 +37,25 @@ const SEGS = [
   { id: "truck", src: "truck", at: 72, dur: 6, from: 1.0, rate: 1, steer: "truck.steer.json" },
   // 05 GIOCA 78–88
   { id: "dyn", src: "dyn", at: 78, dur: 4, from: 3.6, rate: 1 },
-  { id: "tetris", src: "tetris", at: 82, dur: 1.8, from: 4.6, rate: 1 },
-  { id: "quake", src: "quake", at: 83.8, dur: 1.5, from: 1.0, rate: 1 },
-  { id: "run", src: "run", at: 85.3, dur: 2.7, from: 6.5, rate: 1 },
-  // 06 MOSTRA 88–92
-  { id: "reel", src: "reel", at: 88, dur: 2, from: 11, rate: 1 },
-  { id: "share", src: "share", at: 90, dur: 2, from: 1.0, rate: 1 },
+  { id: "tetA", src: "tetris2", at: 82, dur: 1.6, from: tStart - 2.0, rate: 1 },
+  { id: "tetB", src: "tetris2", at: 83.6, dur: tBdur, from: tBfrom, rate: tBrate },
+  { id: "quake", src: "quake", at: QA, dur: 1.5, from: 1.0, rate: 1 },
+  { id: "runA", src: "run2", at: RA, dur: rAdur, from: rOpen - 0.2, rate: rArate },
+  { id: "runB", src: "run2", at: RB, dur: 3.3, from: rGo + 0.2, rate: 1 },
+  // 06 MOSTRA
+  { id: "reel", src: "reel", at: MA, dur: 2, from: 11, rate: 1 },
+  { id: "share", src: "share", at: +(MA + 2).toFixed(2), dur: 2, from: 1.0, rate: 1 },
 ];
 // finestre in cui il telefono si ingrandisce a tutto schermo (momenti d'azione)
-const PUSH = [[80.4, 82.0], [85.3, 88.0]];
+const PUSH = [[80.4, 82.0], [+(boomV - 0.7).toFixed(2), +(boomV + 1.5).toFixed(2)], [+(RA + 0.2).toFixed(2), +(MA - 0.05).toFixed(2)]];
 
 const CHAPTERS = [
   { t: 6, e: 26, accent: "#3b7bff", title: "COSTRUISCI", fs: 124 },
   { t: 26, e: 44, accent: "#ee45a8", title: "PERSONAGGI", fs: 124 },
   { t: 44, e: 66, accent: "#22d38a", title: "ANIMALI", fs: 156 },
   { t: 66, e: 78, accent: "#22c4f0", title: "VEICOLI", fs: 156 },
-  { t: 78, e: 88, accent: "#ff6a3d", title: "GIOCA", fs: 176 },
-  { t: 88, e: 92, accent: "#ffc72c", title: "MOSTRA", fs: 168 },
+  { t: 78, e: MA, accent: "#ff6a3d", title: "GIOCA", fs: 176 },
+  { t: MA, e: C0, accent: "#ffc72c", title: "MOSTRA", fs: 168 },
 ];
 
 // titolo secondario d'impatto (sotto il capitolo): count = numero che sale
@@ -66,11 +79,15 @@ const HEAD = [
   { t: 66.2, d: 5.6, txt: "GUIDALO COL TELEFONO" },
   { t: 72.2, d: 5.6, txt: "CAMION CON DRAGO E T-REX" },
   { t: 78.2, d: 2.1, txt: "DINAMITE!" },
-  { t: 82.1, d: 1.6, txt: "TETRIS 3D" },
-  { t: 83.9, d: 1.3, txt: "TERREMOTO" },
-  { t: 85.4, d: 2.5, txt: "CORRI!" },
-  { t: 88.2, d: 1.7, txt: "SHOWREEL" },
-  { t: 90.2, d: 1.7, txt: "CONDIVIDI" },
+  { t: 82.05, d: 1.5, txt: "PIOGGIA FITTA" },
+  { t: 83.7, d: +(boomV - 0.8 - 83.7).toFixed(2), txt: "PIÙ PEZZI INSIEME" },
+  { t: +(boomV - 0.7).toFixed(2), d: 2.2, txt: "BLOCCO UNITO: BOOM!" },
+  { t: +(QA + 0.1).toFixed(2), d: 1.3, txt: "TERREMOTO" },
+  { t: +(RA + 0.1).toFixed(2), d: 2.3, txt: "SCEGLI IL PERSONAGGIO" },
+  { t: +(RA + 2.5).toFixed(2), d: 2.0, txt: "OGNUNO HA UN BONUS" },
+  { t: +(RB + 0.1).toFixed(2), d: 3.1, txt: "CORRI COL T-REX!" },
+  { t: +(MA + 0.1).toFixed(2), d: 1.8, txt: "SHOWREEL" },
+  { t: +(MA + 2.1).toFixed(2), d: 1.8, txt: "CONDIVIDI" },
 ];
 
 // didascalie in basso (grandi, almeno ~3 secondi)
@@ -94,9 +111,12 @@ const CAPS = [
   [66.2, 5.6, "Inclina il telefono: avanti accelera, di lato sterza."],
   [72.2, 5.6, "Se ha le ruote lo guidi: anche un camion pieno di animali."],
   [78.2, 2.1, "Fai esplodere la tua città con la dinamite."],
-  [82.1, 1.6, "Tetris in 3D: i blocchi esplodono."],
-  [85.4, 2.5, "Corri! Gli ostacoli sono i tuoi blocchi."],
-  [88.2, 3.7, "Showreel, foto, libretto e QR della tua costruzione."],
+  [82.05, 1.5, "Pioggia fitta: più pezzi cadono insieme."],
+  [83.7, +(tBdur - 0.1).toFixed(2), "Unisci i pezzi: quando il gruppo è abbastanza grande, BOOM!"],
+  [+(QA + 0.1).toFixed(2), 1.3, "Terremoto: quanto resiste la tua città?"],
+  [+(RA + 0.1).toFixed(2), 4.4, "Corri con i personaggi che hai creato nella tua città!"],
+  [RB, 3.3, "Ogni costume dà un bonus: scudo, salto alto, calamita…"],
+  [+(MA + 0.1).toFixed(2), 3.8, "Showreel, foto, libretto e QR della tua costruzione."],
 ];
 
 // adesivi giganti: numero o parola (rimbalzano sull'angolo del telefono)
@@ -110,6 +130,8 @@ const STICK = [
   { t: 44.5, d: 2.8, n: 20, l: "ANIMALI", ci: 2 },
   { t: 66.6, d: 3.6, txt: "TILT", l: "TELEFONO", ci: 3 },
   { t: 72.6, d: 3.4, txt: "3×", l: "ANIMALI A BORDO", ci: 3 },
+  { t: 84.0, d: 2.4, txt: "16", l: "PEZZI UNITI", ci: 4 },
+  { t: +(RA + 1.0).toFixed(2), d: 3.0, n: 5, l: "BONUS DIVERSI", ci: 4 },
   { t: 55.2, d: 3.6, txt: "6 ANNI", l: "IDEATO DA ULISSE", ci: 2 },
 ];
 
@@ -288,7 +310,7 @@ ${audios}
       });
 
       /* ── adesivi giganti ── */
-      const TC = ["#fff", "#fff", "#0b1230", "#0b1230"]; const CC = ["#3b7bff", "#ee45a8", "#22d38a", "#22c4f0"];
+      const TC = ["#fff", "#fff", "#0b1230", "#0b1230", "#0b1230"]; const CC = ["#3b7bff", "#ee45a8", "#22d38a", "#22c4f0", "#ff6a3d"];
       STICK.forEach((s) => {
         const e = el("div", "stk", { "--c": CC[s.ci], "--tc": TC[s.ci], opacity: 0 }, hud);
         e.innerHTML = '<div class="n' + (s.txt || s.html ? " w" : "") + '">' + (s.html || s.txt || "0") + '</div><div class="l">' + s.l + "</div>";
