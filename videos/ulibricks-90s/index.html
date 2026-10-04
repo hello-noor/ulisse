@@ -25,6 +25,7 @@
       .glass { position:absolute; width:290px; padding:18px 22px 20px; border-radius:30px; background:rgba(8,13,34,.80); border:1.5px solid rgba(255,255,255,.22); box-shadow:0 20px 50px rgba(0,0,0,.45); }
       .glass .n { font-weight:900; font-size:58px; line-height:1; letter-spacing:-.02em; color:var(--ac,#fff); }
       .glass .n.t { font-size:42px; }
+      .glass .n sup { font-size:.55em; vertical-align:top; position:relative; top:-.05em; }
       .glass .l { margin-top:8px; font-weight:700; font-size:25px; line-height:1.15; color:rgba(255,255,255,.88); }
       .glass i { position:absolute; top:22px; right:22px; width:14px; height:14px; border-radius:50%; background:var(--ac,#fff); box-shadow:0 0 0 7px rgba(255,255,255,.1); }
       #cap { position:absolute; left:0; width:100%; top:1690px; text-align:center; }
@@ -46,77 +47,84 @@
       <div id="phone">
         <div id="screen">
         <video id="v00" class="clip vid" src="assets/v/scene.mp4" muted playsinline data-start="0" data-duration="5.2" data-media-start="0.5" data-playback-rate="1" data-track-index="1"></video>
-        <video id="v01" class="clip vid" src="assets/v/tray.mp4" muted playsinline data-start="5" data-duration="3.5" data-media-start="0.8" data-playback-rate="1" data-track-index="1"></video>
-        <video id="v02" class="clip vid" src="assets/v/kit.mp4" muted playsinline data-start="8.5" data-duration="6" data-media-start="0.8" data-playback-rate="1.5" data-track-index="1"></video>
-        <video id="v03" class="clip vid" src="assets/v/bases.mp4" muted playsinline data-start="14.5" data-duration="4" data-media-start="1.2" data-playback-rate="1.9" data-track-index="1"></video>
-        <video id="v04" class="clip vid" src="assets/v/park.mp4" muted playsinline data-start="18.5" data-duration="2.5" data-media-start="1.8" data-playback-rate="1.2" data-track-index="1"></video>
-        <video id="v05" class="clip vid" src="assets/v/vehicle.mp4" muted playsinline data-start="21" data-duration="4" data-media-start="1.6" data-playback-rate="1.2" data-track-index="1"></video>
-        <video id="v06" class="clip vid" src="assets/v/creator2.mp4" muted playsinline data-start="25" data-duration="10" data-media-start="0.6" data-playback-rate="1.25" data-track-index="1"></video>
-        <video id="v07" class="clip vid" src="assets/v/lineup.mp4" muted playsinline data-start="35" data-duration="4" data-media-start="0.8" data-playback-rate="1.1" data-track-index="1"></video>
-        <video id="v08" class="clip vid" src="assets/v/vita.mp4" muted playsinline data-start="39" data-duration="8" data-media-start="1.2" data-playback-rate="0.8" data-track-index="1"></video>
-        <video id="v09" class="clip vid" src="assets/v/animals_tab.mp4" muted playsinline data-start="47" data-duration="4.5" data-media-start="0.8" data-playback-rate="1.4" data-track-index="1"></video>
-        <video id="v10" class="clip vid" src="assets/v/interact.mp4" muted playsinline data-start="51.5" data-duration="13.5" data-media-start="0.9" data-playback-rate="1.4" data-track-index="1"></video>
-        <video id="v11" class="clip vid" src="assets/v/dyn.mp4" muted playsinline data-start="65" data-duration="3.5" data-media-start="3.2" data-playback-rate="1" data-track-index="1"></video>
-        <video id="v12" class="clip vid" src="assets/v/tetris.mp4" muted playsinline data-start="68.5" data-duration="2.5" data-media-start="4.5" data-playback-rate="1" data-track-index="1"></video>
-        <video id="v13" class="clip vid" src="assets/v/quake.mp4" muted playsinline data-start="71" data-duration="1.5" data-media-start="1" data-playback-rate="1" data-track-index="1"></video>
-        <video id="v14" class="clip vid" src="assets/v/run.mp4" muted playsinline data-start="72.5" data-duration="3.5" data-media-start="6.5" data-playback-rate="1" data-track-index="1"></video>
-        <video id="v15" class="clip vid" src="assets/v/reel.mp4" muted playsinline data-start="76" data-duration="2" data-media-start="11.5" data-playback-rate="1" data-track-index="1"></video>
-        <video id="v16" class="clip vid" src="assets/v/share.mp4" muted playsinline data-start="78" data-duration="2.5" data-media-start="1" data-playback-rate="1" data-track-index="1"></video>
+        <video id="v01" class="clip vid" src="assets/v/tray.mp4" muted playsinline data-start="5" data-duration="3" data-media-start="0.9" data-playback-rate="1.1" data-track-index="1"></video>
+        <video id="v02" class="clip vid" src="assets/v/kit.mp4" muted playsinline data-start="8" data-duration="5" data-media-start="0.8" data-playback-rate="1.7" data-track-index="1"></video>
+        <video id="v03" class="clip vid" src="assets/v/bases.mp4" muted playsinline data-start="13" data-duration="4" data-media-start="1" data-playback-rate="1.95" data-track-index="1"></video>
+        <video id="v04" class="clip vid" src="assets/v/park.mp4" muted playsinline data-start="17" data-duration="2.5" data-media-start="1.5" data-playback-rate="1.3" data-track-index="1"></video>
+        <video id="v05" class="clip vid" src="assets/v/vehicle.mp4" muted playsinline data-start="19.5" data-duration="3.5" data-media-start="1.6" data-playback-rate="1.4" data-track-index="1"></video>
+        <video id="v06" class="clip vid" src="assets/v/creator2.mp4" muted playsinline data-start="23" data-duration="8.5" data-media-start="0.5" data-playback-rate="1.4" data-track-index="1"></video>
+        <video id="v07" class="clip vid" src="assets/v/lineup.mp4" muted playsinline data-start="31.5" data-duration="3.5" data-media-start="0.8" data-playback-rate="1.15" data-track-index="1"></video>
+        <video id="v08" class="clip vid" src="assets/v/vita.mp4" muted playsinline data-start="35" data-duration="8" data-media-start="0.2" data-playback-rate="0.8" data-track-index="1"></video>
+        <video id="v09" class="clip vid" src="assets/v/animals_tab.mp4" muted playsinline data-start="43" data-duration="4" data-media-start="0.8" data-playback-rate="1.55" data-track-index="1"></video>
+        <video id="v10" class="clip vid" src="assets/v/interact.mp4" muted playsinline data-start="47" data-duration="8.5" data-media-start="0.9" data-playback-rate="1.6" data-track-index="1"></video>
+        <video id="v11" class="clip vid" src="assets/v/interact2.mp4" muted playsinline data-start="55.5" data-duration="5" data-media-start="0.9" data-playback-rate="1.6" data-track-index="1"></video>
+        <video id="v12" class="clip vid" src="assets/v/interact3.mp4" muted playsinline data-start="60.5" data-duration="5.5" data-media-start="0.9" data-playback-rate="1.5" data-track-index="1"></video>
+        <video id="v13" class="clip vid" src="assets/v/dyn.mp4" muted playsinline data-start="66" data-duration="3.5" data-media-start="3.2" data-playback-rate="1" data-track-index="1"></video>
+        <video id="v14" class="clip vid" src="assets/v/tetris.mp4" muted playsinline data-start="69.5" data-duration="2.5" data-media-start="4.5" data-playback-rate="1" data-track-index="1"></video>
+        <video id="v15" class="clip vid" src="assets/v/quake.mp4" muted playsinline data-start="72" data-duration="1.2" data-media-start="1" data-playback-rate="1" data-track-index="1"></video>
+        <video id="v16" class="clip vid" src="assets/v/run.mp4" muted playsinline data-start="73.2" data-duration="3.3" data-media-start="6.5" data-playback-rate="1" data-track-index="1"></video>
+        <video id="v17" class="clip vid" src="assets/v/reel.mp4" muted playsinline data-start="76.5" data-duration="2" data-media-start="11.5" data-playback-rate="1" data-track-index="1"></video>
+        <video id="v18" class="clip vid" src="assets/v/share.mp4" muted playsinline data-start="78.5" data-duration="2.5" data-media-start="1" data-playback-rate="1" data-track-index="1"></video>
         </div>
       </div>
       <div id="hud" class="clip" data-start="0" data-duration="90" data-track-index="3" style="position:absolute; inset:0"></div>
-      <div id="cta" class="clip" data-start="80.2" data-duration="9.8" data-track-index="4" style="position:absolute; inset:0"></div>
+      <div id="cta" class="clip" data-start="80.7" data-duration="9.3" data-track-index="4" style="position:absolute; inset:0"></div>
       <div id="wipe"></div>
       <audio id="music" src="assets/music.mp3" data-start="0" data-duration="90" data-track-index="10" data-volume="0.5"></audio>
       <audio id="x00" src="assets/sfx/sfx_003.mp3" data-start="0.55" data-duration="2.00" data-track-index="12" data-volume="0.8"></audio>
       <audio id="x01" src="assets/sfx/sfx_002.mp3" data-start="4.50" data-duration="0.60" data-track-index="13" data-volume="0.65"></audio>
       <audio id="x02" src="assets/sfx/sfx_003.mp3" data-start="5.25" data-duration="2.00" data-track-index="14" data-volume="0.6"></audio>
-      <audio id="x03" src="assets/sfx/sfx_001.mp3" data-start="5.75" data-duration="0.70" data-track-index="15" data-volume="0.7"></audio>
-      <audio id="x04" src="assets/sfx/sfx_005.mp3" data-start="6.45" data-duration="0.70" data-track-index="16" data-volume="0.7"></audio>
-      <audio id="x05" src="assets/sfx/sfx_001.mp3" data-start="7.15" data-duration="0.70" data-track-index="12" data-volume="0.7"></audio>
-      <audio id="x06" src="assets/sfx/sfx_005.mp3" data-start="9.25" data-duration="0.70" data-track-index="13" data-volume="0.7"></audio>
-      <audio id="x07" src="assets/sfx/sfx_001.mp3" data-start="10.05" data-duration="0.70" data-track-index="14" data-volume="0.7"></audio>
-      <audio id="x08" src="assets/sfx/sfx_005.mp3" data-start="15.05" data-duration="0.70" data-track-index="15" data-volume="0.7"></audio>
-      <audio id="x09" src="assets/sfx/sfx_001.mp3" data-start="18.95" data-duration="0.70" data-track-index="16" data-volume="0.7"></audio>
-      <audio id="x10" src="assets/sfx/sfx_005.mp3" data-start="21.45" data-duration="0.70" data-track-index="12" data-volume="0.7"></audio>
-      <audio id="x11" src="assets/sfx/sfx_002.mp3" data-start="24.50" data-duration="0.60" data-track-index="13" data-volume="0.65"></audio>
-      <audio id="x12" src="assets/sfx/sfx_003.mp3" data-start="25.25" data-duration="2.00" data-track-index="14" data-volume="0.6"></audio>
-      <audio id="x13" src="assets/sfx/sfx_001.mp3" data-start="25.85" data-duration="0.70" data-track-index="15" data-volume="0.7"></audio>
-      <audio id="x14" src="assets/sfx/sfx_005.mp3" data-start="30.05" data-duration="0.70" data-track-index="16" data-volume="0.7"></audio>
-      <audio id="x15" src="assets/sfx/sfx_001.mp3" data-start="35.45" data-duration="0.70" data-track-index="12" data-volume="0.7"></audio>
-      <audio id="x16" src="assets/sfx/sfx_005.mp3" data-start="39.45" data-duration="0.70" data-track-index="13" data-volume="0.7"></audio>
-      <audio id="x17" src="assets/sfx/sfx_001.mp3" data-start="43.25" data-duration="0.70" data-track-index="14" data-volume="0.7"></audio>
-      <audio id="x18" src="assets/sfx/sfx_002.mp3" data-start="46.50" data-duration="0.60" data-track-index="15" data-volume="0.65"></audio>
-      <audio id="x19" src="assets/sfx/sfx_003.mp3" data-start="47.25" data-duration="2.00" data-track-index="16" data-volume="0.6"></audio>
-      <audio id="x20" src="assets/sfx/sfx_005.mp3" data-start="47.45" data-duration="0.70" data-track-index="12" data-volume="0.7"></audio>
-      <audio id="x21" src="assets/sfx/sfx_001.mp3" data-start="52.25" data-duration="0.70" data-track-index="13" data-volume="0.7"></audio>
-      <audio id="x22" src="assets/sfx/sfx_005.mp3" data-start="54.05" data-duration="0.70" data-track-index="14" data-volume="0.7"></audio>
-      <audio id="x23" src="assets/sfx/sfx_001.mp3" data-start="57.65" data-duration="0.70" data-track-index="15" data-volume="0.7"></audio>
-      <audio id="x24" src="assets/sfx/sfx_005.mp3" data-start="61.45" data-duration="0.70" data-track-index="16" data-volume="0.7"></audio>
-      <audio id="x25" src="assets/sfx/sfx_002.mp3" data-start="64.50" data-duration="0.60" data-track-index="12" data-volume="0.65"></audio>
-      <audio id="x26" src="assets/sfx/sfx_003.mp3" data-start="65.25" data-duration="2.00" data-track-index="13" data-volume="0.6"></audio>
-      <audio id="x27" src="assets/sfx/sfx_001.mp3" data-start="65.45" data-duration="0.70" data-track-index="14" data-volume="0.7"></audio>
-      <audio id="x28" src="assets/sfx/sfx_005.mp3" data-start="68.65" data-duration="0.70" data-track-index="15" data-volume="0.7"></audio>
-      <audio id="x29" src="assets/sfx/sfx_001.mp3" data-start="71.15" data-duration="0.70" data-track-index="16" data-volume="0.7"></audio>
-      <audio id="x30" src="assets/sfx/sfx_005.mp3" data-start="72.65" data-duration="0.70" data-track-index="12" data-volume="0.7"></audio>
-      <audio id="x31" src="assets/sfx/sfx_002.mp3" data-start="75.50" data-duration="0.60" data-track-index="13" data-volume="0.65"></audio>
-      <audio id="x32" src="assets/sfx/sfx_003.mp3" data-start="76.25" data-duration="2.00" data-track-index="14" data-volume="0.6"></audio>
-      <audio id="x33" src="assets/sfx/sfx_001.mp3" data-start="76.45" data-duration="0.70" data-track-index="15" data-volume="0.7"></audio>
-      <audio id="x34" src="assets/sfx/sfx_005.mp3" data-start="78.35" data-duration="0.70" data-track-index="16" data-volume="0.7"></audio>
-      <audio id="x35" src="assets/sfx/sfx_002.mp3" data-start="80.00" data-duration="0.60" data-track-index="12" data-volume="0.65"></audio>
-      <audio id="x36" src="assets/sfx/sfx_001.mp3" data-start="81.90" data-duration="0.70" data-track-index="13" data-volume="0.7"></audio>
-      <audio id="x37" src="assets/sfx/sfx_005.mp3" data-start="82.20" data-duration="0.70" data-track-index="14" data-volume="0.6"></audio>
-      <audio id="x38" src="assets/sfx/sfx_002.mp3" data-start="82.90" data-duration="0.60" data-track-index="15" data-volume="0.65"></audio>
-      <audio id="x39" src="assets/sfx/sfx_004.mp3" data-start="84.90" data-duration="2.50" data-track-index="16" data-volume="0.7"></audio>
-      <audio id="x40" src="assets/sfx/sfx_002.mp3" data-start="85.90" data-duration="0.60" data-track-index="12" data-volume="0.65"></audio>
-      <audio id="x41" src="assets/sfx/sfx_003.mp3" data-start="86.90" data-duration="2.00" data-track-index="13" data-volume="0.7"></audio>
-      <audio id="x42" src="assets/sfx/sfx_004.mp3" data-start="87.70" data-duration="2.30" data-track-index="14" data-volume="0.7"></audio>
+      <audio id="x03" src="assets/sfx/sfx_001.mp3" data-start="5.65" data-duration="0.70" data-track-index="15" data-volume="0.7"></audio>
+      <audio id="x04" src="assets/sfx/sfx_005.mp3" data-start="6.25" data-duration="0.70" data-track-index="16" data-volume="0.7"></audio>
+      <audio id="x05" src="assets/sfx/sfx_001.mp3" data-start="6.85" data-duration="0.70" data-track-index="12" data-volume="0.7"></audio>
+      <audio id="x06" src="assets/sfx/sfx_005.mp3" data-start="8.25" data-duration="0.70" data-track-index="13" data-volume="0.7"></audio>
+      <audio id="x07" src="assets/sfx/sfx_001.mp3" data-start="9.05" data-duration="0.70" data-track-index="14" data-volume="0.7"></audio>
+      <audio id="x08" src="assets/sfx/sfx_005.mp3" data-start="13.25" data-duration="0.70" data-track-index="15" data-volume="0.7"></audio>
+      <audio id="x09" src="assets/sfx/sfx_001.mp3" data-start="17.25" data-duration="0.70" data-track-index="16" data-volume="0.7"></audio>
+      <audio id="x10" src="assets/sfx/sfx_005.mp3" data-start="19.75" data-duration="0.70" data-track-index="12" data-volume="0.7"></audio>
+      <audio id="x11" src="assets/sfx/sfx_002.mp3" data-start="22.50" data-duration="0.60" data-track-index="13" data-volume="0.65"></audio>
+      <audio id="x12" src="assets/sfx/sfx_003.mp3" data-start="23.25" data-duration="2.00" data-track-index="14" data-volume="0.6"></audio>
+      <audio id="x13" src="assets/sfx/sfx_001.mp3" data-start="23.45" data-duration="0.70" data-track-index="15" data-volume="0.7"></audio>
+      <audio id="x14" src="assets/sfx/sfx_005.mp3" data-start="23.75" data-duration="0.70" data-track-index="16" data-volume="0.7"></audio>
+      <audio id="x15" src="assets/sfx/sfx_001.mp3" data-start="24.55" data-duration="0.70" data-track-index="12" data-volume="0.7"></audio>
+      <audio id="x16" src="assets/sfx/sfx_005.mp3" data-start="25.95" data-duration="0.70" data-track-index="13" data-volume="0.7"></audio>
+      <audio id="x17" src="assets/sfx/sfx_001.mp3" data-start="28.55" data-duration="0.70" data-track-index="14" data-volume="0.7"></audio>
+      <audio id="x18" src="assets/sfx/sfx_005.mp3" data-start="31.75" data-duration="0.70" data-track-index="15" data-volume="0.7"></audio>
+      <audio id="x19" src="assets/sfx/sfx_001.mp3" data-start="35.45" data-duration="0.70" data-track-index="16" data-volume="0.7"></audio>
+      <audio id="x20" src="assets/sfx/sfx_005.mp3" data-start="39.25" data-duration="0.70" data-track-index="12" data-volume="0.7"></audio>
+      <audio id="x21" src="assets/sfx/sfx_002.mp3" data-start="42.50" data-duration="0.60" data-track-index="13" data-volume="0.65"></audio>
+      <audio id="x22" src="assets/sfx/sfx_003.mp3" data-start="43.25" data-duration="2.00" data-track-index="14" data-volume="0.6"></audio>
+      <audio id="x23" src="assets/sfx/sfx_001.mp3" data-start="43.45" data-duration="0.70" data-track-index="15" data-volume="0.7"></audio>
+      <audio id="x24" src="assets/sfx/sfx_005.mp3" data-start="47.65" data-duration="0.70" data-track-index="16" data-volume="0.7"></audio>
+      <audio id="x25" src="assets/sfx/sfx_001.mp3" data-start="49.55" data-duration="0.70" data-track-index="12" data-volume="0.7"></audio>
+      <audio id="x26" src="assets/sfx/sfx_005.mp3" data-start="52.45" data-duration="0.70" data-track-index="13" data-volume="0.7"></audio>
+      <audio id="x27" src="assets/sfx/sfx_001.mp3" data-start="55.85" data-duration="0.70" data-track-index="14" data-volume="0.7"></audio>
+      <audio id="x28" src="assets/sfx/sfx_005.mp3" data-start="60.85" data-duration="0.70" data-track-index="15" data-volume="0.7"></audio>
+      <audio id="x29" src="assets/sfx/sfx_002.mp3" data-start="65.50" data-duration="0.60" data-track-index="16" data-volume="0.65"></audio>
+      <audio id="x30" src="assets/sfx/sfx_003.mp3" data-start="66.25" data-duration="2.00" data-track-index="12" data-volume="0.6"></audio>
+      <audio id="x31" src="assets/sfx/sfx_001.mp3" data-start="66.35" data-duration="0.70" data-track-index="13" data-volume="0.7"></audio>
+      <audio id="x32" src="assets/sfx/sfx_005.mp3" data-start="69.75" data-duration="0.70" data-track-index="14" data-volume="0.7"></audio>
+      <audio id="x33" src="assets/sfx/sfx_001.mp3" data-start="72.15" data-duration="0.70" data-track-index="15" data-volume="0.7"></audio>
+      <audio id="x34" src="assets/sfx/sfx_005.mp3" data-start="73.55" data-duration="0.70" data-track-index="16" data-volume="0.7"></audio>
+      <audio id="x35" src="assets/sfx/sfx_002.mp3" data-start="76.00" data-duration="0.60" data-track-index="12" data-volume="0.65"></audio>
+      <audio id="x36" src="assets/sfx/sfx_003.mp3" data-start="76.75" data-duration="2.00" data-track-index="13" data-volume="0.6"></audio>
+      <audio id="x37" src="assets/sfx/sfx_001.mp3" data-start="76.85" data-duration="0.70" data-track-index="14" data-volume="0.7"></audio>
+      <audio id="x38" src="assets/sfx/sfx_005.mp3" data-start="78.85" data-duration="0.70" data-track-index="15" data-volume="0.7"></audio>
+      <audio id="x39" src="assets/sfx/sfx_002.mp3" data-start="80.50" data-duration="0.60" data-track-index="16" data-volume="0.65"></audio>
+      <audio id="x40" src="assets/sfx/sfx_001.mp3" data-start="82.40" data-duration="0.70" data-track-index="12" data-volume="0.7"></audio>
+      <audio id="x41" src="assets/sfx/sfx_005.mp3" data-start="82.70" data-duration="0.70" data-track-index="13" data-volume="0.6"></audio>
+      <audio id="x42" src="assets/sfx/sfx_002.mp3" data-start="83.30" data-duration="0.60" data-track-index="14" data-volume="0.65"></audio>
+      <audio id="x43" src="assets/sfx/sfx_004.mp3" data-start="85.40" data-duration="2.50" data-track-index="15" data-volume="0.7"></audio>
+      <audio id="x44" src="assets/sfx/sfx_002.mp3" data-start="86.10" data-duration="0.60" data-track-index="16" data-volume="0.65"></audio>
+      <audio id="x45" src="assets/sfx/sfx_003.mp3" data-start="87.40" data-duration="2.00" data-track-index="12" data-volume="0.7"></audio>
+      <audio id="x46" src="assets/sfx/sfx_004.mp3" data-start="88.20" data-duration="1.80" data-track-index="13" data-volume="0.7"></audio>
     </div>
     <script>
-      const CHAPTERS = [{"t":5,"e":25,"accent":"#2f6bff","kick":"01 / COSTRUISCI","title":"COSTRUISCI","sub":"Pezzo per pezzo, come con i veri mattoncini"},{"t":25,"e":47,"accent":"#e0399b","kick":"02 / PERSONAGGI","title":"PERSONAGGI","sub":"Creali, vestili, danne vita"},{"t":47,"e":65,"accent":"#19c37d","kick":"03 / ANIMALI","title":"ANIMALI","sub":"Si accarezzano, si sfamano, si cavalcano"},{"t":65,"e":76,"accent":"#ff5a36","kick":"04 / GIOCA","title":"GIOCA","sub":"Dinamite, Tetris, Terremoto, Corri!"},{"t":76,"e":80.5,"accent":"#ffc72c","kick":"05 / MOSTRA","title":"MOSTRA","sub":"Showreel, foto, libretto e QR"}];
-      const CALL = [{"t":5.7,"d":2.6,"side":"L","y":470,"n":103,"l":"tipi di pezzo"},{"t":6.4,"d":2,"side":"R","y":700,"n":424,"l":"misure"},{"t":7.1,"d":1.4,"side":"L","y":930,"n":31,"l":"colori"},{"t":9.2,"d":5,"side":"L","y":470,"n":12,"l":"kit guidati"},{"t":10,"d":4.2,"side":"R","y":700,"txt":"13→110","l":"passi per kit"},{"t":15,"d":3.4,"side":"R","y":470,"n":9,"l":"ambienti"},{"t":18.9,"d":2,"side":"L","y":470,"txt":"Si muovono","l":"mulini, giostre, radar"},{"t":21.4,"d":3.4,"side":"R","y":470,"txt":"Guidabili","l":"veicoli con le ruote"},{"t":25.8,"d":4.2,"side":"L","y":470,"n":8,"l":"schede di scelte"},{"t":30,"d":4.4,"side":"R","y":700,"n":19,"l":"pettinature"},{"t":35.4,"d":3.4,"side":"L","y":470,"n":24,"l":"costumi"},{"t":39.4,"d":3.6,"side":"R","y":470,"txt":"Vita","l":"camminano e parlano"},{"t":43.2,"d":3.4,"side":"L","y":700,"txt":"Amicizia","l":"fanno amici tra loro"},{"t":47.4,"d":3.8,"side":"L","y":470,"n":20,"l":"animali"},{"t":52.2,"d":3,"side":"R","y":470,"txt":"Verso","l":"ognuno ha il suo"},{"t":54,"d":3,"side":"L","y":700,"txt":"Cibo","l":"il personaggio glielo porta"},{"t":57.6,"d":3,"side":"R","y":470,"txt":"Coccole","l":"con i cuoricini"},{"t":61.4,"d":3.2,"side":"L","y":470,"txt":"Cavalca!","l":"drago, T-rex, leone…"},{"t":65.4,"d":2.9,"side":"L","y":470,"txt":"Dinamite","l":"fai esplodere tutto"},{"t":68.6,"d":2.2,"side":"R","y":470,"txt":"Tetris 3D","l":"blocchi che esplodono"},{"t":71.1,"d":1.3,"side":"L","y":470,"txt":"Terremoto","l":"quanto resiste?"},{"t":72.6,"d":3.3,"side":"R","y":470,"txt":"Corri!","l":"gli ostacoli sono i tuoi blocchi"},{"t":76.4,"d":1.6,"side":"L","y":470,"txt":"Showreel","l":"il filmato in automatico"},{"t":78.3,"d":2,"side":"R","y":470,"txt":"QR code","l":"condividi la costruzione"}];
-      const CAPS = [[5.2,3.2,"Scegli, ruota e posa: i pezzi si incastrano."],[8.7,5.6,"I kit ti guidano pezzo per pezzo."],[14.7,3.6,"Cambia ambiente: prato, acqua, luna, lava…"],[18.7,2.2,"Mulini, giostre e radar si muovono."],[21.2,3.6,"Costruisci un veicolo e guidalo."],[25.3,9.4,"Capelli, faccia, vestiti, costume, orecchie, code, zampe, oggetti."],[35.2,3.6,"24 costumi, dalla principessa al Minotauro."],[39.2,7.6,"Con Vita camminano, parlano, si siedono e fanno amicizia."],[47.2,4,"Fattoria, selvaggi, mito e dinosauri."],[51.7,13,"Tocca un animale: verso, cibo, coccole, guinzaglio, cavalcata."],[76.2,4.1,"Mostra la tua opera: filmato, foto, libretto e QR."]];
-      const PUSH = [[66.6,68.9],[73,76]];
+      const CHAPTERS = [{"t":5,"e":23,"accent":"#2f6bff","kick":"01 / COSTRUISCI","title":"COSTRUISCI","sub":"Pezzo per pezzo, come con i veri mattoncini"},{"t":23,"e":43,"accent":"#e0399b","kick":"02 / PERSONAGGI","title":"PERSONAGGI","sub":"Creali, vestili, danne vita"},{"t":43,"e":66,"accent":"#19c37d","kick":"03 / ANIMALI","title":"ANIMALI","sub":"Si accarezzano, si sfamano, si cavalcano"},{"t":66,"e":76.5,"accent":"#ff5a36","kick":"04 / GIOCA","title":"GIOCA","sub":"Dinamite, Tetris, Terremoto, Corri!"},{"t":76.5,"e":81,"accent":"#ffc72c","kick":"05 / MOSTRA","title":"MOSTRA","sub":"Showreel, foto, libretto e QR"}];
+      const CALL = [{"t":5.6,"d":2.4,"side":"L","y":470,"n":103,"l":"tipi di pezzo"},{"t":6.2,"d":1.8,"side":"R","y":700,"n":424,"l":"misure"},{"t":6.8,"d":1.2,"side":"L","y":930,"n":31,"l":"colori"},{"t":8.2,"d":4.6,"side":"L","y":470,"n":12,"l":"kit guidati"},{"t":9,"d":3.8,"side":"R","y":700,"txt":"13→110","l":"passi per kit"},{"t":13.2,"d":3.6,"side":"R","y":470,"n":9,"l":"ambienti"},{"t":17.2,"d":2.2,"side":"L","y":470,"txt":"Si muovono","l":"mulini, giostre, radar"},{"t":19.7,"d":3.2,"side":"R","y":470,"txt":"Guidabili","l":"veicoli con le ruote"},{"t":23.4,"d":2.4,"side":"L","y":470,"n":8,"l":"schede di scelte"},{"t":23.7,"d":1.9,"side":"R","y":700,"n":19,"l":"pettinature"},{"t":24.5,"d":1.7,"side":"L","y":930,"n":16,"l":"facce"},{"t":25.9,"d":2.4,"side":"R","y":470,"txt":"Orecchie e code","l":"gatto, elefante, drago…"},{"t":28.5,"d":2.8,"side":"L","y":470,"n":24,"l":"costumi, anche Minotauro e Centauro"},{"t":31.7,"d":3.1,"side":"R","y":470,"txt":"10<sup>18</sup>","l":"personaggi possibili"},{"t":35.4,"d":3.6,"side":"R","y":470,"txt":"Vita","l":"camminano e parlano"},{"t":39.2,"d":3.6,"side":"L","y":700,"txt":"Amicizia","l":"fanno amici tra loro"},{"t":43.4,"d":3.4,"side":"L","y":470,"n":20,"l":"animali"},{"t":47.6,"d":2.2,"side":"R","y":470,"txt":"Verso","l":"ognuno ha il suo"},{"t":49.5,"d":2.6,"side":"L","y":700,"txt":"Cibo","l":"il personaggio lo porta"},{"t":52.4,"d":2.6,"side":"R","y":470,"txt":"Coccole","l":"con i cuoricini"},{"t":55.8,"d":4.4,"side":"L","y":470,"txt":"Guinzaglio","l":"ti segue ovunque"},{"t":60.8,"d":5,"side":"R","y":470,"txt":"Cavalca!","l":"leone, drago, T-rex…"},{"t":66.3,"d":3,"side":"L","y":470,"txt":"Dinamite","l":"fai esplodere tutto"},{"t":69.7,"d":2.2,"side":"R","y":470,"txt":"Tetris 3D","l":"blocchi che esplodono"},{"t":72.1,"d":1.1,"side":"L","y":470,"txt":"Terremoto","l":"quanto resiste?"},{"t":73.5,"d":3,"side":"R","y":470,"txt":"Corri!","l":"gli ostacoli sono i tuoi blocchi"},{"t":76.8,"d":1.7,"side":"L","y":470,"txt":"Showreel","l":"il filmato in automatico"},{"t":78.8,"d":2,"side":"R","y":470,"txt":"QR code","l":"condividi la costruzione"}];
+      const CAPS = [[5.2,2.8,"Scegli, ruota e posa: i pezzi si incastrano."],[8.2,4.6,"I kit ti guidano pezzo per pezzo."],[13.2,3.6,"Cambia ambiente: acqua, luna, neve, lava…"],[17.2,2.2,"Mulini, giostre e radar si muovono."],[19.7,3.1,"Costruisci un veicolo e guidalo."],[23.2,8.1,"Capelli, faccia, vestiti, costume, orecchie, code, zampe, oggetti."],[31.7,3.1,"Mescola tutto: più di un miliardo di miliardi."],[35.2,7.6,"Con Vita camminano, parlano, si siedono e fanno amicizia."],[43.2,3.6,"Fattoria, selvaggi, mito e dinosauri."],[47.2,8,"Tocca un animale e scegli: verso, cibo, coccole…"],[55.7,4.6,"Il guinzaglio: ti segue dove vai."],[60.7,5.1,"Salta in sella e vai!"],[76.7,4,"Mostra la tua opera: filmato, foto, libretto e QR."]];
+      const PUSH = [[67.7,69.6],[73.4,76.5]];
+      const C0 = 81;
       function el(tag, cls, css, parent, html) {
         const e = document.createElement(tag); if (cls) e.className = cls;
         if (css) for (const k in css) { if (k.startsWith("--")) e.style.setProperty(k, css[k]); else e.style[k] = css[k]; }
@@ -132,7 +140,7 @@
       tl.to("#o3", { x: 300, y: -120, duration: 90, ease: "none" }, 0);
       tl.to("#grid", { backgroundPosition: "0px 600px, 600px 0px", duration: 90, ease: "none" }, 0);
       const colorAt = (t, c) => tl.to(bg, { "--accent": c, duration: 0.6, ease: "power2.inOut" }, t);
-      CHAPTERS.forEach((c) => colorAt(c.t - 0.1, c.accent)); colorAt(80.4, "#ffc72c");
+      CHAPTERS.forEach((c) => colorAt(c.t - 0.1, c.accent)); colorAt(C0 - 0.1, "#ffc72c");
 
       /* ── logo di apertura (quello originale dell'app) ── */
       {
@@ -158,7 +166,7 @@
         const bug = el("img", "abs", { left: "400px", top: "1815px", width: "280px", opacity: 0 }, hud); bug.src = "assets/logo.png"; bug.id = "bug2";
         tl.to(bug, { opacity: 0.95, duration: 0.4 }, 5.4);
         PUSH.forEach(([a, b]) => { tl.to(bug, { opacity: 0, duration: 0.2 }, a); tl.to(bug, { opacity: 0.95, duration: 0.3 }, b + 0.1); });
-        tl.to(bug, { opacity: 0, duration: 0.3 }, 80.0);
+        tl.to(bug, { opacity: 0, duration: 0.3 }, C0 - 0.5);
       }
 
       /* ── titoli dei capitoli ── */
@@ -197,7 +205,7 @@
       /* ── telefono: respiro 3D e zoom a tutto schermo nei momenti d'azione ── */
       {
         const wins = []; let cur = 5.0;
-        PUSH.forEach(([a, b]) => { wins.push([cur, a]); cur = b; }); wins.push([cur, 80.4]);
+        PUSH.forEach(([a, b]) => { wins.push([cur, a]); cur = b; }); wins.push([cur, C0 - 0.1]);
         let flip = 1;
         wins.forEach(([a, b]) => {
           if (b - a < 0.3) return;
@@ -211,12 +219,12 @@
           tl.to(phone, { borderRadius: 92, duration: 0.4 }, b);
           tl.to(screen, { borderRadius: 80, duration: 0.4 }, b);
         });
-        tl.to(phone, { y: 2300, rotationX: 20, duration: 0.7, ease: "power3.in" }, 80.3);
-        tl.set(phone, { opacity: 0 }, 81.2);
+        tl.to(phone, { y: 2300, rotationX: 20, duration: 0.7, ease: "power3.in" }, C0 - 0.2);
+        tl.set(phone, { opacity: 0 }, C0 + 0.7);
       }
 
       /* ── onde di colore tra i capitoli ── */
-      [5, 25, 47, 65, 76, 80.5].forEach((T, i) => {
+      [5, 23, 43, 66, 76.5, C0].forEach((T, i) => {
         const col = i === 5 ? "#ffc72c" : CHAPTERS[i] ? CHAPTERS[i].accent : "#fff";
         tl.set(wipe, { "--wc": col, opacity: 1, clipPath: "circle(0px at 540px 1000px)" }, T - 0.5);
         tl.fromTo(wipe, { clipPath: "circle(0px at 540px 1000px)" }, { clipPath: "circle(1500px at 540px 1000px)", duration: 0.45, ease: "power3.in", immediateRender: false }, T - 0.45);
@@ -239,12 +247,12 @@
         const c1 = el("div", "pill", { left: "90px", top: "1190px", width: "420px", padding: "20px 0", fontSize: "30px" }, s1, "Nessuna registrazione");
         const c2 = el("div", "pill", { left: "570px", top: "1190px", width: "420px", padding: "20px 0", fontSize: "30px" }, s1, "Funziona anche offline");
         const t1 = el("div", "ttl", { top: "1340px", fontSize: "44px", fontWeight: 900, color: "#ffc72c" }, s1, "Computer, tablet o telefono");
-        tl.fromTo(win, { y: 700, rotationX: 22, opacity: 0 }, { y: 0, rotationX: 0, opacity: 1, duration: 0.8, ease: "power3.out" }, 80.9);
-        tl.fromTo(ut, { clipPath: "inset(0 100% 0 0)" }, { clipPath: "inset(0 0% 0 0)", duration: 1.0, ease: "none" }, 81.4);
-        tl.fromTo(h1, { y: 80, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: "power3.out" }, 80.7);
-        tl.fromTo(k1, { opacity: 0 }, { opacity: 1, duration: 0.4 }, 80.7);
-        [c1, c2, t1].forEach((e, i) => tl.fromTo(e, { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: "back.out(1.7)" }, 81.9 + i * 0.25));
-        tl.to(s1, { opacity: 0, y: -60, duration: 0.4, ease: "power2.in" }, 83.0);
+        tl.fromTo(win, { y: 700, rotationX: 22, opacity: 0 }, { y: 0, rotationX: 0, opacity: 1, duration: 0.8, ease: "power3.out" }, (C0 + 0.4));
+        tl.fromTo(ut, { clipPath: "inset(0 100% 0 0)" }, { clipPath: "inset(0 0% 0 0)", duration: 1.0, ease: "none" }, (C0 + 0.9));
+        tl.fromTo(h1, { y: 80, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: "power3.out" }, (C0 + 0.2));
+        tl.fromTo(k1, { opacity: 0 }, { opacity: 1, duration: 0.4 }, (C0 + 0.2));
+        [c1, c2, t1].forEach((e, i) => tl.fromTo(e, { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: "back.out(1.7)" }, (C0 + 1.4) + i * 0.25));
+        tl.to(s1, { opacity: 0, y: -60, duration: 0.4, ease: "power2.in" }, (C0 + 2.5));
 
         // stadio 2: smartphone (84–87)
         const s2 = el("div", "abs", { inset: 0, opacity: 0 }, cta);
@@ -259,14 +267,14 @@
         const tapr = el("div", "abs", { left: slot.x + 18 + "px", top: slot.y + 18 + "px", width: "60px", height: "60px", borderRadius: "50%", border: "4px solid #fff", opacity: 0 }, sc);
         const st1 = el("div", "pill", { left: "40px", top: "1490px", width: "1000px", padding: "22px 0", fontSize: "36px", background: "rgba(8,13,34,.8)" }, s2, "iPhone · Condividi → Aggiungi a Home");
         const st2 = el("div", "pill", { left: "40px", top: "1595px", width: "1000px", padding: "22px 0", fontSize: "36px", background: "rgba(8,13,34,.8)" }, s2, "Android · Menu → Installa app");
-        tl.fromTo(s2, { opacity: 0 }, { opacity: 1, duration: 0.35 }, 83.3);
-        tl.fromTo(h2, { y: 70, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: "power3.out" }, 83.4);
-        tl.fromTo(ph, { y: 900, rotationX: 24, opacity: 0 }, { y: 0, rotationX: 0, opacity: 1, duration: 0.8, ease: "power3.out" }, 83.5);
-        tl.fromTo(icon, { y: -900, opacity: 0, scale: 1.8 }, { y: 0, opacity: 1, scale: 1, duration: 0.55, ease: "bounce.out" }, 84.5);
-        tl.fromTo(lab, { opacity: 0 }, { opacity: 1, duration: 0.3 }, 85.0);
-        tl.fromTo(tapr, { scale: 0.5, opacity: 1 }, { scale: 2.2, opacity: 0, duration: 0.6, ease: "power2.out" }, 85.0);
-        [st1, st2].forEach((e, i) => tl.fromTo(e, { y: 60, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: "back.out(1.6)" }, 84.8 + i * 0.3));
-        tl.to(s2, { opacity: 0, y: -60, duration: 0.4, ease: "power2.in" }, 86.0);
+        tl.fromTo(s2, { opacity: 0 }, { opacity: 1, duration: 0.35 }, (C0 + 2.8));
+        tl.fromTo(h2, { y: 70, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: "power3.out" }, (C0 + 2.9));
+        tl.fromTo(ph, { y: 900, rotationX: 24, opacity: 0 }, { y: 0, rotationX: 0, opacity: 1, duration: 0.8, ease: "power3.out" }, (C0 + 3.0));
+        tl.fromTo(icon, { y: -900, opacity: 0, scale: 1.8 }, { y: 0, opacity: 1, scale: 1, duration: 0.55, ease: "bounce.out" }, (C0 + 4.0));
+        tl.fromTo(lab, { opacity: 0 }, { opacity: 1, duration: 0.3 }, (C0 + 4.5));
+        tl.fromTo(tapr, { scale: 0.5, opacity: 1 }, { scale: 2.2, opacity: 0, duration: 0.6, ease: "power2.out" }, (C0 + 4.5));
+        [st1, st2].forEach((e, i) => tl.fromTo(e, { y: 60, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: "back.out(1.6)" }, (C0 + 4.3) + i * 0.3));
+        tl.to(s2, { opacity: 0, y: -60, duration: 0.4, ease: "power2.in" }, (C0 + 5.5));
 
         // stadio 3: finale con logo, icona e QR (87–90)
         const s3 = el("div", "abs", { inset: 0, opacity: 0 }, cta);
@@ -283,12 +291,12 @@
         const u3 = el("div", "abs", { left: "100px", top: "1210px", width: "880px", padding: "28px 0", borderRadius: "60px", background: "#ffc72c", color: "#0b1230", textAlign: "center", fontWeight: 900, fontSize: "38px" }, s3, "hello-noor.github.io/ulisse/ulibricks");
         const t3 = el("div", "ttl big", { top: "1350px", fontSize: "84px", lineHeight: 1.05, whiteSpace: "normal" }, s3, "Nel browser<br>o sul telefono");
         const m3 = el("div", "ttl mono", { top: "1600px", fontSize: "30px", color: "#ffc72c" }, s3, "COSTRUISCI · ANIMA · GIOCA");
-        tl.fromTo(s3, { opacity: 0 }, { opacity: 1, duration: 0.3 }, 86.3);
-        tl.fromTo(lg, { scale: 0.3, opacity: 0, rotation: -8 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.7, ease: "back.out(2)", transformOrigin: "50% 50%" }, 86.4);
-        tl.fromTo(ic, { scale: 0.2, opacity: 0, rotation: 20 }, { scale: 1, opacity: 1, rotation: -9, duration: 0.6, ease: "back.out(2)" }, 87.0);
-        tl.fromTo(qrc, { scale: 0.4, opacity: 0, rotation: 6 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.6, ease: "back.out(1.8)" }, 86.7);
-        [u3, t3, m3].forEach((e, i) => tl.fromTo(e, { y: 50, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: "power3.out" }, 87.1 + i * 0.2));
-        tl.to(ic, { y: -14, duration: 0.7, ease: "sine.inOut", yoyo: true, repeat: 2 }, 87.7);
+        tl.fromTo(s3, { opacity: 0 }, { opacity: 1, duration: 0.3 }, (C0 + 5.8));
+        tl.fromTo(lg, { scale: 0.3, opacity: 0, rotation: -8 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.7, ease: "back.out(2)", transformOrigin: "50% 50%" }, (C0 + 5.9));
+        tl.fromTo(ic, { scale: 0.2, opacity: 0, rotation: 20 }, { scale: 1, opacity: 1, rotation: -9, duration: 0.6, ease: "back.out(2)" }, (C0 + 6.5));
+        tl.fromTo(qrc, { scale: 0.4, opacity: 0, rotation: 6 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.6, ease: "back.out(1.8)" }, (C0 + 6.2));
+        [u3, t3, m3].forEach((e, i) => tl.fromTo(e, { y: 50, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: "power3.out" }, (C0 + 6.6) + i * 0.2));
+        tl.to(ic, { y: -14, duration: 0.7, ease: "sine.inOut", yoyo: true, repeat: 2 }, (C0 + 7.2));
       }
 
       window.__timelines["main"] = tl;

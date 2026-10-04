@@ -6,92 +6,100 @@ const W = 1080, H = 1920, TOTAL = 90;
 
 // ── Riprese del gioco vero (assets/v/<src>.mp4). at = quando parte nel video, dur = durata, from = punto nella ripresa, rate = velocità
 const SEGS = [
-  // intro
   { src: "scene", at: 0, dur: 5.2, from: 0.5, rate: 1 },
-  // 01 COSTRUISCI
-  { src: "tray", at: 5, dur: 3.5, from: 0.8, rate: 1 },
-  { src: "kit", at: 8.5, dur: 6, from: 0.8, rate: 1.5 },
-  { src: "bases", at: 14.5, dur: 4, from: 1.2, rate: 1.9 },
-  { src: "park", at: 18.5, dur: 2.5, from: 1.8, rate: 1.2 },
-  { src: "vehicle", at: 21, dur: 4, from: 1.6, rate: 1.2 },
-  // 02 PERSONAGGI
-  { src: "creator2", at: 25, dur: 10, from: 0.6, rate: 1.25 },
-  { src: "lineup", at: 35, dur: 4, from: 0.8, rate: 1.1 },
-  { src: "vita", at: 39, dur: 8, from: 1.2, rate: 0.8 },
-  // 03 ANIMALI
-  { src: "animals_tab", at: 47, dur: 4.5, from: 0.8, rate: 1.4 },
-  { src: "interact", at: 51.5, dur: 13.5, from: 0.9, rate: 1.4 },
-  // 04 GIOCA
-  { src: "dyn", at: 65, dur: 3.5, from: 3.2, rate: 1 },
-  { src: "tetris", at: 68.5, dur: 2.5, from: 4.5, rate: 1 },
-  { src: "quake", at: 71, dur: 1.5, from: 1.0, rate: 1 },
-  { src: "run", at: 72.5, dur: 3.5, from: 6.5, rate: 1 },
-  // 05 MOSTRA
-  { src: "reel", at: 76, dur: 2, from: 11.5, rate: 1 },
-  { src: "share", at: 78, dur: 2.5, from: 1.0, rate: 1 },
+  // 01 COSTRUISCI (5–23)
+  { src: "tray", at: 5, dur: 3, from: 0.9, rate: 1.1 },
+  { src: "kit", at: 8, dur: 5, from: 0.8, rate: 1.7 },
+  { src: "bases", at: 13, dur: 4, from: 1.0, rate: 1.95 },
+  { src: "park", at: 17, dur: 2.5, from: 1.5, rate: 1.3 },
+  { src: "vehicle", at: 19.5, dur: 3.5, from: 1.6, rate: 1.4 },
+  // 02 PERSONAGGI (23–43)
+  { src: "creator2", at: 23, dur: 8.5, from: 0.5, rate: 1.4 },
+  { src: "lineup", at: 31.5, dur: 3.5, from: 0.8, rate: 1.15 },
+  { src: "vita", at: 35, dur: 8, from: 0.2, rate: 0.8 },
+  // 03 ANIMALI (43–66)
+  { src: "animals_tab", at: 43, dur: 4, from: 0.8, rate: 1.55 },
+  { src: "interact", at: 47, dur: 8.5, from: 0.9, rate: 1.6 },
+  { src: "interact2", at: 55.5, dur: 5, from: 0.9, rate: 1.6 },
+  { src: "interact3", at: 60.5, dur: 5.5, from: 0.9, rate: 1.5 },
+  // 04 GIOCA (66–76.5)
+  { src: "dyn", at: 66, dur: 3.5, from: 3.2, rate: 1 },
+  { src: "tetris", at: 69.5, dur: 2.5, from: 4.5, rate: 1 },
+  { src: "quake", at: 72, dur: 1.2, from: 1.0, rate: 1 },
+  { src: "run", at: 73.2, dur: 3.3, from: 6.5, rate: 1 },
+  // 05 MOSTRA (76.5–81)
+  { src: "reel", at: 76.5, dur: 2, from: 11.5, rate: 1 },
+  { src: "share", at: 78.5, dur: 2.5, from: 1.0, rate: 1 },
 ];
 // finestre in cui il telefono si ingrandisce a tutto schermo (momenti d'azione)
-const PUSH = [[66.6, 68.9], [73.0, 76.0]];
+const PUSH = [[67.7, 69.6], [73.4, 76.5]];
+const C0 = 81; // inizio della chiusura (browser, smartphone, QR)
 
 const CHAPTERS = [
-  { t: 5, e: 25, accent: "#2f6bff", kick: "01 / COSTRUISCI", title: "COSTRUISCI", sub: "Pezzo per pezzo, come con i veri mattoncini" },
-  { t: 25, e: 47, accent: "#e0399b", kick: "02 / PERSONAGGI", title: "PERSONAGGI", sub: "Creali, vestili, danne vita" },
-  { t: 47, e: 65, accent: "#19c37d", kick: "03 / ANIMALI", title: "ANIMALI", sub: "Si accarezzano, si sfamano, si cavalcano" },
-  { t: 65, e: 76, accent: "#ff5a36", kick: "04 / GIOCA", title: "GIOCA", sub: "Dinamite, Tetris, Terremoto, Corri!" },
-  { t: 76, e: 80.5, accent: "#ffc72c", kick: "05 / MOSTRA", title: "MOSTRA", sub: "Showreel, foto, libretto e QR" },
+  { t: 5, e: 23, accent: "#2f6bff", kick: "01 / COSTRUISCI", title: "COSTRUISCI", sub: "Pezzo per pezzo, come con i veri mattoncini" },
+  { t: 23, e: 43, accent: "#e0399b", kick: "02 / PERSONAGGI", title: "PERSONAGGI", sub: "Creali, vestili, danne vita" },
+  { t: 43, e: 66, accent: "#19c37d", kick: "03 / ANIMALI", title: "ANIMALI", sub: "Si accarezzano, si sfamano, si cavalcano" },
+  { t: 66, e: 76.5, accent: "#ff5a36", kick: "04 / GIOCA", title: "GIOCA", sub: "Dinamite, Tetris, Terremoto, Corri!" },
+  { t: 76.5, e: 81, accent: "#ffc72c", kick: "05 / MOSTRA", title: "MOSTRA", sub: "Showreel, foto, libretto e QR" },
 ];
 
-// schede di vetro: side L/R, y, numero (conteggio) + etichetta
+// schede di vetro: side L/R, y, numero (conteggio) oppure testo + etichetta
 const CALL = [
-  { t: 5.7, d: 2.6, side: "L", y: 470, n: 103, l: "tipi di pezzo" },
-  { t: 6.4, d: 2.0, side: "R", y: 700, n: 424, l: "misure" },
-  { t: 7.1, d: 1.4, side: "L", y: 930, n: 31, l: "colori" },
-  { t: 9.2, d: 5.0, side: "L", y: 470, n: 12, l: "kit guidati" },
-  { t: 10.0, d: 4.2, side: "R", y: 700, txt: "13→110", l: "passi per kit" },
-  { t: 15.0, d: 3.4, side: "R", y: 470, n: 9, l: "ambienti" },
-  { t: 18.9, d: 2.0, side: "L", y: 470, txt: "Si muovono", l: "mulini, giostre, radar" },
-  { t: 21.4, d: 3.4, side: "R", y: 470, txt: "Guidabili", l: "veicoli con le ruote" },
-  { t: 25.8, d: 4.2, side: "L", y: 470, n: 8, l: "schede di scelte" },
-  { t: 30.0, d: 4.4, side: "R", y: 700, n: 19, l: "pettinature" },
-  { t: 35.4, d: 3.4, side: "L", y: 470, n: 24, l: "costumi" },
-  { t: 39.4, d: 3.6, side: "R", y: 470, txt: "Vita", l: "camminano e parlano" },
-  { t: 43.2, d: 3.4, side: "L", y: 700, txt: "Amicizia", l: "fanno amici tra loro" },
-  { t: 47.4, d: 3.8, side: "L", y: 470, n: 20, l: "animali" },
-  { t: 52.2, d: 3.0, side: "R", y: 470, txt: "Verso", l: "ognuno ha il suo" },
-  { t: 54.0, d: 3.0, side: "L", y: 700, txt: "Cibo", l: "il personaggio glielo porta" },
-  { t: 57.6, d: 3.0, side: "R", y: 470, txt: "Coccole", l: "con i cuoricini" },
-  { t: 61.4, d: 3.2, side: "L", y: 470, txt: "Cavalca!", l: "drago, T-rex, leone…" },
-  { t: 65.4, d: 2.9, side: "L", y: 470, txt: "Dinamite", l: "fai esplodere tutto" },
-  { t: 68.6, d: 2.2, side: "R", y: 470, txt: "Tetris 3D", l: "blocchi che esplodono" },
-  { t: 71.1, d: 1.3, side: "L", y: 470, txt: "Terremoto", l: "quanto resiste?" },
-  { t: 72.6, d: 3.3, side: "R", y: 470, txt: "Corri!", l: "gli ostacoli sono i tuoi blocchi" },
-  { t: 76.4, d: 1.6, side: "L", y: 470, txt: "Showreel", l: "il filmato in automatico" },
-  { t: 78.3, d: 2.0, side: "R", y: 470, txt: "QR code", l: "condividi la costruzione" },
+  { t: 5.6, d: 2.4, side: "L", y: 470, n: 103, l: "tipi di pezzo" },
+  { t: 6.2, d: 1.8, side: "R", y: 700, n: 424, l: "misure" },
+  { t: 6.8, d: 1.2, side: "L", y: 930, n: 31, l: "colori" },
+  { t: 8.2, d: 4.6, side: "L", y: 470, n: 12, l: "kit guidati" },
+  { t: 9.0, d: 3.8, side: "R", y: 700, txt: "13→110", l: "passi per kit" },
+  { t: 13.2, d: 3.6, side: "R", y: 470, n: 9, l: "ambienti" },
+  { t: 17.2, d: 2.2, side: "L", y: 470, txt: "Si muovono", l: "mulini, giostre, radar" },
+  { t: 19.7, d: 3.2, side: "R", y: 470, txt: "Guidabili", l: "veicoli con le ruote" },
+  { t: 23.4, d: 2.4, side: "L", y: 470, n: 8, l: "schede di scelte" },
+  { t: 23.7, d: 1.9, side: "R", y: 700, n: 19, l: "pettinature" },
+  { t: 24.5, d: 1.7, side: "L", y: 930, n: 16, l: "facce" },
+  { t: 25.9, d: 2.4, side: "R", y: 470, txt: "Orecchie e code", l: "gatto, elefante, drago…" },
+  { t: 28.5, d: 2.8, side: "L", y: 470, n: 24, l: "costumi, anche Minotauro e Centauro" },
+  { t: 31.7, d: 3.1, side: "R", y: 470, txt: "10<sup>18</sup>", l: "personaggi possibili" },
+  { t: 35.4, d: 3.6, side: "R", y: 470, txt: "Vita", l: "camminano e parlano" },
+  { t: 39.2, d: 3.6, side: "L", y: 700, txt: "Amicizia", l: "fanno amici tra loro" },
+  { t: 43.4, d: 3.4, side: "L", y: 470, n: 20, l: "animali" },
+  { t: 47.6, d: 2.2, side: "R", y: 470, txt: "Verso", l: "ognuno ha il suo" },
+  { t: 49.5, d: 2.6, side: "L", y: 700, txt: "Cibo", l: "il personaggio lo porta" },
+  { t: 52.4, d: 2.6, side: "R", y: 470, txt: "Coccole", l: "con i cuoricini" },
+  { t: 55.8, d: 4.4, side: "L", y: 470, txt: "Guinzaglio", l: "ti segue ovunque" },
+  { t: 60.8, d: 5.0, side: "R", y: 470, txt: "Cavalca!", l: "leone, drago, T-rex…" },
+  { t: 66.3, d: 3.0, side: "L", y: 470, txt: "Dinamite", l: "fai esplodere tutto" },
+  { t: 69.7, d: 2.2, side: "R", y: 470, txt: "Tetris 3D", l: "blocchi che esplodono" },
+  { t: 72.1, d: 1.1, side: "L", y: 470, txt: "Terremoto", l: "quanto resiste?" },
+  { t: 73.5, d: 3.0, side: "R", y: 470, txt: "Corri!", l: "gli ostacoli sono i tuoi blocchi" },
+  { t: 76.8, d: 1.7, side: "L", y: 470, txt: "Showreel", l: "il filmato in automatico" },
+  { t: 78.8, d: 2.0, side: "R", y: 470, txt: "QR code", l: "condividi la costruzione" },
 ];
 
 // didascalie in basso
 const CAPS = [
-  [5.2, 3.2, "Scegli, ruota e posa: i pezzi si incastrano."],
-  [8.7, 5.6, "I kit ti guidano pezzo per pezzo."],
-  [14.7, 3.6, "Cambia ambiente: prato, acqua, luna, lava…"],
-  [18.7, 2.2, "Mulini, giostre e radar si muovono."],
-  [21.2, 3.6, "Costruisci un veicolo e guidalo."],
-  [25.3, 9.4, "Capelli, faccia, vestiti, costume, orecchie, code, zampe, oggetti."],
-  [35.2, 3.6, "24 costumi, dalla principessa al Minotauro."],
-  [39.2, 7.6, "Con Vita camminano, parlano, si siedono e fanno amicizia."],
-  [47.2, 4.0, "Fattoria, selvaggi, mito e dinosauri."],
-  [51.7, 13.0, "Tocca un animale: verso, cibo, coccole, guinzaglio, cavalcata."],
-  [76.2, 4.1, "Mostra la tua opera: filmato, foto, libretto e QR."],
+  [5.2, 2.8, "Scegli, ruota e posa: i pezzi si incastrano."],
+  [8.2, 4.6, "I kit ti guidano pezzo per pezzo."],
+  [13.2, 3.6, "Cambia ambiente: acqua, luna, neve, lava…"],
+  [17.2, 2.2, "Mulini, giostre e radar si muovono."],
+  [19.7, 3.1, "Costruisci un veicolo e guidalo."],
+  [23.2, 8.1, "Capelli, faccia, vestiti, costume, orecchie, code, zampe, oggetti."],
+  [31.7, 3.1, "Mescola tutto: più di un miliardo di miliardi."],
+  [35.2, 7.6, "Con Vita camminano, parlano, si siedono e fanno amicizia."],
+  [43.2, 3.6, "Fattoria, selvaggi, mito e dinosauri."],
+  [47.2, 8.0, "Tocca un animale e scegli: verso, cibo, coccole…"],
+  [55.7, 4.6, "Il guinzaglio: ti segue dove vai."],
+  [60.7, 5.1, "Salta in sella e vai!"],
+  [76.7, 4.0, "Mostra la tua opera: filmato, foto, libretto e QR."],
 ];
 
 // ── effetti sonori
 const SFX = [];
 const add = (f, t, v) => SFX.push([f, t, v]);
 add("sfx_003", 0.55, 0.8); // logo
-[5, 25, 47, 65, 76, 80.5, 83.4, 86.4].forEach((T) => { add("sfx_002", T - 0.5, 0.65); });
+[5, 23, 43, 66, 76.5, C0, C0 + 2.8, C0 + 5.6].forEach((T) => { add("sfx_002", T - 0.5, 0.65); });
 CHAPTERS.forEach((c) => add("sfx_003", c.t + 0.25, 0.6));
 CALL.forEach((c, i) => add(i % 2 ? "sfx_005" : "sfx_001", c.t + 0.05, 0.7));
-add("sfx_001", 81.9, 0.7); add("sfx_005", 82.2, 0.6); add("sfx_004", 84.9, 0.7); add("sfx_003", 86.9, 0.7); add("sfx_004", 87.7, 0.7);
+add("sfx_001", C0 + 1.4, 0.7); add("sfx_005", C0 + 1.7, 0.6); add("sfx_004", C0 + 4.4, 0.7); add("sfx_003", C0 + 6.4, 0.7); add("sfx_004", C0 + 7.2, 0.7);
 SFX.sort((a, b) => a[1] - b[1]);
 const SD = { sfx_001: 0.7, sfx_002: 0.6, sfx_003: 2.0, sfx_004: 2.5, sfx_005: 0.7 };
 
@@ -125,6 +133,7 @@ const html = `<!doctype html>
       .glass { position:absolute; width:290px; padding:18px 22px 20px; border-radius:30px; background:rgba(8,13,34,.80); border:1.5px solid rgba(255,255,255,.22); box-shadow:0 20px 50px rgba(0,0,0,.45); }
       .glass .n { font-weight:900; font-size:58px; line-height:1; letter-spacing:-.02em; color:var(--ac,#fff); }
       .glass .n.t { font-size:42px; }
+      .glass .n sup { font-size:.55em; vertical-align:top; position:relative; top:-.05em; }
       .glass .l { margin-top:8px; font-weight:700; font-size:25px; line-height:1.15; color:rgba(255,255,255,.88); }
       .glass i { position:absolute; top:22px; right:22px; width:14px; height:14px; border-radius:50%; background:var(--ac,#fff); box-shadow:0 0 0 7px rgba(255,255,255,.1); }
       #cap { position:absolute; left:0; width:100%; top:1690px; text-align:center; }
@@ -149,7 +158,7 @@ ${videos}
         </div>
       </div>
       <div id="hud" class="clip" data-start="0" data-duration="${TOTAL}" data-track-index="3" style="position:absolute; inset:0"></div>
-      <div id="cta" class="clip" data-start="80.2" data-duration="9.8" data-track-index="4" style="position:absolute; inset:0"></div>
+      <div id="cta" class="clip" data-start="${C0 - 0.3}" data-duration="${TOTAL - C0 + 0.3}" data-track-index="4" style="position:absolute; inset:0"></div>
       <div id="wipe"></div>
       <audio id="music" src="assets/music.mp3" data-start="0" data-duration="${TOTAL}" data-track-index="10" data-volume="0.5"></audio>
 ${audios}
@@ -159,6 +168,7 @@ ${audios}
       const CALL = ${JSON.stringify(CALL)};
       const CAPS = ${JSON.stringify(CAPS)};
       const PUSH = ${JSON.stringify(PUSH)};
+      const C0 = ${C0};
       function el(tag, cls, css, parent, html) {
         const e = document.createElement(tag); if (cls) e.className = cls;
         if (css) for (const k in css) { if (k.startsWith("--")) e.style.setProperty(k, css[k]); else e.style[k] = css[k]; }
@@ -174,7 +184,7 @@ ${audios}
       tl.to("#o3", { x: 300, y: -120, duration: 90, ease: "none" }, 0);
       tl.to("#grid", { backgroundPosition: "0px 600px, 600px 0px", duration: 90, ease: "none" }, 0);
       const colorAt = (t, c) => tl.to(bg, { "--accent": c, duration: 0.6, ease: "power2.inOut" }, t);
-      CHAPTERS.forEach((c) => colorAt(c.t - 0.1, c.accent)); colorAt(80.4, "#ffc72c");
+      CHAPTERS.forEach((c) => colorAt(c.t - 0.1, c.accent)); colorAt(C0 - 0.1, "#ffc72c");
 
       /* ── logo di apertura (quello originale dell'app) ── */
       {
@@ -200,7 +210,7 @@ ${audios}
         const bug = el("img", "abs", { left: "400px", top: "1815px", width: "280px", opacity: 0 }, hud); bug.src = "assets/logo.png"; bug.id = "bug2";
         tl.to(bug, { opacity: 0.95, duration: 0.4 }, 5.4);
         PUSH.forEach(([a, b]) => { tl.to(bug, { opacity: 0, duration: 0.2 }, a); tl.to(bug, { opacity: 0.95, duration: 0.3 }, b + 0.1); });
-        tl.to(bug, { opacity: 0, duration: 0.3 }, 80.0);
+        tl.to(bug, { opacity: 0, duration: 0.3 }, C0 - 0.5);
       }
 
       /* ── titoli dei capitoli ── */
@@ -239,7 +249,7 @@ ${audios}
       /* ── telefono: respiro 3D e zoom a tutto schermo nei momenti d'azione ── */
       {
         const wins = []; let cur = 5.0;
-        PUSH.forEach(([a, b]) => { wins.push([cur, a]); cur = b; }); wins.push([cur, 80.4]);
+        PUSH.forEach(([a, b]) => { wins.push([cur, a]); cur = b; }); wins.push([cur, C0 - 0.1]);
         let flip = 1;
         wins.forEach(([a, b]) => {
           if (b - a < 0.3) return;
@@ -253,12 +263,12 @@ ${audios}
           tl.to(phone, { borderRadius: 92, duration: 0.4 }, b);
           tl.to(screen, { borderRadius: 80, duration: 0.4 }, b);
         });
-        tl.to(phone, { y: 2300, rotationX: 20, duration: 0.7, ease: "power3.in" }, 80.3);
-        tl.set(phone, { opacity: 0 }, 81.2);
+        tl.to(phone, { y: 2300, rotationX: 20, duration: 0.7, ease: "power3.in" }, C0 - 0.2);
+        tl.set(phone, { opacity: 0 }, C0 + 0.7);
       }
 
       /* ── onde di colore tra i capitoli ── */
-      [5, 25, 47, 65, 76, 80.5].forEach((T, i) => {
+      [5, 23, 43, 66, 76.5, C0].forEach((T, i) => {
         const col = i === 5 ? "#ffc72c" : CHAPTERS[i] ? CHAPTERS[i].accent : "#fff";
         tl.set(wipe, { "--wc": col, opacity: 1, clipPath: "circle(0px at 540px 1000px)" }, T - 0.5);
         tl.fromTo(wipe, { clipPath: "circle(0px at 540px 1000px)" }, { clipPath: "circle(1500px at 540px 1000px)", duration: 0.45, ease: "power3.in", immediateRender: false }, T - 0.45);
@@ -281,12 +291,12 @@ ${audios}
         const c1 = el("div", "pill", { left: "90px", top: "1190px", width: "420px", padding: "20px 0", fontSize: "30px" }, s1, "Nessuna registrazione");
         const c2 = el("div", "pill", { left: "570px", top: "1190px", width: "420px", padding: "20px 0", fontSize: "30px" }, s1, "Funziona anche offline");
         const t1 = el("div", "ttl", { top: "1340px", fontSize: "44px", fontWeight: 900, color: "#ffc72c" }, s1, "Computer, tablet o telefono");
-        tl.fromTo(win, { y: 700, rotationX: 22, opacity: 0 }, { y: 0, rotationX: 0, opacity: 1, duration: 0.8, ease: "power3.out" }, 80.9);
-        tl.fromTo(ut, { clipPath: "inset(0 100% 0 0)" }, { clipPath: "inset(0 0% 0 0)", duration: 1.0, ease: "none" }, 81.4);
-        tl.fromTo(h1, { y: 80, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: "power3.out" }, 80.7);
-        tl.fromTo(k1, { opacity: 0 }, { opacity: 1, duration: 0.4 }, 80.7);
-        [c1, c2, t1].forEach((e, i) => tl.fromTo(e, { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: "back.out(1.7)" }, 81.9 + i * 0.25));
-        tl.to(s1, { opacity: 0, y: -60, duration: 0.4, ease: "power2.in" }, 83.0);
+        tl.fromTo(win, { y: 700, rotationX: 22, opacity: 0 }, { y: 0, rotationX: 0, opacity: 1, duration: 0.8, ease: "power3.out" }, (C0 + 0.4));
+        tl.fromTo(ut, { clipPath: "inset(0 100% 0 0)" }, { clipPath: "inset(0 0% 0 0)", duration: 1.0, ease: "none" }, (C0 + 0.9));
+        tl.fromTo(h1, { y: 80, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: "power3.out" }, (C0 + 0.2));
+        tl.fromTo(k1, { opacity: 0 }, { opacity: 1, duration: 0.4 }, (C0 + 0.2));
+        [c1, c2, t1].forEach((e, i) => tl.fromTo(e, { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: "back.out(1.7)" }, (C0 + 1.4) + i * 0.25));
+        tl.to(s1, { opacity: 0, y: -60, duration: 0.4, ease: "power2.in" }, (C0 + 2.5));
 
         // stadio 2: smartphone (84–87)
         const s2 = el("div", "abs", { inset: 0, opacity: 0 }, cta);
@@ -301,14 +311,14 @@ ${audios}
         const tapr = el("div", "abs", { left: slot.x + 18 + "px", top: slot.y + 18 + "px", width: "60px", height: "60px", borderRadius: "50%", border: "4px solid #fff", opacity: 0 }, sc);
         const st1 = el("div", "pill", { left: "40px", top: "1490px", width: "1000px", padding: "22px 0", fontSize: "36px", background: "rgba(8,13,34,.8)" }, s2, "iPhone · Condividi → Aggiungi a Home");
         const st2 = el("div", "pill", { left: "40px", top: "1595px", width: "1000px", padding: "22px 0", fontSize: "36px", background: "rgba(8,13,34,.8)" }, s2, "Android · Menu → Installa app");
-        tl.fromTo(s2, { opacity: 0 }, { opacity: 1, duration: 0.35 }, 83.3);
-        tl.fromTo(h2, { y: 70, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: "power3.out" }, 83.4);
-        tl.fromTo(ph, { y: 900, rotationX: 24, opacity: 0 }, { y: 0, rotationX: 0, opacity: 1, duration: 0.8, ease: "power3.out" }, 83.5);
-        tl.fromTo(icon, { y: -900, opacity: 0, scale: 1.8 }, { y: 0, opacity: 1, scale: 1, duration: 0.55, ease: "bounce.out" }, 84.5);
-        tl.fromTo(lab, { opacity: 0 }, { opacity: 1, duration: 0.3 }, 85.0);
-        tl.fromTo(tapr, { scale: 0.5, opacity: 1 }, { scale: 2.2, opacity: 0, duration: 0.6, ease: "power2.out" }, 85.0);
-        [st1, st2].forEach((e, i) => tl.fromTo(e, { y: 60, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: "back.out(1.6)" }, 84.8 + i * 0.3));
-        tl.to(s2, { opacity: 0, y: -60, duration: 0.4, ease: "power2.in" }, 86.0);
+        tl.fromTo(s2, { opacity: 0 }, { opacity: 1, duration: 0.35 }, (C0 + 2.8));
+        tl.fromTo(h2, { y: 70, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: "power3.out" }, (C0 + 2.9));
+        tl.fromTo(ph, { y: 900, rotationX: 24, opacity: 0 }, { y: 0, rotationX: 0, opacity: 1, duration: 0.8, ease: "power3.out" }, (C0 + 3.0));
+        tl.fromTo(icon, { y: -900, opacity: 0, scale: 1.8 }, { y: 0, opacity: 1, scale: 1, duration: 0.55, ease: "bounce.out" }, (C0 + 4.0));
+        tl.fromTo(lab, { opacity: 0 }, { opacity: 1, duration: 0.3 }, (C0 + 4.5));
+        tl.fromTo(tapr, { scale: 0.5, opacity: 1 }, { scale: 2.2, opacity: 0, duration: 0.6, ease: "power2.out" }, (C0 + 4.5));
+        [st1, st2].forEach((e, i) => tl.fromTo(e, { y: 60, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: "back.out(1.6)" }, (C0 + 4.3) + i * 0.3));
+        tl.to(s2, { opacity: 0, y: -60, duration: 0.4, ease: "power2.in" }, (C0 + 5.5));
 
         // stadio 3: finale con logo, icona e QR (87–90)
         const s3 = el("div", "abs", { inset: 0, opacity: 0 }, cta);
@@ -325,12 +335,12 @@ ${audios}
         const u3 = el("div", "abs", { left: "100px", top: "1210px", width: "880px", padding: "28px 0", borderRadius: "60px", background: "#ffc72c", color: "#0b1230", textAlign: "center", fontWeight: 900, fontSize: "38px" }, s3, "hello-noor.github.io/ulisse/ulibricks");
         const t3 = el("div", "ttl big", { top: "1350px", fontSize: "84px", lineHeight: 1.05, whiteSpace: "normal" }, s3, "Nel browser<br>o sul telefono");
         const m3 = el("div", "ttl mono", { top: "1600px", fontSize: "30px", color: "#ffc72c" }, s3, "COSTRUISCI · ANIMA · GIOCA");
-        tl.fromTo(s3, { opacity: 0 }, { opacity: 1, duration: 0.3 }, 86.3);
-        tl.fromTo(lg, { scale: 0.3, opacity: 0, rotation: -8 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.7, ease: "back.out(2)", transformOrigin: "50% 50%" }, 86.4);
-        tl.fromTo(ic, { scale: 0.2, opacity: 0, rotation: 20 }, { scale: 1, opacity: 1, rotation: -9, duration: 0.6, ease: "back.out(2)" }, 87.0);
-        tl.fromTo(qrc, { scale: 0.4, opacity: 0, rotation: 6 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.6, ease: "back.out(1.8)" }, 86.7);
-        [u3, t3, m3].forEach((e, i) => tl.fromTo(e, { y: 50, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: "power3.out" }, 87.1 + i * 0.2));
-        tl.to(ic, { y: -14, duration: 0.7, ease: "sine.inOut", yoyo: true, repeat: 2 }, 87.7);
+        tl.fromTo(s3, { opacity: 0 }, { opacity: 1, duration: 0.3 }, (C0 + 5.8));
+        tl.fromTo(lg, { scale: 0.3, opacity: 0, rotation: -8 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.7, ease: "back.out(2)", transformOrigin: "50% 50%" }, (C0 + 5.9));
+        tl.fromTo(ic, { scale: 0.2, opacity: 0, rotation: 20 }, { scale: 1, opacity: 1, rotation: -9, duration: 0.6, ease: "back.out(2)" }, (C0 + 6.5));
+        tl.fromTo(qrc, { scale: 0.4, opacity: 0, rotation: 6 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.6, ease: "back.out(1.8)" }, (C0 + 6.2));
+        [u3, t3, m3].forEach((e, i) => tl.fromTo(e, { y: 50, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: "power3.out" }, (C0 + 6.6) + i * 0.2));
+        tl.to(ic, { y: -14, duration: 0.7, ease: "sine.inOut", yoyo: true, repeat: 2 }, (C0 + 7.2));
       }
 
       window.__timelines["main"] = tl;
