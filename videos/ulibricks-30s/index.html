@@ -11,187 +11,304 @@
       @font-face { font-family:"Inter"; font-weight:600; font-style:normal; src:url("assets/fonts/inter-latin-600-normal.woff2") format("woff2"); }
       @font-face { font-family:"Inter"; font-weight:700; font-style:normal; src:url("assets/fonts/inter-latin-700-normal.woff2") format("woff2"); }
       @font-face { font-family:"Inter"; font-weight:800; font-style:normal; src:url("assets/fonts/inter-latin-800-normal.woff2") format("woff2"); }
+      @font-face { font-family:"Unbounded"; font-weight:400; font-style:normal; src:url("assets/fonts/unbounded-latin-400-normal.woff2") format("woff2"); }
+      @font-face { font-family:"Unbounded"; font-weight:700; font-style:normal; src:url("assets/fonts/unbounded-latin-700-normal.woff2") format("woff2"); }
+      @font-face { font-family:"Unbounded"; font-weight:900; font-style:normal; src:url("assets/fonts/unbounded-latin-900-normal.woff2") format("woff2"); }
       * { margin:0; padding:0; box-sizing:border-box; }
-      html, body { width:1080px; height:1920px; overflow:hidden; background:#000; }
-      #root { position:relative; width:100%; height:100%; overflow:hidden; background:#000; color:#f5f5f7; font-family:"Inter", sans-serif; }
-      #glow { position:absolute; left:-260px; top:560px; width:1600px; height:1500px; border-radius:50%; opacity:0;
-        background:radial-gradient(closest-side, var(--gc,#2f6bff) 0%, transparent 72%); filter:blur(30px); }
-      #stage { position:absolute; inset:0; perspective:2200px; }
-      #phone { position:absolute; left:160px; top:520px; width:760px; height:1352px; border-radius:116px; padding:12px;
-        background:linear-gradient(145deg,#5b5b60 0%,#1d1d20 22%,#0d0d0f 50%,#1d1d20 78%,#6a6a70 100%);
-        box-shadow:0 0 0 2px #2c2c30, 0 90px 180px -40px rgba(0,0,0,.9); }
-      #screen { position:absolute; left:12px; top:12px; width:736px; height:1328px; border-radius:104px; overflow:hidden; background:#000; }
-      #island { position:absolute; left:278px; top:30px; width:180px; height:52px; border-radius:26px; background:#000; z-index:5; }
-      #sheen { position:absolute; inset:0; z-index:6; pointer-events:none; background:linear-gradient(115deg, transparent 30%, rgba(255,255,255,.10) 45%, transparent 60%); }
-      .vid { position:absolute; left:0; top:0; width:736px; height:1328px; object-fit:cover; }
-      .word { position:absolute; left:0; width:1080px; text-align:center; font-weight:800; letter-spacing:-.05em; line-height:1.0; white-space:nowrap; }
-      .grad { background:var(--g); -webkit-background-clip:text; background-clip:text; color:transparent; padding:0 20px 14px; }
-      .sub { position:absolute; left:60px; width:960px; text-align:center; font-weight:600; font-size:46px; letter-spacing:-.015em; color:#a1a1a6; line-height:1.2; }
+      html, body { width:1080px; height:1920px; overflow:hidden; background:#0a0f2e; }
+      #root { position:relative; width:100%; height:100%; overflow:hidden; background:#0a0f2e; color:#fff; font-family:"Inter", sans-serif; }
+      #bg { position:absolute; inset:0; overflow:hidden; background:linear-gradient(160deg,#101a52 0%,#0a0f2e 45%,#250c45 100%); }
+      .blob { position:absolute; width:1200px; height:1200px; border-radius:50%; filter:blur(60px); opacity:.75; }
+      #studs { position:absolute; inset:-60px; opacity:.09; background-image:radial-gradient(circle at 50% 50%, #fff 0 17px, transparent 19px); background-size:72px 72px; }
+      #vwrap { position:absolute; inset:0; overflow:hidden; }
+      .vid { position:absolute; left:0; top:0; width:1080px; height:1920px; object-fit:cover; filter:contrast(1.06) saturate(1.12); }
+      #shade { position:absolute; inset:0; pointer-events:none;
+        background:linear-gradient(180deg, rgba(6,9,30,.82) 0%, rgba(6,9,30,0) 22%, rgba(6,9,30,0) 52%, rgba(6,9,30,.6) 70%, rgba(6,9,30,.96) 100%),
+                   radial-gradient(120% 80% at 50% 45%, transparent 55%, rgba(0,0,0,.45) 100%); }
+      .big { position:absolute; left:0; width:1080px; text-align:center; font-family:"Unbounded", sans-serif; font-weight:900; line-height:1; letter-spacing:-.03em; white-space:nowrap; text-transform:uppercase; }
+      .m { display:inline-block; overflow:hidden; vertical-align:top; padding:.06em 0 .1em; margin:-.06em 0 -.1em; }
+      .c { display:inline-block; }
+      .fillg { }
+      .line { color:transparent; -webkit-text-stroke:3px rgba(255,255,255,.55); }
+      .idx { position:absolute; left:64px; top:150px; font-family:"Unbounded", sans-serif; font-weight:700; font-size:34px; letter-spacing:.06em; }
+      .bar { position:absolute; left:64px; top:204px; height:6px; width:120px; border-radius:3px; }
+      .sub { position:absolute; left:64px; top:236px; width:900px; font-weight:800; font-size:54px; line-height:1.12; letter-spacing:-.02em; }
       .abs { position:absolute; }
-      #flash { position:absolute; inset:0; background:#fff; opacity:0; z-index:50; }
+      #bricks, #bands, #fx { position:absolute; inset:0; pointer-events:none; overflow:hidden; }
+      .brk { position:absolute; width:184px; height:176px; border-radius:16px; transform-origin:50% 50%;
+        background-image:radial-gradient(circle at 30% 30%, rgba(255,255,255,.35) 0 22px, transparent 24px), radial-gradient(circle at 70% 30%, rgba(255,255,255,.35) 0 22px, transparent 24px),
+          radial-gradient(circle at 30% 72%, rgba(255,255,255,.35) 0 22px, transparent 24px), radial-gradient(circle at 70% 72%, rgba(255,255,255,.35) 0 22px, transparent 24px);
+        box-shadow:inset 0 -14px 0 rgba(0,0,0,.25); }
+      .band { position:absolute; left:0; width:1080px; }
+      .leak { position:absolute; width:1400px; height:1400px; border-radius:50%; mix-blend-mode:screen; filter:blur(50px); opacity:0; }
+      .scan { position:absolute; left:0; width:1080px; mix-blend-mode:screen; opacity:0; }
+      #flash { position:absolute; inset:0; background:#fff; opacity:0; }
+      #grain { position:absolute; inset:-200px; opacity:.07; mix-blend-mode:overlay; pointer-events:none; }
+      #knocksvg { position:absolute; left:0; top:0; width:0; height:0; }
     </style>
   </head>
   <body>
     <div id="root" data-composition-id="main" data-start="0" data-duration="30" data-width="1080" data-height="1920">
-      <div id="glow"></div>
-      <div id="stage">
-        <div id="phone" data-layout-allow-overflow>
-          <div id="screen">
-          <video id="v-reel" class="clip vid" src="assets/v/reel.mp4" muted playsinline data-start="1.8" data-duration="3.8" data-media-start="10" data-playback-rate="2" data-track-index="1"></video>
-          <video id="v-creator" class="clip vid" src="assets/v/creator2.mp4" muted playsinline data-start="5.6" data-duration="3.2" data-media-start="0.4" data-playback-rate="2.6" data-track-index="1"></video>
-          <video id="v-drago" class="clip vid" src="assets/v/zoo.mp4" muted playsinline data-start="8.8" data-duration="1.5" data-media-start="2.2" data-playback-rate="1.5" data-track-index="1"></video>
-          <video id="v-chimera" class="clip vid" src="assets/v/zoo.mp4" muted playsinline data-start="10.3" data-duration="2.3" data-media-start="19.6" data-playback-rate="1.7" data-track-index="1"></video>
-          <video id="v-car" class="clip vid" src="assets/v/car.mp4" muted playsinline data-start="12.6" data-duration="3" data-media-start="1.6" data-playback-rate="1.2" data-track-index="1"></video>
-          <video id="v-dyn" class="clip vid" src="assets/v/dyn.mp4" muted playsinline data-start="15.6" data-duration="2.4" data-media-start="5.6" data-playback-rate="1" data-track-index="1"></video>
-          <video id="v-tetris" class="clip vid" src="assets/v/tetris2.mp4" muted playsinline data-start="18" data-duration="1.7" data-media-start="7" data-playback-rate="1" data-track-index="1"></video>
-          <video id="v-run" class="clip vid" src="assets/v/run2.mp4" muted playsinline data-start="19.7" data-duration="1.9" data-media-start="12.4" data-playback-rate="1.1" data-track-index="1"></video>
-          <video id="v-m1" class="clip vid" src="assets/v/quake.mp4" muted playsinline data-start="21.6" data-duration="0.2" data-media-start="3" data-playback-rate="1" data-track-index="1"></video>
-          <video id="v-m2" class="clip vid" src="assets/v/vita.mp4" muted playsinline data-start="21.8" data-duration="0.2" data-media-start="3" data-playback-rate="1" data-track-index="1"></video>
-          <video id="v-m3" class="clip vid" src="assets/v/lineup.mp4" muted playsinline data-start="22" data-duration="0.2" data-media-start="2" data-playback-rate="1" data-track-index="1"></video>
-          <video id="v-m4" class="clip vid" src="assets/v/kit.mp4" muted playsinline data-start="22.2" data-duration="0.2" data-media-start="7" data-playback-rate="1" data-track-index="1"></video>
-          <video id="v-m5" class="clip vid" src="assets/v/hero.mp4" muted playsinline data-start="22.4" data-duration="0.2" data-media-start="5" data-playback-rate="1" data-track-index="1"></video>
-          <video id="v-m6" class="clip vid" src="assets/v/tetris2.mp4" muted playsinline data-start="22.6" data-duration="0.2" data-media-start="12.45" data-playback-rate="1" data-track-index="1"></video>
-          <video id="v-m7" class="clip vid" src="assets/v/reel.mp4" muted playsinline data-start="22.8" data-duration="0.2" data-media-start="16.5" data-playback-rate="1" data-track-index="1"></video>
-            <div id="island"></div>
-            <div id="sheen" data-layout-allow-overflow></div>
-          </div>
-        </div>
+      <div id="bg">
+        <div class="blob" id="b1" style="left:-520px; top:-380px; background:radial-gradient(circle,#2f6bff,transparent 65%)"></div>
+        <div class="blob" id="b2" style="left:420px; top:700px; background:radial-gradient(circle,#ee45a8,transparent 65%)"></div>
+        <div class="blob" id="b3" style="left:-300px; top:1250px; background:radial-gradient(circle,#ffc72c,transparent 65%); opacity:.45"></div>
+        <div id="studs"></div>
       </div>
+      <svg id="knocksvg" width="0" height="0"><defs><clipPath id="knock" clipPathUnits="userSpaceOnUse"><text id="ktext" x="540" y="1010" text-anchor="middle" font-family="Unbounded" font-weight="900" font-size="150" letter-spacing="-4">IMMAGINA</text></clipPath></defs></svg>
+      <svg class="abs" width="1080" height="1920" style="left:0;top:0;opacity:0"><text id="kmeas" x="540" y="1010" text-anchor="middle" font-family="Unbounded" font-weight="900" font-size="150">IMMAGINA</text></svg>
+      <div id="vwrap" data-layout-allow-overflow>
+        <video id="v-hero" class="clip vid" src="assets/v/hero.mp4" muted playsinline data-start="0.9" data-duration="0.9" data-media-start="3.6" data-playback-rate="1" data-track-index="1"></video>
+        <video id="v-reel" class="clip vid" src="assets/v/reel.mp4" muted playsinline data-start="1.8" data-duration="3.8" data-media-start="10" data-playback-rate="2" data-track-index="1"></video>
+        <video id="v-creator" class="clip vid" src="assets/v/creator2.mp4" muted playsinline data-start="5.6" data-duration="3.2" data-media-start="0.4" data-playback-rate="2.6" data-track-index="1"></video>
+        <video id="v-drago" class="clip vid" src="assets/v/zoo.mp4" muted playsinline data-start="8.8" data-duration="1.5" data-media-start="2.2" data-playback-rate="1.5" data-track-index="1"></video>
+        <video id="v-chimera" class="clip vid" src="assets/v/zoo.mp4" muted playsinline data-start="10.3" data-duration="2.3" data-media-start="19.6" data-playback-rate="1.7" data-track-index="1"></video>
+        <video id="v-car" class="clip vid" src="assets/v/car.mp4" muted playsinline data-start="12.6" data-duration="3" data-media-start="1.6" data-playback-rate="1.2" data-track-index="1"></video>
+        <video id="v-dyn" class="clip vid" src="assets/v/dyn.mp4" muted playsinline data-start="15.6" data-duration="2.4" data-media-start="5.6" data-playback-rate="1" data-track-index="1"></video>
+        <video id="v-tetris" class="clip vid" src="assets/v/tetris2.mp4" muted playsinline data-start="18" data-duration="1.7" data-media-start="7" data-playback-rate="1" data-track-index="1"></video>
+        <video id="v-run" class="clip vid" src="assets/v/run2.mp4" muted playsinline data-start="19.7" data-duration="1.9" data-media-start="12.4" data-playback-rate="1.1" data-track-index="1"></video>
+        <video id="v-m1" class="clip vid" src="assets/v/quake.mp4" muted playsinline data-start="21.6" data-duration="0.2" data-media-start="3" data-playback-rate="1" data-track-index="1"></video>
+        <video id="v-m2" class="clip vid" src="assets/v/vita.mp4" muted playsinline data-start="21.8" data-duration="0.2" data-media-start="3" data-playback-rate="1" data-track-index="1"></video>
+        <video id="v-m3" class="clip vid" src="assets/v/lineup.mp4" muted playsinline data-start="22" data-duration="0.2" data-media-start="2" data-playback-rate="1" data-track-index="1"></video>
+        <video id="v-m4" class="clip vid" src="assets/v/zoo.mp4" muted playsinline data-start="22.2" data-duration="0.2" data-media-start="26.5" data-playback-rate="1" data-track-index="1"></video>
+        <video id="v-m5" class="clip vid" src="assets/v/hero.mp4" muted playsinline data-start="22.4" data-duration="0.2" data-media-start="5.5" data-playback-rate="1" data-track-index="1"></video>
+        <video id="v-m6" class="clip vid" src="assets/v/tetris2.mp4" muted playsinline data-start="22.6" data-duration="0.2" data-media-start="12.45" data-playback-rate="1" data-track-index="1"></video>
+        <video id="v-m7" class="clip vid" src="assets/v/reel.mp4" muted playsinline data-start="22.8" data-duration="0.2" data-media-start="16.5" data-playback-rate="1" data-track-index="1"></video>
+      </div>
+      <div id="shade"></div>
+      <div id="fx"></div>
       <div id="hud" class="clip" data-start="0" data-duration="30" data-track-index="3" style="position:absolute; inset:0"></div>
+      <div id="bricks"></div>
+      <div id="bands"></div>
       <div id="flash"></div>
+      <div id="grain"></div>
       <audio id="mix" src="assets/mix.mp3" data-start="0" data-duration="30" data-track-index="10" data-volume="1"></audio>
     </div>
     <script>
-      const SEGS = [{"id":"reel","src":"reel","at":1.8,"dur":3.8,"from":10,"rate":2},{"id":"creator","src":"creator2","at":5.6,"dur":3.2,"from":0.4,"rate":2.6},{"id":"drago","src":"zoo","at":8.8,"dur":1.5,"from":2.2,"rate":1.5},{"id":"chimera","src":"zoo","at":10.3,"dur":2.3,"from":19.6,"rate":1.7},{"id":"car","src":"car","at":12.6,"dur":3,"from":1.6,"rate":1.2,"steer":"car.steer.json"},{"id":"dyn","src":"dyn","at":15.6,"dur":2.4,"from":5.6,"rate":1},{"id":"tetris","src":"tetris2","at":18,"dur":1.7,"from":7,"rate":1},{"id":"run","src":"run2","at":19.7,"dur":1.9,"from":12.4,"rate":1.1},{"id":"m1","src":"quake","at":21.6,"dur":0.2,"from":3,"rate":1},{"id":"m2","src":"vita","at":21.8,"dur":0.2,"from":3,"rate":1},{"id":"m3","src":"lineup","at":22,"dur":0.2,"from":2,"rate":1},{"id":"m4","src":"kit","at":22.2,"dur":0.2,"from":7,"rate":1},{"id":"m5","src":"hero","at":22.4,"dur":0.2,"from":5,"rate":1},{"id":"m6","src":"tetris2","at":22.6,"dur":0.2,"from":12.45,"rate":1},{"id":"m7","src":"reel","at":22.8,"dur":0.2,"from":16.5,"rate":1}];
-      const CH = [{"t":1.8,"e":5.6,"w":"Costruisci.","g":"linear-gradient(100deg,#4aa3ff 0%,#2f6bff 45%,#7a5cff 100%)","subs":[[1.8,"Città intere, un mattoncino alla volta."]]},{"t":5.6,"e":8.8,"w":"Crea.","g":"linear-gradient(100deg,#ff7ac8 0%,#ee45a8 45%,#9b5cff 100%)","subs":[[5.6,"Miliardi di miliardi di personaggi."]]},{"t":8.8,"e":12.6,"w":"Addomestica.","g":"linear-gradient(100deg,#6dffb0 0%,#22d38a 45%,#19b6c9 100%)","subs":[[8.8,"Sì, anche un drago."],[10.3,"E poi salta in sella."]]},{"t":12.6,"e":15.6,"w":"Guida.","g":"linear-gradient(100deg,#7ae8ff 0%,#22c4f0 45%,#2f6bff 100%)","subs":[[12.6,"Inclina il telefono per sterzare."]]},{"t":15.6,"e":18,"w":"Distruggi.","g":"linear-gradient(100deg,#ffd23f 0%,#ff6a3d 45%,#ff2d55 100%)","subs":[[15.6,"Poi fai saltare tutto."]]},{"t":18,"e":21.6,"w":"Gioca.","g":"linear-gradient(100deg,#fff176 0%,#ffc72c 40%,#ff8a3d 100%)","subs":[[18,"Pioggia di mattoncini."],[19.7,"Corri con i tuoi personaggi."]]}];
-      const TILT = [[12.85,0,0.66],[12.91,0,1.75],[12.96,0,2.6],[13.02,0,3.25],[13.07,0,3.76],[13.13,0,4.15],[13.18,0,4.46],[13.24,0,4.69],[13.29,0,4.87],[13.35,0,5.02],[13.41,0,5.12],[13.46,0,5.21],[13.52,0,5.27],[13.57,0,5.33],[13.63,0,5.36],[13.68,0,5.4],[13.74,0,5.42],[13.79,0,5.44],[13.85,0,5.45],[13.91,0,5.46],[13.96,0,5.47],[14.02,-1.34,5.54],[14.07,-3.57,5.64],[14.13,-5.29,5.72],[14.18,-6.62,5.79],[14.24,-7.66,5.83],[14.29,-8.46,5.87],[14.35,-9.07,5.9],[14.41,-9.55,5.92],[14.46,-9.93,5.94],[14.52,-10.21,5.95],[14.57,-10.43,5.96],[14.63,-10.61,5.97],[14.68,-10.74,5.98],[14.74,-10.85,5.98],[14.79,-10.92,5.99],[14.85,-10.99,5.99],[14.91,-11.03,5.99],[14.96,-11.07,5.99],[15.02,-11.1,6],[15.07,-11.13,6],[15.13,-11.14,6],[15.18,-11.16,6],[15.24,-11.16,6],[15.29,-11.17,6],[15.35,-11.17,6],[15.41,-11.19,6],[15.46,-11.19,6],[15.52,-8.5,6],[15.57,-4.06,6]];
-      const BOOM = 16.9;
+      const SEGS = [{"id":"hero","src":"hero","at":0.9,"dur":0.9,"from":3.6,"rate":1,"cam":[1.25,1.3,"50% 40%"]},{"id":"reel","src":"reel","at":1.8,"dur":3.8,"from":10,"rate":2,"cam":[1.12,1.24,"50% 58%"]},{"id":"creator","src":"creator2","at":5.6,"dur":3.2,"from":0.4,"rate":2.6,"cam":[1,1.32,"50% 16%"]},{"id":"drago","src":"zoo","at":8.8,"dur":1.5,"from":2.2,"rate":1.5,"cam":[1.25,1.38,"42% 58%"]},{"id":"chimera","src":"zoo","at":10.3,"dur":2.3,"from":19.6,"rate":1.7,"cam":[1.3,1.42,"50% 56%"]},{"id":"car","src":"car","at":12.6,"dur":3,"from":1.6,"rate":1.2,"cam":[1.38,1.38,"50% 50%"],"steer":"car.steer.json"},{"id":"dyn","src":"dyn","at":15.6,"dur":2.4,"from":5.6,"rate":1,"cam":[1.08,1.26,"50% 42%"]},{"id":"tetris","src":"tetris2","at":18,"dur":1.7,"from":7,"rate":1,"cam":[1.12,1.2,"50% 45%"]},{"id":"run","src":"run2","at":19.7,"dur":1.9,"from":12.4,"rate":1.1,"cam":[1.1,1.22,"50% 55%"]},{"id":"m1","src":"quake","at":21.6,"dur":0.2,"from":3,"rate":1,"cam":[1.2,1.25,"50% 40%"]},{"id":"m2","src":"vita","at":21.8,"dur":0.2,"from":3,"rate":1,"cam":[1.2,1.25,"50% 40%"]},{"id":"m3","src":"lineup","at":22,"dur":0.2,"from":2,"rate":1,"cam":[1.2,1.25,"50% 40%"]},{"id":"m4","src":"zoo","at":22.2,"dur":0.2,"from":26.5,"rate":1,"cam":[1.3,1.35,"50% 55%"]},{"id":"m5","src":"hero","at":22.4,"dur":0.2,"from":5.5,"rate":1,"cam":[1.2,1.25,"50% 40%"]},{"id":"m6","src":"tetris2","at":22.6,"dur":0.2,"from":12.45,"rate":1,"cam":[1.15,1.2,"50% 45%"]},{"id":"m7","src":"reel","at":22.8,"dur":0.2,"from":16.5,"rate":1,"cam":[1.2,1.25,"50% 50%"]}];
+      const WORDS = [{"t":1.8,"e":5.6,"n":"01","w":"COSTRUISCI","s":"Città intere, un mattoncino alla volta.","c":"#4aa3ff","g":"linear-gradient(100deg,#7cc4ff,#2f6bff 60%,#8a5cff)"},{"t":5.6,"e":8.8,"n":"02","w":"CREA","s":"Miliardi di miliardi di personaggi.","c":"#ff5cb8","g":"linear-gradient(100deg,#ff9ad5,#ee45a8 55%,#9b5cff)"},{"t":8.8,"e":10.3,"n":"03","w":"DRAGHI","s":"Sì, anche al guinzaglio.","c":"#3dff9e","g":"linear-gradient(100deg,#a6ffcf,#22d38a 55%,#19b6c9)"},{"t":10.3,"e":12.6,"n":"03","w":"CAVALCA","s":"Una chimera? Salta in sella.","c":"#3dff9e","g":"linear-gradient(100deg,#a6ffcf,#22d38a 55%,#19b6c9)"},{"t":12.6,"e":15.6,"n":"04","w":"GUIDA","s":"Inclina il telefono per sterzare.","c":"#4fd8ff","g":"linear-gradient(100deg,#b0f1ff,#22c4f0 55%,#2f6bff)"},{"t":15.6,"e":18,"n":"05","w":"BOOM!","s":"Poi fai saltare tutto.","c":"#ff7a3d","g":"linear-gradient(100deg,#ffe066,#ff6a3d 50%,#ff2d55)","at":16.9},{"t":18,"e":19.7,"n":"06","w":"GIOCA","s":"Pioggia di mattoncini.","c":"#ffc72c","g":"linear-gradient(100deg,#fff38a,#ffc72c 50%,#ff8a3d)"},{"t":19.7,"e":21.6,"n":"06","w":"CORRI","s":"Con i personaggi che hai creato.","c":"#ffc72c","g":"linear-gradient(100deg,#fff38a,#ffc72c 50%,#ff8a3d)"}];
+      const FLASHW = ["COSTRUISCI","CREA","CAVALCA","GUIDA","DISTRUGGI","GIOCA","CORRI"];
+      const TILT = [[12.85,0,0.004],[12.91,0,0.01],[12.96,0,0.016],[13.02,0,0.019],[13.07,0,0.023],[13.13,0,0.025],[13.18,0,0.027],[13.24,0,0.028],[13.29,0,0.029],[13.35,0,0.03],[13.41,0,0.031],[13.46,0,0.031],[13.52,0,0.032],[13.57,0,0.032],[13.63,0,0.032],[13.68,0,0.032],[13.74,0,0.033],[13.79,0,0.033],[13.85,0,0.033],[13.91,0,0.033],[13.96,0,0.033],[14.02,-0.86,0.033],[14.07,-2.29,0.034],[14.13,-3.4,0.034],[14.18,-4.26,0.035],[14.24,-4.92,0.035],[14.29,-5.44,0.035],[14.35,-5.83,0.035],[14.41,-6.14,0.036],[14.46,-6.38,0.036],[14.52,-6.56,0.036],[14.57,-6.71,0.036],[14.63,-6.82,0.036],[14.68,-6.9,0.036],[14.74,-6.98,0.036],[14.79,-7.02,0.036],[14.85,-7.07,0.036],[14.91,-7.09,0.036],[14.96,-7.12,0.036],[15.02,-7.14,0.036],[15.07,-7.16,0.036],[15.13,-7.16,0.036],[15.18,-7.17,0.036],[15.24,-7.17,0.036],[15.29,-7.18,0.036],[15.35,-7.18,0.036],[15.41,-7.19,0.036],[15.46,-7.19,0.036],[15.52,-5.46,0.036],[15.57,-2.61,0.036]];
+      const BOOM = 16.9, TBOOM = 19.23;
+      const $ = (id) => document.getElementById(id);
       function el(tag, cls, css, parent, txt) {
         const e = document.createElement(tag); if (cls) e.className = cls;
         if (css) for (const k in css) { if (k.startsWith("--")) e.style.setProperty(k, css[k]); else e.style[k] = css[k]; }
         if (txt != null) e.textContent = txt; if (parent) parent.appendChild(e); return e;
       }
-      const tl = gsap.timeline({ paused: true });
-      const phone = document.getElementById("phone"), screen = document.getElementById("screen"), hud = document.getElementById("hud");
-      const glow = document.getElementById("glow"), flash = document.getElementById("flash"), sheen = document.getElementById("sheen");
-      gsap.set(phone, { transformOrigin: "50% 40%" });
-
-      // entrata "Apple": sfocato → nitido, sale piano
-      const reveal = (e, t, d = 0.7, y = 40) => tl.fromTo(e, { opacity: 0, y, filter: "blur(18px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: d, ease: "power3.out" }, t);
-      const hide = (e, t, d = 0.25) => tl.to(e, { opacity: 0, filter: "blur(10px)", duration: d, ease: "power2.in" }, t);
-
-      /* ── 0: Immagina. ── */
-      {
-        const w = el("div", "word", { top: "860px", fontSize: "170px", opacity: 0 }, hud, "Immagina.");
-        tl.fromTo(w, { opacity: 0, scale: 1.12, filter: "blur(24px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 1.0, ease: "power3.out" }, 0.15);
-        tl.to(w, { scale: 0.96, duration: 0.6, ease: "none" }, 1.15);
-        tl.to(w, { opacity: 0, duration: 0.12 }, 1.68);
+      let seed = 7; const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+      // parola spezzata in lettere, ognuna dentro una maschera
+      function split(e, text) { e.textContent = ""; return [...text].map((ch) => { const m = el("span", "m", null, e); return el("span", "c", null, m, ch === " " ? "\u00a0" : ch); }); }
+      // gradiente continuo su tutta la parola, applicato lettera per lettera
+      function paint(e, g) {
+        const cs = [...e.querySelectorAll(".c")]; if (!cs.length) return;
+        const x0 = cs[0].parentNode.offsetLeft, ww = cs[cs.length - 1].parentNode.offsetLeft + cs[cs.length - 1].parentNode.offsetWidth - x0;
+        cs.forEach((c) => { c.style.backgroundImage = g; c.style.backgroundSize = ww + "px 100%"; c.style.backgroundPosition = -(c.parentNode.offsetLeft - x0) + "px 0"; c.style.webkitBackgroundClip = "text"; c.style.backgroundClip = "text"; c.style.color = "transparent"; });
       }
+      // adatta la dimensione del testo alla larghezza
+      function fit(e, maxW, maxFs) { e.style.fontSize = "100px"; const ow = e.style.width; e.style.width = "auto"; const w = e.offsetWidth; e.style.width = ow; const fs = Math.min(maxFs, Math.floor(100 * maxW / w)); e.style.fontSize = fs + "px"; return fs; }
 
-      /* ── capitoli: parola enorme sfumata + riga grigia ── */
-      CH.forEach((c, i) => {
-        const fs = c.w.length > 10 ? 138 : 176;
-        const w = el("div", "word grad", { top: "150px", fontSize: fs + "px", "--g": c.g, opacity: 0 }, hud, c.w);
-        tl.fromTo(w, { opacity: 0, y: 60, scale: 0.94, filter: "blur(20px)" }, { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.55, ease: "power4.out" }, c.t + 0.04);
-        tl.to(w, { scale: 1.03, duration: c.e - c.t - 0.6, ease: "none" }, c.t + 0.6);
-        tl.to(w, { opacity: 0, duration: 0.1 }, c.e - 0.1);
-        c.subs.forEach(([t, s], j) => {
-          const end = j + 1 < c.subs.length ? c.subs[j + 1][0] : c.e;
-          const e = el("div", "sub", { top: "360px", opacity: 0 }, hud, s);
-          reveal(e, t + 0.3, 0.6, 24);
-          hide(e, end - 0.22, 0.18);
+      function build() {
+        const tl = gsap.timeline({ paused: true });
+        const hud = $("hud"), vwrap = $("vwrap"), flash = $("flash"), fx = $("fx"), shade = $("shade");
+        const NI = { immediateRender: false };
+
+        /* ── sfondo vivo e grana ── */
+        tl.to("#b1", { x: 380, y: 260, duration: 30, ease: "sine.inOut" }, 0);
+        tl.to("#b2", { x: -420, y: -300, duration: 30, ease: "sine.inOut" }, 0);
+        tl.to("#b3", { x: 520, y: -200, duration: 30, ease: "sine.inOut" }, 0);
+        tl.to("#studs", { backgroundPosition: "0px 432px", duration: 30, ease: "none" }, 0);
+        {
+          const cv = document.createElement("canvas"); cv.width = cv.height = 256; const g = cv.getContext("2d"), im = g.createImageData(256, 256);
+          for (let i = 0; i < im.data.length; i += 4) { const v = Math.floor(rnd() * 255); im.data[i] = im.data[i + 1] = im.data[i + 2] = v; im.data[i + 3] = 255; }
+          g.putImageData(im, 0, 0); $("grain").style.backgroundImage = "url(" + cv.toDataURL() + ")";
+          tl.to("#grain", { x: 180, y: -140, duration: 30, ease: "steps(900)" }, 0);
+        }
+
+        /* ── camera sulle riprese ── */
+        SEGS.forEach((s) => {
+          const v = $("v-" + s.id); gsap.set(v, { transformOrigin: s.cam[2] });
+          tl.fromTo(v, { scale: s.cam[0] }, { scale: s.cam[1], duration: s.dur, ease: "none" }, s.at);
         });
-        tl.to(glow, { "--gc": c.g.match(/#[0-9a-f]{6}/gi)[1], duration: 0.3 }, c.t - 0.05);
-      });
+        // guida: l'inquadratura si inclina con lo sterzo
+        for (let i = 1; i < TILT.length; i++) {
+          const [t0] = TILT[i - 1], [t1, rz, ac] = TILT[i]; if (t1 <= t0) continue;
+          tl.to("#v-car", { rotation: rz, scale: 1.38 + ac, duration: t1 - t0, ease: "none" }, t0);
+        }
+        tl.set(shade, { opacity: 0 }, 0); tl.set(shade, { opacity: 1 }, 1.8); tl.set(shade, { opacity: 0 }, 23.0);
 
-      /* ── telefono: ogni capitolo ha un movimento di camera diverso ── */
-      tl.set(phone, { y: 1500, rotationX: 50, opacity: 0 }, 0);
-      tl.set(phone, { opacity: 1 }, 1.7);
-      // Costruisci: si alza dal buio e si raddrizza
-      tl.to(phone, { y: 0, rotationX: 0, duration: 1.1, ease: "expo.out" }, 1.75);
-      tl.fromTo(glow, { opacity: 0 }, { opacity: 0.55, duration: 1.2 }, 1.8);
-      tl.to(phone, { scale: 1.05, duration: 2.7, ease: "none" }, 2.85);
-      // Crea: ruota lento di tre quarti
-      tl.set(phone, { scale: 1, rotationY: -22, rotationX: 6, x: 30 }, 5.6);
-      tl.to(phone, { rotationY: -6, rotationX: 0, x: 0, duration: 3.2, ease: "sine.out" }, 5.6);
-      // Addomestica: macro dentro lo schermo
-      tl.set(phone, { rotationY: 0, scale: 1.55, y: 380 }, 8.8);
-      tl.to(phone, { scale: 1.68, y: 430, duration: 1.5, ease: "none" }, 8.8);
-      tl.set(phone, { scale: 1.45, y: 300, x: -40 }, 10.3);
-      tl.to(phone, { scale: 1.55, x: 30, duration: 2.3, ease: "none" }, 10.3);
-      // Guida: il telefono è il volante
-      tl.set(phone, { scale: 1, x: 0, y: 0, rotationZ: 0, rotationX: 0 }, 12.6);
-      for (let i = 1; i < TILT.length; i++) {
-        const [t0] = TILT[i - 1], [t1, rz, rx] = TILT[i];
-        if (t1 <= t0) continue;
-        tl.to(phone, { rotationZ: rz, rotationX: rx, duration: t1 - t0, ease: "none" }, t0);
+        /* ── 0: IMMAGINA ── */
+        const kt = $("ktext");
+        {
+          const w = el("div", "big", { top: "0px" }, hud, "IMMAGINA"); const fs = fit(w, 980, 170);
+          const km = $("kmeas"); [kt, km].forEach((t) => { t.setAttribute("font-size", fs); t.setAttribute("letter-spacing", -0.03 * fs); });
+          const top = 1010 - fs * 0.86; w.style.top = top + "px";
+          const cs = split(w, "IMMAGINA");
+          tl.fromTo(cs, { yPercent: 115, rotation: 8 }, { yPercent: 0, rotation: 0, duration: 0.55, ease: "expo.out", stagger: 0.045 }, 0.08);
+          const e1 = el("div", "big line", { top: top - fs * 1.02 + "px", fontSize: fs + "px", opacity: 0 }, hud, "IMMAGINA");
+          const e2 = el("div", "big line", { top: top + fs * 1.02 + "px", fontSize: fs + "px", opacity: 0 }, hud, "IMMAGINA");
+          tl.fromTo([e1, e2], { opacity: 0 }, { opacity: 1, duration: 0.3 }, 0.35);
+          tl.fromTo(e1, { x: 260 }, { x: -120, duration: 1.0, ease: "power2.out" }, 0.2);
+          tl.fromTo(e2, { x: -260 }, { x: 120, duration: 1.0, ease: "power2.out" }, 0.2);
+          tl.to([e1, e2], { opacity: 0, duration: 0.15 }, 0.85);
+          tl.set(w, { opacity: 0 }, 0.9);
+          // le lettere diventano finestre sul gioco, poi ci entriamo dentro
+          tl.set(vwrap, { clipPath: "url(#knock)" }, 0);
+          tl.set(vwrap, { clipPath: "none" }, 1.8);
+          const b = km.getExtentOfChar(0), ox = b.x + b.width / 2, oy = b.y + b.height * 0.6;
+          tl.fromTo(kt, { scale: 1, svgOrigin: ox + " " + oy }, { scale: 60, svgOrigin: ox + " " + oy, duration: 0.62, ease: "power4.in", immediateRender: false }, 1.18);
+        }
+
+        /* ── parole dei capitoli ── */
+        WORDS.forEach((W, i) => {
+          const t0 = W.at || W.t, end = W.e;
+          const sameCh = i > 0 && WORDS[i - 1].n === W.n;
+          const w = el("div", "big fillg", { "--g": W.g }, hud, W.w); const fs = fit(w, 960, 250);
+          const top = 1920 - 170 - fs; w.style.top = top + "px";
+          const cs = split(w, W.w); paint(w, W.g);
+          tl.set(w, { opacity: 0 }, 0); tl.set(w, { opacity: 1 }, t0); tl.set(w, { opacity: 0 }, end);
+          const boom = W.w === "BOOM!";
+          if (boom) {
+            tl.fromTo(cs, { yPercent: 0, scale: 0.2, rotation: () => (rnd() - 0.5) * 70, opacity: 0 }, { scale: 1, rotation: 0, opacity: 1, duration: 0.5, ease: "back.out(3)", stagger: 0.04 }, t0);
+            tl.to(w, { scale: 1.06, duration: end - t0 - 0.3, ease: "none", transformOrigin: "50% 50%" }, t0 + 0.5);
+          } else {
+            tl.fromTo(cs, { yPercent: 118, rotation: 6 }, { yPercent: 0, rotation: 0, duration: 0.6, ease: "expo.out", stagger: 0.04 }, t0 + 0.05);
+          }
+          tl.to(cs, { yPercent: -118, duration: 0.22, ease: "power3.in", stagger: 0.015 }, end - 0.24);
+          // eco a contorno che scorre
+          const ec = el("div", "big line", { top: top - fs * 1.0 + "px", fontSize: fs + "px", opacity: 0 }, hud, W.w);
+          tl.fromTo(ec, { opacity: 0, x: i % 2 ? -200 : 200 }, { opacity: 0.8, x: 0, duration: 0.5, ease: "power3.out" }, t0 + 0.15);
+          tl.to(ec, { x: i % 2 ? 140 : -140, duration: end - t0 - 0.6, ease: "none" }, t0 + 0.65);
+          tl.to(ec, { opacity: 0, duration: 0.15 }, end - 0.2);
+          // indice, barra e riga
+          if (!sameCh) {
+            const nEnd = (WORDS[i + 1] && WORDS[i + 1].n === W.n) ? WORDS[i + 1].e : end;
+            const ix = el("div", "idx", { color: W.c, opacity: 0 }, hud, W.n + " / 06");
+            const br = el("div", "bar", { background: W.c, opacity: 0 }, hud);
+            tl.fromTo(ix, { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.4, ease: "power3.out" }, W.t + 0.1);
+            tl.fromTo(br, { opacity: 0, scaleX: 0 }, { opacity: 1, scaleX: 1, transformOrigin: "0% 50%", duration: 0.45, ease: "expo.out" }, W.t + 0.15);
+            tl.to([ix, br], { opacity: 0, duration: 0.15 }, nEnd - 0.2);
+          }
+          const sb = el("div", "sub", { opacity: 0 }, hud);
+          const words = W.s.split(" ").map((x) => { const m = el("span", "m", null, sb); const c = el("span", "c", null, m, x); sb.appendChild(document.createTextNode(" ")); return c; });
+          tl.fromTo(words, { yPercent: 110 }, { yPercent: 0, duration: 0.5, ease: "expo.out", stagger: 0.03 }, W.t + 0.22);
+          tl.set(sb, { opacity: 1 }, W.t + 0.22);
+          tl.to(words, { yPercent: -110, duration: 0.2, ease: "power2.in", stagger: 0.01 }, end - 0.22);
+        });
+
+        /* ── TRANSIZIONI ── */
+        // T2: muro di mattoncini (5.6)
+        {
+          const cols = ["#e53935", "#1e88e5", "#43a047", "#fdd835", "#ee45a8", "#ff7a1a", "#7a5cff"]; const B = [];
+          for (let r = 0; r < 11; r++) for (let c = 0; c < 6; c++) B.push(el("div", "brk", { left: c * 180 - 2 + "px", top: r * 175 - 2 + "px", background: cols[(r * 3 + c * 2) % cols.length] }, $("bricks")));
+          tl.fromTo(B, { scale: 0, rotation: -25 }, { scale: 1.02, rotation: 0, duration: 0.24, ease: "back.out(1.6)", stagger: { grid: [11, 6], from: "end", amount: 0.22 } }, 5.12);
+          tl.to(B, { scale: 0, rotation: 25, duration: 0.22, ease: "power2.in", stagger: { grid: [11, 6], from: "start", amount: 0.22 } }, 5.62);
+        }
+        // zoom-blur (8.8, 19.7)
+        const punch = (T) => {
+          tl.to(vwrap, { scale: 1.28, filter: "blur(16px) brightness(1.5)", duration: 0.14, ease: "power2.in" }, T - 0.14);
+          tl.fromTo(vwrap, { scale: 1.3, filter: "blur(16px) brightness(1.5)" }, { scale: 1, filter: "blur(0px) brightness(1)", duration: 0.32, ease: "expo.out", immediateRender: false }, T);
+        };
+        punch(8.8); punch(19.7);
+        // glitch (10.3)
+        {
+          const C = ["#ff2d55", "#22d3ee", "#3dff9e", "#ff2d55", "#7a5cff", "#22d3ee"];
+          const S = C.map((c, i) => el("div", "scan", { top: 180 + i * 290 + "px", height: 40 + (i % 3) * 30 + "px", background: c }, fx));
+          [0, 0.04, 0.08, 0.12, 0.16].forEach((d, k) => {
+            tl.set(vwrap, { x: [36, -48, 28, -20, 0][k], filter: ["hue-rotate(90deg) saturate(2)", "hue-rotate(-60deg) contrast(1.4)", "invert(.15) saturate(2)", "hue-rotate(40deg)", "none"][k] }, 10.22 + d);
+            S.forEach((s, j) => tl.set(s, { opacity: (j + k) % 2 ? 0.75 : 0, x: (j % 2 ? 1 : -1) * 60 * (k + 1) }, 10.22 + d));
+          });
+          tl.set(S, { opacity: 0 }, 10.42); tl.set(vwrap, { x: 0, filter: "none" }, 10.42);
+        }
+        // whip pan (12.6)
+        tl.to(vwrap, { x: -900, filter: "blur(22px)", duration: 0.16, ease: "power3.in" }, 12.44);
+        tl.fromTo(vwrap, { x: 900, filter: "blur(22px)" }, { x: 0, filter: "blur(0px)", duration: 0.3, ease: "expo.out", immediateRender: false }, 12.6);
+        // fette (15.6)
+        {
+          const n = 8, hh = 1920 / n, cols = ["#ff6a3d", "#ffc72c", "#ff2d55"];
+          for (let i = 0; i < n; i++) {
+            const b = el("div", "band", { top: i * hh + "px", height: hh + 2 + "px", background: cols[i % 3] }, $("bands"));
+            const dir = i % 2 ? 1 : -1;
+            tl.fromTo(b, { x: dir * 1100 }, { x: 0, duration: 0.24, ease: "power3.in", immediateRender: true }, 15.32 + i * 0.012);
+            tl.to(b, { x: -dir * 1100, duration: 0.28, ease: "power3.out" }, 15.62 + i * 0.012);
+          }
+        }
+        // esplosioni: flash, scossa, luce
+        const shake = (T, k = 1) => [[-34, 2], [28, -2], [-20, 1.5], [14, -1], [-7, .5], [0, 0]].forEach(([x, r], i) => tl.to(vwrap, { x: x * k, y: -x * 0.6 * k, rotation: r * k, duration: 0.045, ease: "none" }, T + i * 0.045));
+        tl.set(flash, { opacity: 0.9 }, BOOM); tl.to(flash, { opacity: 0, duration: 0.4, ease: "power2.out" }, BOOM + 0.04); shake(BOOM, 1.2);
+        tl.set(flash, { opacity: 0.6 }, TBOOM); tl.to(flash, { opacity: 0, duration: 0.3 }, TBOOM + 0.03); shake(TBOOM, 0.6);
+        // luci calde (18.0)
+        {
+          const l1 = el("div", "leak", { left: "-700px", top: "200px", background: "radial-gradient(circle,#ff8a3d,transparent 62%)" }, fx);
+          const l2 = el("div", "leak", { left: "500px", top: "900px", background: "radial-gradient(circle,#ffd23f,transparent 62%)" }, fx);
+          tl.fromTo(l1, { opacity: 0, x: 0 }, { opacity: 0.9, x: 700, duration: 0.35, ease: "power2.out" }, 17.82);
+          tl.to(l1, { opacity: 0, x: 1200, duration: 0.5 }, 18.17);
+          tl.fromTo(l2, { opacity: 0, x: 0 }, { opacity: 0.7, x: -500, duration: 0.35, ease: "power2.out" }, 17.88);
+          tl.to(l2, { opacity: 0, x: -900, duration: 0.5 }, 18.23);
+          tl.fromTo(vwrap, { scale: 1.18 }, { scale: 1, duration: 0.45, ease: "expo.out", immediateRender: false }, 18.0);
+        }
+
+        /* ── raffica: tagli da 0,2 s con parole a tutto schermo ── */
+        FLASHW.forEach((txt, i) => {
+          const T = 21.6 + i * 0.2;
+          const w = el("div", "big " + (i % 2 ? "line" : ""), { color: "#fff" }, hud); w.textContent = txt; const fs = fit(w, 1000, 300);
+          w.style.top = (960 - fs * 0.5) + "px"; if (i % 2) w.style.webkitTextStroke = "5px #fff";
+          tl.set(w, { opacity: 0 }, 0);
+          tl.fromTo(w, { opacity: 1, scale: 1.25 }, { scale: 1, duration: 0.2, ease: "power2.out", immediateRender: false }, T);
+          tl.set(w, { opacity: 0 }, T + 0.2);
+          tl.fromTo(vwrap, { filter: "brightness(1.7)" }, { filter: "brightness(1)", duration: 0.1, ease: "none", immediateRender: false }, T);
+        });
+        tl.to(vwrap, { scale: 1.35, duration: 1.4, ease: "power2.in" }, 21.6);
+        tl.set(flash, { opacity: 1 }, 23.0); tl.set(vwrap, { opacity: 0, scale: 1 }, 23.0);
+        tl.to(flash, { opacity: 0, duration: 0.55, ease: "power2.out" }, 23.02);
+
+        /* ── logo ── */
+        {
+          const rings = [0, 1, 2].map((k) => el("div", "abs", { left: "290px", top: "610px", width: "500px", height: "500px", borderRadius: "50%", border: "4px solid " + ["#ffc72c", "#ee45a8", "#4aa3ff"][k], opacity: 0 }, hud));
+          rings.forEach((r, k) => tl.fromTo(r, { scale: 0.2, opacity: 1 }, { scale: 3.2, opacity: 0, duration: 1.3, ease: "power2.out", immediateRender: false }, 23.05 + k * 0.12));
+          const logo = el("img", "abs", { left: "70px", top: "700px", width: "940px", opacity: 0, filter: "drop-shadow(0 26px 40px rgba(0,0,0,.5))" }, hud); logo.src = "assets/logo.png";
+          tl.fromTo(logo, { opacity: 0, scale: 1.6, rotation: -6 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.7, ease: "expo.out", transformOrigin: "50% 50%" }, 23.05);
+          tl.to(logo, { scale: 1.05, duration: 2.2, ease: "none" }, 23.75);
+          const tag = el("div", "big", { top: "1030px", fontSize: "44px", fontWeight: 700, letterSpacing: ".08em" }, hud); const tc = split(tag, "IL GIOCO DI MATTONCINI 3D");
+          tl.set(tag, { opacity: 0 }, 0); tl.set(tag, { opacity: 1 }, 23.6); tl.set(tag, { opacity: 0 }, 26.0);
+          tl.fromTo(tc, { yPercent: 110 }, { yPercent: 0, duration: 0.5, ease: "expo.out", stagger: 0.018 }, 23.6);
+          tl.to(tc, { yPercent: -110, duration: 0.2, ease: "power2.in", stagger: 0.006 }, 25.8);
+          tl.to(logo, { y: -500, scale: 0.7, duration: 0.8, ease: "expo.inOut" }, 25.95);
+        }
+
+        /* ── chiusura ── */
+        {
+          const g = el("div", "big fillg", { "--g": "linear-gradient(100deg,#fff38a,#ffc72c 45%,#ff6a3d)" }, hud, "GIOCA ORA"); const fs = fit(g, 960, 200); g.style.top = "640px";
+          const gc = split(g, "GIOCA ORA"); paint(g, "linear-gradient(100deg,#fff38a,#ffc72c 45%,#ff6a3d)");
+          tl.fromTo(gc, { yPercent: 118, rotation: 6 }, { yPercent: 0, rotation: 0, duration: 0.7, ease: "expo.out", stagger: 0.05 }, 26.3);
+          const e = el("div", "big line", { top: 640 + fs * 1.02 + "px", fontSize: fs + "px", opacity: 0 }, hud, "GIOCA ORA");
+          tl.fromTo(e, { opacity: 0, x: 260 }, { opacity: 0.5, x: -60, duration: 3.6, ease: "power2.out" }, 26.5);
+          const s1 = el("div", "big", { top: 640 + fs * 2.15 + "px", fontFamily: "Inter", fontWeight: 800, fontSize: "50px", letterSpacing: "-.02em", textTransform: "none" }, hud);
+          const s1c = split(s1, "Gratis nel browser. Senza account.");
+          const s2 = el("div", "big", { top: 640 + fs * 2.15 + 66 + "px", fontFamily: "Inter", fontWeight: 600, fontSize: "46px", letterSpacing: "-.01em", textTransform: "none", color: "rgba(255,255,255,.75)" }, hud);
+          const s2c = split(s2, "Oppure installalo sul telefono.");
+          tl.set([g, s1, s2], { opacity: 0 }, 0); tl.set(g, { opacity: 1 }, 26.3); tl.set(s1, { opacity: 1 }, 26.85); tl.set(s2, { opacity: 1 }, 27.1);
+          tl.fromTo(s1c, { yPercent: 110 }, { yPercent: 0, duration: 0.45, ease: "expo.out", stagger: 0.008 }, 26.85);
+          tl.fromTo(s2c, { yPercent: 110 }, { yPercent: 0, duration: 0.45, ease: "expo.out", stagger: 0.008 }, 27.1);
+          const card = el("div", "abs", { left: "60px", top: "1420px", width: "960px", height: "250px", borderRadius: "40px", background: "rgba(255,255,255,.1)", border: "2px solid rgba(255,255,255,.25)", opacity: 0 }, hud);
+          const qrb = el("div", "abs", { left: "24px", top: "24px", width: "202px", height: "202px", borderRadius: "22px", background: "#fff" }, card);
+          const cv = el("canvas", "abs", { left: "11px", top: "11px", width: "180px", height: "180px" }, qrb); cv.width = cv.height = 360;
+          try {
+            const q = QRLIB(0, "M"); q.addData("https://hello-noor.github.io/ulisse/ulibricks/", "Byte"); q.make();
+            const n = q.getModuleCount(), s = 360 / n, x = cv.getContext("2d"); x.fillStyle = "#fff"; x.fillRect(0, 0, 360, 360); x.fillStyle = "#0a0f2e";
+            for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) if (q.isDark(r, c)) x.fillRect(Math.floor(c * s), Math.floor(r * s), Math.ceil(s), Math.ceil(s));
+          } catch (err) { console.error(err); }
+          el("div", "abs", { left: "262px", top: "52px", fontFamily: "Unbounded", fontWeight: 700, fontSize: "40px", color: "#ffc72c" }, card, "Inquadra e gioca");
+          el("div", "abs", { left: "262px", top: "128px", width: "680px", fontWeight: 700, fontSize: "36px", lineHeight: 1.2, color: "#fff" }, card, "hello-noor.github.io/ulisse/ulibricks");
+          tl.fromTo(card, { opacity: 0, y: 60, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: "expo.out" }, 27.45);
+          const by = el("div", "big", { top: "1745px", fontFamily: "Inter", fontWeight: 700, fontSize: "36px", letterSpacing: "0", textTransform: "none", color: "rgba(255,255,255,.7)", opacity: 0 }, hud, "Ideato da Ulisse (6 anni)");
+          tl.fromTo(by, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, 27.9);
+        }
+
+        window.__timelines["main"] = tl;
+        tl.seek(0);
       }
-      // Distruggi: avvicinamento, poi BOOM
-      tl.set(phone, { rotationZ: 0, rotationX: 0, scale: 1.0, y: 0 }, 15.6);
-      tl.to(phone, { scale: 1.3, y: 200, duration: BOOM - 15.6, ease: "power2.in" }, 15.6);
-      tl.set(flash, { opacity: 0.85 }, BOOM);
-      tl.to(flash, { opacity: 0, duration: 0.35, ease: "power2.out" }, BOOM + 0.03);
-      [[-26, 14], [22, -12], [-14, 8], [10, -6], [-5, 3], [0, 0]].forEach(([x, r], i) => tl.to(phone, { x, rotationZ: r * 0.25, duration: 0.05, ease: "none" }, BOOM + i * 0.05));
-      tl.to(phone, { scale: 1.42, duration: 0.8, ease: "power2.out" }, BOOM);
-      tl.to(glow, { opacity: 0.95, duration: 0.1 }, BOOM);
-      tl.to(glow, { opacity: 0.55, duration: 0.8 }, BOOM + 0.1);
-      // Gioca: dritto, poi deriva laterale
-      tl.set(phone, { scale: 1, y: 0, x: 0, rotationZ: 0, rotationY: 14 }, 18.0);
-      tl.to(phone, { rotationY: -4, duration: 1.7, ease: "sine.out" }, 18.0);
-      tl.set(phone, { rotationY: -14 }, 19.7);
-      tl.to(phone, { rotationY: 4, duration: 1.9, ease: "sine.out" }, 19.7);
-      // raffica: lo schermo invade l'inquadratura
-      tl.set(phone, { rotationY: 0 }, 21.6);
-      tl.to(phone, { scale: 1.55, y: -60, duration: 0.6, ease: "power3.out" }, 21.6);
-      tl.to(phone, { scale: 1.75, duration: 0.8, ease: "none" }, 22.2);
-      tl.to([phone, screen], { borderRadius: 0, duration: 0.6, ease: "power3.out" }, 21.6);
-      for (let i = 0; i < 7; i++) tl.fromTo(screen, { filter: "brightness(1.8)" }, { filter: "brightness(1)", duration: 0.12, ease: "none" }, 21.6 + i * 0.2);
-      tl.set(flash, { opacity: 1 }, 23.0);
-      tl.set(phone, { opacity: 0 }, 23.0);
-      tl.set(glow, { opacity: 0 }, 23.0);
-      tl.to(flash, { opacity: 0, duration: 0.5, ease: "power2.out" }, 23.02);
-      tl.fromTo(sheen, { xPercent: -60 }, { xPercent: 60, duration: 21, ease: "none" }, 1.8);
-
-      /* ── logo ── */
-      {
-        const halo = el("div", "abs", { left: "40px", top: "520px", width: "1000px", height: "700px", borderRadius: "50%", opacity: 0,
-          background: "radial-gradient(closest-side, rgba(255,199,44,.55), rgba(238,69,168,.35) 45%, rgba(47,107,255,.25) 70%, transparent 100%)", filter: "blur(40px)" }, hud);
-        const logo = el("img", "abs", { left: "90px", top: "700px", width: "900px", opacity: 0 }, hud); logo.src = "assets/logo.png";
-        const tag = el("div", "word", { top: "1010px", fontSize: "64px", fontWeight: 700, letterSpacing: "-.03em", opacity: 0 }, hud, "Il gioco di mattoncini 3D.");
-        tl.fromTo(logo, { opacity: 0, scale: 0.86, filter: "blur(30px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 1.1, ease: "expo.out", transformOrigin: "50% 50%" }, 23.05);
-        tl.fromTo(halo, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 1.6, ease: "power2.out" }, 23.05);
-        tl.to(logo, { scale: 1.04, duration: 1.8, ease: "none" }, 24.15);
-        reveal(tag, 23.9, 0.8, 30);
-        // salgono in alto per lasciare spazio alla chiamata all'azione
-        tl.to(logo, { y: -480, scale: 0.72, duration: 0.9, ease: "power3.inOut" }, 26.0);
-        tl.to(halo, { y: -480, scale: 0.7, opacity: 0.6, duration: 0.9, ease: "power3.inOut" }, 26.0);
-        hide(tag, 25.85, 0.2);
-      }
-
-      /* ── chiusura ── */
-      {
-        const g = el("div", "word grad", { top: "620px", fontSize: "190px", "--g": "linear-gradient(100deg,#fff176 0%,#ffc72c 40%,#ff8a3d 100%)", opacity: 0 }, hud, "Gioca ora.");
-        const s1 = el("div", "sub", { top: "860px", fontSize: "52px", color: "#f5f5f7", opacity: 0 }, hud, "Gratis, nel browser. Senza account.");
-        const s2 = el("div", "sub", { top: "935px", fontSize: "52px", opacity: 0 }, hud, "Oppure installalo sul telefono.");
-        const card = el("div", "abs", { left: "390px", top: "1110px", width: "300px", height: "300px", borderRadius: "40px", background: "#fff", opacity: 0 }, hud);
-        const cv = el("canvas", "abs", { left: "25px", top: "25px", width: "250px", height: "250px" }, card); cv.width = 500; cv.height = 500;
-        try {
-          const q = QRLIB(0, "M"); q.addData("https://hello-noor.github.io/ulisse/ulibricks/", "Byte"); q.make();
-          const n = q.getModuleCount(), cs = 500 / n, x = cv.getContext("2d"); x.fillStyle = "#fff"; x.fillRect(0, 0, 500, 500); x.fillStyle = "#000";
-          for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) if (q.isDark(r, c)) x.fillRect(Math.floor(c * cs), Math.floor(r * cs), Math.ceil(cs), Math.ceil(cs));
-        } catch (e) { console.error(e); }
-        const url = el("div", "word", { top: "1460px", fontSize: "44px", fontWeight: 600, letterSpacing: "-.01em", color: "#f5f5f7", opacity: 0 }, hud, "hello-noor.github.io/ulisse/ulibricks");
-        const by = el("div", "word", { top: "1730px", fontSize: "36px", fontWeight: 500, letterSpacing: "0", color: "#86868b", opacity: 0 }, hud, "Ideato da Ulisse (6 anni)");
-        tl.fromTo(g, { opacity: 0, y: 70, scale: 0.94, filter: "blur(22px)" }, { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.8, ease: "power4.out" }, 26.35);
-        reveal(s1, 26.8, 0.6, 24);
-        reveal(s2, 27.05, 0.6, 24);
-        tl.fromTo(card, { opacity: 0, scale: 0.9, y: 30 }, { opacity: 1, scale: 1, y: 0, duration: 0.7, ease: "expo.out" }, 27.4);
-        reveal(url, 27.65, 0.6, 20);
-        reveal(by, 28.1, 0.8, 16);
-      }
-
-      window.__timelines["main"] = tl;
-      tl.seek(0);
+      document.fonts.load('900 100px "Unbounded"').then(() => Promise.all([document.fonts.load('700 40px "Unbounded"'), document.fonts.load('800 40px "Inter"'), document.fonts.load('600 40px "Inter"'), document.fonts.load('700 40px "Inter"')])).then(build);
     </script>
   </body>
 </html>

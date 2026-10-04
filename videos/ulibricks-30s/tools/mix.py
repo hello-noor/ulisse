@@ -31,11 +31,18 @@ put(fade(seg(60.0, 60.0 + 5.6), 1.2, 1.8), 24.4, 0.7)
 
 S = lambda n: load(A(f"sfx/{n}.mp3"))
 GS = lambda n: load(A(f"gamesfx/{n}.mp3"))
-put(S("sfx_002"), 0.05, 0.35)
-put(S("sfx_003"), 1.75, 0.75)
-for c in tl["CH"][1:]:
-    put(S("sfx_002"), c["t"] - 0.4, 0.5)
-    put(S("sfx_001"), c["t"], 0.45)
+# apertura: lettere che arrivano, poi lo zoom dentro la parola
+for k in range(8): put(S("sfx_001" if k % 2 == 0 else "sfx_005"), 0.08 + k * 0.045, 0.22)
+put(S("sfx_002"), 1.2, 0.6)
+put(S("sfx_003"), 1.78, 0.8)
+# transizioni
+for k in range(10): put(GS("clack" if k % 2 else "pop"), 5.12 + k * 0.045, 0.35)  # muro di mattoncini
+put(S("sfx_002"), 8.6, 0.55); put(S("sfx_001"), 8.8, 0.5)                          # zoom-blur
+put(GS("zap"), 10.22, 0.7)                                                          # glitch
+put(GS("whoosh"), 12.4, 0.8)                                                        # whip pan
+put(S("sfx_002"), 15.3, 0.6); put(S("sfx_005"), 15.6, 0.5)                          # fette
+put(S("sfx_002"), 19.5, 0.55); put(S("sfx_001"), 19.7, 0.5)                         # zoom-blur
+for w in tl["WORDS"]: put(S("sfx_005"), (w.get("at") or w["t"]) + 0.05, 0.3)       # parole
 # Costruisci: incastri
 for k, t in enumerate(np.arange(2.2, 5.5, 0.32)):
     put(GS("clack" if k % 2 == 0 else "pop"), t, 0.32)
@@ -44,7 +51,6 @@ for t in (6.0, 6.6, 7.2, 7.8, 8.3):
     put(GS("pop"), t, 0.4)
 put(GS("an_drago"), 9.0, 0.95)
 put(GS("an_chimera"), 10.5, 0.95)
-put(GS("whoosh"), 13.4, 0.5); put(GS("whoosh"), 14.6, 0.45)
 put(GS("fuse"), 15.75, 0.7)
 put(GS("boom_big"), BOOM, 1.0)
 put(S("sfx_004"), BOOM, 0.35)
