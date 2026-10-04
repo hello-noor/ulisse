@@ -539,6 +539,7 @@ body.kit #toolRail{display:none!important}
 .setSec{font-size:12px;font-weight:800;color:var(--muted);margin:16px 2px 8px;text-transform:none;letter-spacing:.02em}
 .setSec:first-of-type{margin-top:4px}
 .setList{background:var(--chip);border-radius:16px;overflow:hidden}
+.trailerSheet{width:min(420px,94vw)}.trailerSheet video{display:block;width:100%;max-height:75vh;background:#000;border-radius:14px;aspect-ratio:9/16;object-fit:contain}
 .setRow{display:flex;align-items:center;gap:12px;padding:12px 14px}
 .setRow+.setRow{border-top:1px solid var(--line)}
 .setRow .si{font-size:22px;width:28px;text-align:center;flex:none}
@@ -1706,9 +1707,14 @@ body.kit #panelToggle,body.presenting #panelToggle,body.tetris #panelToggle,body
   <div class="mgrid">
     <button class="mtile" data-go="info"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v6"/><circle cx="12" cy="7.5" r=".6" fill="currentColor"/></svg>Istruzioni</button>
     <button class="mtile" data-go="view"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg>Centra la vista</button>
+    <button class="mtile" data-go="trailer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M10 9.5v5l4.5-2.5z"/></svg>Trailer</button>
     <button class="mtile" data-go="install"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></svg>Installa l'app</button>
   </div>
   <span id="mSound" hidden><span></span></span><span id="mVita" hidden><span></span></span>
+</div></div>
+<div class="modal" id="trailerModal" hidden><div class="sheet trailerSheet">
+  <div class="sheetHead"><h2>🎬 Trailer</h2><button class="x" data-close aria-label="Chiudi">✕</button></div>
+  <video id="trailerVid" controls playsinline preload="none" poster="trailer-poster.jpg"></video>
 </div></div>
 <div class="modal" id="baseModal" hidden><div class="sheet baseSheet">
   <div class="sheetHead"><h2><span class="hIco" aria-hidden="true">🟩</span><span class="hT"><b>Base</b><small>Forma, colore e ambiente</small></span></h2><button class="x okb" data-close data-ico="check" aria-label="Fatto" title="Fatto"></button></div>
@@ -4335,6 +4341,7 @@ function openModal(id){const m=document.getElementById(id);m.hidden=false;}
 document.querySelectorAll('.modal').forEach(m=>{
   m.addEventListener('click',e=>{if((e.target===m&&m.id!=='tetPause'&&m.id!=='tetOver')||e.target.closest('[data-close]'))m.hidden=true;});
 });
+document.getElementById('trailerModal').addEventListener('click',()=>{setTimeout(()=>{if(document.getElementById('trailerModal').hidden)document.getElementById('trailerVid').pause();},0);});
 document.getElementById('infoBtn').addEventListener('click',()=>openModal('infoModal'));
 /* ---------- installazione PWA ---------- */
 let deferredPrompt=null;
@@ -7016,7 +7023,7 @@ function menuAct(go){
   document.getElementById('menuModal').hidden=true;
   ({rain:openTetStart,kit:openKits,pronto:openKits,quake:startQuake,shot:takeShot,pres:startPresent,
     base:()=>setTimeout(()=>document.getElementById('baseBtn').click(),0),
-    view:resetView,info:()=>openModal('infoModal'),install:()=>document.getElementById('installBtn').click()})[go]();
+    view:resetView,info:()=>openModal('infoModal'),trailer:()=>{const v=document.getElementById('trailerVid');if(!v.getAttribute('src'))v.src='trailer.mp4';openModal('trailerModal');},install:()=>document.getElementById('installBtn').click()})[go]();
 }
 function soundLabel(){return{all:'Musica e suoni',sfx:'Solo suoni',off:'Silenzio'}[soundState];}
 function renderSettings(){
