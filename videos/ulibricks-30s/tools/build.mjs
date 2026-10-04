@@ -10,7 +10,7 @@ const read = (f) => JSON.parse(fs.readFileSync(new URL("../assets/" + f, import.
 // ── riprese: at = quando parte, dur = durata, from = punto nella ripresa, rate = velocità
 // cam = movimento di camera sulla ripresa [scala inizio, scala fine, origine]
 const SEGS = [
-  { id: "hero", src: "hero", at: 0.9, dur: 0.9, from: 3.6, rate: 1, cam: [1.25, 1.3, "50% 40%"] },
+  { id: "hero", src: "hero", at: 0, dur: 1.8, from: 2.2, rate: 1.3, cam: [1.3, 1.5, "50% 45%"] },
   { id: "reel", src: "reel", at: 1.8, dur: 3.8, from: 10.0, rate: 2.0, cam: [1.12, 1.24, "50% 58%"] },
   { id: "creator", src: "creator2", at: 5.6, dur: 3.2, from: 0.4, rate: 2.6, cam: [1.0, 1.32, "50% 16%"] },
   { id: "drago", src: "zoo", at: 8.8, dur: 1.5, from: 2.2, rate: 1.5, cam: [1.25, 1.38, "42% 58%"] },
@@ -78,16 +78,16 @@ const html = `<!doctype html>
       #vwrap { position:absolute; inset:0; overflow:hidden; }
       .vid { position:absolute; left:0; top:0; width:${W}px; height:${H}px; object-fit:cover; filter:contrast(1.06) saturate(1.12); }
       #shade { position:absolute; inset:0; pointer-events:none;
-        background:linear-gradient(180deg, rgba(6,9,30,.82) 0%, rgba(6,9,30,0) 22%, rgba(6,9,30,0) 52%, rgba(6,9,30,.6) 70%, rgba(6,9,30,.96) 100%),
+        background:linear-gradient(180deg, rgba(6,9,30,.82) 0%, rgba(6,9,30,0) 22%, rgba(6,9,30,0) 48%, rgba(6,9,30,.72) 66%, rgba(6,9,30,.97) 86%),
                    radial-gradient(120% 80% at 50% 45%, transparent 55%, rgba(0,0,0,.45) 100%); }
       .big { position:absolute; left:0; width:${W}px; text-align:center; font-family:"Unbounded", sans-serif; font-weight:900; line-height:1; letter-spacing:-.03em; white-space:nowrap; text-transform:uppercase; }
       .m { display:inline-block; overflow:hidden; vertical-align:top; padding:.06em 0 .1em; margin:-.06em 0 -.1em; }
       .c { display:inline-block; }
-      .fillg { }
+      .fillg { filter:drop-shadow(0 7px 0 rgba(0,0,0,.6)) drop-shadow(0 0 28px rgba(0,0,0,.6)); }
       .line { color:transparent; -webkit-text-stroke:3px rgba(255,255,255,.55); }
-      .idx { position:absolute; left:64px; top:150px; font-family:"Unbounded", sans-serif; font-weight:700; font-size:34px; letter-spacing:.06em; }
-      .bar { position:absolute; left:64px; top:204px; height:6px; width:120px; border-radius:3px; }
-      .sub { position:absolute; left:64px; top:236px; width:900px; font-weight:800; font-size:54px; line-height:1.12; letter-spacing:-.02em; }
+      .idx { position:absolute; left:64px; top:140px; font-family:"Unbounded", sans-serif; font-weight:700; font-size:36px; letter-spacing:.06em; text-shadow:0 3px 12px rgba(0,0,0,.8); }
+      .bar { position:absolute; left:64px; top:196px; height:6px; width:120px; border-radius:3px; }
+      .sub { position:absolute; left:48px; top:226px; max-width:984px; padding:18px 28px 22px; border-radius:26px; background:rgba(7,10,32,.78); box-shadow:0 12px 40px rgba(0,0,0,.35); font-weight:800; font-size:62px; line-height:1.12; letter-spacing:-.02em; }
       .abs { position:absolute; }
       #bricks, #bands, #fx { position:absolute; inset:0; pointer-events:none; overflow:hidden; }
       .brk { position:absolute; width:184px; height:176px; border-radius:16px; transform-origin:50% 50%;
@@ -97,9 +97,9 @@ const html = `<!doctype html>
       .band { position:absolute; left:0; width:${W}px; }
       .leak { position:absolute; width:1400px; height:1400px; border-radius:50%; mix-blend-mode:screen; filter:blur(50px); opacity:0; }
       .scan { position:absolute; left:0; width:${W}px; mix-blend-mode:screen; opacity:0; }
+      #dim { position:absolute; inset:0; background:rgba(5,8,26,.42); opacity:0; }
       #flash { position:absolute; inset:0; background:#fff; opacity:0; }
       #grain { position:absolute; inset:-200px; opacity:.07; mix-blend-mode:overlay; pointer-events:none; }
-      #knocksvg { position:absolute; left:0; top:0; width:0; height:0; }
     </style>
   </head>
   <body>
@@ -110,12 +110,11 @@ const html = `<!doctype html>
         <div class="blob" id="b3" style="left:-300px; top:1250px; background:radial-gradient(circle,#ffc72c,transparent 65%); opacity:.45"></div>
         <div id="studs"></div>
       </div>
-      <svg id="knocksvg" width="0" height="0"><defs><clipPath id="knock" clipPathUnits="userSpaceOnUse"><text id="ktext" x="540" y="1010" text-anchor="middle" font-family="Unbounded" font-weight="900" font-size="150" letter-spacing="-4">IMMAGINA</text></clipPath></defs></svg>
-      <svg class="abs" width="1080" height="1920" style="left:0;top:0;opacity:0"><text id="kmeas" x="540" y="1010" text-anchor="middle" font-family="Unbounded" font-weight="900" font-size="150">IMMAGINA</text></svg>
       <div id="vwrap" data-layout-allow-overflow>
 ${videos}
       </div>
       <div id="shade"></div>
+      <div id="dim"></div>
       <div id="fx"></div>
       <div id="hud" class="clip" data-start="0" data-duration="${TOTAL}" data-track-index="3" style="position:absolute; inset:0"></div>
       <div id="bricks"></div>
@@ -175,29 +174,28 @@ ${videos}
           const [t0] = TILT[i - 1], [t1, rz, ac] = TILT[i]; if (t1 <= t0) continue;
           tl.to("#v-car", { rotation: rz, scale: 1.38 + ac, duration: t1 - t0, ease: "none" }, t0);
         }
-        tl.set(shade, { opacity: 0 }, 0); tl.set(shade, { opacity: 1 }, 1.8); tl.set(shade, { opacity: 0 }, 23.0);
+        tl.set(shade, { opacity: 1 }, 0); tl.set(shade, { opacity: 0 }, 23.0);
 
-        /* ── 0: IMMAGINA ── */
-        const kt = $("ktext");
+        /* ── 0: gancio — cos'è, detto subito ── */
         {
-          const w = el("div", "big", { top: "0px" }, hud, "IMMAGINA"); const fs = fit(w, 980, 170);
-          const km = $("kmeas"); [kt, km].forEach((t) => { t.setAttribute("font-size", fs); t.setAttribute("letter-spacing", -0.03 * fs); });
-          const top = 1010 - fs * 0.86; w.style.top = top + "px";
-          const cs = split(w, "IMMAGINA");
-          tl.fromTo(cs, { yPercent: 115, rotation: 8 }, { yPercent: 0, rotation: 0, duration: 0.55, ease: "expo.out", stagger: 0.045 }, 0.08);
-          const e1 = el("div", "big line", { top: top - fs * 1.02 + "px", fontSize: fs + "px", opacity: 0 }, hud, "IMMAGINA");
-          const e2 = el("div", "big line", { top: top + fs * 1.02 + "px", fontSize: fs + "px", opacity: 0 }, hud, "IMMAGINA");
-          tl.fromTo([e1, e2], { opacity: 0 }, { opacity: 1, duration: 0.3 }, 0.35);
-          tl.fromTo(e1, { x: 260 }, { x: -120, duration: 1.0, ease: "power2.out" }, 0.2);
-          tl.fromTo(e2, { x: -260 }, { x: 120, duration: 1.0, ease: "power2.out" }, 0.2);
-          tl.to([e1, e2], { opacity: 0, duration: 0.15 }, 0.85);
-          tl.set(w, { opacity: 0 }, 0.9);
-          // le lettere diventano finestre sul gioco, poi ci entriamo dentro
-          tl.set(vwrap, { clipPath: "url(#knock)" }, 0);
-          tl.set(vwrap, { clipPath: "none" }, 1.8);
-          const b = km.getExtentOfChar(0), ox = b.x + b.width / 2, oy = b.y + b.height * 0.6;
-          tl.fromTo(kt, { scale: 1, svgOrigin: ox + " " + oy }, { scale: 60, svgOrigin: ox + " " + oy, duration: 0.62, ease: "power4.in", immediateRender: false }, 1.18);
+          tl.set("#dim", { opacity: 1 }, 0); tl.to("#dim", { opacity: 0, duration: 0.2 }, 1.7);
+          const pill = el("div", "abs", { left: "0px", top: "780px", width: "1080px", textAlign: "center" }, hud);
+          const pi = el("span", null, { display: "inline-block", padding: "16px 34px", borderRadius: "60px", background: "#ffc72c", color: "#0a0f2e", fontFamily: "Unbounded", fontWeight: 700, fontSize: "34px", letterSpacing: ".04em" }, pill, "IL GIOCO DI MATTONCINI 3D");
+          const l1 = el("div", "big", { top: "0px", color: "#fff", filter: "drop-shadow(0 7px 0 rgba(0,0,0,.6)) drop-shadow(0 0 28px rgba(0,0,0,.6))" }, hud, "MATTONCINI"); const fs = fit(l1, 980, 200);
+          const l2 = el("div", "big fillg", {}, hud, "INFINITI."); l2.style.fontSize = fs * 1.12 + "px";
+          l1.style.top = "900px"; l2.style.top = 900 + fs * 1.02 + "px";
+          const c1 = split(l1, "MATTONCINI"), c2 = split(l2, "INFINITI."); paint(l2, "linear-gradient(100deg,#fff38a,#ffc72c 45%,#ff6a3d)");
+          const sl = el("div", "big", { top: 900 + fs * 2.3 + "px", fontFamily: "Inter", fontWeight: 800, fontSize: "50px", letterSpacing: "-.01em", textTransform: "none", textShadow: "0 3px 14px rgba(0,0,0,.9)" }, hud);
+          const c3 = split(sl, "Gratis, sul telefono e nel browser.");
+          tl.fromTo(pi, { scale: 0.6, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.35, ease: "back.out(2)" }, 0.02);
+          tl.fromTo(c1, { yPercent: 118, rotation: 6 }, { yPercent: 0, rotation: 0, duration: 0.45, ease: "expo.out", stagger: 0.025 }, 0.1);
+          tl.fromTo(c2, { yPercent: 118, rotation: 6 }, { yPercent: 0, rotation: 0, duration: 0.45, ease: "expo.out", stagger: 0.03 }, 0.3);
+          tl.fromTo(c3, { yPercent: 115 }, { yPercent: 0, duration: 0.4, ease: "expo.out", stagger: 0.006 }, 0.6);
+          tl.to([l1, l2], { scale: 1.06, duration: 1.2, ease: "none", transformOrigin: "50% 50%" }, 0.5);
+          tl.to([pill, l1, l2, sl], { opacity: 0, duration: 0.12 }, 1.66);
+          tl.set([pill, l1, l2, sl], { opacity: 0 }, 1.8);
         }
+        punch(1.8);
 
         /* ── parole dei capitoli ── */
         WORDS.forEach((W, i) => {
@@ -215,11 +213,6 @@ ${videos}
             tl.fromTo(cs, { yPercent: 118, rotation: 6 }, { yPercent: 0, rotation: 0, duration: 0.6, ease: "expo.out", stagger: 0.04 }, t0 + 0.05);
           }
           tl.to(cs, { yPercent: -118, duration: 0.22, ease: "power3.in", stagger: 0.015 }, end - 0.24);
-          // eco a contorno che scorre
-          const ec = el("div", "big line", { top: top - fs * 1.0 + "px", fontSize: fs + "px", opacity: 0 }, hud, W.w);
-          tl.fromTo(ec, { opacity: 0, x: i % 2 ? -200 : 200 }, { opacity: 0.8, x: 0, duration: 0.5, ease: "power3.out" }, t0 + 0.15);
-          tl.to(ec, { x: i % 2 ? 140 : -140, duration: end - t0 - 0.6, ease: "none" }, t0 + 0.65);
-          tl.to(ec, { opacity: 0, duration: 0.15 }, end - 0.2);
           // indice, barra e riga
           if (!sameCh) {
             const nEnd = (WORDS[i + 1] && WORDS[i + 1].n === W.n) ? WORDS[i + 1].e : end;
@@ -232,7 +225,7 @@ ${videos}
           const sb = el("div", "sub", { opacity: 0 }, hud);
           const words = W.s.split(" ").map((x) => { const m = el("span", "m", null, sb); const c = el("span", "c", null, m, x); sb.appendChild(document.createTextNode(" ")); return c; });
           tl.fromTo(words, { yPercent: 110 }, { yPercent: 0, duration: 0.5, ease: "expo.out", stagger: 0.03 }, W.t + 0.22);
-          tl.set(sb, { opacity: 1 }, W.t + 0.22);
+          tl.set(sb, { opacity: 1 }, W.t + 0.22); tl.to(sb, { opacity: 0, duration: 0.12 }, end - 0.14);
           tl.to(words, { yPercent: -110, duration: 0.2, ease: "power2.in", stagger: 0.01 }, end - 0.22);
         });
 
@@ -245,10 +238,10 @@ ${videos}
           tl.to(B, { scale: 0, rotation: 25, duration: 0.22, ease: "power2.in", stagger: { grid: [11, 6], from: "start", amount: 0.22 } }, 5.62);
         }
         // zoom-blur (8.8, 19.7)
-        const punch = (T) => {
+        function punch(T) {
           tl.to(vwrap, { scale: 1.28, filter: "blur(16px) brightness(1.5)", duration: 0.14, ease: "power2.in" }, T - 0.14);
           tl.fromTo(vwrap, { scale: 1.3, filter: "blur(16px) brightness(1.5)" }, { scale: 1, filter: "blur(0px) brightness(1)", duration: 0.32, ease: "expo.out", immediateRender: false }, T);
-        };
+        }
         punch(8.8); punch(19.7);
         // glitch (10.3)
         {
@@ -291,8 +284,8 @@ ${videos}
         /* ── raffica: tagli da 0,2 s con parole a tutto schermo ── */
         FLASHW.forEach((txt, i) => {
           const T = 21.6 + i * 0.2;
-          const w = el("div", "big " + (i % 2 ? "line" : ""), { color: "#fff" }, hud); w.textContent = txt; const fs = fit(w, 1000, 300);
-          w.style.top = (960 - fs * 0.5) + "px"; if (i % 2) w.style.webkitTextStroke = "5px #fff";
+          const w = el("div", "big", { color: i % 2 ? "#ffc72c" : "#fff", filter: "drop-shadow(0 8px 0 rgba(0,0,0,.65)) drop-shadow(0 0 30px rgba(0,0,0,.6))" }, hud); w.textContent = txt; const fs = fit(w, 1000, 300);
+          w.style.top = (960 - fs * 0.5) + "px";
           tl.set(w, { opacity: 0 }, 0);
           tl.fromTo(w, { opacity: 1, scale: 1.25 }, { scale: 1, duration: 0.2, ease: "power2.out", immediateRender: false }, T);
           tl.set(w, { opacity: 0 }, T + 0.2);
@@ -321,11 +314,9 @@ ${videos}
           const g = el("div", "big fillg", { "--g": "linear-gradient(100deg,#fff38a,#ffc72c 45%,#ff6a3d)" }, hud, "GIOCA ORA"); const fs = fit(g, 960, 200); g.style.top = "640px";
           const gc = split(g, "GIOCA ORA"); paint(g, "linear-gradient(100deg,#fff38a,#ffc72c 45%,#ff6a3d)");
           tl.fromTo(gc, { yPercent: 118, rotation: 6 }, { yPercent: 0, rotation: 0, duration: 0.7, ease: "expo.out", stagger: 0.05 }, 26.3);
-          const e = el("div", "big line", { top: 640 + fs * 1.02 + "px", fontSize: fs + "px", opacity: 0 }, hud, "GIOCA ORA");
-          tl.fromTo(e, { opacity: 0, x: 260 }, { opacity: 0.5, x: -60, duration: 3.6, ease: "power2.out" }, 26.5);
-          const s1 = el("div", "big", { top: 640 + fs * 2.15 + "px", fontFamily: "Inter", fontWeight: 800, fontSize: "50px", letterSpacing: "-.02em", textTransform: "none" }, hud);
+          const s1 = el("div", "big", { top: 640 + fs * 1.35 + "px", fontFamily: "Inter", fontWeight: 800, fontSize: "56px", letterSpacing: "-.02em", textTransform: "none" }, hud);
           const s1c = split(s1, "Gratis nel browser. Senza account.");
-          const s2 = el("div", "big", { top: 640 + fs * 2.15 + 66 + "px", fontFamily: "Inter", fontWeight: 600, fontSize: "46px", letterSpacing: "-.01em", textTransform: "none", color: "rgba(255,255,255,.75)" }, hud);
+          const s2 = el("div", "big", { top: 640 + fs * 1.35 + 74 + "px", fontFamily: "Inter", fontWeight: 700, fontSize: "50px", letterSpacing: "-.01em", textTransform: "none", color: "rgba(255,255,255,.88)" }, hud);
           const s2c = split(s2, "Oppure installalo sul telefono.");
           tl.set([g, s1, s2], { opacity: 0 }, 0); tl.set(g, { opacity: 1 }, 26.3); tl.set(s1, { opacity: 1 }, 26.85); tl.set(s2, { opacity: 1 }, 27.1);
           tl.fromTo(s1c, { yPercent: 110 }, { yPercent: 0, duration: 0.45, ease: "expo.out", stagger: 0.008 }, 26.85);

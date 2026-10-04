@@ -25,16 +25,16 @@ def fade(sig, fin=0.0, fout=0.0):
 
 music = load(A("music.mp3"))
 seg = lambda a, b: music[int(a * SR): int(b * SR)]
-# musica: parte sul primo taglio, si interrompe di colpo sul logo, torna per il finale
-put(fade(seg(1.0, 1.0 + 21.25), 0.05, 0.08), 1.75, 0.8)
+# musica: parte subito, si interrompe di colpo sul logo, torna per il finale
+put(fade(seg(0.4, 0.4 + 23.0), 0.02, 0.08), 0.0, 0.8)
 put(fade(seg(60.0, 60.0 + 5.6), 1.2, 1.8), 24.4, 0.7)
 
 S = lambda n: load(A(f"sfx/{n}.mp3"))
 GS = lambda n: load(A(f"gamesfx/{n}.mp3"))
 # apertura: lettere che arrivano, poi lo zoom dentro la parola
-for k in range(8): put(S("sfx_001" if k % 2 == 0 else "sfx_005"), 0.08 + k * 0.045, 0.22)
-put(S("sfx_002"), 1.2, 0.6)
-put(S("sfx_003"), 1.78, 0.8)
+put(S("sfx_003"), 0.02, 0.8)
+put(S("sfx_001"), 0.3, 0.4)
+put(S("sfx_002"), 1.55, 0.55); put(S("sfx_001"), 1.8, 0.5)
 # transizioni
 for k in range(10): put(GS("clack" if k % 2 else "pop"), 5.12 + k * 0.045, 0.35)  # muro di mattoncini
 put(S("sfx_002"), 8.6, 0.55); put(S("sfx_001"), 8.8, 0.5)                          # zoom-blur
