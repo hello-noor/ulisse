@@ -91,17 +91,17 @@
   /* ---------- Copertina ---------- */
   #cover {
     position: fixed; inset: 0; z-index: 50; overflow: hidden;
-    background: linear-gradient(#4cc3ff 0, #9be0ff 100%);
+    background: linear-gradient(#c9ecff 0, #f3dcff 100%);
     display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px;
     text-align: center; padding: 18px 20px;
     transition: transform 1s cubic-bezier(.7, -.15, .3, 1.1);
   }
   #cover.gone { transform: translateY(-110%); }
   #cover .rays { position: absolute; left: 50%; top: 40%; width: 240vmax; height: 240vmax; margin: -120vmax 0 0 -120vmax; z-index: 0;
-    background: repeating-conic-gradient(#ff5d73 0 15deg, #ffd23f 15deg 30deg, #3ccf6e 30deg 45deg, #4cc3ff 45deg 60deg, #7a5cff 60deg 75deg);
+    background: repeating-conic-gradient(#ffc2d1 0 12deg, #ffe7a3 12deg 24deg, #c4f0cf 24deg 36deg, #bfe6ff 36deg 48deg, #dccbff 48deg 60deg, #ffd5b8 60deg 72deg);
     animation: spin 46s linear infinite, hue 8s linear infinite; }
   #cover .rays.r2 { background: repeating-conic-gradient(rgba(255,255,255,.55) 0 4deg, transparent 4deg 22deg); mix-blend-mode: soft-light; animation: spin 28s linear infinite reverse; }
-  @keyframes hue { from { filter: hue-rotate(0deg) saturate(1.1); } to { filter: hue-rotate(360deg) saturate(1.1); } }
+  @keyframes hue { from { filter: hue-rotate(0deg); } to { filter: hue-rotate(360deg); } }
   #cover::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: radial-gradient(circle at 50% 42%, rgba(255,255,255,.55) 0, rgba(255,255,255,0) 38%, rgba(29,27,58,.38) 100%); }
   .big6 { filter: drop-shadow(0 0 22px rgba(255,255,255,.85)); }
   #cfly, #cconf { position: absolute; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
@@ -133,7 +133,11 @@
   .c-ball svg { animation: spin 5s linear infinite; }
 
   .bgrow { position: absolute; left: 0; right: 0; overflow: hidden; }
-  .bgtrack { display: flex; gap: 14px; width: max-content; height: 100%; animation: bgl 40s linear infinite; }
+  .bgtrack { display: flex; gap: 14px; width: max-content; height: 100%; box-sizing: border-box; padding: 12px 14px 12px 0; background-color: #1d1b3a;
+    background-image: linear-gradient(90deg, #fff4cf 0 8px, transparent 8px), linear-gradient(90deg, #fff4cf 0 8px, transparent 8px);
+    background-size: 17px 5px, 17px 5px; background-position: 0 3px, 0 calc(100% - 3px); background-repeat: repeat-x; animation: bgl 40s linear infinite; }
+  @keyframes bgl { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  @keyframes bgr { from { transform: translateX(-50%); } to { transform: translateX(0); } }
   .bgrow.rev .bgtrack { animation-name: bgr; }
   .bgtrack svg { height: 100%; width: auto; aspect-ratio: 320 / 190; border: 3px solid var(--ink); border-radius: 16px; flex: none; box-shadow: 0 5px 0 var(--ink); }
   #burst { position: fixed; inset: 0; z-index: 60; pointer-events: none; }
@@ -713,11 +717,12 @@
     (function () {
       var wall = document.getElementById('wall'), b6 = wall.parentNode, h = b6.offsetHeight || 400, w = b6.offsetWidth || 280;
       var rows = 5, rh = h / rows;
-      var cardW = (rh - 14) * 320 / 190 + 14, n = Math.ceil(w / cardW) + 1, html = '';
+      var cardW = (rh - 14 - 24) * 320 / 190 + 14, html = '';
       for (var r = 0; r < rows; r++) {
-        var items = '';
-        for (var k = 0; k < n * 2; k++) { items += '<svg viewBox="0 0 320 190" aria-hidden="true"><use href="#v' + ((r * 3 + (k % n)) % 12) + '"/></svg>'; }
-        html += '<div class="bgrow' + (r % 2 ? ' rev' : '') + '" style="top:' + (r * rh + 7) + 'px;height:' + (rh - 14) + 'px"><div class="bgtrack" style="animation-duration:' + Math.round(n * cardW / (34 + r * 7)) + 's">' + items + '</div></div>';
+        var order = [], items = '', k;
+        for (k = 0; k < 12; k++) order.push((k * 5 + r * 7 + 3) % 12);
+        for (k = 0; k < 24; k++) { items += '<svg viewBox="0 0 320 190" aria-hidden="true"><use href="#v' + order[k % 12] + '"/></svg>'; }
+        html += '<div class="bgrow' + (r % 2 ? ' rev' : '') + '" style="top:' + (r * rh + 7) + 'px;height:' + (rh - 14) + 'px"><div class="bgtrack" style="animation-duration:' + Math.round(12 * cardW / (42 + r * 8)) + 's">' + items + '</div></div>';
       }
       wall.innerHTML = html;
     })();
