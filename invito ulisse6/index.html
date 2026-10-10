@@ -512,7 +512,7 @@
   <div class="wrap">
     <span class="tag">Mini gioco</span>
     <h2>Calcia la punizione!</h2>
-    <p class="sub">Trascina: ← più potenza, ↓ più altezza. Rilascia e calcia! 5 tiri.</p>
+    <p class="sub">Trascina: ← più potenza, ↑ più altezza. Rilascia e calcia! 5 tiri.</p>
     <div class="gbox sticker">
       <div class="ghud">
         <div class="gstat"><small>Calci</small><b id="gLeft">5</b></div>
@@ -522,7 +522,7 @@
       </div>
       <canvas id="gCanvas" width="720" height="400" aria-label="Campo da rugby: calcio di punizione"></canvas>
       <div class="gmsg" id="gMsg" aria-live="polite">Trascina verso sinistra e in basso, poi rilascia!</div>
-      <div class="gbars" aria-hidden="true"><span>← Potenza<div class="gpower"><i id="gPowBar"></i></div></span><span>↓ Altezza<div class="gpower"><i id="gAngBar"></i></div></span></div>
+      <div class="gbars" aria-hidden="true"><span>← Potenza<div class="gpower"><i id="gPowBar"></i></div></span><span>↑ Altezza<div class="gpower"><i id="gAngBar"></i></div></span></div>
       <div class="gctl" hidden><input id="gAng" type="range" min="10" max="75" value="40"><input id="gPow" type="range" min="10" max="30" step=".5" value="20"><b id="gAngV"></b><b id="gPowV"></b></div>
       <button class="btn pink" id="gKick" hidden>Rigioca!</button>
     </div>
@@ -870,8 +870,8 @@
       var origin = null, MAXX = 130, MAXY = 90;
       function bars(pw, an) { document.getElementById('gPowBar').style.width = pw + '%'; document.getElementById('gAngBar').style.width = an + '%'; }
       function aim(e) {
-        // asse orizzontale = potenza (trascina a sinistra), asse verticale = altezza (trascina in basso)
-        var dx = origin.x - e.clientX, dy = e.clientY - origin.y;
+        // asse orizzontale = potenza (trascina a sinistra), asse verticale = altezza (trascina in alto)
+        var dx = origin.x - e.clientX, dy = origin.y - e.clientY;
         var fx = Math.max(0, Math.min(1, dx / MAXX)), fy = Math.max(-1, Math.min(1, dy / MAXY));
         var a = fy >= 0 ? 38 + 37 * fy : 38 + 28 * fy;
         pow.value = 10 + 20 * fx; ang.value = a;
