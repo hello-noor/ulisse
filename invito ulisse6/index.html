@@ -512,7 +512,7 @@
   <div class="wrap">
     <span class="tag">Mini gioco</span>
     <h2>Calcia la punizione!</h2>
-    <p class="sub">Trascina: ← più potenza, ↑ più altezza. Rilascia e calcia! 5 tiri.</p>
+    <p class="sub">Come Angry Birds: tira indietro e rilascia! L'ovale deve passare tra i pali. 5 tiri.</p>
     <div class="gbox sticker">
       <div class="ghud">
         <div class="gstat"><small>Calci</small><b id="gLeft">5</b></div>
@@ -521,8 +521,8 @@
         <div class="gstat"><small>Metri</small><b id="gDist">–</b></div>
       </div>
       <canvas id="gCanvas" width="720" height="400" aria-label="Campo da rugby: calcio di punizione"></canvas>
-      <div class="gmsg" id="gMsg" aria-live="polite">Trascina verso sinistra e in basso, poi rilascia!</div>
-      <div class="gbars" aria-hidden="true"><span>← Potenza<div class="gpower"><i id="gPowBar"></i></div></span><span>↑ Altezza<div class="gpower"><i id="gAngBar"></i></div></span></div>
+      <div class="gmsg" id="gMsg" aria-live="polite">Tira indietro e rilascia!</div>
+      <div class="gbars" aria-hidden="true"><span>Potenza<div class="gpower"><i id="gPowBar"></i></div></span><span>Angolo<div class="gpower"><i id="gAngBar"></i></div></span></div>
       <div class="gctl" hidden><input id="gAng" type="range" min="10" max="75" value="40"><input id="gPow" type="range" min="10" max="30" step=".5" value="20"><b id="gAngV"></b><b id="gPowV"></b></div>
       <button class="btn pink" id="gKick" hidden>Rigioca!</button>
     </div>
@@ -787,8 +787,8 @@
         pts.push({ x: x, y: Math.max(y, 0) });
         return { pts: pts, hit: hit };
       }
-      function scale() { return Math.min((W - 125) / (D + 5), H / 19); }
-      function X(x, s) { return 95 + x * s; }
+      function scale() { return Math.min((W - 150) / (D + 4.5), H / 19); }
+      function X(x, s) { return 125 + x * s; }
       function Y(y, s) { return H - 50 - y * s; }
       function ovale(x, y, r, rot) { cx.save(); cx.translate(x, y); cx.rotate(rot); cx.fillStyle = '#a8541f'; cx.strokeStyle = '#1d1b3a'; cx.lineWidth = 3; cx.beginPath(); cx.ellipse(0, 0, r, r * .62, 0, 0, 7); cx.fill(); cx.stroke(); cx.strokeStyle = '#f3c593'; cx.lineWidth = 2; cx.beginPath(); cx.moveTo(-r * .55, 0); cx.lineTo(r * .55, 0); cx.stroke(); cx.restore(); }
       function draw() {
@@ -811,7 +811,7 @@
         cx.fillStyle = 'rgba(255,255,255,.85)'; trail.forEach(function (p, i) { if (i % 3 === 0) { cx.beginPath(); cx.arc(X(p.x, s), Y(p.y, s), 3.5, 0, 7); cx.fill(); } });
         // Ulisse che calcia
         (function () {
-          var u = 1.35, kx = X(-1.5, s), ky = gy, sw = swing, INK = '#1d1b3a', SK = '#ffd9b8';
+          var u = 1.35, kx = X(-3, s), ky = gy, sw = swing, INK = '#1d1b3a', SK = '#ffd9b8';
           function limb(x1, y1, x2, y2, w, col) { cx.lineCap = 'round'; cx.strokeStyle = INK; cx.lineWidth = w + 5; cx.beginPath(); cx.moveTo(x1, y1); cx.lineTo(x2, y2); cx.stroke(); cx.strokeStyle = col; cx.lineWidth = w; cx.beginPath(); cx.moveTo(x1, y1); cx.lineTo(x2, y2); cx.stroke(); }
           var hipY = ky - 30 * u, shY = ky - 58 * u;
           // gamba d'appoggio + calzettone + scarpino
@@ -839,7 +839,11 @@
           cx.strokeStyle = INK; cx.lineWidth = 2.5; cx.beginPath(); cx.arc(kx + 2 * u, hy + 5 * u, 5 * u, .15, Math.PI - .15); cx.stroke();
         })();
         // pallone
-        if (ballPos) ovale(X(ballPos.x, s), Y(ballPos.y, s), 11, ballRot); else ovale(X(.4, s), Y(.35, s) - 2, 11, -.5);
+        var hx = X(.4, s), hy = Y(.35, s) - 2;
+        cx.fillStyle = '#a8541f'; cx.strokeStyle = '#1d1b3a'; cx.lineWidth = 3; cx.beginPath(); cx.moveTo(hx - 9, hy + 12); cx.lineTo(hx + 9, hy + 12); cx.lineTo(hx + 4, gy); cx.lineTo(hx - 4, gy); cx.closePath(); cx.fill(); cx.stroke();
+        if (ballPos) ovale(X(ballPos.x, s), Y(ballPos.y, s), 11, ballRot);
+        else if (drag && !flying) { var bx = hx + drag.px, by = Math.min(hy + drag.py, gy - 8); cx.strokeStyle = '#ff5d73'; cx.lineWidth = 5; cx.lineCap = 'round'; cx.beginPath(); cx.moveTo(hx - 8, hy + 6); cx.lineTo(bx, by); cx.lineTo(hx + 8, hy + 6); cx.stroke(); ovale(bx, by, 11, Math.atan2(-drag.py, -drag.px) * -1 + Math.PI); }
+        else ovale(hx, hy, 11, -.5);
       }
       function setMsg(t, c) { msg.textContent = t; msg.className = 'gmsg' + (c ? ' ' + c : ''); }
       function end(ok, hit) {
@@ -854,7 +858,7 @@
         setMsg(t, score >= 3 ? 'ok' : 'ko'); btn.hidden = false;
         if (score >= 3) { sfx('fanfare'); var r = cv.getBoundingClientRect(); if (!reduce) burst(r.left + r.width / 2, r.top + r.height / 2, 140); }
       }
-      function restart() { btn.hidden = true; kicks = 5; score = 0; elLeft.textContent = 5; elScore.textContent = 0; setMsg('Trascina verso sinistra e in basso, poi rilascia!'); newRound(); }
+      function restart() { btn.hidden = true; kicks = 5; score = 0; elLeft.textContent = 5; elScore.textContent = 0; setMsg('Tira indietro e rilascia!'); newRound(); }
       function launch() {
         if (flying || locked) return; flying = true; locked = true; drag = null; trail = []; sfx('click'); bars(0, 0);
         var res = sim(+ang.value, +pow.value, wind), pts = res.pts, i = 0, sw = 0;
@@ -867,16 +871,18 @@
         })();
       }
       function pt(e) { var r = cv.getBoundingClientRect(); return { x: (e.clientX - r.left) * W / r.width, y: (e.clientY - r.top) * H / r.height }; }
-      var origin = null, MAXX = 130, MAXY = 90;
+      var origin = null, MAXD = 110;
       function bars(pw, an) { document.getElementById('gPowBar').style.width = pw + '%'; document.getElementById('gAngBar').style.width = an + '%'; }
       function aim(e) {
-        // asse orizzontale = potenza (trascina a sinistra), asse verticale = altezza (trascina in alto)
-        var dx = origin.x - e.clientX, dy = origin.y - e.clientY;
-        var fx = Math.max(0, Math.min(1, dx / MAXX)), fy = Math.max(-1, Math.min(1, dy / MAXY));
-        var a = fy >= 0 ? 38 + 37 * fy : 38 + 28 * fy;
-        pow.value = 10 + 20 * fx; ang.value = a;
-        drag = { len: Math.sqrt(dx * dx + dy * dy) };
-        bars(Math.round(fx * 100), Math.round((a - 10) / 65 * 100));
+        // fionda stile Angry Birds: tira indietro (sinistra/basso), il pallone parte nella direzione opposta
+        var rc = cv.getBoundingClientRect(), k = W / rc.width;
+        var dx = e.clientX - origin.x, dy = e.clientY - origin.y, len = Math.sqrt(dx * dx + dy * dy), f = Math.min(len / MAXD, 1);
+        var wx = -dx, wy = dy, a = Math.atan2(wy, Math.max(wx, .001)) * 180 / Math.PI; a = Math.max(8, Math.min(78, a));
+        if (len < 4) a = 38;
+        pow.value = 10 + 20 * f; ang.value = a;
+        var vl = Math.min(len, MAXD) * k * .55, ux = len ? dx / len : 0, uy = len ? dy / len : 0;
+        drag = { len: len, px: ux * vl, py: uy * vl };
+        bars(Math.round(f * 100), Math.round((a - 8) / 70 * 100));
         draw();
       }
       cv.addEventListener('pointerdown', function (e) { if (flying || locked) return; try { cv.setPointerCapture(e.pointerId); } catch (x) {} origin = { x: e.clientX, y: e.clientY }; aim(e); e.preventDefault(); });
