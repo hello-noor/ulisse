@@ -810,7 +810,7 @@
         elDist.textContent = D; elWind.textContent = (wind > 0 ? '→' : '←') + Math.abs(wind).toFixed(1); trail = []; ballPos = null; swing = 0; locked = false; drag = null; fdrag = null; draw();
       }
       function sim(a, v, w) {
-        var r = a * Math.PI / 180, x = 0, y = 58 / scale(), vx = v * Math.cos(r), vy = v * Math.sin(r), dt = .02, pts = [], hit = null, i = 0;
+        var r = a * Math.PI / 180, x = 0, y = 16 / scale(), vx = v * Math.cos(r), vy = v * Math.sin(r), dt = .02, pts = [], hit = null, i = 0;
         while (i++ < 600) {
           pts.push({ x: x, y: y });
           var nx = x + vx * dt, ny = y + vy * dt;
@@ -826,7 +826,7 @@
       function Y(y, s) { return H - 50 - y * s; }
       function ovale(x, y, r, rot) { cx.save(); cx.translate(x, y); cx.rotate(rot); cx.fillStyle = '#a8541f'; cx.strokeStyle = '#1d1b3a'; cx.lineWidth = 3; cx.beginPath(); cx.ellipse(0, 0, r, r * .62, 0, 0, 7); cx.fill(); cx.stroke(); cx.strokeStyle = '#f3c593'; cx.lineWidth = 2; cx.beginPath(); cx.moveTo(-r * .55, 0); cx.lineTo(r * .55, 0); cx.stroke(); cx.restore(); }
       function draw() {
-        var s = scale(), gy = Y(0, s), k, HX = X(.4, s), HY = gy - 58, pd = drag || fdrag;
+        var s = scale(), gy = Y(0, s), k, HX = X(.4, s), HY = gy - 16, pd = drag || fdrag;
         var g = cx.createLinearGradient(0, 0, 0, gy); g.addColorStop(0, '#4cc3ff'); g.addColorStop(1, '#d5f3ff'); cx.fillStyle = g; cx.fillRect(0, 0, W, H);
         cx.fillStyle = 'rgba(255,255,255,.9)'; [[90, 50, 1], [420, 36, .8], [600, 70, .6]].forEach(function (c) { cx.beginPath(); cx.arc(c[0], c[1], 22 * c[2], 0, 7); cx.arc(c[0] + 26 * c[2], c[1] + 6, 18 * c[2], 0, 7); cx.arc(c[0] - 24 * c[2], c[1] + 8, 16 * c[2], 0, 7); cx.fill(); });
         cx.fillStyle = '#3ccf6e'; cx.fillRect(0, gy, W, H - gy); cx.fillStyle = '#35bd64'; for (k = 0; k < 14; k++) { if (k % 2) cx.fillRect(X(k * 5 - 5, s), gy, 5 * s, H - gy); }
@@ -875,9 +875,7 @@
           cx.strokeStyle = INK; cx.lineWidth = 2.5; cx.beginPath(); cx.arc(kx + 2 * u, hy + 5 * u, 5 * u, .15, Math.PI - .15); cx.stroke();
         })();
         // pallone
-        cx.fillStyle = '#c98a4b'; cx.strokeStyle = '#1d1b3a'; cx.lineWidth = 3; cx.beginPath(); cx.rect(HX - 4, HY + 10, 8, gy - HY - 10); cx.fill(); cx.stroke();
-        cx.beginPath(); cx.ellipse(HX, gy - 1, 18, 5, 0, 0, 7); cx.fill(); cx.stroke();
-        cx.beginPath(); cx.moveTo(HX - 11, HY + 6); cx.lineTo(HX + 11, HY + 6); cx.lineTo(HX + 5, HY + 14); cx.lineTo(HX - 5, HY + 14); cx.closePath(); cx.fill(); cx.stroke();
+        cx.fillStyle = '#e8b04b'; cx.strokeStyle = '#1d1b3a'; cx.lineWidth = 3; cx.beginPath(); cx.moveTo(HX - 9, HY + 7); cx.lineTo(HX + 9, HY + 7); cx.lineTo(HX + 4, gy); cx.lineTo(HX - 4, gy); cx.closePath(); cx.fill(); cx.stroke();
         if (ballPos) ovale(X(ballPos.x, s), Y(ballPos.y, s), 11, ballRot); else ovale(HX, HY, 11, -.5);
       }
       function setMsg(t, c) { msg.textContent = t; msg.className = 'gmsg' + (c ? ' ' + c : ''); }
@@ -909,15 +907,14 @@
       var origin = null, MAXD = 110;
       function bars(pw, an) { document.getElementById('gPowBar').style.width = pw + '%'; document.getElementById('gAngBar').style.width = an + '%'; }
       function aim(e) {
-        // fionda stile Angry Birds: tira indietro (sinistra/basso), il pallone parte nella direzione opposta
+        // il piede segue il dito: indietro (sinistra) = piu potenza, in basso = piu alto, in alto = piu teso
         var rc = cv.getBoundingClientRect(), k = W / rc.width;
-        var dx = e.clientX - origin.x, dy = e.clientY - origin.y, len = Math.sqrt(dx * dx + dy * dy), f = Math.min(len / MAXD, 1);
-        var wx = -dx, wy = dy, a = Math.atan2(wy, Math.max(wx, .001)) * 180 / Math.PI; a = Math.max(8, Math.min(78, a));
-        if (len < 4) a = 38;
+        var dx = e.clientX - origin.x, dy = e.clientY - origin.y;
+        var f = Math.max(0, Math.min(1, -dx / MAXD)), fy = Math.max(-1, Math.min(1, dy / 80));
+        var a = fy >= 0 ? 40 + 35 * fy : 40 + 30 * fy;
         pow.value = 10 + 20 * f; ang.value = a;
-        var vl = Math.min(len, MAXD) * k * .55, ux = len ? dx / len : 0, uy = len ? dy / len : 0;
-        drag = { len: len, px: ux * vl, py: uy * vl };
-        bars(Math.round(f * 100), Math.round((a - 8) / 70 * 100));
+        drag = { len: Math.sqrt(dx * dx + dy * dy), px: -8 - f * 58, py: fy >= 0 ? 10 * fy : 46 * fy };
+        bars(Math.round(f * 100), Math.round((a - 10) / 65 * 100));
         draw();
       }
       cv.addEventListener('pointerdown', function (e) { if (flying || locked) return; try { cv.setPointerCapture(e.pointerId); } catch (x) {} origin = { x: e.clientX, y: e.clientY }; aim(e); e.preventDefault(); });
