@@ -91,18 +91,17 @@
   /* ---------- Copertina ---------- */
   #cover {
     position: fixed; inset: 0; z-index: 50; overflow: hidden;
-    background: linear-gradient(#c9ecff 0, #f3dcff 100%);
+    background: linear-gradient(#4cc3ff 0, #ff8fd0 100%);
     display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px;
     text-align: center; padding: 18px 20px;
     transition: transform 1s cubic-bezier(.7, -.15, .3, 1.1);
   }
   #cover.gone { transform: translateY(-110%); }
   #cover .rays { position: absolute; left: 50%; top: 40%; width: 240vmax; height: 240vmax; margin: -120vmax 0 0 -120vmax; z-index: 0;
-    background: repeating-conic-gradient(#ffc2d1 0 12deg, #ffe7a3 12deg 24deg, #c4f0cf 24deg 36deg, #bfe6ff 36deg 48deg, #dccbff 48deg 60deg, #ffd5b8 60deg 72deg);
+    background: repeating-conic-gradient(#ff6b86 0 12deg, #ffd23f 12deg 24deg, #46d67c 24deg 36deg, #4cc3ff 36deg 48deg, #8f73ff 48deg 60deg, #ff9a4d 60deg 72deg);
     animation: spin 46s linear infinite, hue 8s linear infinite; }
   #cover .rays.r2 { background: repeating-conic-gradient(rgba(255,255,255,.55) 0 4deg, transparent 4deg 22deg); mix-blend-mode: soft-light; animation: spin 28s linear infinite reverse; }
   @keyframes hue { from { filter: hue-rotate(0deg); } to { filter: hue-rotate(360deg); } }
-  #cover::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: radial-gradient(circle at 50% 42%, rgba(255,255,255,.55) 0, rgba(255,255,255,0) 38%, rgba(29,27,58,.38) 100%); }
   .big6 { filter: drop-shadow(0 0 22px rgba(255,255,255,.85)); }
   #cfly, #cconf { position: absolute; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
   .cf { position: absolute; left: -100px; animation: flyx var(--d) linear infinite; animation-delay: var(--dl); }
@@ -120,7 +119,7 @@
   .big6 .edge path { vector-effect: non-scaling-stroke; stroke: var(--ink); stroke-width: 26px; stroke-linejoin: round; fill: var(--ink); }
   .big6 .edge.sh { transform: translate(10px, 14px); }
   .big6 .edge.wh path { stroke: #fff; stroke-width: 14px; }
-  #wall { position: absolute; inset: 0; z-index: 2; overflow: hidden; background: #fff4cf; clip-path: url(#sixclip); }
+  #wall { position: absolute; inset: 0; z-index: 2; overflow: hidden; clip-path: url(#sixclip); background: linear-gradient(90deg, #ff5d73, #ffd23f, #3ccf6e, #4cc3ff, #7a5cff, #ff5d73); background-size: 700px 100%; animation: wallmove 5s linear infinite; }
   .big6 .edge.in { z-index: 3; pointer-events: none; }
   .big6 .edge.in path { fill: none; stroke: var(--ink); stroke-width: 5px; }
   @keyframes six { 0%,100% { transform: translateY(0) rotate(-3deg) scale(1); } 50% { transform: translateY(-12px) rotate(3deg) scale(1.03); } }
@@ -132,14 +131,14 @@
   .c-ball { position: absolute; width: 64px; height: 64px; animation: bob 2.2s ease-in-out infinite; }
   .c-ball svg { animation: spin 5s linear infinite; }
 
+  @keyframes wallmove { to { background-position: 700px 0; } }
+  #bgwall { position: absolute; inset: -22%; z-index: 1; transform: rotate(-9deg); pointer-events: none; }
   .bgrow { position: absolute; left: 0; right: 0; overflow: hidden; }
-  .bgtrack { display: flex; gap: 14px; width: max-content; height: 100%; box-sizing: border-box; padding: 12px 14px 12px 0; background-color: #1d1b3a;
-    background-image: linear-gradient(90deg, #fff4cf 0 8px, transparent 8px), linear-gradient(90deg, #fff4cf 0 8px, transparent 8px);
-    background-size: 17px 5px, 17px 5px; background-position: 0 3px, 0 calc(100% - 3px); background-repeat: repeat-x; animation: bgl 40s linear infinite; }
+  .bgtrack { display: flex; gap: 18px; width: max-content; height: 100%; padding-right: 18px; animation: bgl 40s linear infinite; }
   @keyframes bgl { from { transform: translateX(0); } to { transform: translateX(-50%); } }
   @keyframes bgr { from { transform: translateX(-50%); } to { transform: translateX(0); } }
   .bgrow.rev .bgtrack { animation-name: bgr; }
-  .bgtrack svg { height: 100%; width: auto; aspect-ratio: 320 / 190; border: 3px solid var(--ink); border-radius: 16px; flex: none; box-shadow: 0 5px 0 var(--ink); }
+  .bgtrack svg { height: 100%; width: auto; aspect-ratio: 320 / 190; border: 4px solid var(--ink); border-radius: 20px; flex: none; box-shadow: 0 6px 0 var(--ink); }
   #burst { position: fixed; inset: 0; z-index: 60; pointer-events: none; }
   #rain { position: fixed; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
   #rain i { position: absolute; top: -30px; width: 12px; height: 20px; border-radius: 3px; animation: fall linear infinite; opacity: .9; }
@@ -364,6 +363,7 @@
 <div id="cover">
   <div class="rays" aria-hidden="true"></div>
   <div class="rays r2" aria-hidden="true"></div>
+  <div id="bgwall" aria-hidden="true"></div>
   <div id="cfly" aria-hidden="true"></div>
   <div id="cconf" aria-hidden="true"></div>
   <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><clipPath id="sixclip" clipPathUnits="objectBoundingBox"><path d="M0.7840 0.2806Q0.7040 0.2500 0.5980 0.2500Q0.4120 0.2500 0.3860 0.4167Q0.4900 0.3958 0.6080 0.3958Q0.8100 0.3958 0.9050 0.4688Q1.0000 0.5417 1.0000 0.6681Q1.0000 0.8208 0.8640 0.9104Q0.7280 1.0000 0.4960 1.0000Q0.2640 1.0000 0.1320 0.8826Q0.0000 0.7653 0.0000 0.5486Q0.0000 0.2958 0.1650 0.1479Q0.3300 0.0000 0.5940 0.0000Q0.8940 0.0000 0.8940 0.0847Q0.8940 0.1458 0.8380 0.2153Q0.8180 0.2458 0.7840 0.2806ZM0.6540 0.6694Q0.6540 0.6264 0.6160 0.5993Q0.5780 0.5722 0.5010 0.5722Q0.4240 0.5722 0.3840 0.5917Q0.3820 0.6097 0.3820 0.6319Q0.3820 0.6542 0.3890 0.6868Q0.3960 0.7194 0.4290 0.7507Q0.4620 0.7819 0.5160 0.7819Q0.6540 0.7819 0.6540 0.6694Z"/></clipPath></defs></svg>
@@ -715,14 +715,14 @@
 
     // muro di sport animati sulla copertina (righe che scorrono in versi opposti)
     (function () {
-      var wall = document.getElementById('wall'), b6 = wall.parentNode, h = b6.offsetHeight || 400, w = b6.offsetWidth || 280;
-      var rows = 5, rh = h / rows;
-      var cardW = (rh - 14 - 24) * 320 / 190 + 14, html = '';
+      var wall = document.getElementById('bgwall'), cv = wall.parentNode, h = (cv.offsetHeight || 700) * 1.44;
+      var rows = 7, rh = h / rows;
+      var cardW = (rh - 24) * 320 / 190 + 18, html = '';
       for (var r = 0; r < rows; r++) {
         var order = [], items = '', k;
         for (k = 0; k < 12; k++) order.push((k * 5 + r * 7 + 3) % 12);
         for (k = 0; k < 24; k++) { items += '<svg viewBox="0 0 320 190" aria-hidden="true"><use href="#v' + order[k % 12] + '"/></svg>'; }
-        html += '<div class="bgrow' + (r % 2 ? ' rev' : '') + '" style="top:' + (r * rh + 7) + 'px;height:' + (rh - 14) + 'px"><div class="bgtrack" style="animation-duration:' + Math.round(12 * cardW / (42 + r * 8)) + 's">' + items + '</div></div>';
+        html += '<div class="bgrow' + (r % 2 ? ' rev' : '') + '" style="top:' + (r * rh + 6) + 'px;height:' + (rh - 12) + 'px"><div class="bgtrack" style="animation-duration:' + Math.round(12 * cardW / (60 + r * 12)) + 's">' + items + '</div></div>';
       }
       wall.innerHTML = html;
     })();
