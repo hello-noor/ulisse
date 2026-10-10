@@ -112,7 +112,8 @@
   @keyframes flyxr { to { transform: translateX(calc(-100vw - 220px)); } }
   @keyframes bobx { 0%,100% { transform: translateY(-22px); } 50% { transform: translateY(22px); } }
   #cconf i { position: absolute; top: -30px; width: 11px; height: 18px; border-radius: 3px; animation: fall linear infinite; opacity: .95; }
-    #cover h2 { position: relative; z-index: 3; margin-top: 8px; font-size: clamp(28px, 8vw, 50px); line-height: 1.04; max-width: 15em; color: var(--ink); -webkit-text-stroke: 0; text-shadow: 3px 3px 0 #fff, -3px 3px 0 #fff, 0 4px 0 #fff, 3px 0 0 #fff, -3px 0 0 #fff; }
+    #cover h2 .un { display: block; font-size: 2.3em; line-height: .95; color: #ff5d73; -webkit-text-stroke: 9px #fff; paint-order: stroke fill; text-shadow: 4px 5px 0 var(--ink); transform: rotate(-3deg); margin-bottom: 4px; letter-spacing: 1px; }
+    #cover h2 { position: relative; z-index: 3; margin-top: 4px; font-size: clamp(22px, 6.6vw, 40px); line-height: 1.04; max-width: 15em; color: var(--ink); -webkit-text-stroke: 0; text-shadow: 3px 3px 0 #fff, -3px 3px 0 #fff, 0 4px 0 #fff, 3px 0 0 #fff, -3px 0 0 #fff; }
   #cover p { position: relative; z-index: 3; margin: 0; font-size: 19px; font-weight: 700; color: var(--ink); }
   .big6 { position: relative; z-index: 2; --bw: min(72vw, 36vh, 340px); width: var(--bw); height: calc(var(--bw) / .6944); flex: none; animation: six 3.2s ease-in-out infinite; }
   .big6 .edge { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
@@ -373,7 +374,7 @@
     <div id="wall"></div>
     <svg class="edge in" viewBox="0 0 1 1" preserveAspectRatio="none"><path d="M0.7840 0.2806Q0.7040 0.2500 0.5980 0.2500Q0.4120 0.2500 0.3860 0.4167Q0.4900 0.3958 0.6080 0.3958Q0.8100 0.3958 0.9050 0.4688Q1.0000 0.5417 1.0000 0.6681Q1.0000 0.8208 0.8640 0.9104Q0.7280 1.0000 0.4960 1.0000Q0.2640 1.0000 0.1320 0.8826Q0.0000 0.7653 0.0000 0.5486Q0.0000 0.2958 0.1650 0.1479Q0.3300 0.0000 0.5940 0.0000Q0.8940 0.0000 0.8940 0.0847Q0.8940 0.1458 0.8380 0.2153Q0.8180 0.2458 0.7840 0.2806ZM0.6540 0.6694Q0.6540 0.6264 0.6160 0.5993Q0.5780 0.5722 0.5010 0.5722Q0.4240 0.5722 0.3840 0.5917Q0.3820 0.6097 0.3820 0.6319Q0.3820 0.6542 0.3890 0.6868Q0.3960 0.7194 0.4290 0.7507Q0.4620 0.7819 0.5160 0.7819Q0.6540 0.7819 0.6540 0.6694Z"/></svg>
   </div>
-  <h2>Ulisse ti invita alla sua festa di compleanno!</h2>
+  <h2><span class="un">Ulisse</span> ti invita alla sua festa di compleanno!</h2>
   <button class="btn pink" id="openBtn">Apri l'invito!</button>
   <div class="swipe" aria-hidden="true"><span>↓</span></div>
 </div>
