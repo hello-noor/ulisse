@@ -274,6 +274,8 @@
   .gctl input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 34px; height: 34px; border-radius: 50%; background: var(--coral); border: 4px solid var(--ink); box-shadow: 0 3px 0 var(--ink); cursor: pointer; }
   .gctl input[type=range]::-moz-range-thumb { width: 28px; height: 28px; border-radius: 50%; background: var(--coral); border: 4px solid var(--ink); cursor: pointer; }
   .game [hidden] { display: none !important; }
+  .gbars { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .gbars span { display: grid; gap: 4px; font-weight: 700; font-size: 13px; text-align: left; }
   .gpower { height: 14px; border-radius: 99px; border: 3px solid var(--ink); background: #fff; overflow: hidden; }
   .gpower i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--grass), var(--sun), var(--coral)); }
   #gKick:disabled { opacity: .55; cursor: default; transform: none; }
@@ -510,7 +512,7 @@
   <div class="wrap">
     <span class="tag">Mini gioco</span>
     <h2>Calcia la punizione!</h2>
-    <p class="sub">Trascina all'indietro e rilascia: l'ovale deve passare tra i pali. 5 calci!</p>
+    <p class="sub">Trascina: ← più potenza, ↓ più altezza. Rilascia e calcia! 5 tiri.</p>
     <div class="gbox sticker">
       <div class="ghud">
         <div class="gstat"><small>Calci</small><b id="gLeft">5</b></div>
@@ -520,7 +522,7 @@
       </div>
       <canvas id="gCanvas" width="720" height="400" aria-label="Campo da rugby: calcio di punizione"></canvas>
       <div class="gmsg" id="gMsg" aria-live="polite">Trascina verso sinistra e in basso, poi rilascia!</div>
-      <div class="gpower" aria-hidden="true"><i id="gPowBar"></i></div>
+      <div class="gbars" aria-hidden="true"><span>← Potenza<div class="gpower"><i id="gPowBar"></i></div></span><span>↓ Altezza<div class="gpower"><i id="gAngBar"></i></div></span></div>
       <div class="gctl" hidden><input id="gAng" type="range" min="10" max="75" value="40"><input id="gPow" type="range" min="10" max="30" step=".5" value="20"><b id="gAngV"></b><b id="gPowV"></b></div>
       <button class="btn pink" id="gKick" hidden>Rigioca!</button>
     </div>
@@ -785,8 +787,8 @@
         pts.push({ x: x, y: Math.max(y, 0) });
         return { pts: pts, hit: hit };
       }
-      function scale() { var xmax = D + 9; return Math.min(W / xmax, H / 13.5); }
-      function X(x, s) { return 70 + x * s; }
+      function scale() { return Math.min((W - 125) / (D + 5), H / 19); }
+      function X(x, s) { return 95 + x * s; }
       function Y(y, s) { return H - 50 - y * s; }
       function ovale(x, y, r, rot) { cx.save(); cx.translate(x, y); cx.rotate(rot); cx.fillStyle = '#a8541f'; cx.strokeStyle = '#1d1b3a'; cx.lineWidth = 3; cx.beginPath(); cx.ellipse(0, 0, r, r * .62, 0, 0, 7); cx.fill(); cx.stroke(); cx.strokeStyle = '#f3c593'; cx.lineWidth = 2; cx.beginPath(); cx.moveTo(-r * .55, 0); cx.lineTo(r * .55, 0); cx.stroke(); cx.restore(); }
       function draw() {
@@ -804,16 +806,38 @@
         var fx = X(D + 3.5, s), fy = Y(8, s); cx.strokeStyle = '#1d1b3a'; cx.lineWidth = 4; cx.beginPath(); cx.moveTo(fx, gy); cx.lineTo(fx, fy); cx.stroke();
         var len = 18 + Math.abs(wind) * 6, dir = wind > 0 ? 1 : -1, t0 = Date.now() / 200; cx.fillStyle = '#ff5d73'; cx.strokeStyle = '#1d1b3a'; cx.lineWidth = 3; cx.beginPath(); cx.moveTo(fx, fy); cx.quadraticCurveTo(fx + dir * len * .5, fy + 4 + Math.sin(t0) * 3, fx + dir * len, fy + 8 + Math.sin(t0 + 1) * 4); cx.lineTo(fx, fy + 16); cx.closePath(); cx.fill(); cx.stroke();
         // anteprima senza vento
-        if (!flying && drag) { var pv = sim(+ang.value, +pow.value, 0).pts; cx.fillStyle = 'rgba(29,27,58,.55)'; for (k = 0; k < pv.length; k += 5) { cx.beginPath(); cx.arc(X(pv[k].x, s), Y(pv[k].y, s), 3, 0, 7); cx.fill(); } }
-        if (drag && !flying) { var bx = X(.4, s), by = Y(.35, s), r = +ang.value * Math.PI / 180, L = 26 + drag.len * .45, ex = bx + Math.cos(r) * L, ey = by - Math.sin(r) * L; cx.strokeStyle = '#ff5d73'; cx.fillStyle = '#ff5d73'; cx.lineWidth = 7; cx.lineCap = 'round'; cx.beginPath(); cx.moveTo(bx, by); cx.lineTo(ex, ey); cx.stroke(); cx.beginPath(); cx.moveTo(ex + Math.cos(r) * 12, ey - Math.sin(r) * 12); cx.lineTo(ex - Math.sin(r) * 9, ey - Math.cos(r) * 9); cx.lineTo(ex + Math.sin(r) * 9, ey + Math.cos(r) * 9); cx.closePath(); cx.fill(); }
+        if (!flying && drag) { var pv = sim(+ang.value, +pow.value, 0).pts, lp = pv[pv.length - 1]; cx.fillStyle = 'rgba(29,27,58,.6)'; for (k = 0; k < pv.length; k += 4) { cx.beginPath(); cx.arc(X(pv[k].x, s), Y(pv[k].y, s), 3.2, 0, 7); cx.fill(); } cx.strokeStyle = '#ff5d73'; cx.lineWidth = 5; cx.lineCap = 'round'; var lx = X(lp.x, s), ly = Math.min(Y(0, s) - 2, Y(lp.y, s)); cx.beginPath(); cx.moveTo(lx - 7, ly - 7); cx.lineTo(lx + 7, ly + 7); cx.moveTo(lx + 7, ly - 7); cx.lineTo(lx - 7, ly + 7); cx.stroke(); cx.fillStyle = '#1d1b3a'; cx.font = '700 22px sans-serif'; cx.textAlign = 'left'; cx.fillText(Math.round(+ang.value) + '° · ' + Math.round(+pow.value), 14, 30); }
         // scia
         cx.fillStyle = 'rgba(255,255,255,.85)'; trail.forEach(function (p, i) { if (i % 3 === 0) { cx.beginPath(); cx.arc(X(p.x, s), Y(p.y, s), 3.5, 0, 7); cx.fill(); } });
-        // calciatore
-        var kx = X(-1.2, s), ky = gy; cx.lineCap = 'round'; cx.strokeStyle = '#1d1b3a'; cx.lineWidth = 9; cx.beginPath(); cx.moveTo(kx, ky - 26); cx.lineTo(kx - 6, ky); cx.moveTo(kx, ky - 26); cx.lineTo(kx + 10 + swing * 26, ky - swing * 10 - (swing ? 4 : 0)); cx.stroke();
-        cx.strokeStyle = '#4cc3ff'; cx.lineWidth = 5; cx.beginPath(); cx.moveTo(kx, ky - 26); cx.lineTo(kx - 6, ky); cx.moveTo(kx, ky - 26); cx.lineTo(kx + 10 + swing * 26, ky - swing * 10 - (swing ? 4 : 0)); cx.stroke();
-        cx.fillStyle = '#ff5d73'; cx.strokeStyle = '#1d1b3a'; cx.lineWidth = 4; cx.beginPath(); cx.roundRect ? cx.roundRect(kx - 12, ky - 62, 24, 40, 8) : cx.rect(kx - 12, ky - 62, 24, 40); cx.fill(); cx.stroke();
-        cx.fillStyle = '#ffd9b8'; cx.beginPath(); cx.arc(kx, ky - 74, 14, 0, 7); cx.fill(); cx.stroke(); cx.fillStyle = '#5a2e1b'; cx.beginPath(); cx.arc(kx, ky - 80, 14, Math.PI, 0); cx.fill();
-        cx.fillStyle = '#1d1b3a'; cx.beginPath(); cx.arc(kx + 5, ky - 74, 2, 0, 7); cx.fill();
+        // Ulisse che calcia
+        (function () {
+          var u = 1.35, kx = X(-1.5, s), ky = gy, sw = swing, INK = '#1d1b3a', SK = '#ffd9b8';
+          function limb(x1, y1, x2, y2, w, col) { cx.lineCap = 'round'; cx.strokeStyle = INK; cx.lineWidth = w + 5; cx.beginPath(); cx.moveTo(x1, y1); cx.lineTo(x2, y2); cx.stroke(); cx.strokeStyle = col; cx.lineWidth = w; cx.beginPath(); cx.moveTo(x1, y1); cx.lineTo(x2, y2); cx.stroke(); }
+          var hipY = ky - 30 * u, shY = ky - 58 * u;
+          // gamba d'appoggio + calzettone + scarpino
+          limb(kx - 3 * u, hipY, kx - 7 * u, ky - 5, 8 * u, SK); limb(kx - 6 * u, ky - 15 * u, kx - 7 * u, ky - 5, 8 * u, '#fff');
+          cx.fillStyle = INK; cx.beginPath(); cx.ellipse(kx - 3 * u, ky - 2, 9 * u, 5 * u, 0, 0, 7); cx.fill();
+          // braccio dietro (equilibrio)
+          limb(kx - 8 * u, shY + 3, kx - 24 * u, shY + 14 * u - sw * 12 * u, 6 * u, SK);
+          // gamba che calcia
+          var fx = kx + 6 * u + sw * 30 * u, fy = ky - 6 - sw * 16 * u;
+          limb(kx + 3 * u, hipY, fx, fy, 8 * u, SK); cx.fillStyle = INK; cx.beginPath(); cx.ellipse(fx + 3 * u, fy, 9 * u, 5 * u, -sw * .5, 0, 7); cx.fill();
+          // pantaloncini
+          cx.fillStyle = '#2b3a8f'; cx.strokeStyle = INK; cx.lineWidth = 4; cx.beginPath(); cx.roundRect ? cx.roundRect(kx - 13 * u, hipY - 10 * u, 26 * u, 18 * u, 6) : cx.rect(kx - 13 * u, hipY - 10 * u, 26 * u, 18 * u); cx.fill(); cx.stroke();
+          // maglia a righe con il 6
+          cx.fillStyle = '#ff5d73'; cx.beginPath(); cx.roundRect ? cx.roundRect(kx - 14 * u, shY - 2, 28 * u, 30 * u, 9) : cx.rect(kx - 14 * u, shY - 2, 28 * u, 30 * u); cx.fill(); cx.stroke();
+          cx.save(); cx.clip(); cx.fillStyle = '#fff'; cx.fillRect(kx - 14 * u, shY + 8 * u, 28 * u, 6 * u); cx.restore();
+          cx.fillStyle = INK; cx.font = '700 ' + Math.round(13 * u) + 'px sans-serif'; cx.textAlign = 'center'; cx.fillText('6', kx, shY + 24 * u);
+          // braccio avanti
+          limb(kx + 9 * u, shY + 3, kx + 24 * u, shY + 20 * u - sw * 6 * u, 6 * u, SK);
+          // testa e capelli biondi
+          var hy = ky - 76 * u, hr = 15 * u;
+          cx.fillStyle = SK; cx.strokeStyle = INK; cx.lineWidth = 4; cx.beginPath(); cx.arc(kx, hy, hr, 0, 7); cx.fill(); cx.stroke();
+          cx.fillStyle = '#f5c542'; cx.beginPath(); cx.moveTo(kx - hr - 1, hy + 2 * u); cx.quadraticCurveTo(kx - hr - 4 * u, hy - hr - 2 * u, kx - 6 * u, hy - hr - 5 * u); cx.lineTo(kx - 3 * u, hy - hr - 12 * u); cx.lineTo(kx + 1 * u, hy - hr - 4 * u); cx.lineTo(kx + 6 * u, hy - hr - 11 * u); cx.lineTo(kx + 8 * u, hy - hr - 2 * u); cx.quadraticCurveTo(kx + hr + 3 * u, hy - hr, kx + hr + 1, hy + 1 * u); cx.quadraticCurveTo(kx + 6 * u, hy - 8 * u, kx - 4 * u, hy - 7 * u); cx.quadraticCurveTo(kx - 10 * u, hy - 5 * u, kx - hr - 1, hy + 2 * u); cx.closePath(); cx.fill(); cx.stroke();
+          cx.fillStyle = INK; cx.beginPath(); cx.arc(kx + 6 * u, hy + 1 * u, 2 * u, 0, 7); cx.arc(kx - 4 * u, hy + 1 * u, 2 * u, 0, 7); cx.fill();
+          cx.fillStyle = 'rgba(255,93,115,.55)'; cx.beginPath(); cx.arc(kx + 9 * u, hy + 7 * u, 3 * u, 0, 7); cx.fill();
+          cx.strokeStyle = INK; cx.lineWidth = 2.5; cx.beginPath(); cx.arc(kx + 2 * u, hy + 5 * u, 5 * u, .15, Math.PI - .15); cx.stroke();
+        })();
         // pallone
         if (ballPos) ovale(X(ballPos.x, s), Y(ballPos.y, s), 11, ballRot); else ovale(X(.4, s), Y(.35, s) - 2, 11, -.5);
       }
@@ -832,7 +856,7 @@
       }
       function restart() { btn.hidden = true; kicks = 5; score = 0; elLeft.textContent = 5; elScore.textContent = 0; setMsg('Trascina verso sinistra e in basso, poi rilascia!'); newRound(); }
       function launch() {
-        if (flying || locked) return; flying = true; locked = true; drag = null; trail = []; sfx('click'); document.getElementById('gPowBar').style.width = '0';
+        if (flying || locked) return; flying = true; locked = true; drag = null; trail = []; sfx('click'); bars(0, 0);
         var res = sim(+ang.value, +pow.value, wind), pts = res.pts, i = 0, sw = 0;
         var ok = res.hit !== null && res.hit >= BAR + .15 && res.hit <= TOP - .1;
         cancelAnimationFrame(raf);
@@ -843,20 +867,21 @@
         })();
       }
       function pt(e) { var r = cv.getBoundingClientRect(); return { x: (e.clientX - r.left) * W / r.width, y: (e.clientY - r.top) * H / r.height }; }
-      var origin = null;
-      var origin = null;
+      var origin = null, MAXX = 130, MAXY = 90;
+      function bars(pw, an) { document.getElementById('gPowBar').style.width = pw + '%'; document.getElementById('gAngBar').style.width = an + '%'; }
       function aim(e) {
-        var q = pt(e), K = 1.5, MAXL = 300, dx = (origin.x - q.x) * K, dy = (q.y - origin.y) * K, len = Math.sqrt(dx * dx + dy * dy);
-        if (len > MAXL) { dx *= MAXL / len; dy *= MAXL / len; len = MAXL; }
-        drag = { dx: dx, dy: dy, len: len };
-        var a = Math.atan2(Math.max(dy, 0), Math.max(dx, .001)) * 180 / Math.PI; a = Math.max(8, Math.min(78, a));
-        ang.value = a; pow.value = 10 + 20 * Math.min(len / MAXL, 1);
-        document.getElementById('gPowBar').style.width = Math.round(100 * Math.min(len / MAXL, 1)) + '%';
+        // asse orizzontale = potenza (trascina a sinistra), asse verticale = altezza (trascina in basso)
+        var dx = origin.x - e.clientX, dy = e.clientY - origin.y;
+        var fx = Math.max(0, Math.min(1, dx / MAXX)), fy = Math.max(-1, Math.min(1, dy / MAXY));
+        var a = fy >= 0 ? 38 + 37 * fy : 38 + 28 * fy;
+        pow.value = 10 + 20 * fx; ang.value = a;
+        drag = { len: Math.sqrt(dx * dx + dy * dy) };
+        bars(Math.round(fx * 100), Math.round((a - 10) / 65 * 100));
         draw();
       }
-      cv.addEventListener('pointerdown', function (e) { if (flying || locked) return; try { cv.setPointerCapture(e.pointerId); } catch (x) {} origin = pt(e); origin = pt(e); aim(e); e.preventDefault(); });
+      cv.addEventListener('pointerdown', function (e) { if (flying || locked) return; try { cv.setPointerCapture(e.pointerId); } catch (x) {} origin = { x: e.clientX, y: e.clientY }; aim(e); e.preventDefault(); });
       cv.addEventListener('pointermove', function (e) { if (drag && !flying) { aim(e); e.preventDefault(); } });
-      function release(e) { if (!drag) return; var ok = drag.len >= 25; if (ok) launch(); else { drag = null; document.getElementById('gPowBar').style.width = '0'; draw(); } }
+      function release(e) { if (!drag) return; var ok = drag.len >= 14; if (ok) launch(); else { drag = null; bars(0, 0); draw(); } }
       cv.addEventListener('pointerup', release); cv.addEventListener('pointercancel', function () { drag = null; draw(); });
       function upd() { angV.textContent = ang.value + '°'; powV.textContent = pow.value; if (!flying) draw(); }
       btn.addEventListener('click', restart);
