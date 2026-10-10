@@ -529,7 +529,7 @@
   <div class="wrap">
     <span class="tag">Mini gioco di rugby</span>
     <h2>Rugby: calcia tra i pali!</h2>
-    <p class="sub">Tira indietro il piede di Ulisse e rilascia: l'ovale deve passare tra i pali. 5 tiri!</p>
+    <p class="sub">Trascina il pallone indietro, sopra o sotto: la parabola ti mostra il tiro. Rilascia per calciare tra i pali! 5 tiri.</p>
     <div class="gbox sticker">
       <div class="ghud">
         <div class="gstat"><small>Calci</small><b id="gLeft">5</b></div>
@@ -538,7 +538,7 @@
         <div class="gstat"><small>Metri</small><b id="gDist">–</b></div>
       </div>
       <canvas id="gCanvas" width="720" height="400" aria-label="Campo da rugby: calcio di punizione"></canvas>
-      <div class="gmsg" id="gMsg" aria-live="polite">Muovi il piede indietro e guarda la parabola!</div>
+      <div class="gmsg" id="gMsg" aria-live="polite">Trascina il pallone indietro e guarda la parabola!</div>
       <div class="gbars" aria-hidden="true"><span>Potenza<div class="gpower"><i id="gPowBar"></i></div></span><span>Angolo<div class="gpower"><i id="gAngBar"></i></div></span></div>
       <div class="gctl" hidden><input id="gAng" type="range" min="10" max="75" value="40"><input id="gPow" type="range" min="10" max="30" step=".5" value="20"><b id="gAngV"></b><b id="gPowV"></b></div>
       <button class="btn pink" id="gKick" hidden>Rigioca!</button>
@@ -810,7 +810,7 @@
         elDist.textContent = D; elWind.textContent = (wind > 0 ? '→' : '←') + Math.abs(wind).toFixed(1); trail = []; ballPos = null; swing = 0; locked = false; drag = null; fdrag = null; draw();
       }
       function sim(a, v, w) {
-        var r = a * Math.PI / 180, x = 0, y = 16 / scale(), vx = v * Math.cos(r), vy = v * Math.sin(r), dt = .02, pts = [], hit = null, i = 0;
+        var r = a * Math.PI / 180, x = 0, y = 20 / scale(), vx = v * Math.cos(r), vy = v * Math.sin(r), dt = .02, pts = [], hit = null, i = 0;
         while (i++ < 600) {
           pts.push({ x: x, y: y });
           var nx = x + vx * dt, ny = y + vy * dt;
@@ -826,7 +826,7 @@
       function Y(y, s) { return H - 50 - y * s; }
       function ovale(x, y, r, rot) { cx.save(); cx.translate(x, y); cx.rotate(rot); cx.fillStyle = '#a8541f'; cx.strokeStyle = '#1d1b3a'; cx.lineWidth = 3; cx.beginPath(); cx.ellipse(0, 0, r, r * .62, 0, 0, 7); cx.fill(); cx.stroke(); cx.strokeStyle = '#f3c593'; cx.lineWidth = 2; cx.beginPath(); cx.moveTo(-r * .55, 0); cx.lineTo(r * .55, 0); cx.stroke(); cx.restore(); }
       function draw() {
-        var s = scale(), gy = Y(0, s), k, HX = X(.4, s), HY = gy - 16, pd = drag || fdrag;
+        var s = scale(), gy = Y(0, s), k, HX = X(.4, s), HY = gy - 20, pd = drag || fdrag;
         var g = cx.createLinearGradient(0, 0, 0, gy); g.addColorStop(0, '#4cc3ff'); g.addColorStop(1, '#d5f3ff'); cx.fillStyle = g; cx.fillRect(0, 0, W, H);
         cx.fillStyle = 'rgba(255,255,255,.9)'; [[90, 50, 1], [420, 36, .8], [600, 70, .6]].forEach(function (c) { cx.beginPath(); cx.arc(c[0], c[1], 22 * c[2], 0, 7); cx.arc(c[0] + 26 * c[2], c[1] + 6, 18 * c[2], 0, 7); cx.arc(c[0] - 24 * c[2], c[1] + 8, 16 * c[2], 0, 7); cx.fill(); });
         cx.fillStyle = '#3ccf6e'; cx.fillRect(0, gy, W, H - gy); cx.fillStyle = '#35bd64'; for (k = 0; k < 14; k++) { if (k % 2) cx.fillRect(X(k * 5 - 5, s), gy, 5 * s, H - gy); }
@@ -845,7 +845,7 @@
         cx.fillStyle = 'rgba(255,255,255,.85)'; trail.forEach(function (p, i) { if (i % 3 === 0) { cx.beginPath(); cx.arc(X(p.x, s), Y(p.y, s), 3.5, 0, 7); cx.fill(); } });
         // Ulisse che calcia
         (function () {
-          var u = 1.35, kx = HX - 38, ky = gy, sw = swing, INK = '#1d1b3a', SK = '#ffd9b8';
+          var u = 1.35, kx = HX - 54, ky = gy, sw = swing, INK = '#1d1b3a', SK = '#ffd9b8';
           function limb(x1, y1, x2, y2, w, col) { cx.lineCap = 'round'; cx.strokeStyle = INK; cx.lineWidth = w + 5; cx.beginPath(); cx.moveTo(x1, y1); cx.lineTo(x2, y2); cx.stroke(); cx.strokeStyle = col; cx.lineWidth = w; cx.beginPath(); cx.moveTo(x1, y1); cx.lineTo(x2, y2); cx.stroke(); }
           var hipY = ky - 30 * u, shY = ky - 58 * u;
           // gamba d'appoggio + calzettone + scarpino
@@ -853,17 +853,16 @@
           cx.fillStyle = INK; cx.beginPath(); cx.ellipse(kx - 3 * u, ky - 2, 9 * u, 5 * u, 0, 0, 7); cx.fill();
           // braccio dietro (equilibrio)
           limb(kx - 8 * u, shY + 3, kx - 24 * u, shY + 14 * u - sw * 12 * u, 6 * u, SK);
-          // gamba che calcia
-          var fx, fy;
-          if (pd) { var q = drag ? 0 : Math.min(sw, 1); fx = HX + pd.px * (1 - q) - 5 * q; fy = HY + pd.py * (1 - q) + 6 * q; } else { fx = HX - 16; fy = gy - 8; }
-          if (drag) { cx.setLineDash([5, 5]); cx.strokeStyle = '#ff5d73'; cx.lineWidth = 3; cx.beginPath(); cx.arc(fx, fy, 17, 0, 7); cx.stroke(); cx.setLineDash([]); }
-          limb(kx + 3 * u, hipY, fx, fy, 8 * u, SK); cx.fillStyle = INK; cx.beginPath(); cx.ellipse(fx + 3 * u, fy, 9 * u, 5 * u, drag ? -.3 : -sw * .5, 0, 7); cx.fill();
           // pantaloncini
           cx.fillStyle = '#2b3a8f'; cx.strokeStyle = INK; cx.lineWidth = 4; cx.beginPath(); cx.roundRect ? cx.roundRect(kx - 13 * u, hipY - 10 * u, 26 * u, 18 * u, 6) : cx.rect(kx - 13 * u, hipY - 10 * u, 26 * u, 18 * u); cx.fill(); cx.stroke();
           // maglia a righe con il 6
           cx.fillStyle = '#ff5d73'; cx.beginPath(); cx.roundRect ? cx.roundRect(kx - 14 * u, shY - 2, 28 * u, 30 * u, 9) : cx.rect(kx - 14 * u, shY - 2, 28 * u, 30 * u); cx.fill(); cx.stroke();
           cx.save(); cx.clip(); cx.fillStyle = '#fff'; cx.fillRect(kx - 14 * u, shY + 8 * u, 28 * u, 6 * u); cx.restore();
           cx.fillStyle = INK; cx.font = '700 ' + Math.round(13 * u) + 'px sans-serif'; cx.textAlign = 'center'; cx.fillText('6', kx, shY + 24 * u);
+          // gamba vicina che calcia: un'unica oscillazione lineare attorno all'anca
+          var wf = drag ? Math.min(1, drag.len / MAXD) : (fdrag ? fdrag.f : 0), th0 = -6 - 42 * wf, e = sw * sw * (3 - 2 * sw), th = ((fdrag && !drag) ? th0 + (100 - th0) * e : th0) * Math.PI / 180, L = 44 * u, lx = kx + 4 * u, ex2 = lx + L * Math.sin(th), ey2 = hipY + L * Math.cos(th), mx = lx + L * .55 * Math.sin(th), my = hipY + L * .55 * Math.cos(th);
+          limb(lx, hipY, mx, my, 9 * u, SK); limb(mx, my, ex2, ey2, 8.5 * u, '#fff');
+          cx.save(); cx.translate(ex2, ey2); cx.rotate(-th + Math.PI / 2 - .15 + th * 0); cx.fillStyle = INK; cx.beginPath(); cx.ellipse(4 * u, 0, 9 * u, 5 * u, 0, 0, 7); cx.fill(); cx.restore();
           // braccio avanti
           limb(kx + 9 * u, shY + 3, kx + 24 * u, shY + 20 * u - sw * 6 * u, 6 * u, SK);
           // testa e capelli biondi
@@ -875,8 +874,9 @@
           cx.strokeStyle = INK; cx.lineWidth = 2.5; cx.beginPath(); cx.arc(kx + 2 * u, hy + 5 * u, 5 * u, .15, Math.PI - .15); cx.stroke();
         })();
         // pallone
-        cx.fillStyle = '#e8b04b'; cx.strokeStyle = '#1d1b3a'; cx.lineWidth = 3; cx.beginPath(); cx.moveTo(HX - 9, HY + 7); cx.lineTo(HX + 9, HY + 7); cx.lineTo(HX + 4, gy); cx.lineTo(HX - 4, gy); cx.closePath(); cx.fill(); cx.stroke();
-        if (ballPos) ovale(X(ballPos.x, s), Y(ballPos.y, s), 11, ballRot); else ovale(HX, HY, 11, -.5);
+        cx.fillStyle = '#e8b04b'; cx.strokeStyle = '#1d1b3a'; cx.lineWidth = 3; cx.beginPath(); cx.moveTo(HX - 14, HY + 8); cx.lineTo(HX + 14, HY + 8); cx.lineTo(HX + 6, gy); cx.lineTo(HX - 6, gy); cx.closePath(); cx.fill(); cx.stroke();
+        if (ballPos) ovale(X(ballPos.x, s), Y(ballPos.y, s), 14, ballRot); else ovale(HX, HY, 14, -.5);
+        if (drag && !flying) { cx.save(); cx.globalAlpha = .6; var gbx = HX + drag.px, gby = Math.min(HY + drag.py, gy - 14); ovale(gbx, gby, 14, Math.atan2(-drag.py, -drag.px) + Math.PI); cx.restore(); }
       }
       function setMsg(t, c) { msg.textContent = t; msg.className = 'gmsg' + (c ? ' ' + c : ''); }
       function end(ok, hit) {
@@ -893,12 +893,14 @@
       }
       function restart() { btn.hidden = true; kicks = 5; score = 0; elLeft.textContent = 5; elScore.textContent = 0; setMsg('Muovi il piede indietro e guarda la parabola!'); newRound(); }
       function launch() {
-        if (flying || locked) return; flying = true; locked = true; fdrag = drag ? { px: drag.px, py: drag.py } : null; drag = null; trail = []; sfx('click'); bars(0, 0);
+        if (flying || locked) return; flying = true; locked = true; fdrag = drag ? { f: drag.f } : null; drag = null; trail = []; sfx('click'); bars(0, 0);
         var res = sim(+ang.value, +pow.value, wind), pts = res.pts, i = 0, sw = 0;
         var ok = res.hit !== null && res.hit >= BAR + .15 && res.hit <= TOP - .1;
         cancelAnimationFrame(raf);
         (function tick() {
-          swing = Math.min(1, sw += .15); ballRot += .25;
+          sw = Math.min(1, sw + .08); swing = sw;
+          if (sw < .6) { draw(); raf = requestAnimationFrame(tick); return; }
+          ballRot += .25;
           if (i < pts.length) { ballPos = pts[i]; trail.push(ballPos); i += 2; draw(); raf = requestAnimationFrame(tick); }
           else { draw(); end(ok, res.hit); }
         })();
@@ -907,14 +909,15 @@
       var origin = null, MAXD = 110;
       function bars(pw, an) { document.getElementById('gPowBar').style.width = pw + '%'; document.getElementById('gAngBar').style.width = an + '%'; }
       function aim(e) {
-        // il piede segue il dito: indietro (sinistra) = piu potenza, in basso = piu alto, in alto = piu teso
+        // trascina il pallone all'indietro: parte nella direzione opposta
         var rc = cv.getBoundingClientRect(), k = W / rc.width;
-        var dx = e.clientX - origin.x, dy = e.clientY - origin.y;
-        var f = Math.max(0, Math.min(1, -dx / MAXD)), fy = Math.max(-1, Math.min(1, dy / 80));
-        var a = fy >= 0 ? 40 + 35 * fy : 40 + 30 * fy;
+        var dx = e.clientX - origin.x, dy = e.clientY - origin.y, len = Math.sqrt(dx * dx + dy * dy), f = Math.min(len / MAXD, 1);
+        var a = Math.atan2(dy, Math.max(-dx, .001)) * 180 / Math.PI; a = Math.max(8, Math.min(78, a));
+        if (len < 4) a = 38;
         pow.value = 10 + 20 * f; ang.value = a;
-        drag = { len: Math.sqrt(dx * dx + dy * dy), px: -8 - f * 58, py: fy >= 0 ? 10 * fy : 46 * fy };
-        bars(Math.round(f * 100), Math.round((a - 10) / 65 * 100));
+        var vl = Math.min(len, MAXD) * k * .55, ux = len ? dx / len : 0, uy = len ? dy / len : 0;
+        drag = { len: len, f: f, px: ux * vl, py: uy * vl };
+        bars(Math.round(f * 100), Math.round((a - 8) / 70 * 100));
         draw();
       }
       cv.addEventListener('pointerdown', function (e) { if (flying || locked) return; try { cv.setPointerCapture(e.pointerId); } catch (x) {} origin = { x: e.clientX, y: e.clientY }; aim(e); e.preventDefault(); });
