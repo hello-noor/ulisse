@@ -252,6 +252,28 @@
   .tile span { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
   #cmsg { text-align: center; font-size: 34px; font-weight: 700; margin: 30px 0 0; }
 
+  .game { background: linear-gradient(var(--sky-2), #fff4cf); text-align: center; }
+  .game .tag { background: var(--ink); color: #fff; }
+  .game h2 { margin-top: 14px; font-size: clamp(32px, 9vw, 52px); }
+  .gbox { margin: 26px auto 0; max-width: 760px; padding: 16px; display: grid; gap: 14px; background: #fff; }
+  .ghud { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .gstat { background: var(--sky-2); border: 3px solid var(--ink); border-radius: 14px; padding: 6px 4px; }
+  .gstat small { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
+  .gstat b { font-size: 18px; white-space: nowrap; }
+  #gCanvas { width: 100%; height: auto; aspect-ratio: 9 / 5; border: 4px solid var(--ink); border-radius: 18px; background: var(--sky); display: block; touch-action: none; cursor: grab; user-select: none; -webkit-user-select: none; }
+  .gmsg { min-height: 1.6em; font-weight: 700; font-size: 20px; }
+  .gmsg.ok { color: var(--grass-d); } .gmsg.ko { color: var(--coral); }
+  .gctl { display: grid; gap: 12px; grid-template-columns: 1fr; text-align: left; }
+  @media (min-width: 560px) { .gctl { grid-template-columns: 1fr 1fr; gap: 24px; } }
+  .gctl label { display: grid; gap: 6px; font-weight: 700; }
+  .gctl label b { float: right; color: var(--coral); }
+  .gctl input[type=range] { -webkit-appearance: none; appearance: none; width: 100%; height: 18px; border-radius: 99px; background: var(--sun); border: 3px solid var(--ink); outline: none; }
+  .gctl input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 34px; height: 34px; border-radius: 50%; background: var(--coral); border: 4px solid var(--ink); box-shadow: 0 3px 0 var(--ink); cursor: pointer; }
+  .gctl input[type=range]::-moz-range-thumb { width: 28px; height: 28px; border-radius: 50%; background: var(--coral); border: 4px solid var(--ink); cursor: pointer; }
+  .game [hidden] { display: none !important; }
+  .gpower { height: 14px; border-radius: 99px; border: 3px solid var(--ink); background: #fff; overflow: hidden; }
+  .gpower i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--grass), var(--sun), var(--coral)); }
+  #gKick:disabled { opacity: .55; cursor: default; transform: none; }
   footer { position: relative; z-index: 2; background: var(--coral); color: #fff; text-align: center; padding: 56px 20px 150px; overflow: hidden; }
   footer h2 { font-size: clamp(32px, 9vw, 52px); text-shadow: 0 5px 0 var(--ink); margin-bottom: 10px; }
   footer p { margin: 0; font-weight: 600; }
@@ -480,6 +502,27 @@
   <div class="roller" style="animation-duration:16s;animation-delay:-11s;width:56px;height:56px;bottom:80px"><svg class="ball"><use href="#baseball"/></svg></div>
   <div class="roller" style="animation-duration:14s;animation-delay:-7s;width:76px;height:76px;bottom:58px"><svg class="ball"><use href="#volley"/></svg></div>
 </footer>
+
+<section class="s game" id="gioco">
+  <div class="wrap">
+    <span class="tag">Mini gioco</span>
+    <h2>Calcia la punizione!</h2>
+    <p class="sub">Fai passare l'ovale tra i pali, sopra la traversa. Trascina all'indietro dal pallone con il dito (o il mouse) per mirare, poi rilascia: più tiri indietro, più forte calci. Occhio al vento! 5 calci a disposizione.</p>
+    <div class="gbox sticker">
+      <div class="ghud">
+        <div class="gstat"><small>Calci</small><b id="gLeft">5</b></div>
+        <div class="gstat"><small>Punti</small><b id="gScore">0</b></div>
+        <div class="gstat"><small>Vento</small><b id="gWind">–</b></div>
+        <div class="gstat"><small>Metri</small><b id="gDist">–</b></div>
+      </div>
+      <canvas id="gCanvas" width="720" height="400" aria-label="Campo da rugby: calcio di punizione"></canvas>
+      <div class="gmsg" id="gMsg" aria-live="polite">Tira indietro dal pallone e lascia andare!</div>
+      <div class="gpower" aria-hidden="true"><i id="gPowBar"></i></div>
+      <div class="gctl" hidden><input id="gAng" type="range" min="10" max="75" value="40"><input id="gPow" type="range" min="10" max="30" step=".5" value="20"><b id="gAngV"></b><b id="gPowV"></b></div>
+      <button class="btn pink" id="gKick" hidden>Rigioca!</button>
+    </div>
+  </div>
+</section>
 
 <script>
   (function () {
@@ -714,6 +757,107 @@
       var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }); }, { threshold: .12 });
       els.forEach(function (x) { io.observe(x); });
     } else { els.forEach(function (x) { x.classList.add('in'); }); }
+
+    // mini gioco: calcio di punizione di rugby
+    (function () {
+      var cv = document.getElementById('gCanvas'); if (!cv) return;
+      var cx = cv.getContext('2d'), W = cv.width, H = cv.height;
+      var elLeft = document.getElementById('gLeft'), elScore = document.getElementById('gScore'), elWind = document.getElementById('gWind'), elDist = document.getElementById('gDist'),
+        msg = document.getElementById('gMsg'), ang = document.getElementById('gAng'), pow = document.getElementById('gPow'), angV = document.getElementById('gAngV'), powV = document.getElementById('gPowV'), btn = document.getElementById('gKick');
+      var drag = null, locked = false, G = 9.8, BAR = 3, TOP = 9, kicks = 5, score = 0, D = 24, wind = 0, flying = false, trail = [], ballPos = null, ballRot = 0, swing = 0, raf = 0, shown = '';
+      function rnd(a, b) { return a + Math.random() * (b - a); }
+      function newRound() {
+        D = Math.round(rnd(18, 34)); wind = Math.round(rnd(-6, 6) * 2) / 2; if (Math.abs(wind) < 1) wind = wind < 0 ? -1.5 : 1.5;
+        elDist.textContent = D; elWind.textContent = (wind > 0 ? '→' : '←') + Math.abs(wind).toFixed(1); trail = []; ballPos = null; swing = 0; locked = false; drag = null; draw();
+      }
+      function sim(a, v, w) {
+        var r = a * Math.PI / 180, x = 0, y = .4, vx = v * Math.cos(r), vy = v * Math.sin(r), dt = .02, pts = [], hit = null, i = 0;
+        while (i++ < 600) {
+          pts.push({ x: x, y: y });
+          var nx = x + vx * dt, ny = y + vy * dt;
+          if (hit === null && x < D && nx >= D) { var t = (D - x) / (nx - x); hit = y + (ny - y) * t; }
+          x = nx; y = ny; vx += w * .35 * dt; vy -= G * dt;
+          if (y <= 0 || x > D + 14) break;
+        }
+        pts.push({ x: x, y: Math.max(y, 0) });
+        return { pts: pts, hit: hit };
+      }
+      function scale() { var xmax = D + 9; return Math.min(W / xmax, H / 13.5); }
+      function X(x, s) { return 70 + x * s; }
+      function Y(y, s) { return H - 50 - y * s; }
+      function ovale(x, y, r, rot) { cx.save(); cx.translate(x, y); cx.rotate(rot); cx.fillStyle = '#a8541f'; cx.strokeStyle = '#1d1b3a'; cx.lineWidth = 3; cx.beginPath(); cx.ellipse(0, 0, r, r * .62, 0, 0, 7); cx.fill(); cx.stroke(); cx.strokeStyle = '#f3c593'; cx.lineWidth = 2; cx.beginPath(); cx.moveTo(-r * .55, 0); cx.lineTo(r * .55, 0); cx.stroke(); cx.restore(); }
+      function draw() {
+        var s = scale(), gy = Y(0, s), k;
+        var g = cx.createLinearGradient(0, 0, 0, gy); g.addColorStop(0, '#4cc3ff'); g.addColorStop(1, '#d5f3ff'); cx.fillStyle = g; cx.fillRect(0, 0, W, H);
+        cx.fillStyle = 'rgba(255,255,255,.9)'; [[90, 50, 1], [420, 36, .8], [600, 70, .6]].forEach(function (c) { cx.beginPath(); cx.arc(c[0], c[1], 22 * c[2], 0, 7); cx.arc(c[0] + 26 * c[2], c[1] + 6, 18 * c[2], 0, 7); cx.arc(c[0] - 24 * c[2], c[1] + 8, 16 * c[2], 0, 7); cx.fill(); });
+        cx.fillStyle = '#3ccf6e'; cx.fillRect(0, gy, W, H - gy); cx.fillStyle = '#35bd64'; for (k = 0; k < 14; k++) { if (k % 2) cx.fillRect(X(k * 5 - 5, s), gy, 5 * s, H - gy); }
+        cx.fillStyle = '#1d1b3a'; cx.fillRect(0, gy - 3, W, 4);
+        cx.fillStyle = '#fff'; cx.font = '700 13px sans-serif'; cx.textAlign = 'center'; for (k = 5; k <= D; k += 5) { cx.fillText(k + '', X(k, s), gy + 22); }
+        // pali
+        var pxL = X(D - 1.3, s), pxR = X(D + 1.3, s), yb = Y(BAR, s), yt = Y(TOP, s);
+        cx.lineCap = 'round'; cx.strokeStyle = '#1d1b3a'; cx.lineWidth = 11; cx.beginPath(); cx.moveTo(pxL, gy); cx.lineTo(pxL, yt); cx.moveTo(pxR, gy); cx.lineTo(pxR, yt); cx.moveTo(pxL, yb); cx.lineTo(pxR, yb); cx.stroke();
+        cx.strokeStyle = '#fff'; cx.lineWidth = 5; cx.stroke();
+        // bandierina del vento
+        var fx = X(D + 3.5, s), fy = Y(8, s); cx.strokeStyle = '#1d1b3a'; cx.lineWidth = 4; cx.beginPath(); cx.moveTo(fx, gy); cx.lineTo(fx, fy); cx.stroke();
+        var len = 18 + Math.abs(wind) * 6, dir = wind > 0 ? 1 : -1, t0 = Date.now() / 200; cx.fillStyle = '#ff5d73'; cx.strokeStyle = '#1d1b3a'; cx.lineWidth = 3; cx.beginPath(); cx.moveTo(fx, fy); cx.quadraticCurveTo(fx + dir * len * .5, fy + 4 + Math.sin(t0) * 3, fx + dir * len, fy + 8 + Math.sin(t0 + 1) * 4); cx.lineTo(fx, fy + 16); cx.closePath(); cx.fill(); cx.stroke();
+        // anteprima senza vento
+        if (!flying && drag) { var pv = sim(+ang.value, +pow.value, 0).pts; cx.fillStyle = 'rgba(29,27,58,.55)'; for (k = 0; k < pv.length; k += 5) { cx.beginPath(); cx.arc(X(pv[k].x, s), Y(pv[k].y, s), 3, 0, 7); cx.fill(); } }
+        if (drag && !flying) { var bx = X(.4, s), by = Y(.35, s); cx.strokeStyle = '#ff5d73'; cx.lineWidth = 6; cx.lineCap = 'round'; cx.beginPath(); cx.moveTo(bx, by); cx.lineTo(drag.x, drag.y); cx.stroke(); cx.fillStyle = '#ffd23f'; cx.strokeStyle = '#1d1b3a'; cx.lineWidth = 3; cx.beginPath(); cx.arc(drag.x, drag.y, 9, 0, 7); cx.fill(); cx.stroke(); }
+        // scia
+        cx.fillStyle = 'rgba(255,255,255,.85)'; trail.forEach(function (p, i) { if (i % 3 === 0) { cx.beginPath(); cx.arc(X(p.x, s), Y(p.y, s), 3.5, 0, 7); cx.fill(); } });
+        // calciatore
+        var kx = X(-1.2, s), ky = gy; cx.lineCap = 'round'; cx.strokeStyle = '#1d1b3a'; cx.lineWidth = 9; cx.beginPath(); cx.moveTo(kx, ky - 26); cx.lineTo(kx - 6, ky); cx.moveTo(kx, ky - 26); cx.lineTo(kx + 10 + swing * 26, ky - swing * 10 - (swing ? 4 : 0)); cx.stroke();
+        cx.strokeStyle = '#4cc3ff'; cx.lineWidth = 5; cx.beginPath(); cx.moveTo(kx, ky - 26); cx.lineTo(kx - 6, ky); cx.moveTo(kx, ky - 26); cx.lineTo(kx + 10 + swing * 26, ky - swing * 10 - (swing ? 4 : 0)); cx.stroke();
+        cx.fillStyle = '#ff5d73'; cx.strokeStyle = '#1d1b3a'; cx.lineWidth = 4; cx.beginPath(); cx.roundRect ? cx.roundRect(kx - 12, ky - 62, 24, 40, 8) : cx.rect(kx - 12, ky - 62, 24, 40); cx.fill(); cx.stroke();
+        cx.fillStyle = '#ffd9b8'; cx.beginPath(); cx.arc(kx, ky - 74, 14, 0, 7); cx.fill(); cx.stroke(); cx.fillStyle = '#5a2e1b'; cx.beginPath(); cx.arc(kx, ky - 80, 14, Math.PI, 0); cx.fill();
+        cx.fillStyle = '#1d1b3a'; cx.beginPath(); cx.arc(kx + 5, ky - 74, 2, 0, 7); cx.fill();
+        // pallone
+        if (ballPos) ovale(X(ballPos.x, s), Y(ballPos.y, s), 11, ballRot); else ovale(X(.4, s), Y(.35, s) - 2, 11, -.5);
+      }
+      function setMsg(t, c) { msg.textContent = t; msg.className = 'gmsg' + (c ? ' ' + c : ''); }
+      function end(ok, hit) {
+        flying = false; kicks--; elLeft.textContent = kicks;
+        var r = cv.getBoundingClientRect();
+        if (ok) { score++; elScore.textContent = score; setMsg('TRASFORMAZIONE! 🏉', 'ok'); sfx('yay'); if (!reduce) burst(r.left + r.width * .7, r.top + r.height * .35, 90); }
+        else { sfx('boing'); setMsg(hit === null ? 'Troppo corto: non arriva ai pali!' : (hit < BAR ? 'Sotto la traversa! Più angolo o potenza.' : 'Troppo alto: fuori dai pali!'), 'ko'); }
+        if (kicks === 0) { setTimeout(finish, 1300); } else { setTimeout(newRound, 1400); }
+      }
+      function finish() {
+        var t = score === 5 ? 'Fenomeno! 5 su 5: Ulisse ti vuole in squadra!' : score >= 3 ? 'Bravo! ' + score + ' su 5, bel piede!' : score >= 1 ? score + ' su 5: ancora un tentativo?' : '0 su 5: il vento era tosto! Riprova.';
+        setMsg(t, score >= 3 ? 'ok' : 'ko'); btn.hidden = false;
+        if (score >= 3) { sfx('fanfare'); var r = cv.getBoundingClientRect(); if (!reduce) burst(r.left + r.width / 2, r.top + r.height / 2, 140); }
+      }
+      function restart() { btn.hidden = true; kicks = 5; score = 0; elLeft.textContent = 5; elScore.textContent = 0; setMsg('Tira indietro dal pallone e lascia andare!'); newRound(); }
+      function launch() {
+        if (flying || locked) return; flying = true; locked = true; drag = null; trail = []; sfx('click'); document.getElementById('gPowBar').style.width = '0';
+        var res = sim(+ang.value, +pow.value, wind), pts = res.pts, i = 0, sw = 0;
+        var ok = res.hit !== null && res.hit >= BAR + .15 && res.hit <= TOP - .1;
+        cancelAnimationFrame(raf);
+        (function tick() {
+          swing = Math.min(1, sw += .15); ballRot += .25;
+          if (i < pts.length) { ballPos = pts[i]; trail.push(ballPos); i += 2; draw(); raf = requestAnimationFrame(tick); }
+          else { draw(); end(ok, res.hit); }
+        })();
+      }
+      function pt(e) { var r = cv.getBoundingClientRect(); return { x: (e.clientX - r.left) * W / r.width, y: (e.clientY - r.top) * H / r.height }; }
+      function aim(e) {
+        var q = pt(e), s = scale(), bx = X(.4, s), by = Y(.35, s), dx = bx - q.x, dy = q.y - by, len = Math.sqrt(dx * dx + dy * dy), MAXL = 170;
+        if (len > MAXL) { q.x = bx - dx * MAXL / len; q.y = by + dy * MAXL / len; len = MAXL; }
+        drag = { x: q.x, y: q.y, len: len };
+        var a = Math.atan2(Math.max(dy, 0), Math.max(dx, 1)) * 180 / Math.PI; a = Math.max(10, Math.min(75, a));
+        ang.value = a; pow.value = 10 + 20 * Math.min(len / MAXL, 1);
+        document.getElementById('gPowBar').style.width = Math.round(100 * Math.min(len / MAXL, 1)) + '%';
+        draw();
+      }
+      cv.addEventListener('pointerdown', function (e) { if (flying || locked) return; try { cv.setPointerCapture(e.pointerId); } catch (x) {} aim(e); e.preventDefault(); });
+      cv.addEventListener('pointermove', function (e) { if (drag && !flying) { aim(e); e.preventDefault(); } });
+      function release(e) { if (!drag) return; var ok = drag.len >= 25; if (ok) launch(); else { drag = null; document.getElementById('gPowBar').style.width = '0'; draw(); } }
+      cv.addEventListener('pointerup', release); cv.addEventListener('pointercancel', function () { drag = null; draw(); });
+      function upd() { angV.textContent = ang.value + '°'; powV.textContent = pow.value; if (!flying) draw(); }
+      btn.addEventListener('click', restart);
+      newRound(); upd();
+      setInterval(function () { if (!flying && !document.hidden) draw(); }, 200);
+    })();
   })();
 </script>
 
