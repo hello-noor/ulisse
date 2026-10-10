@@ -527,9 +527,9 @@
 
 <section class="s game" id="gioco">
   <div class="wrap">
-    <span class="tag">Mini gioco</span>
-    <h2>Calcia la punizione!</h2>
-    <p class="sub">Come Angry Birds: tira indietro e rilascia! L'ovale deve passare tra i pali. 5 tiri.</p>
+    <span class="tag">Mini gioco di rugby</span>
+    <h2>Rugby: calcia tra i pali!</h2>
+    <p class="sub">Tira indietro il piede di Ulisse e rilascia: l'ovale deve passare tra i pali. 5 tiri!</p>
     <div class="gbox sticker">
       <div class="ghud">
         <div class="gstat"><small>Calci</small><b id="gLeft">5</b></div>
@@ -538,7 +538,7 @@
         <div class="gstat"><small>Metri</small><b id="gDist">–</b></div>
       </div>
       <canvas id="gCanvas" width="720" height="400" aria-label="Campo da rugby: calcio di punizione"></canvas>
-      <div class="gmsg" id="gMsg" aria-live="polite">Tira indietro e rilascia!</div>
+      <div class="gmsg" id="gMsg" aria-live="polite">Muovi il piede indietro e guarda la parabola!</div>
       <div class="gbars" aria-hidden="true"><span>Potenza<div class="gpower"><i id="gPowBar"></i></div></span><span>Angolo<div class="gpower"><i id="gAngBar"></i></div></span></div>
       <div class="gctl" hidden><input id="gAng" type="range" min="10" max="75" value="40"><input id="gPow" type="range" min="10" max="30" step=".5" value="20"><b id="gAngV"></b><b id="gPowV"></b></div>
       <button class="btn pink" id="gKick" hidden>Rigioca!</button>
@@ -803,14 +803,14 @@
       var cx = cv.getContext('2d'), W = cv.width, H = cv.height;
       var elLeft = document.getElementById('gLeft'), elScore = document.getElementById('gScore'), elWind = document.getElementById('gWind'), elDist = document.getElementById('gDist'),
         msg = document.getElementById('gMsg'), ang = document.getElementById('gAng'), pow = document.getElementById('gPow'), angV = document.getElementById('gAngV'), powV = document.getElementById('gPowV'), btn = document.getElementById('gKick');
-      var drag = null, locked = false, G = 9.8, BAR = 3, TOP = 9, kicks = 5, score = 0, D = 24, wind = 0, flying = false, trail = [], ballPos = null, ballRot = 0, swing = 0, raf = 0, shown = '';
+      var drag = null, fdrag = null, locked = false, G = 9.8, BAR = 3.6, TOP = 12, kicks = 5, score = 0, D = 24, wind = 0, flying = false, trail = [], ballPos = null, ballRot = 0, swing = 0, raf = 0, shown = '';
       function rnd(a, b) { return a + Math.random() * (b - a); }
       function newRound() {
         D = Math.round(rnd(18, 34)); wind = Math.round(rnd(-6, 6) * 2) / 2; if (Math.abs(wind) < 1) wind = wind < 0 ? -1.5 : 1.5;
-        elDist.textContent = D; elWind.textContent = (wind > 0 ? '→' : '←') + Math.abs(wind).toFixed(1); trail = []; ballPos = null; swing = 0; locked = false; drag = null; draw();
+        elDist.textContent = D; elWind.textContent = (wind > 0 ? '→' : '←') + Math.abs(wind).toFixed(1); trail = []; ballPos = null; swing = 0; locked = false; drag = null; fdrag = null; draw();
       }
       function sim(a, v, w) {
-        var r = a * Math.PI / 180, x = 0, y = .4, vx = v * Math.cos(r), vy = v * Math.sin(r), dt = .02, pts = [], hit = null, i = 0;
+        var r = a * Math.PI / 180, x = 0, y = 58 / scale(), vx = v * Math.cos(r), vy = v * Math.sin(r), dt = .02, pts = [], hit = null, i = 0;
         while (i++ < 600) {
           pts.push({ x: x, y: y });
           var nx = x + vx * dt, ny = y + vy * dt;
@@ -821,23 +821,23 @@
         pts.push({ x: x, y: Math.max(y, 0) });
         return { pts: pts, hit: hit };
       }
-      function scale() { return Math.min((W - 150) / (D + 4.5), H / 19); }
+      function scale() { return Math.min((W - 150) / (D + 6.5), H / 19); }
       function X(x, s) { return 125 + x * s; }
       function Y(y, s) { return H - 50 - y * s; }
       function ovale(x, y, r, rot) { cx.save(); cx.translate(x, y); cx.rotate(rot); cx.fillStyle = '#a8541f'; cx.strokeStyle = '#1d1b3a'; cx.lineWidth = 3; cx.beginPath(); cx.ellipse(0, 0, r, r * .62, 0, 0, 7); cx.fill(); cx.stroke(); cx.strokeStyle = '#f3c593'; cx.lineWidth = 2; cx.beginPath(); cx.moveTo(-r * .55, 0); cx.lineTo(r * .55, 0); cx.stroke(); cx.restore(); }
       function draw() {
-        var s = scale(), gy = Y(0, s), k;
+        var s = scale(), gy = Y(0, s), k, HX = X(.4, s), HY = gy - 58, pd = drag || fdrag;
         var g = cx.createLinearGradient(0, 0, 0, gy); g.addColorStop(0, '#4cc3ff'); g.addColorStop(1, '#d5f3ff'); cx.fillStyle = g; cx.fillRect(0, 0, W, H);
         cx.fillStyle = 'rgba(255,255,255,.9)'; [[90, 50, 1], [420, 36, .8], [600, 70, .6]].forEach(function (c) { cx.beginPath(); cx.arc(c[0], c[1], 22 * c[2], 0, 7); cx.arc(c[0] + 26 * c[2], c[1] + 6, 18 * c[2], 0, 7); cx.arc(c[0] - 24 * c[2], c[1] + 8, 16 * c[2], 0, 7); cx.fill(); });
         cx.fillStyle = '#3ccf6e'; cx.fillRect(0, gy, W, H - gy); cx.fillStyle = '#35bd64'; for (k = 0; k < 14; k++) { if (k % 2) cx.fillRect(X(k * 5 - 5, s), gy, 5 * s, H - gy); }
         cx.fillStyle = '#1d1b3a'; cx.fillRect(0, gy - 3, W, 4);
         cx.fillStyle = '#fff'; cx.font = '700 13px sans-serif'; cx.textAlign = 'center'; for (k = 5; k <= D; k += 5) { cx.fillText(k + '', X(k, s), gy + 22); }
         // pali
-        var pxL = X(D - 1.3, s), pxR = X(D + 1.3, s), yb = Y(BAR, s), yt = Y(TOP, s);
-        cx.lineCap = 'round'; cx.strokeStyle = '#1d1b3a'; cx.lineWidth = 11; cx.beginPath(); cx.moveTo(pxL, gy); cx.lineTo(pxL, yt); cx.moveTo(pxR, gy); cx.lineTo(pxR, yt); cx.moveTo(pxL, yb); cx.lineTo(pxR, yb); cx.stroke();
-        cx.strokeStyle = '#fff'; cx.lineWidth = 5; cx.stroke();
+        var pxL = X(D - 2, s), pxR = X(D + 2, s), yb = Y(BAR, s), yt = Y(TOP, s);
+        cx.lineCap = 'round'; cx.strokeStyle = '#1d1b3a'; cx.lineWidth = 15; cx.beginPath(); cx.moveTo(pxL, gy); cx.lineTo(pxL, yt); cx.moveTo(pxR, gy); cx.lineTo(pxR, yt); cx.moveTo(pxL, yb); cx.lineTo(pxR, yb); cx.stroke();
+        cx.strokeStyle = '#fff'; cx.lineWidth = 8; cx.stroke();
         // bandierina del vento
-        var fx = X(D + 3.5, s), fy = Y(8, s); cx.strokeStyle = '#1d1b3a'; cx.lineWidth = 4; cx.beginPath(); cx.moveTo(fx, gy); cx.lineTo(fx, fy); cx.stroke();
+        var fx = X(D + 5, s), fy = Y(10, s); cx.strokeStyle = '#1d1b3a'; cx.lineWidth = 4; cx.beginPath(); cx.moveTo(fx, gy); cx.lineTo(fx, fy); cx.stroke();
         var len = 18 + Math.abs(wind) * 6, dir = wind > 0 ? 1 : -1, t0 = Date.now() / 200; cx.fillStyle = '#ff5d73'; cx.strokeStyle = '#1d1b3a'; cx.lineWidth = 3; cx.beginPath(); cx.moveTo(fx, fy); cx.quadraticCurveTo(fx + dir * len * .5, fy + 4 + Math.sin(t0) * 3, fx + dir * len, fy + 8 + Math.sin(t0 + 1) * 4); cx.lineTo(fx, fy + 16); cx.closePath(); cx.fill(); cx.stroke();
         // anteprima senza vento
         if (!flying && drag) { var pv = sim(+ang.value, +pow.value, 0).pts, lp = pv[pv.length - 1]; cx.fillStyle = 'rgba(29,27,58,.6)'; for (k = 0; k < pv.length; k += 4) { cx.beginPath(); cx.arc(X(pv[k].x, s), Y(pv[k].y, s), 3.2, 0, 7); cx.fill(); } cx.strokeStyle = '#ff5d73'; cx.lineWidth = 5; cx.lineCap = 'round'; var lx = X(lp.x, s), ly = Math.min(Y(0, s) - 2, Y(lp.y, s)); cx.beginPath(); cx.moveTo(lx - 7, ly - 7); cx.lineTo(lx + 7, ly + 7); cx.moveTo(lx + 7, ly - 7); cx.lineTo(lx - 7, ly + 7); cx.stroke(); cx.fillStyle = '#1d1b3a'; cx.font = '700 22px sans-serif'; cx.textAlign = 'left'; cx.fillText(Math.round(+ang.value) + '° · ' + Math.round(+pow.value), 14, 30); }
@@ -845,7 +845,7 @@
         cx.fillStyle = 'rgba(255,255,255,.85)'; trail.forEach(function (p, i) { if (i % 3 === 0) { cx.beginPath(); cx.arc(X(p.x, s), Y(p.y, s), 3.5, 0, 7); cx.fill(); } });
         // Ulisse che calcia
         (function () {
-          var u = 1.35, kx = X(-3, s), ky = gy, sw = swing, INK = '#1d1b3a', SK = '#ffd9b8';
+          var u = 1.35, kx = HX - 38, ky = gy, sw = swing, INK = '#1d1b3a', SK = '#ffd9b8';
           function limb(x1, y1, x2, y2, w, col) { cx.lineCap = 'round'; cx.strokeStyle = INK; cx.lineWidth = w + 5; cx.beginPath(); cx.moveTo(x1, y1); cx.lineTo(x2, y2); cx.stroke(); cx.strokeStyle = col; cx.lineWidth = w; cx.beginPath(); cx.moveTo(x1, y1); cx.lineTo(x2, y2); cx.stroke(); }
           var hipY = ky - 30 * u, shY = ky - 58 * u;
           // gamba d'appoggio + calzettone + scarpino
@@ -854,8 +854,10 @@
           // braccio dietro (equilibrio)
           limb(kx - 8 * u, shY + 3, kx - 24 * u, shY + 14 * u - sw * 12 * u, 6 * u, SK);
           // gamba che calcia
-          var fx = kx + 6 * u + sw * 30 * u, fy = ky - 6 - sw * 16 * u;
-          limb(kx + 3 * u, hipY, fx, fy, 8 * u, SK); cx.fillStyle = INK; cx.beginPath(); cx.ellipse(fx + 3 * u, fy, 9 * u, 5 * u, -sw * .5, 0, 7); cx.fill();
+          var fx, fy;
+          if (pd) { var q = drag ? 0 : Math.min(sw, 1); fx = HX + pd.px * (1 - q) - 5 * q; fy = HY + pd.py * (1 - q) + 6 * q; } else { fx = HX - 16; fy = gy - 8; }
+          if (drag) { cx.setLineDash([5, 5]); cx.strokeStyle = '#ff5d73'; cx.lineWidth = 3; cx.beginPath(); cx.arc(fx, fy, 17, 0, 7); cx.stroke(); cx.setLineDash([]); }
+          limb(kx + 3 * u, hipY, fx, fy, 8 * u, SK); cx.fillStyle = INK; cx.beginPath(); cx.ellipse(fx + 3 * u, fy, 9 * u, 5 * u, drag ? -.3 : -sw * .5, 0, 7); cx.fill();
           // pantaloncini
           cx.fillStyle = '#2b3a8f'; cx.strokeStyle = INK; cx.lineWidth = 4; cx.beginPath(); cx.roundRect ? cx.roundRect(kx - 13 * u, hipY - 10 * u, 26 * u, 18 * u, 6) : cx.rect(kx - 13 * u, hipY - 10 * u, 26 * u, 18 * u); cx.fill(); cx.stroke();
           // maglia a righe con il 6
@@ -873,11 +875,10 @@
           cx.strokeStyle = INK; cx.lineWidth = 2.5; cx.beginPath(); cx.arc(kx + 2 * u, hy + 5 * u, 5 * u, .15, Math.PI - .15); cx.stroke();
         })();
         // pallone
-        var hx = X(.4, s), hy = Y(.35, s) - 2;
-        cx.fillStyle = '#a8541f'; cx.strokeStyle = '#1d1b3a'; cx.lineWidth = 3; cx.beginPath(); cx.moveTo(hx - 9, hy + 12); cx.lineTo(hx + 9, hy + 12); cx.lineTo(hx + 4, gy); cx.lineTo(hx - 4, gy); cx.closePath(); cx.fill(); cx.stroke();
-        if (ballPos) ovale(X(ballPos.x, s), Y(ballPos.y, s), 11, ballRot);
-        else if (drag && !flying) { var bx = hx + drag.px, by = Math.min(hy + drag.py, gy - 8); cx.strokeStyle = '#ff5d73'; cx.lineWidth = 5; cx.lineCap = 'round'; cx.beginPath(); cx.moveTo(hx - 8, hy + 6); cx.lineTo(bx, by); cx.lineTo(hx + 8, hy + 6); cx.stroke(); ovale(bx, by, 11, Math.atan2(-drag.py, -drag.px) * -1 + Math.PI); }
-        else ovale(hx, hy, 11, -.5);
+        cx.fillStyle = '#c98a4b'; cx.strokeStyle = '#1d1b3a'; cx.lineWidth = 3; cx.beginPath(); cx.rect(HX - 4, HY + 10, 8, gy - HY - 10); cx.fill(); cx.stroke();
+        cx.beginPath(); cx.ellipse(HX, gy - 1, 18, 5, 0, 0, 7); cx.fill(); cx.stroke();
+        cx.beginPath(); cx.moveTo(HX - 11, HY + 6); cx.lineTo(HX + 11, HY + 6); cx.lineTo(HX + 5, HY + 14); cx.lineTo(HX - 5, HY + 14); cx.closePath(); cx.fill(); cx.stroke();
+        if (ballPos) ovale(X(ballPos.x, s), Y(ballPos.y, s), 11, ballRot); else ovale(HX, HY, 11, -.5);
       }
       function setMsg(t, c) { msg.textContent = t; msg.className = 'gmsg' + (c ? ' ' + c : ''); }
       function end(ok, hit) {
@@ -892,9 +893,9 @@
         setMsg(t, score >= 3 ? 'ok' : 'ko'); btn.hidden = false;
         if (score >= 3) { sfx('fanfare'); var r = cv.getBoundingClientRect(); if (!reduce) burst(r.left + r.width / 2, r.top + r.height / 2, 140); }
       }
-      function restart() { btn.hidden = true; kicks = 5; score = 0; elLeft.textContent = 5; elScore.textContent = 0; setMsg('Tira indietro e rilascia!'); newRound(); }
+      function restart() { btn.hidden = true; kicks = 5; score = 0; elLeft.textContent = 5; elScore.textContent = 0; setMsg('Muovi il piede indietro e guarda la parabola!'); newRound(); }
       function launch() {
-        if (flying || locked) return; flying = true; locked = true; drag = null; trail = []; sfx('click'); bars(0, 0);
+        if (flying || locked) return; flying = true; locked = true; fdrag = drag ? { px: drag.px, py: drag.py } : null; drag = null; trail = []; sfx('click'); bars(0, 0);
         var res = sim(+ang.value, +pow.value, wind), pts = res.pts, i = 0, sw = 0;
         var ok = res.hit !== null && res.hit >= BAR + .15 && res.hit <= TOP - .1;
         cancelAnimationFrame(raf);
