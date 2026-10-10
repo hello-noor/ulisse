@@ -810,7 +810,7 @@
         elDist.textContent = D; elWind.textContent = (wind > 0 ? '→' : '←') + Math.abs(wind).toFixed(1); trail = []; ballPos = null; swing = 0; locked = false; drag = null; fdrag = null; draw();
       }
       function sim(a, v, w) {
-        var r = a * Math.PI / 180, x = 0, y = 24 / scale(), vx = v * Math.cos(r), vy = v * Math.sin(r), dt = .02, pts = [], hit = null, i = 0;
+        var r = a * Math.PI / 180, x = 0, y = 25 / scale(), vx = v * Math.cos(r), vy = v * Math.sin(r), dt = .02, pts = [], hit = null, i = 0;
         while (i++ < 600) {
           pts.push({ x: x, y: y });
           var nx = x + vx * dt, ny = y + vy * dt;
@@ -826,7 +826,7 @@
       function Y(y, s) { return H - 50 - y * s; }
       function ovale(x, y, r, rot) { cx.save(); cx.translate(x, y); cx.rotate(rot); cx.fillStyle = '#a8541f'; cx.strokeStyle = '#1d1b3a'; cx.lineWidth = 3; cx.beginPath(); cx.ellipse(0, 0, r, r * .62, 0, 0, 7); cx.fill(); cx.stroke(); cx.strokeStyle = '#f3c593'; cx.lineWidth = 2; cx.beginPath(); cx.moveTo(-r * .55, 0); cx.lineTo(r * .55, 0); cx.stroke(); cx.restore(); }
       function draw() {
-        var s = scale(), gy = Y(0, s), k, HX = X(.4, s), HY = gy - 24, pd = drag || fdrag;
+        var s = scale(), gy = Y(0, s), k, HX = X(.4, s), HY = gy - 25, pd = drag || fdrag;
         var g = cx.createLinearGradient(0, 0, 0, gy); g.addColorStop(0, '#4cc3ff'); g.addColorStop(1, '#d5f3ff'); cx.fillStyle = g; cx.fillRect(0, 0, W, H);
         cx.fillStyle = 'rgba(255,255,255,.9)'; [[90, 50, 1], [420, 36, .8], [600, 70, .6]].forEach(function (c) { cx.beginPath(); cx.arc(c[0], c[1], 22 * c[2], 0, 7); cx.arc(c[0] + 26 * c[2], c[1] + 6, 18 * c[2], 0, 7); cx.arc(c[0] - 24 * c[2], c[1] + 8, 16 * c[2], 0, 7); cx.fill(); });
         cx.fillStyle = '#3ccf6e'; cx.fillRect(0, gy, W, H - gy); cx.fillStyle = '#35bd64'; for (k = 0; k < 14; k++) { if (k % 2) cx.fillRect(X(k * 5 - 5, s), gy, 5 * s, H - gy); }
@@ -845,40 +845,52 @@
         cx.fillStyle = 'rgba(255,255,255,.85)'; trail.forEach(function (p, i) { if (i % 3 === 0) { cx.beginPath(); cx.arc(X(p.x, s), Y(p.y, s), 3.5, 0, 7); cx.fill(); } });
         // Ulisse che calcia
         (function () {
-          var u = 1.35, kx = HX - 50, ky = gy, sw = swing, INK = '#1d1b3a', SK = '#ffd9b8';
+          var u = 1.4, kx = HX - 60, ky = gy, sw = swing, INK = '#1d1b3a', SK = '#ffd9b8', HAIR = '#f5c542';
           function limb(x1, y1, x2, y2, w, col) { cx.lineCap = 'round'; cx.strokeStyle = INK; cx.lineWidth = w + 5; cx.beginPath(); cx.moveTo(x1, y1); cx.lineTo(x2, y2); cx.stroke(); cx.strokeStyle = col; cx.lineWidth = w; cx.beginPath(); cx.moveTo(x1, y1); cx.lineTo(x2, y2); cx.stroke(); }
-          function boot(x, y, rot) { cx.save(); cx.translate(x, y); cx.rotate(rot); cx.fillStyle = INK; cx.beginPath(); cx.ellipse(5 * u, 0, 9 * u, 4.5 * u, 0, 0, 7); cx.fill(); cx.restore(); }
-          var hipY = ky - 30 * u, shY = ky - 58 * u;
-          // braccio lontano (dietro)
-          limb(kx, shY + 4, kx - 14 * u, shY + 16 * u - sw * 8 * u, 5.5 * u, SK);
-          // gamba d'appoggio (di profilo, piede verso la porta)
-          limb(kx - 1 * u, hipY, kx - 2 * u, ky - 5, 8 * u, SK); limb(kx - 1.5 * u, ky - 15 * u, kx - 2 * u, ky - 5, 8 * u, '#fff');
-          boot(kx - 2 * u, ky - 3, 0);
-          // pantaloncini e maglia di profilo
-          cx.fillStyle = '#2b3a8f'; cx.strokeStyle = INK; cx.lineWidth = 4; cx.beginPath(); cx.roundRect ? cx.roundRect(kx - 9 * u, hipY - 10 * u, 18 * u, 18 * u, 6) : cx.rect(kx - 9 * u, hipY - 10 * u, 18 * u, 18 * u); cx.fill(); cx.stroke();
-          cx.fillStyle = '#ff5d73'; cx.beginPath(); cx.roundRect ? cx.roundRect(kx - 9 * u, shY - 2, 18 * u, 30 * u, 8) : cx.rect(kx - 9 * u, shY - 2, 18 * u, 30 * u); cx.fill(); cx.stroke();
-          cx.save(); cx.clip(); cx.fillStyle = '#fff'; cx.fillRect(kx - 10 * u, shY + 8 * u, 20 * u, 6 * u); cx.restore();
-          cx.fillStyle = INK; cx.font = '700 ' + Math.round(12 * u) + 'px sans-serif'; cx.textAlign = 'center'; cx.fillText('6', kx, shY + 24 * u);
-          // gamba vicina (destra): un'unica oscillazione lineare attorno all'anca, verso la porta
-          var wf = drag ? Math.min(1, drag.len / MAXD) : (fdrag ? fdrag.f : 0), th0 = -6 - 42 * wf, e = sw * sw * (3 - 2 * sw), th = ((fdrag && !drag) ? th0 + (100 - th0) * e : th0) * Math.PI / 180, L = 44 * u, lx = kx + 1 * u, ex2 = lx + L * Math.sin(th), ey2 = hipY + L * Math.cos(th), mx = lx + L * .5 * Math.sin(th), my = hipY + L * .5 * Math.cos(th);
-          limb(lx, hipY, mx, my, 9 * u, SK); limb(mx, my, ex2, ey2, 8.5 * u, '#fff');
+          function boot(x, y, rot) { cx.save(); cx.translate(x, y); cx.rotate(rot); cx.fillStyle = '#2b3a8f'; cx.strokeStyle = INK; cx.lineWidth = 3.5; cx.beginPath(); cx.moveTo(-4 * u, -4 * u); cx.lineTo(3 * u, -4 * u); cx.quadraticCurveTo(12 * u, -3 * u, 13 * u, 3 * u); cx.lineTo(-5 * u, 4 * u); cx.closePath(); cx.fill(); cx.stroke(); cx.fillStyle = '#fff'; cx.fillRect(-5 * u, 2 * u, 18 * u, 2 * u); cx.restore(); }
+          var hipY = ky - 32 * u, shY = ky - 60 * u;
+          // braccio lontano
+          limb(kx - 1 * u, shY + 5, kx - 13 * u, shY + 17 * u - sw * 8 * u, 5 * u, SK);
+          // gamba d'appoggio
+          limb(kx - 1 * u, hipY, kx - 2 * u, ky - 6, 7.5 * u, SK); limb(kx - 1.6 * u, ky - 17 * u, kx - 2 * u, ky - 6, 7.5 * u, '#fff');
+          boot(kx - 2 * u, ky - 4, 0);
+          // collo
+          cx.fillStyle = SK; cx.strokeStyle = INK; cx.lineWidth = 3; cx.fillRect(kx - 3 * u, shY - 9 * u, 6 * u, 10 * u);
+          // pantaloncini
+          cx.fillStyle = '#2b3a8f'; cx.strokeStyle = INK; cx.lineWidth = 4; cx.beginPath(); cx.roundRect ? cx.roundRect(kx - 8.5 * u, hipY - 9 * u, 17 * u, 17 * u, 5) : cx.rect(kx - 8.5 * u, hipY - 9 * u, 17 * u, 17 * u); cx.fill(); cx.stroke();
+          // maglia di profilo, leggermente inclinata in avanti
+          cx.fillStyle = '#ff5d73'; cx.beginPath(); cx.moveTo(kx - 8 * u, shY); cx.quadraticCurveTo(kx, shY - 4 * u, kx + 8 * u, shY); cx.lineTo(kx + 9 * u, hipY - 6 * u); cx.lineTo(kx - 9 * u, hipY - 6 * u); cx.closePath(); cx.fill(); cx.stroke();
+          cx.save(); cx.clip(); cx.fillStyle = '#fff'; cx.fillRect(kx - 10 * u, shY + 8 * u, 20 * u, 5 * u); cx.restore();
+          cx.fillStyle = INK; cx.font = '700 ' + Math.round(11 * u) + 'px sans-serif'; cx.textAlign = 'center'; cx.fillText('6', kx, shY + 25 * u);
+          // gamba vicina (destra): una sola oscillazione verso la porta
+          var wf = drag ? Math.min(1, drag.len / MAXD) : (fdrag ? fdrag.f : 0), th0 = -6 - 42 * wf, e = sw * sw * (3 - 2 * sw), th = ((fdrag && !drag) ? th0 + (100 - th0) * e : th0) * Math.PI / 180, L = 46 * u, lx = kx + 1 * u, ex2 = lx + L * Math.sin(th), ey2 = hipY + L * Math.cos(th), mx = lx + L * .5 * Math.sin(th), my = hipY + L * .5 * Math.cos(th);
+          limb(lx, hipY, mx, my, 8.5 * u, SK); limb(mx, my, ex2, ey2, 7.5 * u, '#fff');
           boot(ex2, ey2, -th);
-          // braccio vicino (avanti, per equilibrio)
-          limb(kx, shY + 4, kx + 15 * u, shY + 18 * u - sw * 6 * u, 6 * u, SK);
-          // testa di profilo, rivolta a destra
-          var hx = kx + 1 * u, hy = ky - 76 * u, hr = 15 * u;
-          cx.fillStyle = SK; cx.strokeStyle = INK; cx.lineWidth = 4; cx.beginPath(); cx.arc(hx, hy, hr, 0, 7); cx.fill(); cx.stroke();
-          cx.beginPath(); cx.arc(hx + hr + 1.5 * u, hy + 3 * u, 3.2 * u, 0, 7); cx.fill(); cx.stroke();
-          cx.fillStyle = SK; cx.beginPath(); cx.arc(hx + hr - 2, hy + 2 * u, 4 * u, -1, 1.2); cx.fill();
-          cx.fillStyle = '#f5c542'; cx.beginPath(); cx.moveTo(hx + hr * .55, hy - hr * .8); cx.quadraticCurveTo(hx + hr * .1, hy - hr - 4 * u, hx - 6 * u, hy - hr - 5 * u); cx.lineTo(hx - 3 * u, hy - hr - 12 * u); cx.lineTo(hx + 1 * u, hy - hr - 5 * u); cx.lineTo(hx + 6 * u, hy - hr - 11 * u); cx.lineTo(hx + 8 * u, hy - hr - 3 * u); cx.quadraticCurveTo(hx + hr * .9, hy - hr * .8, hx + hr * .78, hy - hr * .3); cx.quadraticCurveTo(hx + 2 * u, hy - 9 * u, hx - 7 * u, hy - 4 * u); cx.lineTo(hx - hr - 3 * u, hy + 6 * u); cx.quadraticCurveTo(hx - hr - 5 * u, hy - 4 * u, hx - hr * .6, hy - hr * .8); cx.quadraticCurveTo(hx - 2 * u, hy - hr - 2 * u, hx + hr * .55, hy - hr * .8); cx.closePath(); cx.fill(); cx.stroke();
-          cx.fillStyle = INK; cx.beginPath(); cx.arc(hx + 8 * u, hy + 0 * u, 2 * u, 0, 7); cx.fill();
-          cx.fillStyle = 'rgba(255,93,115,.55)'; cx.beginPath(); cx.arc(hx + 3 * u, hy + 8 * u, 3 * u, 0, 7); cx.fill();
-          cx.strokeStyle = INK; cx.lineWidth = 2.5; cx.beginPath(); cx.arc(hx + 7 * u, hy + 6 * u, 4 * u, .3, 1.7); cx.stroke();
+          // braccio vicino
+          limb(kx, shY + 5, kx + 14 * u, shY + 19 * u - sw * 6 * u, 5.5 * u, SK);
+          // testa di profilo verso destra
+          var hx = kx + 1 * u, hy = shY - 18 * u, hr = 14 * u;
+          cx.fillStyle = SK; cx.strokeStyle = INK; cx.lineWidth = 4;
+          cx.beginPath(); cx.arc(hx, hy, hr, 0, 7); cx.fill(); cx.stroke();
+          cx.beginPath(); cx.moveTo(hx + hr - 1, hy - 1 * u); cx.lineTo(hx + hr + 4 * u, hy + 3 * u); cx.lineTo(hx + hr - 1, hy + 5 * u); cx.closePath(); cx.fill(); cx.stroke();
+          cx.beginPath(); cx.arc(hx - 3 * u, hy + 3 * u, 3.2 * u, 0, 7); cx.fill(); cx.stroke();
+          // capelli biondi
+          cx.fillStyle = HAIR; cx.strokeStyle = INK; cx.lineWidth = 3.5;
+          cx.beginPath(); cx.arc(hx, hy, hr + 1.5, -.5, 2.45, true);
+          cx.quadraticCurveTo(hx - 8 * u, hy - 1 * u, hx - 5 * u, hy - 5 * u);
+          cx.quadraticCurveTo(hx + 4 * u, hy - 8 * u, hx + hr * .87, hy - hr * .5);
+          cx.closePath(); cx.fill(); cx.stroke();
+          cx.beginPath(); cx.moveTo(hx - 6 * u, hy - hr); cx.lineTo(hx - 2 * u, hy - hr - 8 * u); cx.lineTo(hx + 2 * u, hy - hr + 1); cx.lineTo(hx + 6 * u, hy - hr - 6 * u); cx.lineTo(hx + 9 * u, hy - hr + 3 * u); cx.closePath(); cx.fill(); cx.stroke();
+          // occhio, sopracciglio, bocca, guancia
+          cx.fillStyle = INK; cx.beginPath(); cx.ellipse(hx + 7.5 * u, hy + 1.5 * u, 1.8 * u, 2.4 * u, 0, 0, 7); cx.fill();
+          cx.strokeStyle = INK; cx.lineWidth = 2.5; cx.beginPath(); cx.moveTo(hx + 5 * u, hy - 3 * u); cx.lineTo(hx + 10 * u, hy - 2.5 * u); cx.stroke();
+          cx.beginPath(); cx.arc(hx + 7 * u, hy + 5.5 * u, 3.5 * u, .4, 1.5); cx.stroke();
+          cx.fillStyle = 'rgba(255,93,115,.45)'; cx.beginPath(); cx.arc(hx + 3 * u, hy + 6 * u, 2.5 * u, 0, 7); cx.fill();
         })();
         // pallone
-        cx.fillStyle = '#e8b04b'; cx.strokeStyle = '#1d1b3a'; cx.lineWidth = 3; cx.beginPath(); cx.moveTo(HX - 19, HY + 9); cx.lineTo(HX + 19, HY + 9); cx.lineTo(HX + 8, gy); cx.lineTo(HX - 8, gy); cx.closePath(); cx.fill(); cx.stroke();
-        if (ballPos) ovale(X(ballPos.x, s), Y(ballPos.y, s), 19, ballRot); else ovale(HX, HY, 19, -.5);
-        if (drag && !flying) { cx.save(); cx.globalAlpha = .6; var gbx = HX + drag.px, gby = Math.min(HY + drag.py, gy - 19); ovale(gbx, gby, 19, Math.atan2(-drag.py, -drag.px) + Math.PI); cx.restore(); }
+        cx.fillStyle = '#e8b04b'; cx.strokeStyle = '#1d1b3a'; cx.lineWidth = 3; cx.beginPath(); cx.moveTo(HX - 8, HY + 14); cx.lineTo(HX + 8, HY + 14); cx.lineTo(HX + 4, gy); cx.lineTo(HX - 4, gy); cx.closePath(); cx.fill(); cx.stroke();
+        if (ballPos) ovale(X(ballPos.x, s), Y(ballPos.y, s), 25, ballRot); else ovale(HX, HY, 25, -.5);
+        if (drag && !flying) { cx.save(); cx.globalAlpha = .6; var gbx = HX + drag.px, gby = Math.min(HY + drag.py, gy - 25); ovale(gbx, gby, 25, Math.atan2(-drag.py, -drag.px) + Math.PI); cx.restore(); }
       }
       function setMsg(t, c) { msg.textContent = t; msg.className = 'gmsg' + (c ? ' ' + c : ''); }
       function end(ok, hit) {
