@@ -98,7 +98,7 @@
   }
   #cover.gone { transform: translateY(-110%); }
   #cover .rays { position: absolute; left: 50%; top: 42%; width: 240vmax; height: 240vmax; margin: -120vmax 0 0 -120vmax; background: repeating-conic-gradient(rgba(255,255,255,.34) 0 7deg, transparent 7deg 15deg); animation: spin 40s linear infinite; z-index: 0; }
-  #cover h2 { position: relative; z-index: 3; font-size: clamp(28px, 8vw, 50px); line-height: 1.02; max-width: 15em; color: #fff; -webkit-text-stroke: 3px var(--ink); paint-order: stroke fill; text-shadow: 0 6px 0 var(--ink); }
+    #cover h2 { position: relative; z-index: 3; margin-top: 8px; font-size: clamp(28px, 8vw, 50px); line-height: 1.04; max-width: 15em; color: var(--ink); -webkit-text-stroke: 0; text-shadow: 3px 3px 0 #fff, -3px 3px 0 #fff, 0 4px 0 #fff, 3px 0 0 #fff, -3px 0 0 #fff; }
   #cover p { position: relative; z-index: 3; margin: 0; font-size: 19px; font-weight: 700; color: var(--ink); }
   .big6 { position: relative; z-index: 2; --bw: min(72vw, 36vh, 340px); width: var(--bw); height: calc(var(--bw) / .6944); flex: none; animation: six 3.2s ease-in-out infinite; }
   .big6 .edge { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
@@ -254,7 +254,10 @@
 
   .game { background: linear-gradient(var(--sky-2), #fff4cf); text-align: center; }
   .game .tag { background: var(--ink); color: #fff; }
-  .game h2 { margin-top: 14px; font-size: clamp(32px, 9vw, 52px); }
+  .game { padding-block: 44px; }
+  .game .sub { margin-top: 8px; }
+  .game .gbox { margin-top: 16px; }
+  .game h2 { margin-top: 10px; font-size: clamp(32px, 9vw, 52px); }
   .gbox { margin: 26px auto 0; max-width: 760px; padding: 16px; display: grid; gap: 14px; background: #fff; }
   .ghud { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
   .gstat { background: var(--sky-2); border: 3px solid var(--ink); border-radius: 14px; padding: 6px 4px; }
@@ -507,7 +510,7 @@
   <div class="wrap">
     <span class="tag">Mini gioco</span>
     <h2>Calcia la punizione!</h2>
-    <p class="sub">Fai passare l'ovale tra i pali, sopra la traversa. Trascina all'indietro dal pallone con il dito (o il mouse) per mirare, poi rilascia: più tiri indietro, più forte calci. Occhio al vento! 5 calci a disposizione.</p>
+    <p class="sub">Trascina all'indietro e rilascia: l'ovale deve passare tra i pali. 5 calci!</p>
     <div class="gbox sticker">
       <div class="ghud">
         <div class="gstat"><small>Calci</small><b id="gLeft">5</b></div>
@@ -516,7 +519,7 @@
         <div class="gstat"><small>Metri</small><b id="gDist">–</b></div>
       </div>
       <canvas id="gCanvas" width="720" height="400" aria-label="Campo da rugby: calcio di punizione"></canvas>
-      <div class="gmsg" id="gMsg" aria-live="polite">Tira indietro dal pallone e lascia andare!</div>
+      <div class="gmsg" id="gMsg" aria-live="polite">Trascina verso sinistra e in basso, poi rilascia!</div>
       <div class="gpower" aria-hidden="true"><i id="gPowBar"></i></div>
       <div class="gctl" hidden><input id="gAng" type="range" min="10" max="75" value="40"><input id="gPow" type="range" min="10" max="30" step=".5" value="20"><b id="gAngV"></b><b id="gPowV"></b></div>
       <button class="btn pink" id="gKick" hidden>Rigioca!</button>
@@ -802,7 +805,7 @@
         var len = 18 + Math.abs(wind) * 6, dir = wind > 0 ? 1 : -1, t0 = Date.now() / 200; cx.fillStyle = '#ff5d73'; cx.strokeStyle = '#1d1b3a'; cx.lineWidth = 3; cx.beginPath(); cx.moveTo(fx, fy); cx.quadraticCurveTo(fx + dir * len * .5, fy + 4 + Math.sin(t0) * 3, fx + dir * len, fy + 8 + Math.sin(t0 + 1) * 4); cx.lineTo(fx, fy + 16); cx.closePath(); cx.fill(); cx.stroke();
         // anteprima senza vento
         if (!flying && drag) { var pv = sim(+ang.value, +pow.value, 0).pts; cx.fillStyle = 'rgba(29,27,58,.55)'; for (k = 0; k < pv.length; k += 5) { cx.beginPath(); cx.arc(X(pv[k].x, s), Y(pv[k].y, s), 3, 0, 7); cx.fill(); } }
-        if (drag && !flying) { var bx = X(.4, s), by = Y(.35, s); cx.strokeStyle = '#ff5d73'; cx.lineWidth = 6; cx.lineCap = 'round'; cx.beginPath(); cx.moveTo(bx, by); cx.lineTo(drag.x, drag.y); cx.stroke(); cx.fillStyle = '#ffd23f'; cx.strokeStyle = '#1d1b3a'; cx.lineWidth = 3; cx.beginPath(); cx.arc(drag.x, drag.y, 9, 0, 7); cx.fill(); cx.stroke(); }
+        if (drag && !flying) { var bx = X(.4, s), by = Y(.35, s), r = +ang.value * Math.PI / 180, L = 26 + drag.len * .45, ex = bx + Math.cos(r) * L, ey = by - Math.sin(r) * L; cx.strokeStyle = '#ff5d73'; cx.fillStyle = '#ff5d73'; cx.lineWidth = 7; cx.lineCap = 'round'; cx.beginPath(); cx.moveTo(bx, by); cx.lineTo(ex, ey); cx.stroke(); cx.beginPath(); cx.moveTo(ex + Math.cos(r) * 12, ey - Math.sin(r) * 12); cx.lineTo(ex - Math.sin(r) * 9, ey - Math.cos(r) * 9); cx.lineTo(ex + Math.sin(r) * 9, ey + Math.cos(r) * 9); cx.closePath(); cx.fill(); }
         // scia
         cx.fillStyle = 'rgba(255,255,255,.85)'; trail.forEach(function (p, i) { if (i % 3 === 0) { cx.beginPath(); cx.arc(X(p.x, s), Y(p.y, s), 3.5, 0, 7); cx.fill(); } });
         // calciatore
@@ -827,7 +830,7 @@
         setMsg(t, score >= 3 ? 'ok' : 'ko'); btn.hidden = false;
         if (score >= 3) { sfx('fanfare'); var r = cv.getBoundingClientRect(); if (!reduce) burst(r.left + r.width / 2, r.top + r.height / 2, 140); }
       }
-      function restart() { btn.hidden = true; kicks = 5; score = 0; elLeft.textContent = 5; elScore.textContent = 0; setMsg('Tira indietro dal pallone e lascia andare!'); newRound(); }
+      function restart() { btn.hidden = true; kicks = 5; score = 0; elLeft.textContent = 5; elScore.textContent = 0; setMsg('Trascina verso sinistra e in basso, poi rilascia!'); newRound(); }
       function launch() {
         if (flying || locked) return; flying = true; locked = true; drag = null; trail = []; sfx('click'); document.getElementById('gPowBar').style.width = '0';
         var res = sim(+ang.value, +pow.value, wind), pts = res.pts, i = 0, sw = 0;
@@ -840,16 +843,18 @@
         })();
       }
       function pt(e) { var r = cv.getBoundingClientRect(); return { x: (e.clientX - r.left) * W / r.width, y: (e.clientY - r.top) * H / r.height }; }
+      var origin = null;
+      var origin = null;
       function aim(e) {
-        var q = pt(e), s = scale(), bx = X(.4, s), by = Y(.35, s), dx = bx - q.x, dy = q.y - by, len = Math.sqrt(dx * dx + dy * dy), MAXL = 170;
-        if (len > MAXL) { q.x = bx - dx * MAXL / len; q.y = by + dy * MAXL / len; len = MAXL; }
-        drag = { x: q.x, y: q.y, len: len };
-        var a = Math.atan2(Math.max(dy, 0), Math.max(dx, 1)) * 180 / Math.PI; a = Math.max(10, Math.min(75, a));
+        var q = pt(e), K = 1.5, MAXL = 300, dx = (origin.x - q.x) * K, dy = (q.y - origin.y) * K, len = Math.sqrt(dx * dx + dy * dy);
+        if (len > MAXL) { dx *= MAXL / len; dy *= MAXL / len; len = MAXL; }
+        drag = { dx: dx, dy: dy, len: len };
+        var a = Math.atan2(Math.max(dy, 0), Math.max(dx, .001)) * 180 / Math.PI; a = Math.max(8, Math.min(78, a));
         ang.value = a; pow.value = 10 + 20 * Math.min(len / MAXL, 1);
         document.getElementById('gPowBar').style.width = Math.round(100 * Math.min(len / MAXL, 1)) + '%';
         draw();
       }
-      cv.addEventListener('pointerdown', function (e) { if (flying || locked) return; try { cv.setPointerCapture(e.pointerId); } catch (x) {} aim(e); e.preventDefault(); });
+      cv.addEventListener('pointerdown', function (e) { if (flying || locked) return; try { cv.setPointerCapture(e.pointerId); } catch (x) {} origin = pt(e); origin = pt(e); aim(e); e.preventDefault(); });
       cv.addEventListener('pointermove', function (e) { if (drag && !flying) { aim(e); e.preventDefault(); } });
       function release(e) { if (!drag) return; var ok = drag.len >= 25; if (ok) launch(); else { drag = null; document.getElementById('gPowBar').style.width = '0'; draw(); } }
       cv.addEventListener('pointerup', release); cv.addEventListener('pointercancel', function () { drag = null; draw(); });
