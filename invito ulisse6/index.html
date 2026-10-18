@@ -341,6 +341,14 @@
     *, *::before, *::after { animation: none !important; transition-duration: .01s !important; }
     #rain { display: none; }
   }
+  /* ---------- Grazie (video) ---------- */
+  .thanks { background: var(--sun); padding-block: 40px 44px; text-align: center; border-bottom: 4px solid var(--ink); position: relative; z-index: 3; }
+  .thanks .wrap { display: grid; gap: 18px; justify-items: center; }
+  .thanks h2 { font-size: clamp(36px, 10vw, 64px); }
+  .thanks p { margin: 0; max-width: 34em; font-size: 19px; }
+  .thanks .sticker { padding: 10px; width: 100%; overflow: hidden; transform: rotate(-1deg); }
+  .thanks video { display: block; width: 100%; aspect-ratio: 16 / 9; border-radius: 18px; background: var(--ink); }
+  .thanks .sig { font-weight: 700; font-size: 20px; }
 </style>
 </head>
 <body>
@@ -394,6 +402,20 @@
   <button class="btn pink" id="openBtn">Apri l'invito!</button>
   <div class="swipe" aria-hidden="true"><span>↓</span></div>
 </div>
+
+<section class="thanks" id="grazie">
+  <div class="wrap">
+    <span class="tag">Grazie!</span>
+    <h2>Grazie di cuore a tutti!</h2>
+    <p>La festa è passata, ma il cuore è ancora pieno. Grazie per aver festeggiato Ulisse con noi e per esserci stati così vicini. Questo video è per voi: la sua storia, disegnata a pastello.</p>
+    <div class="sticker">
+      <video controls playsinline preload="metadata" poster="ulisse-grazie-poster.jpg" aria-label="La storia di Ulisse, in un video disegnato a pastello">
+        <source src="ulisse-grazie.mp4" type="video/mp4">
+      </video>
+    </div>
+    <p class="sig">Con affetto, Ulisse, Eleonora e Mario</p>
+  </div>
+</section>
 
 <header class="hero">
   <div class="streamer" style="left:4%;background:#ff5d73;height:110px;animation-delay:0.0s" aria-hidden="true"></div>
